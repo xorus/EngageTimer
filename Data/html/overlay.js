@@ -75,7 +75,7 @@ function draw() {
     sepEl.innerText = state.TimeDelta;
     let countDownDiff = state.CountDownEnd - new Date();
     if (state.CountingDown && countDownDiff > 0) {
-        minEl.style.visibility = 'hidden';
+        minEl.innerText = '';
         sepEl.innerText = '-';
         secEl.innerText = String(Math.floor(countDownDiff / 1000) % 60).padStart(2, '0')
         secEl.innerText += "." + String(Math.floor(countDownDiff / 100) % 10)
@@ -88,7 +88,7 @@ function draw() {
         } else {
             diff = state.CombatEnd - state.CombatStart;
         }
-        minEl.style.visibility = 'visible';
+        minEl.innerText = '';
         sepEl.innerText = ':';
         minEl.innerText = String(Math.floor(diff / 1000 / 60)).padStart(2, '0')
         secEl.innerText = String(Math.floor(diff / 1000) % 60).padStart(2, '0')
