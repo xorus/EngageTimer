@@ -13,10 +13,27 @@ namespace EngageTimer.Web
 
         private DateTime _lastUpdate;
 
+        private bool _forceUpdateNextTick = false;
+        private float _updateInterval;
+
+        private const float UpdateTimeIdle = 2f;
+        private const float UpdateTimeInCombat = 20f;
+
+
         public Websocket(string urlPath, State state, Configuration configuration) : base(urlPath, true)
         {
             _state = state;
             _configuration = configuration;
+            _updateInterval = (_state.InCombat || _state.CountingDown) ? UpdateTimeIdle : UpdateTimeInCombat;
+
+            EventHandler e = (sender, args) =>
+            {
+                _updateInterval = (_state.InCombat || _state.CountingDown) ? UpdateTimeIdle : UpdateTimeInCombat;
+                _forceUpdateNextTick = true;
+            };
+
+            _state.InCombatChanged += e;
+            _state.CountingDownChanged += e;
         }
 
         protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
@@ -28,8 +45,9 @@ namespace EngageTimer.Web
 
         public void UpdateInfo()
         {
-            if ((DateTime.Now - _lastUpdate).TotalSeconds > _configuration.WebSocketUpdateInterval)
+            if (_forceUpdateNextTick || (DateTime.Now - _lastUpdate).TotalSeconds > _updateInterval)
             {
+                _forceUpdateNextTick = false;
                 _lastUpdate = DateTime.Now;
                 BroadcastAsync(Json.Serialize(new
                 {
