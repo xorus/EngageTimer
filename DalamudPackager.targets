@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+        <DalamudPackager
+                ProjectDir="$(ProjectDir)"
+                OutputPath="$(OutputPath)"
+                AssemblyName="$(AssemblyName)"
+                MakeZip="true"
+                Include="EngageTimer.dll;
+                        EngageTimer.pdb;
+                        EngageTimer.json;
+                        EmbedIO.dll;
+                        Swan.Lite.dll;
+                        System.ValueTuple.dll;
+                        NAudio.dll;
+                        NAudio.Core.dll;
+                        NAudio.Wasapi.dll;
+                        NAudio.WinMM.dll;
+                        Data/0.png;
+                        Data/1.png;
+                        Data/2.png;
+                        Data/3.png;
+                        Data/4.png;
+                        Data/5.png;
+                        Data/6.png;
+                        Data/7.png;
+                        Data/8.png;
+                        Data/9.png"/>
+    </Target>
+</Project>

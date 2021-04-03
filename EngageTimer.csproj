@@ -1,0 +1,117 @@
+﻿ <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <Deterministic>false</Deterministic>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <None Update="Data\html\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\html\overlay.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Data\number_0.png" />
+    <None Remove="Data\number_1.png" />
+    <None Remove="Data\number_2.png" />
+    <None Remove="Data\number_3.png" />
+    <None Remove="Data\number_4.png" />
+    <None Remove="Data\number_5.png" />
+    <None Remove="Data\number_6.png" />
+    <None Remove="Data\number_7.png" />
+    <None Remove="Data\number_8.png" />
+    <None Remove="Data\number_9.png" />
+    <None Remove="Data\tick.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DalamudPackager" Version="1.2.0" />
+    <PackageReference Include="EmbedIO" Version="3.4.3" />
+    <PackageReference Include="NAudio" Version="2.0.0" />
+    <PackageReference Include="NAudio.Core" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Dalamud">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Dalamud.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\ImGui.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGuiScene">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\ImGuiScene.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina.Generated">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.Generated.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
