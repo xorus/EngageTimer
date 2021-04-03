@@ -22,6 +22,9 @@ namespace EngageTimer.UI
 
         public void Draw()
         {
+            if (!Visible)
+                return;
+
             if (ImGui.Begin("EngageTimer settings", ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
             {
                 var enableTickingSound = _configuration.EnableTickingSound;
