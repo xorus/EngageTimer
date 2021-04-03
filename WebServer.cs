@@ -44,7 +44,7 @@ namespace EngageTimer
         public void Enable()
         {
             PluginLog.Log($"WebServer enabled - serving files from ${_staticDirectory}");
-            _websocket = new Websocket("/ws", _pluginUi);
+            _websocket = new Websocket("/ws", _pluginUi, _configuration);
             _server = new EmbedIO.WebServer(o => o
                         .WithUrlPrefix($"http://+:{_configuration.WebServerPort}/")
                         .WithMode(HttpListenerMode.EmbedIO)

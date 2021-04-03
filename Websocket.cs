@@ -10,10 +10,12 @@ namespace EngageTimer
     public class Websocket : WebSocketModule
     {
         private readonly PluginUI _pluginUi;
+        private readonly Configuration _configuration;
 
-        public Websocket(string urlPath, PluginUI pluginUi) : base(urlPath, true)
+        public Websocket(string urlPath, PluginUI pluginUi, Configuration configuration) : base(urlPath, true)
         {
             _pluginUi = pluginUi;
+            _configuration = configuration;
         }
 
         protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
@@ -30,7 +32,7 @@ namespace EngageTimer
 
         public void UpdateInfo()
         {
-            if ((DateTime.Now - _lastUpdate).TotalSeconds > 1f)
+            if ((DateTime.Now - _lastUpdate).TotalSeconds > _configuration.WebSocketUpdateInterval)
             {
                 _lastUpdate = DateTime.Now;
                 this.BroadcastAsync(Json.Serialize(new

@@ -8,9 +8,6 @@ namespace EngageTimer
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; }
-        public bool EnableWebServer { get; set; } = false;
-        public int WebServerPort { get; set; } = 8952;
-        public string WebServerHost { get; set; } = "127.0.0.1";
         public bool DisplayCountdown { get; set; } = true;
         public bool DisplayStopwatch { get; set; } = true;
         public bool AutoHideStopwatch { get; set; } = true;
@@ -25,6 +22,11 @@ namespace EngageTimer
         public float StopwatchOpacity { get; set; } = 0f;
         public float StopwatchScale { get; set; } = 2f;
         public Vector4 StopwatchColor { get; set; } = new Vector4(255, 255, 255, 1);
+        
+        // WebServer shenanigans
+        public bool EnableWebServer { get; set; } = false;
+        public int WebServerPort { get; set; } = 8952;
+        public float WebSocketUpdateInterval { get; set; } = .5f;
 
         // Add any other properties or methods here.
         [JsonIgnore] private DalamudPluginInterface pluginInterface;

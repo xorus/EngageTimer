@@ -107,11 +107,6 @@ namespace EngageTimer
 
         private void DrawCountDown()
         {
-            if (SettingsVisible)
-            {
-                DrawSettings();
-            }
-
             if (CountingDown && configuration.EnableTickingSound && CountDownValue > 5)
             {
                 TickSound((int) Math.Ceiling(CountDownValue));
@@ -185,8 +180,10 @@ namespace EngageTimer
             if (!Visible)
                 return;
 
-            this.DrawCountDown();
-            this.DrawStopwatch();
+            if (SettingsVisible)
+                DrawSettings();
+            DrawCountDown();
+            DrawStopwatch();
         }
 
         public TimeSpan CombatDuration { get; set; }
@@ -362,7 +359,7 @@ namespace EngageTimer
 
                     var status = configuration.EnableWebServer ? "is available" : "will be available";
                     ImGui.Text(
-                        $"Browser-based overlay {status} on http://{configuration.WebServerHost}:{configuration.WebServerPort}/");
+                        $"Overlay {status} on http://localhost:{configuration.WebServerPort}/ (listening on all interfaces)");
 
                     var enableWebServer = configuration.EnableWebServer;
                     if (ImGui.Checkbox("Enable webserver", ref enableWebServer))
@@ -370,13 +367,6 @@ namespace EngageTimer
                         configuration.EnableWebServer = enableWebServer;
                         configuration.Save();
                     }
-
-                    // var webServerHost = configuration.WebServerHost;
-                    // if (ImGui.InputText("Listen URL", ref webServerHost, 100))
-                    // {
-                    //     configuration.WebServerHost = webServerHost.Trim();
-                    //     configuration.Save();
-                    // }
 
                     var webServerPort = configuration.WebServerPort;
                     if (ImGui.InputInt("Port", ref webServerPort))

@@ -57,7 +57,6 @@ namespace EngageTimer
             this._configuration.Initialize(this._pluginInterface);
 
             this._ui = new PluginUI(this._pluginInterface, this._configuration, localPath);
-            this._pluginInterface.UiBuilder.OnBuildUi += this._ui.Draw;
 
             this._commandManager = new PluginCommandManager<Plugin>(this, this._pluginInterface);
 
@@ -176,6 +175,7 @@ namespace EngageTimer
             this.UpdateCountDown();
             this.UpdateEncounterTimer();
             _server.Update();
+            this._ui.Draw();
         }
 
         private void OpenConfigUi(object sender, EventArgs args)
