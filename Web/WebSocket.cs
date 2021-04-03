@@ -1,47 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dalamud.Plugin;
 using EmbedIO.WebSockets;
 using Swan.Formatters;
 
-namespace EngageTimer
+namespace EngageTimer.Web
 {
     public class Websocket : WebSocketModule
     {
-        private readonly PluginUI _pluginUi;
+        private const string Format = "yyyy-MM-ddTHH:mm:ss.fffffffK";
         private readonly Configuration _configuration;
+        private readonly State _state;
 
-        public Websocket(string urlPath, PluginUI pluginUi, Configuration configuration) : base(urlPath, true)
+        private DateTime _lastUpdate;
+
+        public Websocket(string urlPath, State state, Configuration configuration) : base(urlPath, true)
         {
-            _pluginUi = pluginUi;
+            _state = state;
             _configuration = configuration;
         }
 
         protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
             IWebSocketReceiveResult result)
         {
-            PluginLog.Log("received messaage");
             // do nothing because we don't care~
             return null;
         }
-
-        private DateTime _lastUpdate = new DateTime();
-
-        private const string Format = "yyyy-MM-ddTHH:mm:ss.fffffffK";
 
         public void UpdateInfo()
         {
             if ((DateTime.Now - _lastUpdate).TotalSeconds > _configuration.WebSocketUpdateInterval)
             {
                 _lastUpdate = DateTime.Now;
-                this.BroadcastAsync(Json.Serialize(new
+                BroadcastAsync(Json.Serialize(new
                 {
-                    CountingDown = _pluginUi.CountingDown,
-                    InCombat = _pluginUi.InCombat,
-                    CombatStart = _pluginUi.CombatStart.ToString(Format),
-                    CombatEnd = _pluginUi.CombatEnd.ToString(Format),
-                    CountDownValue = _pluginUi.CountDownValue,
+                    _state.CountingDown,
+                    _state.InCombat,
+                    CombatStart = _state.CombatStart.ToString(Format),
+                    CombatEnd = _state.CombatEnd.ToString(Format),
+                    _state.CountDownValue,
                     Now = DateTime.Now.ToString(Format)
                 }));
             }

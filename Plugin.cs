@@ -1,12 +1,9 @@
 ﻿using System;
-using Dalamud.Plugin;
-using EngageTimer.Attributes;
-using Dalamud.Hooking;
-using System.Runtime.InteropServices;
-using ImGuiNET;
-using System.Numerics;
 using System.IO;
 using System.Reflection;
+using Dalamud.Plugin;
+using EngageTimer.Attributes;
+using EngageTimer.Web;
 
 /**
  * Based on the work of https://github.com/Haplo064/Europe
@@ -15,23 +12,13 @@ namespace EngageTimer
 {
     public class Plugin : IDalamudPlugin
     {
-        private DalamudPluginInterface _pluginInterface;
         private PluginCommandManager<Plugin> _commandManager;
         private Configuration _configuration;
-        private PluginUI _ui;
-
-        [UnmanagedFunctionPointer(CallingConvention.ThisCall, CharSet = CharSet.Ansi)]
-        private delegate IntPtr CountdownTimer(ulong p1);
-
-        private CountdownTimer _countdownTimer;
-        private Hook<CountdownTimer> _countdownTimerHook;
-        private IntPtr _countdownPtr;
-
-        private ulong _countDown = 0;
-        private float _countUp = 0.00f;
-        private DateTime _cdEnd = new DateTime(2010);
-
+        private DalamudPluginInterface _pluginInterface;
         private WebServer _server;
+        private State _state;
+        private StopWatchHook _stopWatchHook;
+        private PluginUi _ui;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AssemblyLocation { get; set; }
@@ -40,7 +27,7 @@ namespace EngageTimer
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            this._pluginInterface = pluginInterface;
+            _pluginInterface = pluginInterface;
             string localPath;
             try
             {
@@ -53,149 +40,20 @@ namespace EngageTimer
                 localPath = Path.GetDirectoryName(AssemblyLocation);
             }
 
-            this._configuration = (Configuration) this._pluginInterface.GetPluginConfig() ?? new Configuration();
-            this._configuration.Initialize(this._pluginInterface);
+            _configuration = (Configuration) _pluginInterface.GetPluginConfig() ?? new Configuration();
+            _configuration.Initialize(_pluginInterface);
 
-            this._ui = new PluginUI(this._pluginInterface, this._configuration, localPath);
+            _state = new State();
+            _ui = new PluginUi(_pluginInterface, _configuration, localPath, _state);
 
-            this._commandManager = new PluginCommandManager<Plugin>(this, this._pluginInterface);
+            _commandManager = new PluginCommandManager<Plugin>(this, _pluginInterface);
 
-            _countdownPtr = pluginInterface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
-            _countdownTimer = new CountdownTimer(CountdownTimerFunc);
-            try
-            {
-                _countdownTimerHook = new Hook<CountdownTimer>(_countdownPtr, _countdownTimer, this);
-                _countdownTimerHook.Enable();
-            }
-            catch (Exception e)
-            {
-                PluginLog.Log("Could not hook to timer\n" + e.ToString());
-            }
+            _stopWatchHook = new StopWatchHook(_pluginInterface, _state);
 
-            this._pluginInterface.UiBuilder.OnBuildUi += DrawUi;
-            this._pluginInterface.UiBuilder.OnOpenConfigUi += OpenConfigUi;
+            _pluginInterface.UiBuilder.OnBuildUi += DrawUi;
+            _pluginInterface.UiBuilder.OnOpenConfigUi += OpenConfigUi;
 
-            this._server = new WebServer(_configuration, localPath, this._ui);
-        }
-
-        [Command("/egsettings")]
-        [HelpMessage("Opens up the settings")]
-        public void ExampleCommand1(string command, string args)
-        {
-            this._ui.SettingsVisible = true;
-            // // You may want to assign these references to private variables for convenience.
-            // // Keep in mind that the local player does not exist until after logging in.
-            // var chat = this.pluginInterface.Framework.Gui.Chat;
-            // var world = this.pluginInterface.ClientState.LocalPlayer.CurrentWorld.GameData;
-            // chat.Print($"Hello {world.Name}!");
-            // PluginLog.Log("Message sent successfully.");
-        }
-
-        /// <summary>
-        /// Ticks since the timer stalled
-        /// </summary>
-        private int _countDownStallTicks = 0;
-
-        private float _lastCountDownValue = 0;
-        private bool _countDownRunning = false;
-
-        private IntPtr CountdownTimerFunc(ulong param_1)
-        {
-            _countDown = param_1;
-
-
-            return _countdownTimerHook.Original(param_1);
-        }
-
-        private DateTime _combatTimeStart = new DateTime();
-        private DateTime _combatTimeEnd = new DateTime();
-        private bool _shouldRestartCombatTimer = true;
-
-        private void UpdateEncounterTimer()
-        {
-            if (_pluginInterface.ClientState.Condition[Dalamud.Game.ClientState.ConditionFlag.InCombat])
-            {
-                _ui.InCombat = true;
-                if (_shouldRestartCombatTimer)
-                {
-                    _shouldRestartCombatTimer = false;
-                    _combatTimeStart = DateTime.Now;
-                }
-
-                _combatTimeEnd = DateTime.Now;
-            }
-            else
-            {
-                _ui.InCombat = false;
-                _shouldRestartCombatTimer = true;
-            }
-
-            _ui.CombatStart = _combatTimeStart;
-            _ui.CombatDuration = _combatTimeEnd - _combatTimeStart;
-            _ui.CombatEnd = _combatTimeEnd;
-        }
-
-        private void UpdateCountDown()
-        {
-            this._ui.CountingDown = false;
-            if (_countDown != 0)
-            {
-                _cdEnd = DateTime.Now;
-
-                float countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr) _countDown + 0x2c);
-
-                // is last value close enough (workaround for floating point approx)
-                if (Math.Abs(countDownPointerValue - _lastCountDownValue) < 0.001f)
-                {
-                    _countDownStallTicks++;
-                }
-                else
-                {
-                    _countDownStallTicks = 0;
-                    _countDownRunning = true;
-                }
-
-                if (_countDownStallTicks > 50)
-                {
-                    _countDownRunning = false;
-                }
-
-                if (countDownPointerValue > 0 && _countDownRunning)
-                {
-                    this._ui.CountDownValue = Marshal.PtrToStructure<float>((IntPtr) _countDown + 0x2c);
-                    this._ui.CountingDown = true;
-                }
-
-                _lastCountDownValue = countDownPointerValue;
-            }
-        }
-
-        private void DrawUi()
-        {
-            this.UpdateCountDown();
-            this.UpdateEncounterTimer();
-            _server.Update();
-            this._ui.Draw();
-        }
-
-        private void OpenConfigUi(object sender, EventArgs args)
-        {
-            this._ui.SettingsVisible = true;
-        }
-
-
-        #region IDisposable Support
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-
-            _server.Dispose();
-            this._commandManager.Dispose();
-            this._pluginInterface.SavePluginConfig(this._configuration);
-            this._pluginInterface.UiBuilder.OnBuildUi -= this._ui.Draw;
-            this._pluginInterface.Dispose();
-            _countdownTimerHook.Disable();
+            _server = new WebServer(_configuration, localPath, _state);
         }
 
         public void Dispose()
@@ -204,6 +62,39 @@ namespace EngageTimer
             GC.SuppressFinalize(this);
         }
 
-        #endregion
+        private void DrawUi()
+        {
+            // disable plugin operation when not logged in
+            if (_pluginInterface.ClientState.LocalPlayer == null)
+                return;
+
+            _stopWatchHook.Update();
+            _server.Update();
+            _ui.Draw();
+        }
+
+        private void OpenConfigUi(object sender, EventArgs args)
+        {
+            _ui.OpenSettings();
+        }
+
+        [Command("/egsettings")]
+        [HelpMessage("Opens up the settings")]
+        public void OpenSettingsCommand(string command, string args)
+        {
+            _ui.OpenSettings();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            _server.Dispose();
+            _commandManager.Dispose();
+            _pluginInterface.SavePluginConfig(_configuration);
+            _pluginInterface.UiBuilder.OnBuildUi -= _ui.Draw;
+            _pluginInterface.Dispose();
+            _stopWatchHook.Dispose();
+        }
     }
 }
