@@ -116,6 +116,7 @@ namespace EngageTimer
         {
             if (_pluginInterface.ClientState.Condition[Dalamud.Game.ClientState.ConditionFlag.InCombat])
             {
+                _ui.InCombat = true;
                 if (_shouldRestartCombatTimer)
                 {
                     _shouldRestartCombatTimer = false;
@@ -126,11 +127,11 @@ namespace EngageTimer
             }
             else
             {
+                _ui.InCombat = false;
                 _shouldRestartCombatTimer = true;
             }
 
-            if (!_configuration.DisplayStopwatch)
-                return;
+            _ui.CombatStart = _combatTimeStart;
             _ui.CombatDuration = _combatTimeEnd - _combatTimeStart;
             _ui.CombatEnd = _combatTimeEnd;
         }
@@ -145,7 +146,7 @@ namespace EngageTimer
                 float countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr) _countDown + 0x2c);
 
                 // is last value close enough (workaround for floating point approx)
-                if (Math.Abs(countDownPointerValue - _lastCountDownValue) < 0.001f) 
+                if (Math.Abs(countDownPointerValue - _lastCountDownValue) < 0.001f)
                 {
                     _countDownStallTicks++;
                 }
@@ -174,6 +175,7 @@ namespace EngageTimer
         {
             this.UpdateCountDown();
             this.UpdateEncounterTimer();
+            _server.Update();
         }
 
         private void OpenConfigUi(object sender, EventArgs args)
@@ -188,6 +190,7 @@ namespace EngageTimer
         {
             if (!disposing) return;
 
+            _server.Dispose();
             this._commandManager.Dispose();
             this._pluginInterface.SavePluginConfig(this._configuration);
             this._pluginInterface.UiBuilder.OnBuildUi -= this._ui.Draw;

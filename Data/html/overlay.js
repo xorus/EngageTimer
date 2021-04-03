@@ -1,19 +1,61 @@
-const TIME_BEFORE_COMBAT_DONE = 5000; // ms
-const TIME_BEFORE_RESYNC = 15000; // ms
 const REDRAWS_PER_SECOND = 10;
 
+let state = {
+    reset: true,
+    CountingDown: false,
+    InCombat: false,
+    CombatStart: new Date(),
+    CombatEnd: new Date(),
+    // CountDownValue: 0,
+    CountDownEnd: new Date(),
+    TimeDelta: 0 // lag compensation
+};
 
-document.addEventListener("onOverlayStateUpdate", function (e) {
-    // console.log("coucou", e)
-});
+// needed in case the streaming machine and the game machine don't have perfectly synced clocks
+const clockSyncedCurrentDate = () => {
+    const date = new Date();
+    date.setMilliseconds(date.getMilliseconds() - state.TimeDelta);
+    return date;
+}
 
-let started = false;
-let startTime = null;
-let lastUpdate = null;
-let lastDuration = null;
-let lastSync = 0;
+const connect = () => {
+    let loc = window.location, new_uri;
+    if (loc.protocol === "https:") {
+        new_uri = "wss:";
+    } else {
+        new_uri = "ws:";
+    }
+    new_uri += "//" + loc.host;
+    new_uri += loc.pathname + "ws";
 
-let inCombat = true;
+    let ws = new WebSocket(new_uri);
+    ws.addEventListener('open', () => {
+        console.log("connected")
+    });
+    ws.addEventListener('message', (data) => {
+        const msg = JSON.parse(data.data);
+
+        state.TimeDelta = new Date() - new Date(msg.Now)
+        state.InCombat = msg.InCombat;
+        state.CountingDown = msg.CountingDown;
+        state.CombatStart = new Date(msg.CombatStart);
+        state.CombatEnd = new Date(msg.CombatEnd);
+        // state.CountDownValue = msg.CountDownValue;
+        state.CountDownEnd = new Date();
+        state.CountDownEnd.setMilliseconds(state.CountDownEnd.getMilliseconds() + Math.floor(msg.CountDownValue * 1000));
+
+        if (state.InCombat) {
+            state.reset = false;
+        } else if (state.CountingDown) {
+            state.reset = true;
+        }
+
+        // console.log(state);
+    })
+    ws.addEventListener('close', () => setTimeout(() => connect(), 10000))
+};
+
+connect();
 
 let timerEl = document.getElementById("timer");
 let minEl = document.createElement("span");
@@ -30,14 +72,26 @@ sepEl.classList.add("sep");
 timerEl.appendChild(secEl);
 
 function draw() {
-    if (new Date() - lastUpdate > TIME_BEFORE_COMBAT_DONE) {
-        startTime = new Date() - (lastDuration * 1000)
-    }
-
-    if (startTime !== null) {
-        let elapsed = new Date() - startTime;
-        minEl.innerText = String(Math.floor(elapsed / 1000 / 60)).padStart(2, '0')
-        secEl.innerText = String(Math.floor(elapsed / 1000) % 60).padStart(2, '0')
+    sepEl.innerText = state.TimeDelta;
+    let countDownDiff = state.CountDownEnd - new Date();
+    if (state.CountingDown && countDownDiff > 0) {
+        minEl.style.visibility = 'hidden';
+        sepEl.innerText = '-';
+        secEl.innerText = String(Math.floor(countDownDiff / 1000) % 60).padStart(2, '0')
+        secEl.innerText += "." + String(Math.floor(countDownDiff / 100) % 10)
+    } else {
+        let diff;
+        if (state.reset) {
+            diff = 0;
+        } else if (state.InCombat) {
+            diff = clockSyncedCurrentDate() - state.CombatStart;
+        } else {
+            diff = state.CombatEnd - state.CombatStart;
+        }
+        minEl.style.visibility = 'visible';
+        sepEl.innerText = ':';
+        minEl.innerText = String(Math.floor(diff / 1000 / 60)).padStart(2, '0')
+        secEl.innerText = String(Math.floor(diff / 1000) % 60).padStart(2, '0')
     }
 }
 
@@ -56,33 +110,5 @@ function update() {
         lastDrawTime = Date.now();
     }
 }
+
 update();
-
-
-addOverlayListener('CombatData', (data) => {
-    inCombat = data.isActive;
-
-    //if (!started) {
-    if (inCombat) {
-        let duration = parseInt(data.Encounter.DURATION);
-
-        lastUpdate = new Date();
-        lastDuration = duration;
-
-        if (new Date() - lastSync > TIME_BEFORE_RESYNC) {
-            startTime = new Date() - (duration * 1000)
-            lastSync = new Date();
-        }
-    } else {
-        lastSync = 0;
-    }
-
-    // console.log(data)
-});
-
-
-// addOverlayListener('LogLine', (data) => {
-//     console.log(data)
-// });
-
-startOverlayEvents();

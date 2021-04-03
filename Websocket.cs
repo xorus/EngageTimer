@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dalamud.Plugin;
 using EmbedIO.WebSockets;
 using Swan.Formatters;
 
@@ -10,7 +11,7 @@ namespace EngageTimer
     {
         private readonly PluginUI _pluginUi;
 
-        public Websocket(string urlPath, PluginUI pluginUi) : base(urlPath, false)
+        public Websocket(string urlPath, PluginUI pluginUi) : base(urlPath, true)
         {
             _pluginUi = pluginUi;
         }
@@ -18,11 +19,14 @@ namespace EngageTimer
         protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
             IWebSocketReceiveResult result)
         {
+            PluginLog.Log("received messaage");
             // do nothing because we don't care~
             return null;
         }
 
         private DateTime _lastUpdate = new DateTime();
+
+        private const string Format = "yyyy-MM-ddTHH:mm:ss.fffffffK";
 
         public void UpdateInfo()
         {
@@ -32,9 +36,11 @@ namespace EngageTimer
                 this.BroadcastAsync(Json.Serialize(new
                 {
                     CountingDown = _pluginUi.CountingDown,
-                    CombatEnd = _pluginUi.CombatEnd,
-                    CombatDuration = _pluginUi.CombatDuration,
-                    CountDownValue = _pluginUi.CountDownValue
+                    InCombat = _pluginUi.InCombat,
+                    CombatStart = _pluginUi.CombatStart.ToString(Format),
+                    CombatEnd = _pluginUi.CombatEnd.ToString(Format),
+                    CountDownValue = _pluginUi.CountDownValue,
+                    Now = DateTime.Now.ToString(Format)
                 }));
             }
         }

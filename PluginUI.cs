@@ -27,7 +27,7 @@ namespace EngageTimer
             {
                 var texture = pluginInterface.UiBuilder.LoadImage(
                     Path.Combine(dataPath, "Data", /*"number_" +*/ i + ".png")
-                    );
+                );
                 windowHeight = Math.Max(windowHeight, texture.Height);
                 numberTextures.Add(i, texture);
             }
@@ -38,6 +38,7 @@ namespace EngageTimer
 
         // this extra bool exists for ImGui, since you can't ref a property
         private bool visible = true;
+
         public bool Visible
         {
             get { return this.visible; }
@@ -45,6 +46,7 @@ namespace EngageTimer
         }
 
         private bool settingsVisible = false;
+
         public bool SettingsVisible
         {
             get { return this.settingsVisible; }
@@ -112,7 +114,7 @@ namespace EngageTimer
 
             if (CountingDown && configuration.EnableTickingSound && CountDownValue > 5)
             {
-                TickSound((int)Math.Ceiling(CountDownValue));
+                TickSound((int) Math.Ceiling(CountDownValue));
             }
 
             if (!CountingDown || !configuration.DisplayCountdown)
@@ -126,11 +128,14 @@ namespace EngageTimer
             ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, windowHeight + 30), ImGuiCond.Always);
             ImGui.SetNextWindowPos(new Vector2(0, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0, 0.5f));
             if (ImGui.Begin("EngageTimer Countdown", ref this.visible, ImGuiWindowFlags.NoTitleBar
-                | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoInputs
-                | ImGuiWindowFlags.NoBackground
-                | ImGuiWindowFlags.NoMouseInputs | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoResize))
+                                                                       | ImGuiWindowFlags.NoDecoration |
+                                                                       ImGuiWindowFlags.NoScrollbar |
+                                                                       ImGuiWindowFlags.NoInputs
+                                                                       | ImGuiWindowFlags.NoBackground
+                                                                       | ImGuiWindowFlags.NoMouseInputs |
+                                                                       ImGuiWindowFlags.AlwaysAutoResize |
+                                                                       ImGuiWindowFlags.NoResize))
             {
-
                 if (CountDownValue > 5)
                 {
                     //var numberScale = baseNumberScale + (CountDownValue % 1f) - 0.5f;
@@ -153,6 +158,7 @@ namespace EngageTimer
                         var texture = numberTextures[i];
                         totalWidth += texture.Width - numberNegativeMargin;
                     }
+
                     totalWidth += numberNegativeMargin;
 
                     // Center the cursor
@@ -162,13 +168,15 @@ namespace EngageTimer
                     foreach (var i in integers)
                     {
                         var texture = numberTextures[i];
-                        ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+                        ImGui.Image(texture.ImGuiHandle,
+                            new Vector2(texture.Width * numberScale, texture.Height * numberScale));
                         ImGui.SameLine();
                         var cursorX = ImGui.GetCursorPosX();
                         ImGui.SetCursorPosX(cursorX - (numberNegativeMargin * numberScale));
                     }
                 }
             }
+
             ImGui.End();
         }
 
@@ -181,14 +189,18 @@ namespace EngageTimer
             this.DrawStopwatch();
         }
 
-        public TimeSpan CombatDuration { get; set; } = new();
-        public DateTime CombatEnd { get; set; } = new();
+        public TimeSpan CombatDuration { get; set; }
+        public DateTime CombatEnd { get; set; }
+        public DateTime CombatStart { get; set; }
+        public bool InCombat { get; set; }
+
         public void DrawStopwatch()
         {
             if (!configuration.DisplayStopwatch)
                 return;
 
-            var autoHide = configuration.AutoHideStopwatch && (DateTime.Now - CombatEnd).TotalSeconds > configuration.AutoHideTimeout;
+            var autoHide = configuration.AutoHideStopwatch &&
+                           (DateTime.Now - CombatEnd).TotalSeconds > configuration.AutoHideTimeout;
             var countdownMode = configuration.StopwatchCountdown && CountingDown;
 
             if (autoHide && !countdownMode)
@@ -196,7 +208,8 @@ namespace EngageTimer
 
             ImGui.SetNextWindowBgAlpha(configuration.StopwatchOpacity);
 
-            var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize;
+            var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |
+                        ImGuiWindowFlags.AlwaysAutoResize;
             if (configuration.StopwatchLock)
             {
                 flags = flags | ImGuiWindowFlags.NoMouseInputs;
@@ -221,9 +234,11 @@ namespace EngageTimer
                     else
                         ImGui.Text(CombatDuration.ToString(@"mm\:ss"));
                 }
+
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(1f);
             }
+
             ImGui.End();
         }
 
@@ -256,6 +271,7 @@ namespace EngageTimer
                         configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
                         configuration.Save();
                     }
+
                     ImGui.Unindent();
                 }
 
@@ -267,6 +283,7 @@ namespace EngageTimer
                     configuration.DisplayStopwatch = displayStopwatch;
                     configuration.Save();
                 }
+
                 if (displayStopwatch)
                 {
                     ImGui.Indent();
@@ -297,6 +314,7 @@ namespace EngageTimer
                         configuration.AutoHideStopwatch = autoHideStopwatch;
                         configuration.Save();
                     }
+
                     var autoHideTimeout = configuration.AutoHideTimeout;
                     ImGui.SameLine();
                     if (ImGui.InputFloat("seconds", ref autoHideTimeout, .1f, 1f, "%.1f%"))
@@ -322,6 +340,7 @@ namespace EngageTimer
                             configuration.StopwatchColor = stopwatchColor;
                             configuration.Save();
                         }
+
                         ImGui.PopItemWidth();
 
                         var stopwatchOpacity = configuration.StopwatchOpacity;
@@ -330,8 +349,42 @@ namespace EngageTimer
                             configuration.StopwatchOpacity = stopwatchOpacity;
                             configuration.Save();
                         }
+
                         ImGui.Unindent();
                     }
+
+                    ImGui.Unindent();
+                }
+
+                if (ImGui.CollapsingHeader("Web server (for OBS overlay)"))
+                {
+                    ImGui.Indent();
+
+                    var status = configuration.EnableWebServer ? "is available" : "will be available";
+                    ImGui.Text(
+                        $"Browser-based overlay {status} on http://{configuration.WebServerHost}:{configuration.WebServerPort}/");
+
+                    var enableWebServer = configuration.EnableWebServer;
+                    if (ImGui.Checkbox("Enable webserver", ref enableWebServer))
+                    {
+                        configuration.EnableWebServer = enableWebServer;
+                        configuration.Save();
+                    }
+
+                    // var webServerHost = configuration.WebServerHost;
+                    // if (ImGui.InputText("Listen URL", ref webServerHost, 100))
+                    // {
+                    //     configuration.WebServerHost = webServerHost.Trim();
+                    //     configuration.Save();
+                    // }
+
+                    var webServerPort = configuration.WebServerPort;
+                    if (ImGui.InputInt("Port", ref webServerPort))
+                    {
+                        configuration.WebServerPort = webServerPort;
+                        configuration.Save();
+                    }
+
                     ImGui.Unindent();
                 }
 
@@ -343,6 +396,7 @@ namespace EngageTimer
                     SettingsVisible = false;
                 }
             }
+
             ImGui.End();
         }
     }
