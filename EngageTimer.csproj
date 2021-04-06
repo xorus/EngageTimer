@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>

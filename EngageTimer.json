@@ -2,6 +2,9 @@
   "Name": "EngageTimer",
   "Author": "Xorus",
   "Description": "Tracks the engagement timer countdown thing. Whatever.",
-  "RepoUrl": "",
-  "Tags": []
+  "RepoUrl": "https://github.com/xorus/EngageTimer",
+  "Tags": [
+    "countdown",
+    "OBS"
+  ]
 }
