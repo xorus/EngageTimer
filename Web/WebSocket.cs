@@ -19,6 +19,7 @@ namespace EngageTimer.Web
         private const float UpdateTimeIdle = 2f;
         private const float UpdateTimeInCombat = 20f;
 
+        private string _lastWebConfig;
 
         public Websocket(string urlPath, State state, Configuration configuration) : base(urlPath, true)
         {
@@ -34,6 +35,21 @@ namespace EngageTimer.Web
 
             _state.InCombatChanged += e;
             _state.CountingDownChanged += e;
+
+            _lastWebConfig = GetConfigMessage();
+            _configuration.OnSave += (sender, args) =>
+            {
+                var webConfig = GetConfigMessage();
+                if (!_lastWebConfig.Equals(webConfig)) _lastWebConfig = webConfig;
+
+                BroadcastAsync(_lastWebConfig);
+            };
+        }
+
+        protected override Task OnClientConnectedAsync(IWebSocketContext context)
+        {
+            return SendAsync(context, _lastWebConfig)
+                .ContinueWith(_ => SendAsync(context, GetUpdateMessage()));
         }
 
         protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
@@ -45,20 +61,32 @@ namespace EngageTimer.Web
 
         public void UpdateInfo()
         {
-            if (_forceUpdateNextTick || (DateTime.Now - _lastUpdate).TotalSeconds > _updateInterval)
+            if (!_forceUpdateNextTick && !((DateTime.Now - _lastUpdate).TotalSeconds > _updateInterval)) return;
+
+            _forceUpdateNextTick = false;
+            _lastUpdate = DateTime.Now;
+            BroadcastAsync(GetUpdateMessage());
+        }
+
+        private string GetConfigMessage()
+        {
+            return Json.Serialize(new
             {
-                _forceUpdateNextTick = false;
-                _lastUpdate = DateTime.Now;
-                BroadcastAsync(Json.Serialize(new
-                {
-                    _state.CountingDown,
-                    _state.InCombat,
-                    CombatStart = _state.CombatStart.ToString(Format),
-                    CombatEnd = _state.CombatEnd.ToString(Format),
-                    _state.CountDownValue,
-                    Now = DateTime.Now.ToString(Format)
-                }));
-            }
+                Config = _configuration.GetWebConfig()
+            });
+        }
+
+        private string GetUpdateMessage()
+        {
+            return Json.Serialize(new
+            {
+                _state.CountingDown,
+                _state.InCombat,
+                CombatStart = _state.CombatStart.ToString(Format),
+                CombatEnd = _state.CombatEnd.ToString(Format),
+                _state.CountDownValue,
+                Now = DateTime.Now.ToString(Format)
+            });
         }
     }
 }

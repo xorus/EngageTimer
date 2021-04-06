@@ -1,6 +1,6 @@
 const REDRAWS_PER_SECOND = 10;
 
-let state = {
+const state = {
     reset: true,
     CountingDown: false,
     InCombat: false,
@@ -8,14 +8,25 @@ let state = {
     CombatEnd: new Date(),
     // CountDownValue: 0,
     CountDownEnd: new Date(),
-    TimeDelta: 0 // lag compensation
+    TimeDelta: 0, // lag compensation
+    hideAt: new Date()
 };
+
+const configuration = {
+    autoHide: false,
+    autoHideSeconds: 0
+}
 
 // needed in case the streaming machine and the game machine don't have perfectly synced clocks
 const clockSyncedCurrentDate = () => {
     const date = new Date();
     date.setMilliseconds(date.getMilliseconds() - state.TimeDelta);
     return date;
+}
+
+const updateAutoHide = () => {
+    state.hideAt = new Date();
+    state.hideAt.setTime(state.hideAt.getTime() + (configuration.autoHideSeconds * 1000))
 }
 
 const connect = () => {
@@ -34,6 +45,15 @@ const connect = () => {
     });
     ws.addEventListener('message', (data) => {
         const msg = JSON.parse(data.data);
+        if (msg.Config) {
+            configuration.autoHideSeconds = msg.Config.WebStopwatchTimeout;
+
+            let newAutoHide = msg.Config.EnableWebStopwatchTimeout;
+            if (newAutoHide !== configuration.autoHide && newAutoHide) { // if changed to false, make the timer disappear
+                updateAutoHide()
+            }
+            configuration.autoHide = newAutoHide;
+        }
 
         state.TimeDelta = new Date() - new Date(msg.Now)
         state.InCombat = msg.InCombat;
@@ -43,6 +63,14 @@ const connect = () => {
         // state.CountDownValue = msg.CountDownValue;
         state.CountDownEnd = new Date();
         state.CountDownEnd.setMilliseconds(state.CountDownEnd.getMilliseconds() + Math.floor(msg.CountDownValue * 1000));
+
+        if (configuration.autoHide) {
+            if (state.InCombat || state.reset) {
+                updateAutoHide();
+            }
+        } else {
+            state.hideAt = null;
+        }
 
         if (state.InCombat) {
             state.reset = false;
@@ -72,6 +100,8 @@ sepEl.classList.add("sep");
 timerEl.appendChild(secEl);
 
 function draw() {
+    timerEl.classList.toggle('hidden', state.hideAt !== null && new Date().getTime() - state.hideAt.getTime() > 0)
+
     sepEl.innerText = state.TimeDelta;
     let countDownDiff = state.CountDownEnd - new Date();
     if (state.CountingDown && countDownDiff > 0) {
@@ -103,9 +133,7 @@ function update() {
         update();
     })
 
-    timeSinceLastDraw = Date.now() - lastDrawTime;
-
-    if (timeSinceLastDraw > fpsInterval) {
+    if (Date.now() - lastDrawTime > fpsInterval) {
         draw();
         lastDrawTime = Date.now();
     }

@@ -159,6 +159,21 @@ namespace EngageTimer.UI
                         _configuration.Save();
                     }
 
+                    var enableWebStopwatchTimeout = _configuration.EnableWebStopwatchTimeout;
+                    if (ImGui.Checkbox("Hide timer after ", ref enableWebStopwatchTimeout))
+                    {
+                        _configuration.EnableWebStopwatchTimeout = enableWebStopwatchTimeout;
+                        _configuration.Save();
+                    }
+
+                    var webStopwatchTimeout = _configuration.WebStopwatchTimeout;
+                    ImGui.SameLine();
+                    if (ImGui.DragFloat("seconds", ref webStopwatchTimeout))
+                    {
+                        _configuration.WebStopwatchTimeout = webStopwatchTimeout;
+                        _configuration.Save();
+                    }
+
                     ImGui.Unindent();
                 }
 

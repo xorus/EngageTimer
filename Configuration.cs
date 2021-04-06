@@ -1,4 +1,5 @@
-﻿using Dalamud.Configuration;
+﻿using System;
+using Dalamud.Configuration;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
 using System.Numerics;
@@ -27,6 +28,9 @@ namespace EngageTimer
         public bool EnableWebServer { get; set; } = false;
         public int WebServerPort { get; set; } = 8952;
 
+        public bool EnableWebStopwatchTimeout { get; set; } = false;
+        public float WebStopwatchTimeout { get; set; } = 0f;
+
         // Add any other properties or methods here.
         [JsonIgnore] private DalamudPluginInterface pluginInterface;
 
@@ -38,6 +42,17 @@ namespace EngageTimer
         public void Save()
         {
             this.pluginInterface.SavePluginConfig(this);
+            OnSave?.Invoke(this, EventArgs.Empty);
         }
+
+        public object GetWebConfig()
+        {
+            return new
+            {
+                EnableWebStopwatchTimeout, WebStopwatchTimeout
+            };
+        }
+
+        public event EventHandler OnSave;
     }
 }
