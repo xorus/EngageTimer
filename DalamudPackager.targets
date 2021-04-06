@@ -16,6 +16,8 @@
                         NAudio.Core.dll;
                         NAudio.Wasapi.dll;
                         NAudio.WinMM.dll;
+                        Data/html/index.html;
+                        Data/html/overlay.js;
                         Data/0.png;
                         Data/1.png;
                         Data/2.png;
