@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Version>1.0.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.1.2</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
@@ -36,15 +36,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="1.2.0" />
+    <PackageReference Include="DalamudPackager" Version="1.2.1" />
     <PackageReference Include="EmbedIO" Version="3.4.3" />
     <PackageReference Include="NAudio" Version="2.0.0" />
     <PackageReference Include="NAudio.Core" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Dalamud.dll</HintPath>
+    <Reference Include="Dalamud, Version=5.2.5.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
     </Reference>
     <Reference Include="ImGui.NET">
       <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\ImGui.NET.dll</HintPath>

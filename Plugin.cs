@@ -6,7 +6,7 @@ using EngageTimer.Attributes;
 using EngageTimer.Web;
 
 /**
- * Based on the work of https://github.com/Haplo064/Europe
+ * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
  **/
 namespace EngageTimer
 {
@@ -49,7 +49,7 @@ namespace EngageTimer
             _commandManager = new PluginCommandManager<Plugin>(this, _pluginInterface);
 
             _stopWatchHook = new StopWatchHook(_pluginInterface, _state);
-
+            
             _pluginInterface.UiBuilder.OnBuildUi += DrawUi;
             _pluginInterface.UiBuilder.OnOpenConfigUi += OpenConfigUi;
 
