@@ -1,7 +1,7 @@
 ﻿{
   "Name": "EngageTimer",
   "Author": "Xorus",
-  "Description": "Displays a simple engagement timer and a countdown in the middle of the screen in the style of the original one.\\nIt also allows you to open a web-server to serve an OBS overlay for the engagement timer.\\n\\nConsult the repository link for instructions.",
+  "Description": "Displays a simple engagement timer and a countdown in the middle of the screen in the style of the original one.\nIt also allows you to open a web-server to serve an OBS overlay for the engagement timer.\n\nConsult the repository link for instructions.",
   "RepoUrl": "https://github.com/xorus/EngageTimer",
   "Tags": [
     "countdown",
