@@ -42,16 +42,16 @@ namespace EngageTimer
         public float WebStopwatchTimeout { get; set; } = 0f;
 
         // Add any other properties or methods here.
-        [JsonIgnore] private DalamudPluginInterface pluginInterface;
+        [JsonIgnore] private DalamudPluginInterface _pluginInterface;
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            this.pluginInterface = pluginInterface;
+            this._pluginInterface = pluginInterface;
         }
 
         public void Save()
         {
-            this.pluginInterface.SavePluginConfig(this);
+            this._pluginInterface.SavePluginConfig(this);
             OnSave?.Invoke(this, EventArgs.Empty);
         }
 
