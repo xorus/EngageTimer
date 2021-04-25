@@ -69,7 +69,6 @@ namespace EngageTimer.UI
 
             if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
             {
-                ImGui.SetWindowFontScale(_configuration.StopwatchScale);
                 ImGui.PushStyleColor(ImGuiCol.Text, _configuration.StopwatchColor);
 
                 string text; // text to be displayed
@@ -129,7 +128,6 @@ namespace EngageTimer.UI
                 ImGui.Text(text);
 
                 ImGui.PopStyleColor();
-                ImGui.SetWindowFontScale(1f);
             }
 
             ImGui.End();
