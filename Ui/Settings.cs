@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Dalamud.Interface;
 using ImGuiNET;
 using Swan.Logging;
 
@@ -8,12 +9,14 @@ namespace EngageTimer.UI
     public class Settings
     {
         private readonly Configuration _configuration;
+        private readonly UiBuilder _uiBuilder;
 
         private bool _visible;
 
-        public Settings(Configuration configuration)
+        public Settings(Configuration configuration, UiBuilder uiBuilder)
         {
             _configuration = configuration;
+            _uiBuilder = uiBuilder;
         }
 
         public bool Visible
@@ -109,17 +112,23 @@ namespace EngageTimer.UI
                     if (ImGui.CollapsingHeader("Style"))
                     {
                         ImGui.Indent();
-                        int textAlign = (int) _configuration.StopwatchTextAlign;
+                        var textAlign = (int) _configuration.StopwatchTextAlign;
                         if (ImGui.Combo("Text align", ref textAlign, "Left\0Center\0Right"))
                         {
                             _configuration.StopwatchTextAlign = (Configuration.TextAlign) textAlign;
                         }
 
-                        var stopwatchScale = _configuration.StopwatchScale;
-                        if (ImGui.SliderFloat("Scale", ref stopwatchScale, 0f, 10f))
+                        var fontSize = _configuration.FontSize;
+                        ImGui.SameLine();
+                        if (ImGui.InputInt("Font size", ref fontSize, 4))
                         {
-                            _configuration.StopwatchScale = Math.Max(1f, Math.Min(10f, stopwatchScale));
+                            _configuration.FontSize = Math.Max(0, fontSize);
                             _configuration.Save();
+
+                            if (_configuration.FontSize >= 8)
+                            {
+                                _uiBuilder.RebuildFonts();
+                            }
                         }
 
                         var stopwatchColor = _configuration.StopwatchColor;

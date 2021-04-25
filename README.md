@@ -42,3 +42,5 @@ In OBS as a browser source :
 I have based myself on the work of ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
 for the countdown pointer and on the [Peeping Tom plugin by asclemens](https://git.sr.ht/~jkcclemens/PeepingTom) for the
 idea of using NAudio lib to play the sound.
+
+Smooth font size was adapted from ["Ping Plugin" by karashiiro](https://github.com/karashiiro/PingPlugin) 

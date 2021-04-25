@@ -32,6 +32,7 @@ namespace EngageTimer
         };
 
         public TextAlign StopwatchTextAlign { get; set; } = TextAlign.Left;
+        public int FontSize { get; set; } = 16;
 
         // WebServer shenanigans
         public bool EnableWebServer { get; set; } = false;

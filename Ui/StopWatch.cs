@@ -1,19 +1,29 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using Dalamud.Interface;
+using Dalamud.Plugin;
 using ImGuiNET;
 
 namespace EngageTimer.UI
 {
-    public class StopWatch
+    public class StopWatch : IDisposable
     {
         private readonly Configuration _configuration;
         private readonly State _state;
+        private readonly DalamudPluginInterface _pluginInterface;
         private bool _stopwatchVisible;
+        private ImFontPtr _font;
+        private bool _fontLoaded = false;
 
-        public StopWatch(Configuration configuration, State state)
+        public StopWatch(Configuration configuration, State state, DalamudPluginInterface pluginInterface)
         {
             _configuration = configuration;
             _state = state;
+            _pluginInterface = pluginInterface;
+
+            _pluginInterface.UiBuilder.OnBuildFonts += BuildFont;
         }
 
         public bool StopwatchVisible
@@ -30,16 +40,28 @@ namespace EngageTimer.UI
 
         public void Draw()
         {
-            if (!_configuration.DisplayStopwatch)
+            if (!_configuration.DisplayStopwatch) return;
+            if (!_fontLoaded)
+            {
+                _pluginInterface.UiBuilder.RebuildFonts();
                 return;
+            }
 
             var autoHide = _configuration.AutoHideStopwatch &&
                            (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.AutoHideTimeout;
             var countdownMode = _configuration.StopwatchCountdown && _state.CountingDown;
-
             if (autoHide && !countdownMode)
                 return;
 
+            if (_font.IsLoaded()) ImGui.PushFont(_font);
+
+            this.DrawWindow();
+
+            if (_font.IsLoaded()) ImGui.PopFont();
+        }
+
+        private void DrawWindow()
+        {
             ImGui.SetNextWindowBgAlpha(_configuration.StopwatchOpacity);
 
             var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
@@ -111,6 +133,34 @@ namespace EngageTimer.UI
             }
 
             ImGui.End();
+        }
+
+        /**
+         * UI font code adapted from ping plugin by karashiiro
+         * https://github.com/karashiiro/PingPlugin/blob/feex/PingPlugin/PingUI.cs
+         */
+        private void BuildFont()
+        {
+            try
+            {
+                var filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes",
+                    "NotoSansCJKjp-Medium.otf");
+                if (!File.Exists(filePath)) throw new FileNotFoundException("Font file not found!");
+                _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize), null);
+            }
+            catch (Exception e)
+            {
+                PluginLog.LogError(e.Message);
+            }
+
+            _fontLoaded = true;
+        }
+
+        public void Dispose()
+        {
+            _pluginInterface.UiBuilder.OnBuildFonts -= BuildFont;
+            _pluginInterface.UiBuilder.RebuildFonts();
+            // _font.Destroy(); - crashes when I do this
         }
     }
 }

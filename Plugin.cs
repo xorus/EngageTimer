@@ -49,7 +49,7 @@ namespace EngageTimer
             _commandManager = new PluginCommandManager<Plugin>(this, _pluginInterface);
 
             _stopWatchHook = new StopWatchHook(_pluginInterface, _state);
-            
+
             _pluginInterface.UiBuilder.OnBuildUi += DrawUi;
             _pluginInterface.UiBuilder.OnOpenConfigUi += OpenConfigUi;
 
@@ -93,6 +93,7 @@ namespace EngageTimer
             _commandManager.Dispose();
             _pluginInterface.SavePluginConfig(_configuration);
             _pluginInterface.UiBuilder.OnBuildUi -= _ui.Draw;
+            _ui.Dispose();
             _pluginInterface.Dispose();
             _stopWatchHook.Dispose();
         }

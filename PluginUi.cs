@@ -1,9 +1,10 @@
-﻿using Dalamud.Plugin;
+﻿using System;
+using Dalamud.Plugin;
 using EngageTimer.UI;
 
 namespace EngageTimer
 {
-    public class PluginUi
+    public class PluginUi : IDisposable
     {
         private readonly CountDown _countDown;
         private readonly Settings _settings;
@@ -13,8 +14,8 @@ namespace EngageTimer
             State state)
         {
             _countDown = new CountDown(configuration, state);
-            _stopwatch = new StopWatch(configuration, state);
-            _settings = new Settings(configuration);
+            _stopwatch = new StopWatch(configuration, state, pluginInterface);
+            _settings = new Settings(configuration, pluginInterface.UiBuilder);
 
             _countDown.Load(pluginInterface, dataPath);
         }
@@ -29,6 +30,11 @@ namespace EngageTimer
         public void OpenSettings()
         {
             _settings.Visible = true;
+        }
+
+        public void Dispose()
+        {
+            _stopwatch?.Dispose();
         }
     }
 }
