@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud, Version=5.2.5.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Dalamud, Version=5.2.5.8, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
     </Reference>
     <Reference Include="ImGui.NET">

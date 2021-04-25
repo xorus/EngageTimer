@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using ImGuiNET;
+using Swan.Logging;
 
 namespace EngageTimer.UI
 {
@@ -107,6 +109,12 @@ namespace EngageTimer.UI
                     if (ImGui.CollapsingHeader("Style"))
                     {
                         ImGui.Indent();
+                        int textAlign = (int) _configuration.StopwatchTextAlign;
+                        if (ImGui.Combo("Text align", ref textAlign, "Left\0Center\0Right"))
+                        {
+                            _configuration.StopwatchTextAlign = (Configuration.TextAlign) textAlign;
+                        }
+
                         var stopwatchScale = _configuration.StopwatchScale;
                         if (ImGui.SliderFloat("Scale", ref stopwatchScale, 0f, 10f))
                         {

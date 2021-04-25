@@ -24,6 +24,15 @@ namespace EngageTimer
         public float StopwatchScale { get; set; } = 2f;
         public Vector4 StopwatchColor { get; set; } = new Vector4(255, 255, 255, 1);
 
+        public enum TextAlign
+        {
+            Left = 0,
+            Center = 1,
+            Right = 2
+        };
+
+        public TextAlign StopwatchTextAlign { get; set; } = TextAlign.Left;
+
         // WebServer shenanigans
         public bool EnableWebServer { get; set; } = false;
         public int WebServerPort { get; set; } = 8952;
