@@ -1,4 +1,4 @@
-﻿# EngageTimer
+# EngageTimer
 
 This plugin for the [FFXIV plugin platform Dalamud](https://github.com/goatcorp/FFXIVQuickLauncher)
 can display a countdown on screen in the style of the original one, plus a stopwatch tracking the combat duration.
@@ -36,6 +36,16 @@ Alternatively you can access this web page from another device and see the timer
 In OBS as a browser source :
 
 ![OBS Setup](Doc/OBS.png)
+
+You can easily change the font by adding something like this in the *Custom CSS* in the OBS browser source settings:
+
+```css
+body { font-family: "Comic Sans MS"; }
+```
+
+The timer page was designed to be as simple as possible for easily overriding with custom styles in OBS.
+But I could implement a way to customize it in the plugin GUI if someone needs that.
+
 
 ## Other things I need to say
 
