@@ -36,13 +36,13 @@ namespace EngageTimer.UI
 
                 ImGui.PushItemWidth(100f);
                 var displayCountdown = _configuration.DisplayCountdown;
-                if (ImGui.Checkbox("Display countdown", ref displayCountdown))
+                if (ImGui.Checkbox("Display big countdown", ref displayCountdown))
                 {
                     _configuration.DisplayCountdown = displayCountdown;
                     _configuration.Save();
                 }
 
-                if (ImGui.Checkbox("Play the timer ticking sound", ref enableTickingSound))
+                if (ImGui.Checkbox("Enable countdown ticking sound", ref enableTickingSound))
                 {
                     _configuration.EnableTickingSound = enableTickingSound;
                     _configuration.Save();
@@ -61,6 +61,24 @@ namespace EngageTimer.UI
                     ImGui.Unindent();
                 }
 
+                var enableCountdownDecimal = _configuration.EnableCountdownDecimal;
+                if (ImGui.Checkbox("Display", ref enableCountdownDecimal))
+                {
+                    _configuration.EnableCountdownDecimal = enableCountdownDecimal;
+                    _configuration.Save();
+                }
+
+                ImGui.SameLine();
+                ImGui.PushItemWidth(70f);
+                var countdownDecimalPrecision = _configuration.CountdownDecimalPrecision;
+                if (ImGui.InputInt("decimals in countdown", ref countdownDecimalPrecision, 1, 0))
+                {
+                    countdownDecimalPrecision = Math.Max(1, Math.Min(3, countdownDecimalPrecision));
+                    _configuration.CountdownDecimalPrecision = countdownDecimalPrecision;
+                    _configuration.Save();
+                }
+
+                ImGui.PopItemWidth();
                 ImGui.Separator();
 
                 var displayStopwatch = _configuration.DisplayStopwatch;
@@ -73,12 +91,25 @@ namespace EngageTimer.UI
                 if (displayStopwatch)
                 {
                     ImGui.Indent();
+
                     var stopwatchTenths = _configuration.StopwatchTenths;
-                    if (ImGui.Checkbox("Display tenths of seconds", ref stopwatchTenths))
+                    if (ImGui.Checkbox("Display ", ref stopwatchTenths))
                     {
                         _configuration.StopwatchTenths = stopwatchTenths;
                         _configuration.Save();
                     }
+
+                    ImGui.SameLine();
+                    ImGui.PushItemWidth(70f);
+                    var stopwatchDecimalPrecision = _configuration.StopwatchDecimalPrecision;
+                    if (ImGui.InputInt("decimals in stopwatch window", ref stopwatchDecimalPrecision, 1, 0))
+                    {
+                        stopwatchDecimalPrecision = Math.Max(1, Math.Min(3, stopwatchDecimalPrecision));
+                        _configuration.StopwatchDecimalPrecision = stopwatchDecimalPrecision;
+                        _configuration.Save();
+                    }
+
+                    ImGui.PopItemWidth();
 
                     var stopwatchCountdown = _configuration.StopwatchCountdown;
                     if (ImGui.Checkbox("Display countdown in stopwatch", ref stopwatchCountdown))
@@ -88,7 +119,7 @@ namespace EngageTimer.UI
                     }
 
                     var stopwatchLock = _configuration.StopwatchLock;
-                    if (ImGui.Checkbox("Lock stopwatch", ref stopwatchLock))
+                    if (ImGui.Checkbox("Lock stopwatch window", ref stopwatchLock))
                     {
                         _configuration.StopwatchLock = stopwatchLock;
                         _configuration.Save();

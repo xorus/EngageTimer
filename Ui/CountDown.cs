@@ -19,6 +19,7 @@ namespace EngageTimer.UI
         private int _lastNumberPlayed;
         private readonly Dictionary<int, TextureWrap> _numberTextures = new();
         private int _windowHeight;
+        private int _maxTextureWidth;
 
         public CountDown(Configuration configuration, State state)
         {
@@ -35,6 +36,7 @@ namespace EngageTimer.UI
                 );
                 _windowHeight = Math.Max(_windowHeight, texture.Height);
                 _numberTextures.Add(i, texture);
+                _maxTextureWidth = Math.Max(_maxTextureWidth, texture.Width);
             }
         }
 
@@ -46,9 +48,10 @@ namespace EngageTimer.UI
             if (!_state.CountingDown || !_configuration.DisplayCountdown)
                 return;
 
-            var baseNumberScale = 1f;
-            var numberScale = baseNumberScale;
-            const int numberNegativeMargin = 20;
+            const float baseNumberScale = 1f;
+            const float numberScale = baseNumberScale;
+            const int numberNegativeMargin = 10;
+            const int gameCountdownWidth = 60; // yes, this number came from my arse
 
             var io = ImGui.GetIO();
             ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _windowHeight + 30), ImGuiCond.Always);
@@ -63,16 +66,11 @@ namespace EngageTimer.UI
                                            | ImGuiWindowFlags.NoResize;
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
+            {
                 if (_state.CountDownValue > 5)
                 {
                     var number = Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
-
-                    var integers = new List<int>();
-                    foreach (var c in number)
-                    {
-                        int i;
-                        if (int.TryParse(c.ToString(), out i)) integers.Add(i);
-                    }
+                    var integers = NumberList(number);
 
                     // First loop to compute total width
                     var totalWidth = 0f;
@@ -91,15 +89,54 @@ namespace EngageTimer.UI
                     foreach (var i in integers)
                     {
                         var texture = _numberTextures[i];
+                        var cursorX = ImGui.GetCursorPosX();
                         ImGui.Image(texture.ImGuiHandle,
                             new Vector2(texture.Width * numberScale, texture.Height * numberScale));
                         ImGui.SameLine();
-                        var cursorX = ImGui.GetCursorPosX();
-                        ImGui.SetCursorPosX(cursorX - numberNegativeMargin * numberScale);
+                        ImGui.SetCursorPosX(texture.Width + cursorX - numberNegativeMargin * numberScale);
                     }
                 }
+                else if (_configuration.EnableCountdownDecimal)
+                {
+                    ImGui.SetCursorPosX(io.DisplaySize.X / 2f + gameCountdownWidth);
+                }
+
+                if (_configuration.EnableCountdownDecimal)
+                {
+                    var decimalPart =
+                        (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
+                        .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
+                        .Substring(2);
+                    var smolNumberScale = numberScale * .5f;
+                    var smolMaxWidthScaled = _maxTextureWidth * smolNumberScale;
+                    var cursorY = ImGui.GetCursorPosY();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 10);
+                    foreach (var i in NumberList(decimalPart))
+                    {
+                        var texture = _numberTextures[i];
+                        var cursorX = ImGui.GetCursorPosX();
+                        var height = texture.Height * smolNumberScale;
+                        ImGui.SetCursorPosY(cursorY + height);
+                        ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
+                        ImGui.SameLine();
+                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - numberNegativeMargin * smolNumberScale);
+                    }
+                }
+            }
 
             ImGui.End();
+        }
+
+        private static List<int> NumberList(string number)
+        {
+            var integers = new List<int>();
+            foreach (var c in number)
+            {
+                int i;
+                if (int.TryParse(c.ToString(), out i)) integers.Add(i);
+            }
+
+            return integers;
         }
 
         /**

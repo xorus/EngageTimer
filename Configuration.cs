@@ -6,6 +6,7 @@ using System.Numerics;
 
 namespace EngageTimer
 {
+    [Serializable]
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; }
@@ -15,8 +16,11 @@ namespace EngageTimer
         public float AutoHideTimeout { get; set; } = 20f;
         public bool EnableTickingSound { get; set; } = false;
         public float TickingSoundVolume { get; set; } = 0.05f;
-        public bool StopwatchTenths { get; set; } = false;
         public bool StopwatchCountdown { get; set; } = false;
+        public bool EnableCountdownDecimal { get; set; } = false;
+        public int CountdownDecimalPrecision { get; set; } = 1;
+        public bool StopwatchTenths { get; set; } = false;
+        public int StopwatchDecimalPrecision { get; set; } = 1;
 
         // Stopwatch cosmetics
         public bool StopwatchLock { get; set; } = false;
@@ -41,7 +45,7 @@ namespace EngageTimer
         public float WebStopwatchTimeout { get; set; } = 0f;
 
         // Add any other properties or methods here.
-        [JsonIgnore] private DalamudPluginInterface _pluginInterface;
+        [NonSerialized] private DalamudPluginInterface _pluginInterface;
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {

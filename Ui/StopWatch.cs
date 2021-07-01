@@ -65,23 +65,29 @@ namespace EngageTimer.UI
             ImGui.SetNextWindowBgAlpha(_configuration.StopwatchOpacity);
 
             var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
-            if (_configuration.StopwatchLock) flags = flags | ImGuiWindowFlags.NoMouseInputs;
+            if (_configuration.StopwatchLock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
             if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, _configuration.StopwatchColor);
 
                 string text; // text to be displayed
-                string maxText = _configuration.StopwatchTenths ? "00:00.0" : "00:00"; // the largest possible string
+                // the largest possible string, taking advantage of the default font that has fixed number width:
+                var maxText = "00:00";
+                if (_configuration.StopwatchTenths)
+                    maxText += "." + new string('0', _configuration.StopwatchDecimalPrecision);
 
                 if (_configuration.StopwatchCountdown && _state.CountingDown && _state.CountDownValue > 0)
                 {
-                    text = $"-{_state.CountDownValue:0.0}";
+                    text = string.Format("-{0:0." + new string('0', _configuration.StopwatchDecimalPrecision) + "}",
+                        _state.CountDownValue);
                 }
                 else
                 {
                     if (_configuration.StopwatchTenths)
-                        text = _state.CombatDuration.ToString(@"mm\:ss\.f");
+                        text = _state.CombatDuration.ToString(
+                            @"mm\:ss\." + new string('f', _configuration.StopwatchDecimalPrecision)
+                        );
                     else
                         text = _state.CombatDuration.ToString(@"mm\:ss");
                 }
