@@ -9,5 +9,10 @@
     "stopwatch",
     "OBS"
   ],
-  "Changelog": "- add an option to hide the original countdown\n- add configurable decimals in countdown and stopwatch"
+  "Changelog": "- add an option to hide the original countdown\n- add configurable decimals in countdown and stopwatch",
+  "IconUrl": "https://xorus.dev/xiv/engageTimer/img/icon.png",
+  "ImageUrls": [
+    "https://xorus.dev/xiv/engageTimer/img/countdown_decimals.png",
+    "https://xorus.dev/xiv/engageTimer/img/screenshot_obs.png"
+  ]
 }
