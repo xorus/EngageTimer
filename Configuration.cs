@@ -12,6 +12,7 @@ namespace EngageTimer
         public int Version { get; set; }
         public bool DisplayCountdown { get; set; } = true;
         public bool DisplayStopwatch { get; set; } = true;
+        public bool HideOriginalCountdown { get; set; } = false;
         public bool AutoHideStopwatch { get; set; } = true;
         public float AutoHideTimeout { get; set; } = 20f;
         public bool EnableTickingSound { get; set; } = false;

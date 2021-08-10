@@ -29,10 +29,6 @@ namespace EngageTimer
             AddCommandHandlers();
         }
 
-        // http://codebetter.com/patricksmacchia/2008/11/19/an-easy-and-efficient-way-to-improve-net-code-performances/
-        // Benchmarking this myself gave similar results, so I'm doing this to somewhat counteract using reflection to access command attributes.
-        // I like the convenience of attributes, but in principle it's a bit slower to use them as opposed to just initializing CommandInfos directly.
-        // It's usually sub-1 millisecond anyways, though. It probably doesn't matter at all.
         private void AddCommandHandlers()
         {
             for (var i = 0; i < this.pluginCommands.Length; i++)
@@ -68,13 +64,11 @@ namespace EngageTimer
 
             // Create list of tuples that will be filled with one tuple per alias, in addition to the base command tuple.
             var commandInfoTuples = new List<(string, CommandInfo)> { (command.Command, commandInfo) };
-            if (aliases != null)
+            if (aliases == null) return commandInfoTuples;
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for (var i = 0; i < aliases.Aliases.Length; i++)
             {
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                for (var i = 0; i < aliases.Aliases.Length; i++)
-                {
-                    commandInfoTuples.Add((aliases.Aliases[i], commandInfo));
-                }
+                commandInfoTuples.Add((aliases.Aliases[i], commandInfo));
             }
 
             return commandInfoTuples;

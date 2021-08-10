@@ -27,13 +27,10 @@ namespace EngageTimer.UI
 
         public void Draw()
         {
-            if (!Visible)
-                return;
+            if (!Visible) return;
 
             if (ImGui.Begin("EngageTimer settings", ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
             {
-                var enableTickingSound = _configuration.EnableTickingSound;
-
                 ImGui.PushItemWidth(100f);
                 var displayCountdown = _configuration.DisplayCountdown;
                 if (ImGui.Checkbox("Display big countdown", ref displayCountdown))
@@ -42,23 +39,12 @@ namespace EngageTimer.UI
                     _configuration.Save();
                 }
 
-                if (ImGui.Checkbox("Enable countdown ticking sound", ref enableTickingSound))
+                ImGui.Indent();
+                var hideOriginalCountdown = _configuration.HideOriginalCountdown;
+                if (ImGui.Checkbox("Hide original countdown", ref hideOriginalCountdown))
                 {
-                    _configuration.EnableTickingSound = enableTickingSound;
+                    _configuration.HideOriginalCountdown = hideOriginalCountdown;
                     _configuration.Save();
-                }
-
-                if (enableTickingSound)
-                {
-                    ImGui.Indent();
-                    var volume = _configuration.TickingSoundVolume * 100f;
-                    if (ImGui.DragFloat("Sound volume", ref volume, .1f, 0f, 100f, "%.1f%%"))
-                    {
-                        _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
-                        _configuration.Save();
-                    }
-
-                    ImGui.Unindent();
                 }
 
                 var enableCountdownDecimal = _configuration.EnableCountdownDecimal;
@@ -76,6 +62,27 @@ namespace EngageTimer.UI
                     countdownDecimalPrecision = Math.Max(1, Math.Min(3, countdownDecimalPrecision));
                     _configuration.CountdownDecimalPrecision = countdownDecimalPrecision;
                     _configuration.Save();
+                }
+
+                ImGui.Unindent();
+                var enableTickingSound = _configuration.EnableTickingSound;
+                if (ImGui.Checkbox("Enable countdown ticking sound", ref enableTickingSound))
+                {
+                    _configuration.EnableTickingSound = enableTickingSound;
+                    _configuration.Save();
+                }
+
+                if (enableTickingSound)
+                {
+                    ImGui.Indent();
+                    var volume = _configuration.TickingSoundVolume * 100f;
+                    if (ImGui.DragFloat("Sound volume", ref volume, .1f, 0f, 100f, "%.1f%%"))
+                    {
+                        _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
+                        _configuration.Save();
+                    }
+
+                    ImGui.Unindent();
                 }
 
                 ImGui.PopItemWidth();

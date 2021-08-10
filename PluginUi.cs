@@ -13,7 +13,7 @@ namespace EngageTimer
         public PluginUi(DalamudPluginInterface pluginInterface, Configuration configuration, string dataPath,
             State state)
         {
-            _countDown = new CountDown(configuration, state);
+            _countDown = new CountDown(configuration, state, pluginInterface.Framework.Gui);
             _stopwatch = new StopWatch(configuration, state, pluginInterface);
             _settings = new Settings(configuration, pluginInterface.UiBuilder);
 

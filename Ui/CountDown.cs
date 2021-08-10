@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Threading;
+using Dalamud.Game.Internal.Gui;
 using Dalamud.Plugin;
 using EngageTimer.Properties;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 using ImGuiScene;
 using NAudio.Wave;
@@ -20,11 +22,13 @@ namespace EngageTimer.UI
         private readonly Dictionary<int, TextureWrap> _numberTextures = new();
         private int _windowHeight;
         private int _maxTextureWidth;
+        private GameGui _gui;
 
-        public CountDown(Configuration configuration, State state)
+        public CountDown(Configuration configuration, State state, GameGui gui)
         {
             _configuration = configuration;
             _state = state;
+            _gui = gui;
         }
 
         public void Load(DalamudPluginInterface pluginInterface, string dataPath)
@@ -40,18 +44,50 @@ namespace EngageTimer.UI
             }
         }
 
+        private const byte VisibleFlag = 0x20;
+        private bool _originalAddonHidden = false;
+
+        // finds the original CountDown addon and toggles its visibility flag
+        private unsafe void ToggleOriginalAddon()
+        {
+            var addon = _gui.GetAddonByName("ScreenInfo_CountDown", 1);
+            if (addon == null) return;
+
+            try
+            {
+                var atkUnitBase = (AtkUnitBase*) addon.Address;
+                atkUnitBase->Flags ^= VisibleFlag;
+                _originalAddonHidden = (atkUnitBase->Flags & VisibleFlag) == 0;
+            }
+            catch (Exception)
+            {
+                // invalid pointer, don't care and carry on
+            }
+        }
+
+        private const float BaseNumberScale = 1f;
+        private const float NumberScale = BaseNumberScale;
+        private const int NumberNegativeMargin = 10;
+        private const int GameCountdownWidth = 60; // yes, this number came from my arse
+
         public void Draw()
         {
             if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5)
                 TickSound((int) Math.Ceiling(_state.CountDownValue));
 
-            if (!_state.CountingDown || !_configuration.DisplayCountdown)
+            // display is disabled
+            if (!_configuration.DisplayCountdown)
                 return;
 
-            const float baseNumberScale = 1f;
-            const float numberScale = baseNumberScale;
-            const int numberNegativeMargin = 10;
-            const int gameCountdownWidth = 60; // yes, this number came from my arse
+            if (!_state.CountingDown || !_configuration.DisplayCountdown)
+            {
+                // re-enable the original addon at the last possible moment (when done counting down) to show "START"
+                if (this._originalAddonHidden && _configuration.HideOriginalCountdown) this.ToggleOriginalAddon();
+                return;
+            }
+
+            if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
+                this.ToggleOriginalAddon();
 
             var io = ImGui.GetIO();
             ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _windowHeight + 30), ImGuiCond.Always);
@@ -67,9 +103,19 @@ namespace EngageTimer.UI
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
             {
-                if (_state.CountDownValue > 5)
+                if (_state.CountDownValue > 5 || _configuration.HideOriginalCountdown)
                 {
-                    var number = Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
+                    string number;
+                    // if we hide the og countdown and decimals are enabled, we switch to non-stupid counting down
+                    if (_configuration.HideOriginalCountdown && _configuration.EnableCountdownDecimal)
+                    {
+                        number = Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        number = Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
+                    }
+
                     var integers = NumberList(number);
 
                     // First loop to compute total width
@@ -77,10 +123,10 @@ namespace EngageTimer.UI
                     foreach (var i in integers)
                     {
                         var texture = _numberTextures[i];
-                        totalWidth += texture.Width - numberNegativeMargin;
+                        totalWidth += texture.Width - NumberNegativeMargin;
                     }
 
-                    totalWidth += numberNegativeMargin;
+                    totalWidth += NumberNegativeMargin;
 
                     // Center the cursor
                     ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f);
@@ -91,14 +137,14 @@ namespace EngageTimer.UI
                         var texture = _numberTextures[i];
                         var cursorX = ImGui.GetCursorPosX();
                         ImGui.Image(texture.ImGuiHandle,
-                            new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+                            new Vector2(texture.Width * NumberScale, texture.Height * NumberScale));
                         ImGui.SameLine();
-                        ImGui.SetCursorPosX(texture.Width + cursorX - numberNegativeMargin * numberScale);
+                        ImGui.SetCursorPosX(texture.Width + cursorX - NumberNegativeMargin * NumberScale);
                     }
                 }
                 else if (_configuration.EnableCountdownDecimal)
                 {
-                    ImGui.SetCursorPosX(io.DisplaySize.X / 2f + gameCountdownWidth);
+                    ImGui.SetCursorPosX(io.DisplaySize.X / 2f + GameCountdownWidth);
                 }
 
                 if (_configuration.EnableCountdownDecimal)
@@ -107,7 +153,7 @@ namespace EngageTimer.UI
                         (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
                         .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
                         .Substring(2);
-                    var smolNumberScale = numberScale * .5f;
+                    var smolNumberScale = NumberScale * .5f;
                     var smolMaxWidthScaled = _maxTextureWidth * smolNumberScale;
                     var cursorY = ImGui.GetCursorPosY();
                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 10);
@@ -119,7 +165,7 @@ namespace EngageTimer.UI
                         ImGui.SetCursorPosY(cursorY + height);
                         ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
                         ImGui.SameLine();
-                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - numberNegativeMargin * smolNumberScale);
+                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - NumberNegativeMargin * smolNumberScale);
                     }
                 }
             }

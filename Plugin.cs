@@ -5,9 +5,9 @@ using Dalamud.Plugin;
 using EngageTimer.Attributes;
 using EngageTimer.Web;
 
-/**
+/*
  * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
- **/
+ */
 namespace EngageTimer
 {
     public class Plugin : IDalamudPlugin
@@ -68,9 +68,9 @@ namespace EngageTimer
             if (_pluginInterface.ClientState.LocalPlayer == null)
                 return;
 
-            _stopWatchHook.Update();
-            _server.Update();
-            _ui.Draw();
+            _stopWatchHook?.Update();
+            _server?.Update();
+            _ui?.Draw();
         }
 
         private void OpenConfigUi(object sender, EventArgs args)
@@ -89,13 +89,13 @@ namespace EngageTimer
         {
             if (!disposing) return;
 
-            _server.Dispose();
-            _commandManager.Dispose();
+            _server?.Dispose();
+            _commandManager?.Dispose();
             _pluginInterface.SavePluginConfig(_configuration);
             _pluginInterface.UiBuilder.OnBuildUi -= _ui.Draw;
-            _ui.Dispose();
+            _ui?.Dispose();
             _pluginInterface.Dispose();
-            _stopWatchHook.Dispose();
+            _stopWatchHook?.Dispose();
         }
     }
 }

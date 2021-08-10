@@ -1,11 +1,13 @@
 ﻿{
   "Name": "EngageTimer",
   "Author": "Xorus",
+  "Punchline": "Combat countdown with all numbers, stopwatch and OBS support",
   "Description": "Combat Timer for OBS and ingame overlay with some benefits like a big nice countdown in the middle of the screen in the style of the original one.\nPlease consult the repository link for OBS setup instructions.",
   "RepoUrl": "https://github.com/xorus/EngageTimer",
   "Tags": [
     "countdown",
     "stopwatch",
     "OBS"
-  ]
+  ],
+  "Changelog": "- add an option to hide the original countdown\n- add configurable decimals in countdown and stopwatch"
 }

@@ -33,11 +33,14 @@ namespace EngageTimer
         {
             _pluginInterface = pluginInterface;
             _state = state;
+            _countDown = 0;
+            _countdownTimer = CountdownTimerFunc;
             HookCountdownPointer();
         }
 
         public void Dispose()
         {
+            if (_countdownTimerHook == null) return;
             _countdownTimerHook.Disable();
             _countdownTimerHook.Dispose();
         }
@@ -57,10 +60,9 @@ namespace EngageTimer
         private void HookCountdownPointer()
         {
             _countdownPtr = _pluginInterface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
-            _countdownTimer = CountdownTimerFunc;
             try
             {
-                _countdownTimerHook = new Hook<CountdownTimer>(_countdownPtr, _countdownTimer, this);
+                _countdownTimerHook = new Hook<CountdownTimer>(_countdownPtr, _countdownTimer);
                 _countdownTimerHook.Enable();
             }
             catch (Exception e)
