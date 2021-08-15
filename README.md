@@ -15,6 +15,8 @@ You can also enable the "ticking" sound if you want.
 
 ![Countdown example](Doc/countdown.gif)
 
+\* can now hide the in-game countdown so it stays consistant
+
 ## Stopwatch
 
 ![Stopwatch example](Doc/stopwatch.gif)
