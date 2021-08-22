@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Dalamud.Game;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 
 namespace EngageTimer
@@ -10,6 +13,8 @@ namespace EngageTimer
     {
         private readonly DalamudPluginInterface _pluginInterface;
         private readonly State _state;
+        private readonly SigScanner _sig;
+        private readonly Condition _condition;
 
         private DateTime _combatTimeEnd;
 
@@ -24,15 +29,22 @@ namespace EngageTimer
         /// </summary>
         private int _countDownStallTicks;
 
-        private CountdownTimer _countdownTimer;
+        private readonly CountdownTimer _countdownTimer;
         private Hook<CountdownTimer> _countdownTimerHook;
         private float _lastCountDownValue;
         private bool _shouldRestartCombatTimer = true;
 
-        public StopWatchHook(DalamudPluginInterface pluginInterface, State state)
+        public StopWatchHook(
+            DalamudPluginInterface pluginInterface,
+            State state,
+            SigScanner sig,
+            Condition condition
+        )
         {
             _pluginInterface = pluginInterface;
             _state = state;
+            _sig = sig;
+            _condition = condition;
             _countDown = 0;
             _countdownTimer = CountdownTimerFunc;
             HookCountdownPointer();
@@ -59,7 +71,7 @@ namespace EngageTimer
 
         private void HookCountdownPointer()
         {
-            _countdownPtr = _pluginInterface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
+            _countdownPtr = _sig.ScanText("48 89 5C 24 ?? 57 48 83 EC 40 8B 41");
             try
             {
                 _countdownTimerHook = new Hook<CountdownTimer>(_countdownPtr, _countdownTimer);
@@ -73,7 +85,7 @@ namespace EngageTimer
 
         private void UpdateEncounterTimer()
         {
-            if (_pluginInterface.ClientState.Condition[ConditionFlag.InCombat])
+            if (_condition[ConditionFlag.InCombat])
             {
                 _state.InCombat = true;
                 if (_shouldRestartCombatTimer)
@@ -100,7 +112,7 @@ namespace EngageTimer
             _state.CountingDown = false;
             if (_countDown != 0)
             {
-                var countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr) _countDown + 0x2c);
+                var countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
 
                 // is last value close enough (workaround for floating point approx)
                 if (Math.Abs(countDownPointerValue - _lastCountDownValue) < 0.001f)
@@ -117,7 +129,7 @@ namespace EngageTimer
 
                 if (countDownPointerValue > 0 && _countDownRunning)
                 {
-                    _state.CountDownValue = Marshal.PtrToStructure<float>((IntPtr) _countDown + 0x2c);
+                    _state.CountDownValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
                     _state.CountingDown = true;
                 }
 

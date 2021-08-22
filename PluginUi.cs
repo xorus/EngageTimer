@@ -1,4 +1,7 @@
 ﻿using System;
+using Dalamud.Game;
+using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Gui;
 using Dalamud.Plugin;
 using EngageTimer.UI;
 
@@ -10,10 +13,14 @@ namespace EngageTimer
         private readonly Settings _settings;
         private readonly StopWatch _stopwatch;
 
-        public PluginUi(DalamudPluginInterface pluginInterface, Configuration configuration, string dataPath,
-            State state)
+        public PluginUi(DalamudPluginInterface pluginInterface,
+            Configuration configuration,
+            GameGui gui,
+            string dataPath,
+            State state
+            )
         {
-            _countDown = new CountDown(configuration, state, pluginInterface.Framework.Gui);
+            _countDown = new CountDown(configuration, state, gui);
             _stopwatch = new StopWatch(configuration, state, pluginInterface);
             _settings = new Settings(configuration, pluginInterface.UiBuilder);
 

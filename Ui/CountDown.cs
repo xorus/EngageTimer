@@ -4,7 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Threading;
-using Dalamud.Game.Internal.Gui;
+using Dalamud.Game.Gui;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using EngageTimer.Properties;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -51,11 +52,11 @@ namespace EngageTimer.UI
         private unsafe void ToggleOriginalAddon()
         {
             var addon = _gui.GetAddonByName("ScreenInfo_CountDown", 1);
-            if (addon == null) return;
+            if (addon == IntPtr.Zero) return;
 
             try
             {
-                var atkUnitBase = (AtkUnitBase*) addon.Address;
+                var atkUnitBase = (AtkUnitBase*)addon;
                 atkUnitBase->Flags ^= VisibleFlag;
                 _originalAddonHidden = (atkUnitBase->Flags & VisibleFlag) == 0;
             }
@@ -73,7 +74,7 @@ namespace EngageTimer.UI
         public void Draw()
         {
             if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5)
-                TickSound((int) Math.Ceiling(_state.CountDownValue));
+                TickSound((int)Math.Ceiling(_state.CountDownValue));
 
             // display is disabled
             if (!_configuration.DisplayCountdown)

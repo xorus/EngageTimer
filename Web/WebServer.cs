@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using Dalamud.Plugin;
+using Dalamud.Logging;
 using EmbedIO;
 
 namespace EngageTimer.Web

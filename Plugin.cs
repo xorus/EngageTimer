@@ -1,6 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Dalamud.Game;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Command;
+using Dalamud.Game.Gui;
+using Dalamud.Interface;
 using Dalamud.Plugin;
 using EngageTimer.Attributes;
 using EngageTimer.Web;
@@ -12,22 +18,30 @@ namespace EngageTimer
 {
     public class Plugin : IDalamudPlugin
     {
-        private PluginCommandManager<Plugin> _commandManager;
-        private Configuration _configuration;
-        private DalamudPluginInterface _pluginInterface;
-        private WebServer _server;
-        private State _state;
-        private StopWatchHook _stopWatchHook;
-        private PluginUi _ui;
+        private readonly PluginCommandManager<Plugin> _pluginCommandManager;
+        private readonly Configuration _configuration;
+        private readonly DalamudPluginInterface _pluginInterface;
+        private readonly WebServer _server;
+        private readonly StopWatchHook _stopWatchHook;
+        private readonly PluginUi _ui;
+        private readonly ClientState _clientState;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AssemblyLocation { get; set; }
 
         public string Name => "Engage Timer";
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public Plugin(
+            DalamudPluginInterface pluginInterface,
+            ClientState clientState,
+            GameGui gameGui,
+            CommandManager commands,
+            SigScanner sigScanner,
+            Condition condition)
         {
             _pluginInterface = pluginInterface;
+            _clientState = clientState;
+
             string localPath;
             try
             {
@@ -40,20 +54,19 @@ namespace EngageTimer
                 localPath = Path.GetDirectoryName(AssemblyLocation);
             }
 
-            _configuration = (Configuration) _pluginInterface.GetPluginConfig() ?? new Configuration();
+            _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
             _configuration.Initialize(_pluginInterface);
 
-            _state = new State();
-            _ui = new PluginUi(_pluginInterface, _configuration, localPath, _state);
+            var state = new State();
+            _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state);
 
-            _commandManager = new PluginCommandManager<Plugin>(this, _pluginInterface);
+            _pluginCommandManager = new PluginCommandManager<Plugin>(this, _pluginInterface, commands);
+            _stopWatchHook = new StopWatchHook(_pluginInterface, state, sigScanner, condition);
 
-            _stopWatchHook = new StopWatchHook(_pluginInterface, _state);
+            _pluginInterface.UiBuilder.Draw += DrawUi;
+            _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
 
-            _pluginInterface.UiBuilder.OnBuildUi += DrawUi;
-            _pluginInterface.UiBuilder.OnOpenConfigUi += OpenConfigUi;
-
-            _server = new WebServer(_configuration, localPath, _state);
+            _server = new WebServer(_configuration, localPath, state);
         }
 
         public void Dispose()
@@ -65,7 +78,7 @@ namespace EngageTimer
         private void DrawUi()
         {
             // disable plugin operation when not logged in
-            if (_pluginInterface.ClientState.LocalPlayer == null)
+            if (!_clientState.IsLoggedIn)
                 return;
 
             _stopWatchHook?.Update();
@@ -90,9 +103,9 @@ namespace EngageTimer
             if (!disposing) return;
 
             _server?.Dispose();
-            _commandManager?.Dispose();
+            _pluginCommandManager?.Dispose();
             _pluginInterface.SavePluginConfig(_configuration);
-            _pluginInterface.UiBuilder.OnBuildUi -= _ui.Draw;
+            _pluginInterface.UiBuilder.Draw -= _ui.Draw;
             _ui?.Dispose();
             _pluginInterface.Dispose();
             _stopWatchHook?.Dispose();
