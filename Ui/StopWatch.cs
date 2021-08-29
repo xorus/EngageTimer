@@ -22,7 +22,7 @@ namespace EngageTimer.UI
             _state = state;
             _pluginInterface = pluginInterface;
 
-            _pluginInterface.UiBuilder.OnBuildFonts += BuildFont;
+            _pluginInterface.UiBuilder.BuildFonts += BuildFont;
         }
 
         public bool StopwatchVisible
@@ -161,7 +161,7 @@ namespace EngageTimer.UI
 
         public void Dispose()
         {
-            _pluginInterface.UiBuilder.OnBuildFonts -= BuildFont;
+            _pluginInterface.UiBuilder.BuildFonts -= BuildFont;
             _pluginInterface.UiBuilder.RebuildFonts();
             // _font.Destroy(); - crashes when I do this
         }

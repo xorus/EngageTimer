@@ -22,42 +22,23 @@
     <Compile Remove="bin\**" />
     <EmbeddedResource Remove="bin\**" />
     <None Remove="bin\**" />
-    <None Update="Data\html\index.html">
+    <None Update="Data\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Data\html\overlay.js">
+    <None Update="images\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Remove="Doc\icon - Copy.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Data\number_0.png" />
-    <None Remove="Data\number_1.png" />
-    <None Remove="Data\number_2.png" />
-    <None Remove="Data\number_3.png" />
-    <None Remove="Data\number_4.png" />
-    <None Remove="Data\number_5.png" />
-    <None Remove="Data\number_6.png" />
-    <None Remove="Data\number_7.png" />
-    <None Remove="Data\number_8.png" />
-    <None Remove="Data\number_9.png" />
-    <None Remove="Data\tick.wav" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="1.2.3" />
+    <PackageReference Include="DalamudPackager" Version="2.1.2" />
     <PackageReference Include="EmbedIO" Version="3.4.3" />
     <PackageReference Include="NAudio" Version="2.0.1" />
     <PackageReference Include="NAudio.Core" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud, Version=5.2.6.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
-    </Reference>
-    <Reference Include="Dalamud, Version=5.2.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
-    </Reference>
     <Reference Include="Dalamud, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
     </Reference>
@@ -98,42 +79,4 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Data\0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\7.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\8.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\9.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Doc" />
-  </ItemGroup>
-
 </Project>

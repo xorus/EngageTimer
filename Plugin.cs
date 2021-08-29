@@ -86,7 +86,7 @@ namespace EngageTimer
             _ui?.Draw();
         }
 
-        private void OpenConfigUi(object sender, EventArgs args)
+        private void OpenConfigUi()
         {
             _ui.OpenSettings();
         }

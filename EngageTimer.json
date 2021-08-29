@@ -10,9 +10,9 @@
     "OBS"
   ],
   "Changelog": "- support new dalamud version",
-  "IconUrl": "https://xorus.dev/xiv/engageTimer/img/icon.png",
+  "IconUrl": "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/logo.png",
   "ImageUrls": [
-    "https://xorus.dev/xiv/engageTimer/img/countdown_decimals.png",
-    "https://xorus.dev/xiv/engageTimer/img/screenshot_obs.png"
+    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/countdown_decimals.png",
+    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/screenshot_obs.png"
   ]
 }
