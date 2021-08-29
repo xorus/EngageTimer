@@ -9,10 +9,10 @@
     "stopwatch",
     "OBS"
   ],
-  "Changelog": "- support new dalamud version",
-  "IconUrl": "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/logo.png",
+  "Changelog": "- fixes for new dalamud api",
+  "IconUrl": "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/icon.png",
   "ImageUrls": [
-    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/countdown_decimals.png",
-    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/screenshot_obs.png"
+    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/image1.png",
+    "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/image2.png"
   ]
 }
