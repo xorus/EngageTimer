@@ -80,18 +80,18 @@ namespace EngageTimer.UI
             if (!_configuration.DisplayCountdown)
                 return;
 
-            var hideCountdown = _configuration.HideOriginalCountdown;
-
             if (!_state.CountingDown || !_configuration.DisplayCountdown)
             {
                 // re-enable the original addon at the last possible moment (when done counting down) to show "START"
-                if (this._originalAddonHidden && hideCountdown) this.ToggleOriginalAddon();
+                if (this._originalAddonHidden && _configuration.HideOriginalCountdown) this.ToggleOriginalAddon();
                 return;
             }
 
 
-            if (hideCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
+            if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
                 this.ToggleOriginalAddon();
+
+            var accurate = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
 
             var io = ImGui.GetIO();
             ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _windowHeight + 30), ImGuiCond.Always);
@@ -107,9 +107,9 @@ namespace EngageTimer.UI
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
             {
-                if (_state.CountDownValue > 5 || hideCountdown)
+                if (_state.CountDownValue > 5 || _configuration.HideOriginalCountdown)
                 {
-                    var number = (_configuration.CountdownAccurateCountdown && _originalAddonHidden)
+                    var number = accurate
                         ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
                         : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
