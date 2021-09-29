@@ -35,6 +35,7 @@ namespace EngageTimer
 
         public int FloatingWindowDecimalCountdownPrecision { get; set; } = 1;
         public int FloatingWindowDecimalStopwatchPrecision { get; set; } = 1;
+        public bool FloatingWindowDisplayStopwatchOnlyInDuty { get; set; } = false;
 
         // Stopwatch cosmetics
 

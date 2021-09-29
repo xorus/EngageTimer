@@ -68,6 +68,7 @@ namespace EngageTimer
             if (_state.Mocked) return;
             UpdateCountDown();
             UpdateEncounterTimer();
+            _state.InInstance = _condition[ConditionFlag.BoundByDuty];
         }
 
         private void HookCountdownPointer()

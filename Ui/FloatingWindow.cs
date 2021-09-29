@@ -67,6 +67,12 @@ namespace EngageTimer.UI
             var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
             if (_configuration.FloatingWindowLock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
+            var displayStopwatch = _configuration.FloatingWindowStopwatch;
+            if (displayStopwatch && _configuration.FloatingWindowDisplayStopwatchOnlyInDuty)
+                displayStopwatch = _state.InInstance;
+            var displayCountdown = _configuration.FloatingWindowCountdown && _state.CountingDown &&
+                                   _state.CountDownValue > 0;
+
             if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindowTextColor);
@@ -78,14 +84,14 @@ namespace EngageTimer.UI
                 var maxText = "00:00";
 
                 var displayed = false;
-                if (_configuration.FloatingWindowCountdown && _state.CountingDown && _state.CountDownValue > 0)
+                if (displayCountdown)
                 {
                     text = string.Format(
                         "-{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) + "}",
                         _state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1));
                     displayed = true;
                 }
-                else if (_configuration.FloatingWindowStopwatch)
+                else if (displayStopwatch)
                 {
                     if (stopwatchDecimals)
                         maxText += "." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision);
@@ -138,6 +144,7 @@ namespace EngageTimer.UI
                     ));
 
                     #endregion
+
                     ImGui.Text(text);
                 }
 

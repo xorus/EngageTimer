@@ -29,7 +29,7 @@ namespace EngageTimer.UI
 
         public void Draw()
         {
-            // if (!Visible) return;
+            if (!Visible) return;
             // _state.Mocked = true;
             // _state.InCombat = false;
             // _state.CountDownValue = 12.23f;
@@ -219,6 +219,7 @@ namespace EngageTimer.UI
                                 _configuration.FloatingWindowDecimalStopwatchPrecision = fwDecimalStopwatchPrecision;
                                 _configuration.Save();
                             }
+
                             ImGui.PopItemWidth();
                         }
 
@@ -278,6 +279,16 @@ namespace EngageTimer.UI
                         }
 
                         ImGuiComponents.HelpMarker("See the Big countdown tab for an explanation");
+
+                        var fWDisplayStopwatchOnlyInDuty = _configuration.FloatingWindowDisplayStopwatchOnlyInDuty;
+                        if (ImGui.Checkbox("Hide stopwatch when not bound by duty",
+                            ref fWDisplayStopwatchOnlyInDuty))
+                        {
+                            _configuration.FloatingWindowDisplayStopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
+                            _configuration.Save();
+                        }
+
+                        ImGuiComponents.HelpMarker("Basically hides the stopwatch when you are in the overworld");
 
                         ImGui.EndTabItem();
                     }
