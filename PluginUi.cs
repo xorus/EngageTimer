@@ -11,7 +11,7 @@ namespace EngageTimer
     {
         private readonly CountDown _countDown;
         private readonly Settings _settings;
-        private readonly StopWatch _stopwatch;
+        private readonly FloatingWindow _stopwatch;
 
         public PluginUi(DalamudPluginInterface pluginInterface,
             Configuration configuration,
@@ -21,8 +21,8 @@ namespace EngageTimer
             )
         {
             _countDown = new CountDown(configuration, state, gui);
-            _stopwatch = new StopWatch(configuration, state, pluginInterface);
-            _settings = new Settings(configuration, pluginInterface.UiBuilder);
+            _stopwatch = new FloatingWindow(configuration, state, pluginInterface);
+            _settings = new Settings(configuration, state, pluginInterface.UiBuilder);
 
             _countDown.Load(pluginInterface, dataPath);
         }

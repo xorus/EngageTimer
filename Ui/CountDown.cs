@@ -73,21 +73,24 @@ namespace EngageTimer.UI
 
         public void Draw()
         {
-            if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5)
+            if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
                 TickSound((int)Math.Ceiling(_state.CountDownValue));
 
             // display is disabled
             if (!_configuration.DisplayCountdown)
                 return;
 
+            var hideCountdown = _configuration.HideOriginalCountdown;
+
             if (!_state.CountingDown || !_configuration.DisplayCountdown)
             {
                 // re-enable the original addon at the last possible moment (when done counting down) to show "START"
-                if (this._originalAddonHidden && _configuration.HideOriginalCountdown) this.ToggleOriginalAddon();
+                if (this._originalAddonHidden && hideCountdown) this.ToggleOriginalAddon();
                 return;
             }
 
-            if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
+
+            if (hideCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
                 this.ToggleOriginalAddon();
 
             var io = ImGui.GetIO();
@@ -104,18 +107,11 @@ namespace EngageTimer.UI
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
             {
-                if (_state.CountDownValue > 5 || _configuration.HideOriginalCountdown)
+                if (_state.CountDownValue > 5 || hideCountdown)
                 {
-                    string number;
-                    // if we hide the og countdown and decimals are enabled, we switch to non-stupid counting down
-                    if (_configuration.HideOriginalCountdown && _configuration.EnableCountdownDecimal)
-                    {
-                        number = Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        number = Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
-                    }
+                    var number = (_configuration.CountdownAccurateCountdown && _originalAddonHidden)
+                        ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
+                        : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
                     var integers = NumberList(number);
 

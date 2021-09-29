@@ -10,6 +10,8 @@ namespace EngageTimer
         public DateTime CombatEnd { get; set; }
         public DateTime CombatStart { get; set; }
 
+        public bool Mocked { get; set; }
+
         public bool InCombat
         {
             get => _inCombat;

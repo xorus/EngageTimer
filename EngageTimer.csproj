@@ -1,16 +1,15 @@
 ﻿ <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net5.0-windows</TargetFramework>
-	<TargetFramework>net5.0-windows</TargetFramework>
-	<PlatformTarget>x64</PlatformTarget>
-	<Platforms>AnyCPU</Platforms>
-	<LangVersion>9.0</LangVersion>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU</Platforms>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <Version>1.0.0</Version>
-    <AssemblyVersion>1.2.1.1</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -39,33 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
-    </Reference>
-    <Reference Include="FFXIVClientStructs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
-    </Reference>
-    <Reference Include="ImGui.NET">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\ImGui.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="ImGuiScene">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\ImGuiScene.dll</HintPath>
-    </Reference>
-    <Reference Include="Lumina">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.dll</HintPath>
-    </Reference>
-    <Reference Include="Lumina.Excel">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.Excel.dll</HintPath>
-    </Reference>
-    <Reference Include="Lumina.Generated">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Lumina.Generated.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -78,5 +50,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Dalamud, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="FFXIVClientStructs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ImGui.NET, Version=1.82.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ImGuiScene, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 </Project>

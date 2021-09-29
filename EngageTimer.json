@@ -9,7 +9,7 @@
     "stopwatch",
     "OBS"
   ],
-  "Changelog": "- fixes for new dalamud api",
+  "Changelog": "- better configuration UI\n- accurate countdown mode",
   "IconUrl": "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/icon.png",
   "ImageUrls": [
     "https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/image1.png",

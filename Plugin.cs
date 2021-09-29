@@ -6,7 +6,6 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
-using Dalamud.Interface;
 using Dalamud.Plugin;
 using EngageTimer.Attributes;
 using EngageTimer.Web;
@@ -56,6 +55,7 @@ namespace EngageTimer
 
             _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
             _configuration.Initialize(_pluginInterface);
+            _configuration.Migrate();
 
             var state = new State();
             _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state);

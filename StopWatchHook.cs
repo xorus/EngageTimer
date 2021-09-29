@@ -65,6 +65,7 @@ namespace EngageTimer
 
         public void Update()
         {
+            if (_state.Mocked) return;
             UpdateCountDown();
             UpdateEncounterTimer();
         }
