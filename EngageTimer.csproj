@@ -28,9 +28,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Remove="Doc\icon - Copy.png" />
+    <EmbeddedResource Update="Resources\strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>strings.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CheapLoc" Version="1.1.6" />
     <PackageReference Include="DalamudPackager" Version="2.1.2" />
     <PackageReference Include="EmbedIO" Version="3.4.3" />
     <PackageReference Include="NAudio" Version="2.0.1" />

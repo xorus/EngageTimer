@@ -117,152 +117,149 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Tick" xml:space="preserve">
-    <value>..\Resources\tick.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Settings_Title" xml:space="preserve">
-    <value>EngageTimer settings</value>
-  </data>
-  <data name="Settings_CountdownTab_Info1" xml:space="preserve">
-    <value>The "big countdown" feature adds the missing numbers to the in-game timer !</value>
-  </data>
-  <data name="Settings_CountdownTab_Info2" xml:space="preserve">
-    <value>To test this out, simply start a combat countdown.</value>
-  </data>
-  <data name="Settings_CountdownTab_Enable" xml:space="preserve">
-    <value>Enable big countdown</value>
+    <value>Paramètres EngageTimer</value>
   </data>
   <data name="Settings_CountdownTab_Title" xml:space="preserve">
-    <value>Big countdown</value>
+    <value>Compte à rebours</value>
   </data>
-  <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
-    <value>Also replace numbers before 5</value>
+  <data name="Settings_CountdownTab_Info1" xml:space="preserve">
+    <value>Cette fonction ajoute les nombres qu'il manque au compte à rebours du jeu !</value>
+  </data>
+  <data name="Settings_CountdownTab_Enable" xml:space="preserve">
+    <value>Activer le compte à rebours</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
-    <value>Display</value>
+    <value>Afficher</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
-    <value>decimals in countdown</value>
+    <value>décimales</value>
   </data>
   <data name="Settings_CountdownTab_PlaySound" xml:space="preserve">
-    <value>Play a ticking sound for all numbers</value>
+    <value>Jouer un son à chaque chiffre</value>
   </data>
   <data name="Settings_CountdownTab_PlaySound_Volume" xml:space="preserve">
-    <value>Sound volume</value>
+    <value>Volume</value>
+  </data>
+  <data name="Settings_CountdownTab_Info2" xml:space="preserve">
+    <value>Il vous suffit de lancer un compte à rebours pour tester.</value>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
-    <value>Hide original countdown</value>
+    <value>Cacher le compte à rebours original</value>
   </data>
-  <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
-    <value>Enable accurate countdown mode for big countdown when possible</value>
-  </data>
-  <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
-    <value>The game countdown shows the "START" text at 1 instead of 0.
-This setting only works when the original countdown is hidden.</value>
-  </data>
-  <data name="Settings_FWTab_Title" xml:space="preserve">
-    <value>Floating window</value>
-  </data>
-  <data name="Settings_FWTab_Help" xml:space="preserve">
-    <value>The floating window is a movable window that can display the countdown and the current combat duration.</value>
-  </data>
-  <data name="Settings_FWTab_Display" xml:space="preserve">
-    <value>Enable floating window</value>
-  </data>
-  <data name="Settings_FWTab_Lock" xml:space="preserve">
-    <value>Lock floating window</value>
-  </data>
-  <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
-    <value>Disables clicking and moving the window.</value>
+  <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
+    <value>Utilisera le compte à rebours de ce plugin pour tous les nombres</value>
   </data>
   <data name="Settings_FWTab_AutoHide_Left" xml:space="preserve">
-    <value>Hide</value>
+    <value>Cacher automatiquement</value>
   </data>
   <data name="Settings_FWTab_AutoHide_Right" xml:space="preserve">
-    <value>seconds after combat end</value>
+    <value>secondes après la fin du combat</value>
   </data>
-  <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
-    <value>Shows the current countdown value (e.g. -13)</value>
+  <data name="Settings_FWTab_Display" xml:space="preserve">
+    <value>Activer la petite fenêtre</value>
   </data>
-  <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
-    <value>Display countdown</value>
+  <data name="Settings_FWTab_Help" xml:space="preserve">
+    <value>La petite fenêtre permet d'afficher la durée du combat actuel ainsi que le compte à rebours.</value>
   </data>
-  <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
-    <value>Display countdown with</value>
+  <data name="Settings_FWTab_Lock" xml:space="preserve">
+    <value>Verouiller</value>
   </data>
-  <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+  <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
+    <value>Empêche de cliquer et déplacer accidentellement la fenêtre</value>
+  </data>
+  <data name="Settings_FWTab_Title" xml:space="preserve">
+    <value>Petite fenêtre</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
+    <value>Le jeu termine normalement son compte à rebours à 1 au lieu de 0.
+Ce paramètre ne fonctionne que si le compte à rebours original est caché.</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
+    <value>Activer le mode précis si possible</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
-    <value>Display combat timer</value>
+    <value>Afficher la durée du combat</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_With_Left" xml:space="preserve">
-    <value>Display combat timer with</value>
+    <value>Afficher la durée du combat avec</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
+    <value>Afficher le compte à rebours avec</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
+    <value>Afficher le compte à rebours</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
+    <value>décimales</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+    <value>décimales</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
+    <value>Affiche la valeur acutelle du compte à rebours (ex. -13)</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
-    <value>Shows the current combat duration</value>
+    <value>Affiche le temps écoulé depuis le début du combat</value>
   </data>
   <data name="Settings_FWTab_Styling" xml:space="preserve">
-    <value>Styling</value>
+    <value>Style</value>
   </data>
   <data name="Settings_FWTab_TextAlign" xml:space="preserve">
-    <value>Text align</value>
-  </data>
-  <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
-    <value>Left</value>
+    <value>Alignement</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Center" xml:space="preserve">
-    <value>Center</value>
+    <value>Centre</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
+    <value>Gauche</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Right" xml:space="preserve">
-    <value>Right</value>
+    <value>Droite</value>
   </data>
   <data name="Settings_FWTab_FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>Taille</value>
   </data>
   <data name="Settings_FWTab_TextColor" xml:space="preserve">
-    <value>Text color</value>
+    <value>Couleur de texte</value>
   </data>
   <data name="Settings_FWTab_BackgroundColor" xml:space="preserve">
-    <value>Background color and opacity</value>
+    <value>Couleur et opacité de fond</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown" xml:space="preserve">
-    <value>Enable accurate countdown in floating window</value>
+    <value>Compte à rebours précis</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
-    <value>See the Big countdown tab for an explanation</value>
+    <value>Voir l'aide sur l'onglet "compte à rebours"</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
-    <value>Hide combat time when not bound by duty</value>
+    <value>Cacher la durée de combat hors d'une instance</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
-    <value>Basically hides the stopwatch when you are in the overworld</value>
+    <value>La durée de combat n'apparaitra pas lors des trash-combats dans le monde</value>
   </data>
   <data name="Settings_Web_Title" xml:space="preserve">
-    <value>Web Server (OBS)</value>
+    <value>Serveur Web (OBS)</value>
   </data>
   <data name="Settings_Web_Help" xml:space="preserve">
-    <value>This feature allows you to add a countdown and stopwatch overlay into your OBS (or other software) streams and recordings via a browser source.</value>
+    <value>Cette fonctionnalité vous permet d'afficher le compte à rebours et le temps de combat dans un logiciel ou d'enregistrement de streaming tel qu'OBS via une source d'overlay navigateur.</value>
   </data>
   <data name="Settings_Web_HelpAdd" xml:space="preserve">
-    <value>To add it to your scene, enable the webserver then create a browser source in your scene and add the following URL : </value>
+    <value>Pour l'ajouter à votre scène, démarrez le serveur en cochant la case, puis créez une source navigateur avec l'URL suivante :</value>
   </data>
   <data name="Settings_Web_HelpSize" xml:space="preserve">
-    <value>Recommended window size is 300x100.</value>
+    <value>La taille recommandée est de 300x100.</value>
   </data>
   <data name="Settings_Web_EnablePort" xml:space="preserve">
-    <value>Enable webserver on port</value>
+    <value>Démarrer le serveur web sur le port</value>
   </data>
   <data name="Settings_Web_Hide_Left" xml:space="preserve">
-    <value>Hide overlay</value>
+    <value>Cacher l'overlay</value>
   </data>
   <data name="Settings_Web_Hide_Right" xml:space="preserve">
-    <value>seconds after combat ends</value>
+    <value>secondes après la fin du combat</value>
   </data>
   <data name="Settings_Close" xml:space="preserve">
-    <value>Close</value>
+    <value>OK</value>
   </data>
 </root>

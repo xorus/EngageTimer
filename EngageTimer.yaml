@@ -1,0 +1,17 @@
+﻿name: EngageTimer
+author: Xorus
+punchline: Combat countdown with all numbers, stopwatch and OBS support
+description: |-
+  Combat Timer for OBS and ingame overlay with some benefits like a big nice countdown in the middle of the screen in the style of the original one.
+  Please consult the repository link for OBS setup instructions.
+tags:
+  - countdown
+  - stopwatch
+  - OBS
+  - streaming
+  - combat
+repo_url: https://github.com/xorus/EngageTimer
+icon_url: https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/icon.png
+image_urls:
+  - https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/image1.png
+  - https://github.com/goatcorp/DalamudPlugins/blob/api4/plugins/EngageTimer/images/image2.png

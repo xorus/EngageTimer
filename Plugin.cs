@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using Dalamud;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
@@ -8,6 +10,7 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Plugin;
 using EngageTimer.Attributes;
+using EngageTimer.Properties;
 using EngageTimer.Web;
 
 /*
@@ -24,6 +27,7 @@ namespace EngageTimer
         private readonly StopWatchHook _stopWatchHook;
         private readonly PluginUi _ui;
         private readonly ClientState _clientState;
+        private readonly Localization _localization;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AssemblyLocation { get; set; }
@@ -53,6 +57,8 @@ namespace EngageTimer
                 localPath = Path.GetDirectoryName(AssemblyLocation);
             }
 
+            this._localization = new Localization(_pluginInterface.GetPluginLocDirectory());
+
             _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
             _configuration.Initialize(_pluginInterface);
             _configuration.Migrate();
@@ -67,12 +73,25 @@ namespace EngageTimer
             _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
 
             _server = new WebServer(_configuration, localPath, state);
+            _pluginInterface.LanguageChanged += ConfigureLanguage;
+            ConfigureLanguage();
+        }
+
+        private void ConfigureLanguage(string? langCode = null)
+        {
+            var lang = (langCode ?? this._pluginInterface.UiLanguage) switch
+            {
+                "fr" => "fr",
+                _ => "en"
+            };
+            Resources.Culture = new CultureInfo(lang ?? "en");
         }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+            _pluginInterface.LanguageChanged -= ConfigureLanguage;
         }
 
         private void DrawUi()

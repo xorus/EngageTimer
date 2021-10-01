@@ -1,8 +1,9 @@
 ﻿using System;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using Dalamud.Logging;
+using EngageTimer.Properties;
 using ImGuiNET;
+using Mono.Cecil;
 
 namespace EngageTimer.UI
 {
@@ -27,6 +28,16 @@ namespace EngageTimer.UI
             set => _visible = value;
         }
 
+        private string TransId(string id)
+        {
+            return $"{Resources.ResourceManager.GetString(id, Resources.Culture)}###EngageTimer_{id}";
+        }
+
+        private string Trans(string id)
+        {
+            return Resources.ResourceManager.GetString(id, Resources.Culture);
+        }
+
         public void Draw()
         {
             if (!Visible) return;
@@ -35,40 +46,43 @@ namespace EngageTimer.UI
             // _state.CountDownValue = 12.23f;
             // _state.CountingDown = true;
 
-            if (ImGui.Begin("EngageTimer settings", ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
+            if (ImGui.Begin(Resources.Settings_Title, ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
             {
                 if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
                 {
                     var countdownAccurateCountdown = _configuration.CountdownAccurateCountdown;
-                    var floatingWindowAccurateCoundown = _configuration.FloatingWindowAccurateCountdown;
+                    var floatingWindowAccurateCountdown = _configuration.FloatingWindowAccurateCountdown;
 
                     ImGui.PushItemWidth(100f);
-                    if (ImGui.BeginTabItem("Big countdown"))
+                    if (ImGui.BeginTabItem(TransId("Settings_CountdownTab_Title")))
                     {
                         ImGui.PushTextWrapPos();
-                        ImGui.Text("The \"big countdown\" feature adds the missing numbers to the in-game timer !");
-                        ImGui.Text("To test this out, simply start a combat countdown.");
+                        ImGui.Text(Resources.Settings_CountdownTab_Info1);
+                        ImGui.Text(Resources.Settings_CountdownTab_Info2);
                         ImGui.PopTextWrapPos();
                         ImGui.Separator();
 
                         var displayCountdown = _configuration.DisplayCountdown;
-                        if (ImGui.Checkbox("Enable big countdown", ref displayCountdown))
+                        if (ImGui.Checkbox(TransId("Settings_CountdownTab_Enable"),
+                            ref displayCountdown))
                         {
                             _configuration.DisplayCountdown = displayCountdown;
                             _configuration.Save();
                         }
 
                         var hideOriginalCountdown = _configuration.HideOriginalCountdown;
-                        if (ImGui.Checkbox("Hide original countdown", ref hideOriginalCountdown))
+                        if (ImGui.Checkbox(TransId("Settings_CountdownTab_HideOriginalCountDown"),
+                            ref hideOriginalCountdown))
                         {
                             _configuration.HideOriginalCountdown = hideOriginalCountdown;
                             _configuration.Save();
                         }
 
-                        ImGuiComponents.HelpMarker("Also replace numbers before 5");
+                        ImGuiComponents.HelpMarker(Trans("Settings_CountdownTab_HideOriginalCountDown_Help"));
 
                         var enableCountdownDecimal = _configuration.EnableCountdownDecimal;
-                        if (ImGui.Checkbox("Display", ref enableCountdownDecimal))
+                        if (ImGui.Checkbox(TransId("Settings_CountdownTab_CountdownDecimals_Left"),
+                            ref enableCountdownDecimal))
                         {
                             _configuration.EnableCountdownDecimal = enableCountdownDecimal;
                             _configuration.Save();
@@ -77,7 +91,8 @@ namespace EngageTimer.UI
                         ImGui.SameLine();
                         ImGui.PushItemWidth(70f);
                         var countdownDecimalPrecision = _configuration.CountdownDecimalPrecision;
-                        if (ImGui.InputInt("decimals in countdown", ref countdownDecimalPrecision, 1, 0))
+                        if (ImGui.InputInt(TransId("Settings_CountdownTab_CountdownDecimals_Right"),
+                            ref countdownDecimalPrecision, 1, 0))
                         {
                             countdownDecimalPrecision = Math.Max(1, Math.Min(3, countdownDecimalPrecision));
                             _configuration.CountdownDecimalPrecision = countdownDecimalPrecision;
@@ -85,7 +100,7 @@ namespace EngageTimer.UI
                         }
 
                         var enableTickingSound = _configuration.EnableTickingSound;
-                        if (ImGui.Checkbox("Play a ticking sound for all numbers", ref enableTickingSound))
+                        if (ImGui.Checkbox(TransId("Settings_CountdownTab_PlaySound"), ref enableTickingSound))
                         {
                             _configuration.EnableTickingSound = enableTickingSound;
                             _configuration.Save();
@@ -95,7 +110,8 @@ namespace EngageTimer.UI
                         {
                             ImGui.Indent();
                             var volume = _configuration.TickingSoundVolume * 100f;
-                            if (ImGui.DragFloat("Sound volume", ref volume, .1f, 0f, 100f, "%.1f%%"))
+                            if (ImGui.DragFloat(TransId("Settings_CountdownTab_PlaySound_Volume"), ref volume, .1f, 0f,
+                                100f, "%.1f%%"))
                             {
                                 _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
                                 _configuration.Save();
@@ -113,7 +129,7 @@ namespace EngageTimer.UI
                             ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.5f);
                         }
 
-                        if (ImGui.Checkbox("Enable accurate countdown mode for big countdown when possible",
+                        if (ImGui.Checkbox(TransId("Settings_CountdownTab_AccurateMode"),
                             ref countdownAccurateCountdown))
                         {
                             _configuration.CountdownAccurateCountdown = countdownAccurateCountdown;
@@ -126,39 +142,35 @@ namespace EngageTimer.UI
                         }
 
                         ImGui.Indent();
-                        ImGui.TextDisabled("The game countdown shows the \"START\" text at 1 instead of 0.");
-                        ImGui.PushTextWrapPos();
-                        ImGui.TextDisabled("This setting only works when the original countdown is hidden.");
-                        ImGui.PopTextWrapPos();
+                        ImGui.TextDisabled(Trans("Settings_CountdownTab_AccurateMode_Help"));
                         ImGui.EndTabItem();
                     }
 
-                    if (ImGui.BeginTabItem("Floating window"))
+                    if (ImGui.BeginTabItem(TransId("Settings_FWTab_Title")))
                     {
                         ImGui.PushTextWrapPos();
-                        ImGui.Text("The floating window is a movable window that can display the countdown and the " +
-                                   "current combat duration.");
+                        ImGui.Text(Trans("Settings_FWTab_Help"));
                         ImGui.PopTextWrapPos();
                         ImGui.Separator();
 
                         var displayFloatingWindow = _configuration.DisplayFloatingWindow;
-                        if (ImGui.Checkbox("Enable floating window", ref displayFloatingWindow))
+                        if (ImGui.Checkbox(TransId("Settings_FWTab_Display"), ref displayFloatingWindow))
                         {
                             _configuration.DisplayFloatingWindow = displayFloatingWindow;
                             _configuration.Save();
                         }
 
                         var floatingWindowLock = _configuration.FloatingWindowLock;
-                        if (ImGui.Checkbox("Lock floating window", ref floatingWindowLock))
+                        if (ImGui.Checkbox(TransId("Settings_FWTab_Lock"), ref floatingWindowLock))
                         {
                             _configuration.FloatingWindowLock = floatingWindowLock;
                             _configuration.Save();
                         }
 
-                        ImGuiComponents.HelpMarker("Disables clicking and moving the window.");
+                        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_Lock_Help"));
 
                         var autoHideStopwatch = _configuration.AutoHideStopwatch;
-                        if (ImGui.Checkbox("Hide", ref autoHideStopwatch))
+                        if (ImGui.Checkbox(TransId("Settings_FWTab_AutoHide_Left"), ref autoHideStopwatch))
                         {
                             _configuration.AutoHideStopwatch = autoHideStopwatch;
                             _configuration.Save();
@@ -166,7 +178,8 @@ namespace EngageTimer.UI
 
                         var autoHideTimeout = _configuration.AutoHideTimeout;
                         ImGui.SameLine();
-                        if (ImGui.InputFloat("seconds after combat end", ref autoHideTimeout, .1f, 1f, "%.1f%"))
+                        if (ImGui.InputFloat(TransId("Settings_FWTab_AutoHide_Right"), ref autoHideTimeout, .1f, 1f,
+                            "%.1f%"))
                         {
                             _configuration.AutoHideTimeout = Math.Max(0, autoHideTimeout);
                             _configuration.Save();
@@ -175,7 +188,9 @@ namespace EngageTimer.UI
                         ImGui.Separator();
 
                         var floatingWindowCountdown = _configuration.FloatingWindowCountdown;
-                        if (ImGui.Checkbox("Display countdown" + (floatingWindowCountdown ? " with" : ""),
+                        if (ImGui.Checkbox(
+                            TransId("Settings_FWTab_CountdownPrecision" +
+                                    (floatingWindowCountdown ? "_With" : "") + "_Left"),
                             ref floatingWindowCountdown))
                         {
                             _configuration.FloatingWindowCountdown = floatingWindowCountdown;
@@ -188,7 +203,9 @@ namespace EngageTimer.UI
                             ImGui.PushItemWidth(70f);
                             var fwDecimalCountdownPrecision = _configuration.FloatingWindowDecimalCountdownPrecision;
                             // the little space is necessary because imgui id's the fields by label
-                            if (ImGui.InputInt("decimals ", ref fwDecimalCountdownPrecision, 1, 0))
+                            if (ImGui.InputInt(
+                                TransId("Settings_FWTab_CountdownPrecision_Right"),
+                                ref fwDecimalCountdownPrecision, 1, 0))
                             {
                                 fwDecimalCountdownPrecision = Math.Max(0, Math.Min(3, fwDecimalCountdownPrecision));
                                 _configuration.FloatingWindowDecimalCountdownPrecision = fwDecimalCountdownPrecision;
@@ -198,10 +215,12 @@ namespace EngageTimer.UI
                             ImGui.PopItemWidth();
                         }
 
-                        ImGuiComponents.HelpMarker("Shows the current countdown value (e.g. -13)");
+                        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_CountdownPrecision_Help"));
 
                         var floatingWindowStopwatch = _configuration.FloatingWindowStopwatch;
-                        if (ImGui.Checkbox("Display combat timer" + (floatingWindowStopwatch ? " with" : ""),
+                        if (ImGui.Checkbox(
+                            TransId("Settings_FWTab_StopwatchPrecision" +
+                                    (floatingWindowStopwatch ? "_With" : "") + "_Left"),
                             ref floatingWindowStopwatch))
                         {
                             _configuration.FloatingWindowStopwatch = floatingWindowStopwatch;
@@ -213,7 +232,8 @@ namespace EngageTimer.UI
                             ImGui.SameLine();
                             ImGui.PushItemWidth(70f);
                             var fwDecimalStopwatchPrecision = _configuration.FloatingWindowDecimalStopwatchPrecision;
-                            if (ImGui.InputInt("decimals", ref fwDecimalStopwatchPrecision, 1, 0))
+                            if (ImGui.InputInt(TransId("Settings_FWTab_StopwatchPrecision_Right"),
+                                ref fwDecimalStopwatchPrecision, 1, 0))
                             {
                                 fwDecimalStopwatchPrecision = Math.Max(0, Math.Min(3, fwDecimalStopwatchPrecision));
                                 _configuration.FloatingWindowDecimalStopwatchPrecision = fwDecimalStopwatchPrecision;
@@ -223,20 +243,23 @@ namespace EngageTimer.UI
                             ImGui.PopItemWidth();
                         }
 
-                        ImGuiComponents.HelpMarker("Shows the current combat duration");
+                        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_StopwatchPrecision_Help"));
                         ImGui.Separator();
 
-                        ImGui.Text("Styling");
+                        ImGui.Text(Trans("Settings_FWTab_Styling"));
                         ImGui.Indent();
 
                         var textAlign = (int)_configuration.StopwatchTextAlign;
-                        if (ImGui.Combo("Text align", ref textAlign, "Left\0Center\0Right"))
+                        if (ImGui.Combo(TransId("Settings_FWTab_TextAlign"), ref textAlign,
+                            Trans("Settings_FWTab_TextAlign_Left") + "###Left\0" +
+                            Trans("Settings_FWTab_TextAlign_Center") + "###Center\0" +
+                            Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
                         {
                             _configuration.StopwatchTextAlign = (Configuration.TextAlign)textAlign;
                         }
 
                         var fontSize = _configuration.FontSize;
-                        if (ImGui.InputInt("Font size", ref fontSize, 4))
+                        if (ImGui.InputInt(TransId("Settings_FWTab_FontSize"), ref fontSize, 4))
                         {
                             _configuration.FontSize = Math.Max(0, fontSize);
                             _configuration.Save();
@@ -247,7 +270,8 @@ namespace EngageTimer.UI
                             }
                         }
 
-                        var floatingWindowTextColor = ImGuiComponents.ColorPickerWithPalette(1, "Text color",
+                        var floatingWindowTextColor = ImGuiComponents.ColorPickerWithPalette(1,
+                            TransId("Settings_FWTab_TextColor"),
                             _configuration.FloatingWindowTextColor);
                         if (floatingWindowTextColor != _configuration.FloatingWindowTextColor)
                         {
@@ -256,9 +280,10 @@ namespace EngageTimer.UI
                         }
 
                         ImGui.SameLine();
-                        ImGui.Text("Text color and opacity");
+                        ImGui.Text(Trans("Settings_FWTab_TextColor"));
 
-                        var floatingWindowBackgroundColor = ImGuiComponents.ColorPickerWithPalette(2, "Text color",
+                        var floatingWindowBackgroundColor = ImGuiComponents.ColorPickerWithPalette(2,
+                            TransId("Settings_FWTab_BackgroundColor"),
                             _configuration.FloatingWindowBackgroundColor);
                         if (floatingWindowBackgroundColor != _configuration.FloatingWindowBackgroundColor)
                         {
@@ -267,50 +292,39 @@ namespace EngageTimer.UI
                         }
 
                         ImGui.SameLine();
-                        ImGui.Text("Background color and opacity");
+                        ImGui.Text(Trans("Settings_FWTab_BackgroundColor"));
                         ImGui.Unindent();
                         ImGui.Separator();
 
-                        if (ImGui.Checkbox("Enable accurate countdown in floating window",
-                            ref floatingWindowAccurateCoundown))
+                        if (ImGui.Checkbox(TransId("Settings_FWTab_AccurateCountdown"),
+                            ref floatingWindowAccurateCountdown))
                         {
-                            _configuration.FloatingWindowAccurateCountdown = floatingWindowAccurateCoundown;
+                            _configuration.FloatingWindowAccurateCountdown = floatingWindowAccurateCountdown;
                             _configuration.Save();
                         }
 
-                        ImGuiComponents.HelpMarker("See the Big countdown tab for an explanation");
+                        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_AccurateCountdown_Help"));
 
                         var fWDisplayStopwatchOnlyInDuty = _configuration.FloatingWindowDisplayStopwatchOnlyInDuty;
-                        if (ImGui.Checkbox("Hide stopwatch when not bound by duty",
+                        if (ImGui.Checkbox(TransId("Settings_FWTab_DisplayStopwatchOnlyInDuty"),
                             ref fWDisplayStopwatchOnlyInDuty))
                         {
                             _configuration.FloatingWindowDisplayStopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
                             _configuration.Save();
                         }
 
-                        ImGuiComponents.HelpMarker("Basically hides the stopwatch when you are in the overworld");
+                        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_DisplayStopwatchOnlyInDuty_Help"));
 
                         ImGui.EndTabItem();
                     }
 
-                    if (ImGui.BeginTabItem("Web Server (OBS)"))
+                    if (ImGui.BeginTabItem(TransId("Settings_Web_Title")))
                     {
                         var enableWebServer = _configuration.EnableWebServer;
 
                         ImGui.PushTextWrapPos();
-                        ImGui.Text("This feature allows you to add a countdown and stopwatch overlay into " +
-                                   "your OBS (or other software) streams and recordings via a browser source.");
-                        if (enableWebServer)
-                        {
-                            ImGui.Text(
-                                "To add it to your scene, create a browser source in your scene and add the " +
-                                "following URL : ");
-                        }
-                        else
-                        {
-                            ImGui.Text("To add it to your scene, enable the webserver " +
-                                       "then create a browser source in your scene and add the following URL : ");
-                        }
+                        ImGui.Text(Trans("Settings_Web_Help"));
+                        ImGui.Text(Trans("Settings_Web_HelpAdd"));
 
                         ImGui.Text($"http://localhost:{_configuration.WebServerPort}/");
                         ImGui.SameLine();
@@ -319,11 +333,11 @@ namespace EngageTimer.UI
                             ImGui.SetClipboardText($"http://localhost:{_configuration.WebServerPort}/");
                         }
 
-                        ImGui.Text("Recommended window size is 300x100.");
+                        ImGui.Text(Trans("Settings_Web_HelpSize"));
                         ImGui.PopTextWrapPos();
                         ImGui.Separator();
 
-                        if (ImGui.Checkbox("Enable webserver on port", ref enableWebServer))
+                        if (ImGui.Checkbox(TransId("Settings_Web_EnablePort"), ref enableWebServer))
                         {
                             _configuration.EnableWebServer = enableWebServer;
                             _configuration.Save();
@@ -331,14 +345,14 @@ namespace EngageTimer.UI
 
                         ImGui.SameLine();
                         var webServerPort = _configuration.WebServerPort;
-                        if (ImGui.InputInt("", ref webServerPort))
+                        if (ImGui.InputInt("###EngageTimer_WebPort", ref webServerPort))
                         {
                             _configuration.WebServerPort = webServerPort;
                             _configuration.Save();
                         }
 
                         var enableWebStopwatchTimeout = _configuration.EnableWebStopwatchTimeout;
-                        if (ImGui.Checkbox("Hide overlay", ref enableWebStopwatchTimeout))
+                        if (ImGui.Checkbox(TransId("Settings_Web_Hide_Left"), ref enableWebStopwatchTimeout))
                         {
                             _configuration.EnableWebStopwatchTimeout = enableWebStopwatchTimeout;
                             _configuration.Save();
@@ -346,7 +360,7 @@ namespace EngageTimer.UI
 
                         var webStopwatchTimeout = _configuration.WebStopwatchTimeout;
                         ImGui.SameLine();
-                        if (ImGui.DragFloat("seconds after combat ends", ref webStopwatchTimeout))
+                        if (ImGui.DragFloat(TransId("Settings_Web_Hide_Right"), ref webStopwatchTimeout))
                         {
                             _configuration.WebStopwatchTimeout = webStopwatchTimeout;
                             _configuration.Save();
@@ -359,7 +373,7 @@ namespace EngageTimer.UI
 
                 ImGui.NewLine();
                 ImGui.Separator();
-                if (ImGui.Button("Close")) Visible = false;
+                if (ImGui.Button(TransId("Settings_Close"))) Visible = false;
             }
 
             ImGui.End();
