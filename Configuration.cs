@@ -33,8 +33,8 @@ namespace EngageTimer
 
         public bool FloatingWindowLock { get; set; } = false;
 
-        public int FloatingWindowDecimalCountdownPrecision { get; set; } = 1;
-        public int FloatingWindowDecimalStopwatchPrecision { get; set; } = 1;
+        public int FloatingWindowDecimalCountdownPrecision { get; set; } = 0;
+        public int FloatingWindowDecimalStopwatchPrecision { get; set; } = 0;
         public bool FloatingWindowDisplayStopwatchOnlyInDuty { get; set; } = false;
 
         // Stopwatch cosmetics
@@ -95,17 +95,19 @@ namespace EngageTimer
         {
             if (Version == 0)
             {
-                PluginLog.Log("Mother. I require migration. Migrating plugin configuration from version " + Version);
+                PluginLog.Information("Mother. I require migration. Migrating plugin configuration from version " +
+                                      Version);
 
                 DisplayFloatingWindow = DisplayStopwatch;
                 FloatingWindowBackgroundColor = new Vector4(0, 0, 0, 255 * StopwatchOpacity);
                 FloatingWindowTextColor = StopwatchColor;
                 FloatingWindowLock = StopwatchLock;
-                FloatingWindowDecimalStopwatchPrecision = StopwatchDecimalPrecision;
-                FloatingWindowDecimalCountdownPrecision = StopwatchDecimalPrecision;
+                FloatingWindowDecimalStopwatchPrecision = StopwatchTenths ? StopwatchDecimalPrecision : 0;
+                FloatingWindowDecimalCountdownPrecision = StopwatchTenths ? StopwatchDecimalPrecision : 0;
                 FloatingWindowAccurateCountdown = true;
+                Version = 1;
 
-                PluginLog.Log("o" + StopwatchTenths);
+                this.Save();
             }
         }
     }
