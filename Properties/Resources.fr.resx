@@ -262,4 +262,22 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
   <data name="Settings_Close" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Settings_CountdownTab_Texture" xml:space="preserve">
+    <value>Style des chiffres</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_custom" xml:space="preserve">
+    <value>Personnalisé</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
+    <value>WoW</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
+    <value>Dossier de textures</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
+    <value>Charger</value>
+  </data>
 </root>

@@ -170,6 +170,60 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number style.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_custom {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_Custom_Load {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_Custom_Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Texture Folder.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_Custom_Path {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_Custom_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_default {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WoW.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_wow {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_wow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Big countdown.
         /// </summary>
         internal static string Settings_CountdownTab_Title {
@@ -490,15 +544,6 @@ namespace EngageTimer.Properties {
         internal static string Settings_Web_Title {
             get {
                 return ResourceManager.GetString("Settings_Web_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ..\Resources\tick.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089.
-        /// </summary>
-        internal static string Tick {
-            get {
-                return ResourceManager.GetString("Tick", resourceCulture);
             }
         }
     }

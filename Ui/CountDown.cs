@@ -6,11 +6,8 @@ using System.Numerics;
 using System.Threading;
 using Dalamud.Game.Gui;
 using Dalamud.Logging;
-using Dalamud.Plugin;
-using EngageTimer.Properties;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
-using ImGuiScene;
 using NAudio.Wave;
 
 namespace EngageTimer.UI
@@ -20,29 +17,18 @@ namespace EngageTimer.UI
         private readonly Configuration _configuration;
         private readonly State _state;
         private int _lastNumberPlayed;
-        private readonly Dictionary<int, TextureWrap> _numberTextures = new();
-        private int _windowHeight;
-        private int _maxTextureWidth;
-        private GameGui _gui;
+        private readonly GameGui _gui;
+        private readonly NumberTextures _numberTextures;
+        private readonly string _path;
 
-        public CountDown(Configuration configuration, State state, GameGui gui)
+        public CountDown(Configuration configuration, State state, GameGui gui, NumberTextures numberTextures,
+            string path)
         {
             _configuration = configuration;
             _state = state;
             _gui = gui;
-        }
-
-        public void Load(DalamudPluginInterface pluginInterface, string dataPath)
-        {
-            for (var i = 0; i < 10; i++)
-            {
-                var texture = pluginInterface.UiBuilder.LoadImage(
-                    Path.Combine(dataPath, "Data", i + ".png")
-                );
-                _windowHeight = Math.Max(_windowHeight, texture.Height);
-                _numberTextures.Add(i, texture);
-                _maxTextureWidth = Math.Max(_maxTextureWidth, texture.Width);
-            }
+            _numberTextures = numberTextures;
+            _path = path;
         }
 
         private const byte VisibleFlag = 0x20;
@@ -68,7 +54,6 @@ namespace EngageTimer.UI
 
         private const float BaseNumberScale = 1f;
         private const float NumberScale = BaseNumberScale;
-        private const int NumberNegativeMargin = 10;
         private const int GameCountdownWidth = 60; // yes, this number came from my arse
 
         public void Draw()
@@ -94,7 +79,8 @@ namespace EngageTimer.UI
             var accurate = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
 
             var io = ImGui.GetIO();
-            ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _windowHeight + 30), ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _numberTextures.MaxTextureHeight + 30),
+                ImGuiCond.Always);
             ImGui.SetNextWindowPos(new Vector2(0, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0, 0.5f));
             const ImGuiWindowFlags flags = ImGuiWindowFlags.NoTitleBar
                                            | ImGuiWindowFlags.NoDecoration
@@ -119,11 +105,11 @@ namespace EngageTimer.UI
                     var totalWidth = 0f;
                     foreach (var i in integers)
                     {
-                        var texture = _numberTextures[i];
-                        totalWidth += texture.Width - NumberNegativeMargin;
+                        var texture = _numberTextures.GetTexture(i);
+                        totalWidth += texture.Width - _numberTextures.NumberNegativeMargin;
                     }
 
-                    totalWidth += NumberNegativeMargin;
+                    totalWidth += _numberTextures.NumberNegativeMargin;
 
                     // Center the cursor
                     ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f);
@@ -131,12 +117,13 @@ namespace EngageTimer.UI
                     // Draw the images \o/
                     foreach (var i in integers)
                     {
-                        var texture = _numberTextures[i];
+                        var texture = _numberTextures.GetTexture(i);
                         var cursorX = ImGui.GetCursorPosX();
                         ImGui.Image(texture.ImGuiHandle,
                             new Vector2(texture.Width * NumberScale, texture.Height * NumberScale));
                         ImGui.SameLine();
-                        ImGui.SetCursorPosX(texture.Width + cursorX - NumberNegativeMargin * NumberScale);
+                        ImGui.SetCursorPosX(
+                            texture.Width + cursorX - _numberTextures.NumberNegativeMargin * NumberScale);
                     }
                 }
                 else if (_configuration.EnableCountdownDecimal)
@@ -151,18 +138,19 @@ namespace EngageTimer.UI
                         .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
                         .Substring(2);
                     var smolNumberScale = NumberScale * .5f;
-                    var smolMaxWidthScaled = _maxTextureWidth * smolNumberScale;
+                    var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
                     var cursorY = ImGui.GetCursorPosY();
                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 10);
                     foreach (var i in NumberList(decimalPart))
                     {
-                        var texture = _numberTextures[i];
+                        var texture = _numberTextures.GetTexture(i);
                         var cursorX = ImGui.GetCursorPosX();
                         var height = texture.Height * smolNumberScale;
                         ImGui.SetCursorPosY(cursorY + height);
                         ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
                         ImGui.SameLine();
-                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - NumberNegativeMargin * smolNumberScale);
+                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled -
+                                            _numberTextures.NumberNegativeMargin * smolNumberScale);
                     }
                 }
             }
@@ -196,7 +184,7 @@ namespace EngageTimer.UI
                 WaveStream reader;
                 try
                 {
-                    reader = new WaveFileReader(Resources.Tick);
+                    reader = new WaveFileReader(Path.Combine(_path, "Data", "tick.wav"));
                 }
                 catch (Exception e)
                 {

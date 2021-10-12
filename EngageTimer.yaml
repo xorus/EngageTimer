@@ -2,8 +2,19 @@
 author: Xorus
 punchline: Combat countdown with all numbers, stopwatch and OBS support
 description: |-
-  Combat Timer for OBS and ingame overlay with some benefits like a big nice countdown in the middle of the screen in the style of the original one.
-  Please consult the repository link for OBS setup instructions.
+  Finally, display all the numbers when starting a countdown!
+
+  Features :
+
+  - Big countdown that displays all the numbers
+  - Customizable big-number textures (default, WoW style or custom files)
+  - Floating window with combat timer and countdown
+  - OBS browser-source compatible page
+
+  Why the OBS thing ? Well, it can be useful if you want a big stylized stopwatch in your recordings.
+  See repository for more info.
+
+  Feel free so send me feedback, bugs and potential improvements!
 tags:
   - countdown
   - stopwatch

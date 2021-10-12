@@ -1,6 +1,4 @@
 ﻿using System;
-using Dalamud.Game;
-using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui;
 using Dalamud.Plugin;
 using EngageTimer.UI;
@@ -16,15 +14,15 @@ namespace EngageTimer
         public PluginUi(DalamudPluginInterface pluginInterface,
             Configuration configuration,
             GameGui gui,
-            string dataPath,
+            string pluginPath,
             State state
-            )
+        )
         {
-            _countDown = new CountDown(configuration, state, gui);
+            var numbers = new NumberTextures(configuration, pluginInterface.UiBuilder, pluginPath);
+            _countDown = new CountDown(configuration, state, gui, numbers, pluginPath);
             _stopwatch = new FloatingWindow(configuration, state, pluginInterface);
-            _settings = new Settings(configuration, state, pluginInterface.UiBuilder);
-
-            _countDown.Load(pluginInterface, dataPath);
+            _settings = new Settings(configuration, state, pluginInterface.UiBuilder, numbers);
+            numbers.Load();
         }
 
         public void Draw()

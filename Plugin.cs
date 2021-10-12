@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 using Dalamud;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
@@ -45,18 +43,7 @@ namespace EngageTimer
             _pluginInterface = pluginInterface;
             _clientState = clientState;
 
-            string localPath;
-            try
-            {
-                // For loading with Dalamud
-                localPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            }
-            catch
-            {
-                // For loading with LPL
-                localPath = Path.GetDirectoryName(AssemblyLocation);
-            }
-
+            var localPath = pluginInterface.AssemblyLocation.DirectoryName;
             this._localization = new Localization(_pluginInterface.GetPluginLocDirectory());
 
             _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();

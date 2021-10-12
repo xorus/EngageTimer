@@ -17,6 +17,17 @@ You can also enable the "ticking" sound if you want.
 
 \* can now hide the in-game countdown so it stays consistant
 
+### Make your own number textures
+
+Select `Custom` as Style in the settings for Big Countdown and set your own texture folder !
+
+Requirements :
+
+- Images must be PNG
+- Files must be names from 0.png to 9.png
+- Images can be any width
+- Images will top-aligned, so I recommend using the same height for all numbers
+
 ## Stopwatch
 
 ![Stopwatch example](Doc/stopwatch.gif)
@@ -42,12 +53,13 @@ In OBS as a browser source :
 You can easily change the font by adding something like this in the *Custom CSS* in the OBS browser source settings:
 
 ```css
-body { font-family: "Comic Sans MS"; }
+body {
+    font-family: "Comic Sans MS";
+}
 ```
 
-The timer page was designed to be as simple as possible for easily overriding with custom styles in OBS.
-But I could implement a way to customize it in the plugin GUI if someone needs that.
-
+The timer page was designed to be as simple as possible for easily overriding with custom styles in OBS. But I could
+implement a way to customize it in the plugin GUI if someone needs that.
 
 ## Other things I need to say
 

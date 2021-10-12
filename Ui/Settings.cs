@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using EngageTimer.Properties;
 using ImGuiNET;
-using Mono.Cecil;
 
 namespace EngageTimer.UI
 {
@@ -11,14 +12,17 @@ namespace EngageTimer.UI
     {
         private readonly Configuration _configuration;
         private readonly UiBuilder _uiBuilder;
+        private readonly NumberTextures _numberTextures;
         private readonly State _state;
 
         private bool _visible;
 
-        public Settings(Configuration configuration, State state, UiBuilder uiBuilder)
+
+        public Settings(Configuration configuration, State state, UiBuilder uiBuilder, NumberTextures _numberTextures)
         {
             _configuration = configuration;
             _uiBuilder = uiBuilder;
+            this._numberTextures = _numberTextures;
             _state = state;
         }
 
@@ -30,7 +34,7 @@ namespace EngageTimer.UI
 
         private string TransId(string id)
         {
-            return $"{Resources.ResourceManager.GetString(id, Resources.Culture)}###EngageTimer_{id}";
+            return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? id}###EngageTimer_{id}";
         }
 
         private string Trans(string id)
@@ -57,8 +61,8 @@ namespace EngageTimer.UI
                     if (ImGui.BeginTabItem(TransId("Settings_CountdownTab_Title")))
                     {
                         ImGui.PushTextWrapPos();
-                        ImGui.Text(Resources.Settings_CountdownTab_Info1);
-                        ImGui.Text(Resources.Settings_CountdownTab_Info2);
+                        ImGui.Text(Trans("Settings_CountdownTab_Info1"));
+                        ImGui.Text(Trans("Settings_CountdownTab_Info2"));
                         ImGui.PopTextWrapPos();
                         ImGui.Separator();
 
@@ -119,6 +123,8 @@ namespace EngageTimer.UI
 
                             ImGui.Unindent();
                         }
+
+                        CountdownTextures();
 
                         ImGui.Separator();
 
@@ -377,6 +383,70 @@ namespace EngageTimer.UI
             }
 
             ImGui.End();
+        }
+
+        private string _tempTexturePath = null;
+        private int _exampleNumber = 9;
+
+        private void CountdownTextures()
+        {
+            ImGui.Separator();
+
+            ImGui.Text(Trans("Settings_CountdownTab_Texture"));
+
+            var texture = _numberTextures.GetTexture(_exampleNumber);
+            const float scale = .5f;
+
+            ImGui.BeginGroup();
+            if (ImGui.ImageButton(
+                texture.ImGuiHandle,
+                new Vector2(texture.Width * scale, texture.Height * scale)
+            ))
+            {
+                _exampleNumber -= 1;
+                if (_exampleNumber < 0) _exampleNumber = 9;
+            }
+
+            ImGui.SameLine();
+
+            var choices = Configuration.BundledTextures;
+            var choiceString = "";
+            var currentTexture = choices.Count();
+            for (var i = 0; i < choices.Count(); i++)
+            {
+                choiceString += (TransId("Settings_CountdownTab_Texture_" + choices[i])) + "\0";
+                if (_configuration.CountdownTexturePreset == choices[i]) currentTexture = i;
+            }
+
+            // texturePath = "C:\\Users\\jdpep\\OneDrive\\FFXIV\\Discord\\New folder";
+
+            ImGui.BeginGroup();
+            choiceString += TransId("Settings_CountdownTab_Texture_custom");
+            if (ImGui.Combo("###DropDown_" + Trans("Settings_CountdownTab_Texture"), ref currentTexture, choiceString))
+            {
+                _configuration.CountdownTexturePreset = currentTexture < choices.Count() ? choices[currentTexture] : "";
+                _configuration.Save();
+                _numberTextures.Load();
+            }
+
+            if (_configuration.CountdownTexturePreset == "")
+            {
+                if (_tempTexturePath == null) _tempTexturePath = _configuration.CountdownTextureDirectory ?? "";
+
+                ImGui.PushItemWidth(400f);
+                ImGui.InputText(TransId("Settings_CountdownTab_Texture_Custom_Path"), ref _tempTexturePath, 1024);
+                ImGui.PopItemWidth();
+
+                if (ImGui.Button(TransId("Settings_CountdownTab_Texture_Custom_Load")))
+                {
+                    _configuration.CountdownTextureDirectory = _tempTexturePath;
+                    _configuration.Save();
+                    _numberTextures.Load();
+                }
+            }
+
+            ImGui.EndGroup();
+            ImGui.EndGroup();
         }
     }
 }

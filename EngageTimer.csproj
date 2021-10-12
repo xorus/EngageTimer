@@ -9,7 +9,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <Version>1.0.0</Version>
-    <AssemblyVersion>2.0.0.1</AssemblyVersion>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -37,11 +37,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
+    <None Update="Data\numbers\default\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\numbers\wow\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CheapLoc" Version="1.1.6" />
-    <PackageReference Include="DalamudPackager" Version="2.1.2" />
+    <PackageReference Include="DalamudPackager" Version="2.1.4" />
     <PackageReference Include="EmbedIO" Version="3.4.3" />
     <PackageReference Include="NAudio" Version="2.0.1" />
     <PackageReference Include="NAudio.Core" Version="2.0.0" />
@@ -63,20 +68,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\6.0.0.0\Dalamud.dll</HintPath>
+    <Reference Include="Dalamud, Version=6.0.0.10, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="FFXIVClientStructs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\6.0.0.0\FFXIVClientStructs.dll</HintPath>
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="ImGui.NET, Version=1.82.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\6.0.0.0\ImGui.NET.dll</HintPath>
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="ImGuiScene, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\6.0.0.0\ImGuiScene.dll</HintPath>
+      <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
