@@ -46,32 +46,41 @@ namespace EngageTimer.UI
                 return;
             }
 
-            var autoHide = _configuration.AutoHideStopwatch &&
-                           (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.AutoHideTimeout;
-            var countdownMode = _configuration.StopwatchCountdown && _state.CountingDown;
-            if (autoHide && !countdownMode)
-                return;
+            var stopwatchActive = StopwatchActive();
+            var countdownActive = CountdownActive();
+            if (!stopwatchActive && !countdownActive) return;
 
             if (_font.IsLoaded()) ImGui.PushFont(_font);
 
-            this.DrawWindow();
+            this.DrawWindow(stopwatchActive, countdownActive);
 
             if (_font.IsLoaded()) ImGui.PopFont();
         }
 
-        private void DrawWindow()
+        private bool StopwatchActive()
+        {
+            var displayStopwatch = _configuration.FloatingWindowStopwatch;
+            if (!displayStopwatch) return false;
+
+            if (_configuration.AutoHideStopwatch &&
+                (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.AutoHideTimeout)
+                return false;
+
+            return !_configuration.FloatingWindowDisplayStopwatchOnlyInDuty || _state.InInstance;
+        }
+
+        private bool CountdownActive()
+        {
+            return _configuration.FloatingWindowCountdown && _state.CountingDown && _state.CountDownValue > 0;
+        }
+
+        private void DrawWindow(bool stopwatchActive, bool countdownActive)
         {
             // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindowBackgroundColor.Z);
             ImGui.PushStyleColor(ImGuiCol.WindowBg, _configuration.FloatingWindowBackgroundColor);
 
             var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
             if (_configuration.FloatingWindowLock) flags |= ImGuiWindowFlags.NoMouseInputs;
-
-            var displayStopwatch = _configuration.FloatingWindowStopwatch;
-            if (displayStopwatch && _configuration.FloatingWindowDisplayStopwatchOnlyInDuty)
-                displayStopwatch = _state.InInstance;
-            var displayCountdown = _configuration.FloatingWindowCountdown && _state.CountingDown &&
-                                   _state.CountDownValue > 0;
 
             if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
             {
@@ -84,14 +93,14 @@ namespace EngageTimer.UI
                 var maxText = "00:00";
 
                 var displayed = false;
-                if (displayCountdown)
+                if (countdownActive)
                 {
                     text = string.Format(
                         "-{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) + "}",
                         _state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1));
                     displayed = true;
                 }
-                else if (displayStopwatch)
+                else if (stopwatchActive)
                 {
                     if (stopwatchDecimals)
                         maxText += "." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision);

@@ -22,7 +22,6 @@ namespace EngageTimer
         public float AutoHideTimeout { get; set; } = 20f;
         public bool EnableTickingSound { get; set; } = false;
         public float TickingSoundVolume { get; set; } = 0.05f;
-        public bool StopwatchCountdown { get; set; } = false;
         public bool EnableCountdownDecimal { get; set; } = false;
         public int CountdownDecimalPrecision { get; set; } = 1;
 
