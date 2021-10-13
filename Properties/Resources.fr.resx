@@ -269,7 +269,7 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
     <value>Personnalisé</value>
   </data>
   <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
-    <value>Par défaut</value>
+    <value>FFXIV</value>
   </data>
   <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
     <value>WoW</value>
@@ -279,5 +279,8 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
     <value>Charger</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
+    <value>Jaune lisible</value>
   </data>
 </root>

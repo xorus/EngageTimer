@@ -13,8 +13,6 @@ namespace EngageTimer.UI
         private readonly UiBuilder _uiBuilder;
         private readonly string _dataPath;
         private readonly Dictionary<int, TextureWrap> _numberTextures = new();
-        private string _loadedTexturePreset;
-        private string _loadedTextureDirectory;
 
         public int MaxTextureWidth { get; private set; }
 
@@ -68,14 +66,8 @@ namespace EngageTimer.UI
                 _numberTextures.Add(i, texture);
                 MaxTextureWidth = Math.Max(MaxTextureWidth, texture.Width);
             }
-
-            _loadedTextureDirectory = _configuration.CountdownTextureDirectory;
-            _loadedTexturePreset = _configuration.CountdownTexturePreset;
         }
 
-        public TextureWrap GetTexture(int i)
-        {
-            return _numberTextures[i];
-        }
+        public TextureWrap GetTexture(int i) => _numberTextures[i];
     }
 }

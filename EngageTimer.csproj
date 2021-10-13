@@ -40,9 +40,13 @@
     <None Update="Data\numbers\default\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Data\numbers\yellow\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\numbers\wow\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Remove="Doc\source\numbers.png" />
   </ItemGroup>
 
   <ItemGroup>

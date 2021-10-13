@@ -28,7 +28,7 @@ namespace EngageTimer
 
         public string CountdownTexturePreset { get; set; } = "default";
         public string CountdownTextureDirectory { get; set; } = null;
-        public static readonly string[] BundledTextures = { "default", "wow" };
+        public static readonly string[] BundledTextures = { "default", "yellow", "wow" };
 
         // Floating window
         public bool DisplayFloatingWindow { get; set; } = true;

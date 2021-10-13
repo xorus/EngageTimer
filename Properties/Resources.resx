@@ -270,7 +270,7 @@ This setting only works when the original countdown is hidden.</value>
     <value>Custom</value>
   </data>
   <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
-    <value>Default</value>
+    <value>FFXIV</value>
   </data>
   <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
     <value>WoW</value>
@@ -280,5 +280,8 @@ This setting only works when the original countdown is hidden.</value>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
     <value>Load</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
+    <value>Readable yellow</value>
   </data>
 </root>

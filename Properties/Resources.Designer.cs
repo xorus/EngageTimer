@@ -206,7 +206,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default.
+        ///   Looks up a localized string similar to FFXIV.
         /// </summary>
         internal static string Settings_CountdownTab_Texture_default {
             get {
@@ -220,6 +220,15 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_Texture_wow {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_Texture_wow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Readable yellow.
+        /// </summary>
+        internal static string Settings_CountdownTab_Texture_yellow {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Texture_yellow", resourceCulture);
             }
         }
         
