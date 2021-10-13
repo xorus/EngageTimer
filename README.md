@@ -1,7 +1,15 @@
 # EngageTimer
 
-This plugin for the [FFXIV plugin platform Dalamud](https://github.com/goatcorp/FFXIVQuickLauncher)
-can display a countdown on screen in the style of the original one, plus a stopwatch tracking the combat duration.
+Finally, display all the numbers when starting a countdown!
+
+**Main features :**
+
+- Big countdown that displays all the numbers
+- Customizable big-number textures (default, yellow, WoW style or custom files)
+- Floating window with combat timer and countdown
+- OBS browser-source compatible page
+
+This is a plugin for the [FFXIV plugin platform Dalamud](https://github.com/goatcorp/FFXIVQuickLauncher).
 
 The original motivation for this plugin was to do something like 
 ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)

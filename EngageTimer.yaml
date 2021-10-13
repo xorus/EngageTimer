@@ -5,9 +5,8 @@ description: |-
   Finally, display all the numbers when starting a countdown!
 
   Features :
-
   - Big countdown that displays all the numbers
-  - Customizable big-number textures (default, WoW style or custom files)
+  - Customizable big-number textures (default, yellow, WoW style or custom files)
   - Floating window with combat timer and countdown
   - OBS browser-source compatible page
 
