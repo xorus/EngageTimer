@@ -3,30 +3,32 @@
 This plugin for the [FFXIV plugin platform Dalamud](https://github.com/goatcorp/FFXIVQuickLauncher)
 can display a countdown on screen in the style of the original one, plus a stopwatch tracking the combat duration.
 
-The original motivation for this plugin was to improve on the
-original ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
-and make it synchronize somehow with my OBS recording setup.
+The original motivation for this plugin was to do something like 
+["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
+but with a big stopwatch timer for my recordings.
 
 ## Countdown
 
 Adds the missing numbers in the standard countdown thing!
 
-You can also enable the "ticking" sound if you want.
-
 ![Countdown example](Doc/countdown.gif)
 
-\* can now hide the in-game countdown so it stays consistant
+This examples showcases the bundled number styles with the hide original timer option enabled.
+
+You can also enable the "ticking" sound if you want.
 
 ### Make your own number textures
 
 Select `Custom` as Style in the settings for Big Countdown and set your own texture folder !
 
-Requirements :
+**Requirements :**
 
 - Images must be PNG
 - Files must be names from 0.png to 9.png
 - Images can be any width
 - Images will top-aligned, so I recommend using the same height for all numbers
+
+[Download example custom textures](Doc/custom_example.zip) 
 
 ## Stopwatch
 

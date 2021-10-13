@@ -418,8 +418,6 @@ namespace EngageTimer.UI
                 if (_configuration.CountdownTexturePreset == choices[i]) currentTexture = i;
             }
 
-            // texturePath = "C:\\Users\\jdpep\\OneDrive\\FFXIV\\Discord\\New folder";
-
             ImGui.BeginGroup();
             ImGui.PushItemWidth(200f);
             choiceString += TransId("Settings_CountdownTab_Texture_custom");
