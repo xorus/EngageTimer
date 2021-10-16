@@ -141,9 +141,6 @@
   <data name="Settings_CountdownTab_PlaySound_Volume" xml:space="preserve">
     <value>Volume</value>
   </data>
-  <data name="Settings_CountdownTab_Info2" xml:space="preserve">
-    <value>Il vous suffit de lancer un compte à rebours pour tester.</value>
-  </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
     <value>Cacher le compte à rebours original</value>
   </data>
@@ -281,6 +278,33 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
     <value>Charger</value>
   </data>
   <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
-    <value>Jaune lisible</value>
+    <value>Lisible</value>
+  </data>
+  <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
+    <value>Tester l'affichage</value>
+  </data>
+  <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
+    <value>Arrêter le test</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
+    <value>Forcer la couleur au lieu de déplacer la teinte</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
+    <value>saturation</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
+    <value>teinte</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
+    <value>luminosité</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
+    <value>Taille</value>
+  </data>
+  <data name="Settings_CountdownTab_Animate" xml:space="preserve">
+    <value>Animer</value>
   </data>
 </root>

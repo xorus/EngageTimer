@@ -84,8 +84,8 @@ namespace EngageTimer
         private void DrawUi()
         {
             // disable plugin operation when not logged in
-            if (!_clientState.IsLoggedIn)
-                return;
+            // if (!_clientState.IsLoggedIn)
+                // return;
 
             _stopWatchHook?.Update();
             _server?.Update();

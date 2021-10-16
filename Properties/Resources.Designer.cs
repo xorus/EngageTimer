@@ -89,6 +89,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Animate numbers.
+        /// </summary>
+        internal static string Settings_CountdownTab_Animate {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Animate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display.
         /// </summary>
         internal static string Settings_CountdownTab_CountdownDecimals_Left {
@@ -103,6 +112,15 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_CountdownDecimals_Right {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_CountdownDecimals_Right", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scale.
+        /// </summary>
+        internal static string Settings_CountdownTab_CountdownScale {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_CountdownScale", resourceCulture);
             }
         }
         
@@ -143,11 +161,47 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To test this out, simply start a combat countdown..
+        ///   Looks up a localized string similar to hue.
         /// </summary>
-        internal static string Settings_CountdownTab_Info2 {
+        internal static string Settings_CountdownTab_NumberHue {
             get {
-                return ResourceManager.GetString("Settings_CountdownTab_Info2", resourceCulture);
+                return ResourceManager.GetString("Settings_CountdownTab_NumberHue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to brightness.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberLuminance {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberLuminance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recolor instead of shifting hue.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberRecolor {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberRecolor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to saturation.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberSaturation {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberSaturation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberStyleTitle {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberStyleTitle", resourceCulture);
             }
         }
         
@@ -166,6 +220,24 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_PlaySound_Volume {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_PlaySound_Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable test mode.
+        /// </summary>
+        internal static string Settings_CountdownTab_Test_Start {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Test_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable test mode.
+        /// </summary>
+        internal static string Settings_CountdownTab_Test_Stop {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Test_Stop", resourceCulture);
             }
         }
         
@@ -224,7 +296,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Readable yellow.
+        ///   Looks up a localized string similar to Readable.
         /// </summary>
         internal static string Settings_CountdownTab_Texture_yellow {
             get {

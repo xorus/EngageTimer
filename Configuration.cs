@@ -25,9 +25,18 @@ namespace EngageTimer
         public bool EnableCountdownDecimal { get; set; } = false;
         public int CountdownDecimalPrecision { get; set; } = 1;
 
+        // Countdown style
         public string CountdownTexturePreset { get; set; } = "default";
         public string CountdownTextureDirectory { get; set; } = null;
         public static readonly string[] BundledTextures = { "default", "yellow", "wow" };
+        public float CountdownScale { get; set; } = 1f;
+
+        // Countdown color
+        public int CountdownNumberHue { get; set; }
+        public float CountdownNumberSaturation { get; set; }
+        public float CountdownNumberLuminance { get; set; }
+        public bool CountdownNumberRecolorMode { get; set; }
+        public bool CountdownAnimate { get; set; }
 
         // Floating window
         public bool DisplayFloatingWindow { get; set; } = true;

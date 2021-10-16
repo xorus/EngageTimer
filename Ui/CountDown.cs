@@ -5,7 +5,10 @@ using System.IO;
 using System.Numerics;
 using System.Threading;
 using Dalamud.Game.Gui;
+using Dalamud.Interface.Animation;
+using Dalamud.Interface.Animation.EasingFunctions;
 using Dalamud.Logging;
+using EngageTimer.UI.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 using NAudio.Wave;
@@ -20,6 +23,7 @@ namespace EngageTimer.UI
         private readonly GameGui _gui;
         private readonly NumberTextures _numberTextures;
         private readonly string _path;
+        private bool _accurateMode = false;
 
         public CountDown(Configuration configuration, State state, GameGui gui, NumberTextures numberTextures,
             string path)
@@ -29,6 +33,20 @@ namespace EngageTimer.UI
             _gui = gui;
             _numberTextures = numberTextures;
             _path = path;
+            configuration.OnSave += ConfigurationOnOnSave;
+        }
+
+        private void ConfigurationOnOnSave(object? sender, EventArgs e)
+        {
+            UpdateFromConfig();
+        }
+
+        /**
+         * Things I need to simplify/re-use in this class but dont need to compute every frame
+         */
+        private void UpdateFromConfig()
+        {
+            _accurateMode = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
         }
 
         private const byte VisibleFlag = 0x20;
@@ -53,13 +71,26 @@ namespace EngageTimer.UI
         }
 
         private const float BaseNumberScale = 1f;
-        private const float NumberScale = BaseNumberScale;
         private const int GameCountdownWidth = 60; // yes, this number came from my arse
+
+        private readonly Easing _easing = new OutCubic(new TimeSpan(0, 0, 0, 0, 1000));
+
+        private readonly Easing _easingOpacity = new OpacityEasing(
+            new TimeSpan(0, 0, 0, 0, 1000),
+            1, -0.02, .71, 1
+        );
+
+        // private readonly Easing _easingOpacity = new InCubic(
+        // new TimeSpan(0, 0, 0, 0, 1000)
+        // );
+
+        private int _lastSecond = 0;
 
         public void Draw()
         {
             if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
                 TickSound((int)Math.Ceiling(_state.CountDownValue));
+
 
             // display is disabled
             if (!_configuration.DisplayCountdown)
@@ -76,10 +107,36 @@ namespace EngageTimer.UI
             if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
                 this.ToggleOriginalAddon();
 
-            var accurate = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
+            var showMainCountdown = _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
 
+            var numberScale = BaseNumberScale;
+            if (showMainCountdown)
+            {
+                numberScale *= _configuration.CountdownScale;
+                // numberScale += (_state.CountDownValue % 1) * 0.7f;
+
+                if (_configuration.CountdownAnimate)
+                {
+                    var second = (int)_state.CountDownValue;
+                    if (_lastSecond != second)
+                    {
+                        _easing.Restart();
+                        _easingOpacity.Restart();
+                        _lastSecond = second;
+                    }
+
+                    _easing.Update();
+                    _easingOpacity.Update();
+                    numberScale += .7f * (1 - (float)_easing.Value);
+                }
+            }
+
+            var negativeMargin = _numberTextures.NumberNegativeMargin * numberScale;
             var io = ImGui.GetIO();
-            ImGui.SetNextWindowSize(new Vector2(io.DisplaySize.X, _numberTextures.MaxTextureHeight + 30),
+            ImGui.SetNextWindowSize(new Vector2(
+                    io.DisplaySize.X,
+                    (_numberTextures.MaxTextureHeight * numberScale) + 30
+                ),
                 ImGuiCond.Always);
             ImGui.SetNextWindowPos(new Vector2(0, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0, 0.5f));
             const ImGuiWindowFlags flags = ImGuiWindowFlags.NoTitleBar
@@ -93,69 +150,87 @@ namespace EngageTimer.UI
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
             {
-                if (_state.CountDownValue > 5 || _configuration.HideOriginalCountdown)
+                DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, false);
+                if (_configuration.CountdownAnimate)
                 {
-                    var number = accurate
-                        ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
-                        : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
-
-                    var integers = NumberList(number);
-
-                    // First loop to compute total width
-                    var totalWidth = 0f;
-                    foreach (var i in integers)
-                    {
-                        var texture = _numberTextures.GetTexture(i);
-                        totalWidth += texture.Width - _numberTextures.NumberNegativeMargin;
-                    }
-
-                    totalWidth += _numberTextures.NumberNegativeMargin;
-
-                    // Center the cursor
-                    ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f);
-
-                    // Draw the images \o/
-                    foreach (var i in integers)
-                    {
-                        var texture = _numberTextures.GetTexture(i);
-                        var cursorX = ImGui.GetCursorPosX();
-                        ImGui.Image(texture.ImGuiHandle,
-                            new Vector2(texture.Width * NumberScale, texture.Height * NumberScale));
-                        ImGui.SameLine();
-                        ImGui.SetCursorPosX(
-                            texture.Width + cursorX - _numberTextures.NumberNegativeMargin * NumberScale);
-                    }
-                }
-                else if (_configuration.EnableCountdownDecimal)
-                {
-                    ImGui.SetCursorPosX(io.DisplaySize.X / 2f + GameCountdownWidth);
-                }
-
-                if (_configuration.EnableCountdownDecimal)
-                {
-                    var decimalPart =
-                        (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
-                        .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
-                        .Substring(2);
-                    var smolNumberScale = NumberScale * .5f;
-                    var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
-                    var cursorY = ImGui.GetCursorPosY();
-                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 10);
-                    foreach (var i in NumberList(decimalPart))
-                    {
-                        var texture = _numberTextures.GetTexture(i);
-                        var cursorX = ImGui.GetCursorPosX();
-                        var height = texture.Height * smolNumberScale;
-                        ImGui.SetCursorPosY(cursorY + height);
-                        ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
-                        ImGui.SameLine();
-                        ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled -
-                                            _numberTextures.NumberNegativeMargin * smolNumberScale);
-                    }
+                    ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
+                    DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, true);
+                    ImGui.PopStyleVar();
                 }
             }
 
             ImGui.End();
+        }
+
+        private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMargin,
+            bool alternateMode)
+        {
+            ImGui.SetCursorPosY(0f);
+            if (showMainCountdown)
+            {
+                var number = _accurateMode
+                    ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
+                    : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
+
+                var integers = NumberList(number);
+
+                // First loop to compute total width
+                var totalWidth = 0f;
+                foreach (var i in integers)
+                {
+                    var texture = _numberTextures.GetAltTexture(i);
+                    totalWidth += (texture.Width * numberScale) - negativeMargin;
+                }
+
+                totalWidth += negativeMargin;
+
+                // Center the cursor
+                ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f);
+
+                // Draw the images \o/
+                foreach (var i in integers)
+                {
+                    var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
+                    var cursorX = ImGui.GetCursorPosX();
+                    ImGui.Image(texture.ImGuiHandle,
+                        new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(cursorX + (texture.Width * numberScale) - negativeMargin);
+                }
+            }
+            else if (_configuration.EnableCountdownDecimal)
+            {
+                ImGui.SetCursorPosX(io.DisplaySize.X / 2f + GameCountdownWidth);
+            }
+
+            if (_configuration.EnableCountdownDecimal)
+            {
+                var decimalPart =
+                    (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
+                    .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
+                    .Substring(2);
+                var smolNumberScale = numberScale * .5f;
+                var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
+
+                // align the small numbers on the number baseline
+                var offsetY = _numberTextures.MaxTextureHeight * numberScale
+                              - _numberTextures.MaxTextureHeight * smolNumberScale
+                              - _numberTextures.NumberBottomMargin * smolNumberScale;
+
+                var cursorY = ImGui.GetCursorPosY();
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + _numberTextures.NumberNegativeMargin);
+                foreach (var i in NumberList(decimalPart))
+                {
+                    var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
+                    var cursorX = ImGui.GetCursorPosX();
+                    var height = texture.Height * smolNumberScale;
+                    ImGui.SetCursorPosY(cursorY + offsetY);
+                    ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled -
+                                        _numberTextures.NumberNegativeMargin * smolNumberScale);
+                }
+            }
         }
 
         private static List<int> NumberList(string number)

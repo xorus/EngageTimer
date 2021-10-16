@@ -11,7 +11,7 @@ Finally, display all the numbers when starting a countdown!
 
 This is a plugin for the [FFXIV plugin platform Dalamud](https://github.com/goatcorp/FFXIVQuickLauncher).
 
-The original motivation for this plugin was to do something like 
+The original motivation for this plugin was to do something like
 ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
 but with a big stopwatch timer for my recordings.
 
@@ -29,14 +29,16 @@ You can also enable the "ticking" sound if you want.
 
 Select `Custom` as Style in the settings for Big Countdown and set your own texture folder !
 
-**Requirements :**
+**Requirements:**
 
 - Images must be PNG
 - Files must be names from 0.png to 9.png
 - Images can be any width
 - Images will top-aligned, so I recommend using the same height for all numbers
 
-[Download example custom textures](Doc/custom_example.zip) 
+[More details](Data/numbers/README.md)
+
+[Download example custom textures](Doc/custom_example.zip)
 
 ## Stopwatch
 

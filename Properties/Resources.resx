@@ -123,9 +123,6 @@
   <data name="Settings_CountdownTab_Info1" xml:space="preserve">
     <value>The "big countdown" feature adds the missing numbers to the in-game timer !</value>
   </data>
-  <data name="Settings_CountdownTab_Info2" xml:space="preserve">
-    <value>To test this out, simply start a combat countdown.</value>
-  </data>
   <data name="Settings_CountdownTab_Enable" xml:space="preserve">
     <value>Enable big countdown</value>
   </data>
@@ -282,6 +279,33 @@ This setting only works when the original countdown is hidden.</value>
     <value>Load</value>
   </data>
   <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
-    <value>Readable yellow</value>
+    <value>Readable</value>
+  </data>
+  <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
+    <value>Disable test mode</value>
+  </data>
+  <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
+    <value>Enable test mode</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
+    <value>brightness</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
+    <value>hue</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
+    <value>saturation</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
+    <value>Recolor instead of shifting hue</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="Settings_CountdownTab_Animate" xml:space="preserve">
+    <value>Animate numbers</value>
   </data>
 </root>
