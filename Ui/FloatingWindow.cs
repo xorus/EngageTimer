@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using Dalamud.Logging;
@@ -83,31 +84,44 @@ namespace EngageTimer.UI
             if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindowTextColor);
+                ImGui.SetWindowFontScale(_configuration.FloatingWindowScale);
 
                 var stopwatchDecimals = _configuration.FloatingWindowDecimalStopwatchPrecision > 0;
 
                 var text = ""; // text to be displayed
                 // the largest possible string, taking advantage that the default font has fixed number width
-                var maxText = "00:00";
+                var maxText = (_configuration.FloatingWindowStopwatchAsSeconds ? "0000" : "00") +
+                              (stopwatchDecimals
+                                  ? new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision)
+                                  : "");
 
                 var displayed = false;
                 if (countdownActive)
                 {
                     text = string.Format(
-                        "-{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) + "}",
+                        (_configuration.FloatingWindowCountdownNegativeSign ? "-" : "")
+                        + "{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) + "}",
                         _state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1));
                     displayed = true;
                 }
                 else if (stopwatchActive)
                 {
-                    if (stopwatchDecimals)
-                        maxText += "." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision);
-                    if (stopwatchDecimals)
-                        text = _state.CombatDuration.ToString(
-                            @"mm\:ss\." + new string('f', _configuration.FloatingWindowDecimalStopwatchPrecision)
-                        );
+                    if (_configuration.FloatingWindowStopwatchAsSeconds)
+                    {
+                        text = Math.Floor(_state.CombatDuration.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                        if (stopwatchDecimals)
+                            text += "." + _state.CombatDuration.ToString(
+                                new string('f', _configuration.FloatingWindowDecimalStopwatchPrecision)
+                            );
+                    }
                     else
-                        text = _state.CombatDuration.ToString(@"mm\:ss");
+                    {
+                        text = stopwatchDecimals
+                            ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
+                                _configuration.FloatingWindowDecimalStopwatchPrecision))
+                            : _state.CombatDuration.ToString(@"mm\:ss");
+                    }
+
                     displayed = true;
                 }
 

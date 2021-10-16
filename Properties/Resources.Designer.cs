@@ -152,6 +152,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scale.
+        /// </summary>
+        internal static string Settings_CountdownTab_FloatingWindowScale {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_FloatingWindowScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide original countdown.
         /// </summary>
         internal static string Settings_CountdownTab_HideOriginalCountDown {
@@ -422,6 +431,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display the &quot;-&quot; sign.
+        /// </summary>
+        internal static string Settings_FWTab_CountdownNegativeSign {
+            get {
+                return ResourceManager.GetString("Settings_FWTab_CountdownNegativeSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shows the current countdown value (e.g. -13).
         /// </summary>
         internal static string Settings_FWTab_CountdownPrecision_Help {
@@ -517,6 +535,15 @@ namespace EngageTimer.Properties {
         internal static string Settings_FWTab_Lock_Help {
             get {
                 return ResourceManager.GetString("Settings_FWTab_Lock_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display combat time in seconds instead of time format.
+        /// </summary>
+        internal static string Settings_FWTab_StopwatchAsSeconds {
+            get {
+                return ResourceManager.GetString("Settings_FWTab_StopwatchAsSeconds", resourceCulture);
             }
         }
         

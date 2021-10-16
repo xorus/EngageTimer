@@ -412,10 +412,57 @@ namespace EngageTimer.UI
             }
 
             ImGuiComponents.HelpMarker(Trans("Settings_FWTab_StopwatchPrecision_Help"));
+
+            ImGui.Separator();
+            if (ImGui.CollapsingHeader(TransId("Settings_FWTab_Styling"))) FwStyling();
             ImGui.Separator();
 
-            ImGui.Text(Trans("Settings_FWTab_Styling"));
+            if (ImGui.Checkbox(TransId("Settings_FWTab_AccurateCountdown"),
+                ref floatingWindowAccurateCountdown))
+            {
+                _configuration.FloatingWindowAccurateCountdown = floatingWindowAccurateCountdown;
+                _configuration.Save();
+            }
+
+            ImGuiComponents.HelpMarker(Trans("Settings_FWTab_AccurateCountdown_Help"));
+
+            var fWDisplayStopwatchOnlyInDuty = _configuration.FloatingWindowDisplayStopwatchOnlyInDuty;
+            if (ImGui.Checkbox(TransId("Settings_FWTab_DisplayStopwatchOnlyInDuty"),
+                ref fWDisplayStopwatchOnlyInDuty))
+            {
+                _configuration.FloatingWindowDisplayStopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
+                _configuration.Save();
+            }
+
+            ImGuiComponents.HelpMarker(Trans("Settings_FWTab_DisplayStopwatchOnlyInDuty_Help"));
+
+            var negativeSign = _configuration.FloatingWindowCountdownNegativeSign;
+            if (ImGui.Checkbox(TransId("Settings_FWTab_CountdownNegativeSign"), ref negativeSign))
+            {
+                _configuration.FloatingWindowCountdownNegativeSign = negativeSign;
+                _configuration.Save();
+            }
+
+            var displaySeconds = _configuration.FloatingWindowStopwatchAsSeconds;
+            if (ImGui.Checkbox(TransId("Settings_FWTab_StopwatchAsSeconds"), ref displaySeconds))
+            {
+                _configuration.FloatingWindowStopwatchAsSeconds = displaySeconds;
+                _configuration.Save();
+            }
+        }
+
+        private void FwStyling()
+        {
             ImGui.Indent();
+
+            ImGui.BeginGroup();
+            var fwScale = _configuration.FloatingWindowScale;
+            ImGui.PushItemWidth(100f);
+            if (ImGui.DragFloat(TransId("Settings_CountdownTab_FloatingWindowScale"), ref fwScale, .01f))
+            {
+                _configuration.FloatingWindowScale = Math.Clamp(fwScale, 0.05f, 15f);
+                _configuration.Save();
+            }
 
             var textAlign = (int)_configuration.StopwatchTextAlign;
             if (ImGui.Combo(TransId("Settings_FWTab_TextAlign"), ref textAlign,
@@ -438,6 +485,9 @@ namespace EngageTimer.UI
                 }
             }
 
+            ImGui.EndGroup();
+            ImGui.SameLine();
+            ImGui.BeginGroup();
             var floatingWindowTextColor = ImGuiComponents.ColorPickerWithPalette(1,
                 TransId("Settings_FWTab_TextColor"),
                 _configuration.FloatingWindowTextColor);
@@ -461,27 +511,9 @@ namespace EngageTimer.UI
 
             ImGui.SameLine();
             ImGui.Text(Trans("Settings_FWTab_BackgroundColor"));
+            ImGui.EndGroup();
+
             ImGui.Unindent();
-            ImGui.Separator();
-
-            if (ImGui.Checkbox(TransId("Settings_FWTab_AccurateCountdown"),
-                ref floatingWindowAccurateCountdown))
-            {
-                _configuration.FloatingWindowAccurateCountdown = floatingWindowAccurateCountdown;
-                _configuration.Save();
-            }
-
-            ImGuiComponents.HelpMarker(Trans("Settings_FWTab_AccurateCountdown_Help"));
-
-            var fWDisplayStopwatchOnlyInDuty = _configuration.FloatingWindowDisplayStopwatchOnlyInDuty;
-            if (ImGui.Checkbox(TransId("Settings_FWTab_DisplayStopwatchOnlyInDuty"),
-                ref fWDisplayStopwatchOnlyInDuty))
-            {
-                _configuration.FloatingWindowDisplayStopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
-                _configuration.Save();
-            }
-
-            ImGuiComponents.HelpMarker(Trans("Settings_FWTab_DisplayStopwatchOnlyInDuty_Help"));
         }
 
         private void WebServerTabContent()

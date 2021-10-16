@@ -329,4 +329,13 @@ This setting only works when the original countdown is hidden.</value>
   <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
     <value>Warning : when not hiding the original countdown, rescaling/offseting might behave wrongly</value>
   </data>
+  <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
+    <value>Display combat time in seconds instead of time format</value>
+  </data>
+  <data name="Settings_FWTab_CountdownNegativeSign" xml:space="preserve">
+    <value>Display the "-" sign</value>
+  </data>
+  <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
 </root>
