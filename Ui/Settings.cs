@@ -194,7 +194,7 @@ namespace EngageTimer.UI
 
             if (enableTickingSound)
             {
-                ImGui.Indent();
+                ImGui.SameLine();
                 var volume = _configuration.TickingSoundVolume * 100f;
                 if (ImGui.DragFloat(TransId("Settings_CountdownTab_PlaySound_Volume"), ref volume, .1f, 0f,
                     100f, "%.1f%%"))
@@ -202,8 +202,6 @@ namespace EngageTimer.UI
                     _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
                     _configuration.Save();
                 }
-
-                ImGui.Unindent();
             }
 
             var animate = _configuration.CountdownAnimate;
@@ -214,8 +212,31 @@ namespace EngageTimer.UI
                 _numberTextures.CreateTextures();
             }
 
-            CountdownTextures();
+            if (animate)
+            {
+                ImGui.SameLine();
+                var animateScale = _configuration.CountdownAnimateScale;
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_AnimateScale"), ref animateScale))
+                {
+                    _configuration.CountdownAnimateScale = animateScale;
+                    _configuration.Save();
+                    _numberTextures.CreateTextures();
+                }
 
+                ImGui.SameLine();
+                var animateOpacity = _configuration.CountdownAnimateOpacity;
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_AnimateOpacity"), ref animateOpacity))
+                {
+                    _configuration.CountdownAnimateOpacity = animateOpacity;
+                    _configuration.Save();
+                    _numberTextures.CreateTextures();
+                }
+            }
+
+            ImGui.Separator();
+            if (ImGui.CollapsingHeader(TransId("Settings_CountdownTab_PositioningTitle"))) CountdownPositionAndSize();
+            if (ImGui.CollapsingHeader(TransId("Settings_CountdownTab_Texture"), ImGuiTreeNodeFlags.DefaultOpen))
+                CountdownNumberStyle();
             ImGui.Separator();
 
             var countdownAccurateCountdownDisabled = !_configuration.HideOriginalCountdown;
@@ -238,6 +259,49 @@ namespace EngageTimer.UI
 
             ImGui.Indent();
             ImGui.TextDisabled(Trans("Settings_CountdownTab_AccurateMode_Help"));
+        }
+
+        private void CountdownPositionAndSize()
+        {
+            ImGui.Indent();
+            var countdownOffsetX = _configuration.CountdownWindowOffset.X;
+            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX))
+            {
+                _configuration.CountdownWindowOffset =
+                    new Vector2(countdownOffsetX, _configuration.CountdownWindowOffset.Y);
+                _configuration.Save();
+            }
+
+            ImGui.SameLine();
+
+            var countdownOffsetY = _configuration.CountdownWindowOffset.Y;
+            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetY"), ref countdownOffsetY))
+            {
+                _configuration.CountdownWindowOffset =
+                    new Vector2(_configuration.CountdownWindowOffset.X, countdownOffsetY);
+                _configuration.Save();
+            }
+
+            ImGui.SameLine();
+            ImGui.Text(Trans("Settings_CountdownTab_OffsetText"));
+            ImGui.SameLine();
+
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_cd_offset"))
+            {
+                _configuration.CountdownWindowOffset = Vector2.Zero;
+                _configuration.Save();
+            }
+
+            var countdownScale = _configuration.CountdownScale;
+            ImGui.PushItemWidth(100f);
+            if (ImGui.InputFloat(TransId("Settings_CountdownTab_CountdownScale"), ref countdownScale, .01f))
+            {
+                _configuration.CountdownScale = Math.Clamp(countdownScale, 0.05f, 15f);
+                _configuration.Save();
+            }
+
+            ImGui.PopItemWidth();
+            ImGui.Unindent();
         }
 
         private void FloatingWindowTabContent()
@@ -461,15 +525,13 @@ namespace EngageTimer.UI
             }
         }
 
-        private void CountdownTextures()
+        private void CountdownNumberStyle()
         {
-            ImGui.Separator();
-
-            ImGui.Text(Trans("Settings_CountdownTab_Texture"));
-
+            ImGui.Indent();
+            // ImGui.Separator();
+            // ImGui.Text(Trans("Settings_CountdownTab_Texture"));
             var texture = _numberTextures.GetTexture(_exampleNumber);
             const float scale = .5f;
-
             ImGui.BeginGroup();
             if (ImGui.ImageButton(
                 texture.ImGuiHandle,
@@ -523,18 +585,9 @@ namespace EngageTimer.UI
                 CountdownNumberColor();
             }
 
-            var countdownScale = _configuration.CountdownScale;
-            ImGui.PushItemWidth(100f);
-            if (ImGui.InputFloat(TransId("Settings_CountdownTab_CountdownScale"), ref countdownScale, .01f))
-            {
-                _configuration.CountdownScale = Math.Clamp(countdownScale, 0.05f, 15f);
-                _configuration.Save();
-            }
-
-            ImGui.PopItemWidth();
-
             ImGui.EndGroup();
             ImGui.EndGroup();
+            ImGui.Unindent();
         }
 
         private void CountdownNumberColor()
@@ -545,6 +598,7 @@ namespace EngageTimer.UI
             {
                 _configuration.CountdownNumberLuminance = 0f;
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             ImGui.SameLine();
@@ -553,6 +607,7 @@ namespace EngageTimer.UI
             {
                 _configuration.CountdownNumberLuminance = Math.Clamp(b, -1f, 1f);
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             // --- Saturation ---
@@ -560,6 +615,7 @@ namespace EngageTimer.UI
             {
                 _configuration.CountdownNumberSaturation = 0f;
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             ImGui.SameLine();
@@ -568,6 +624,7 @@ namespace EngageTimer.UI
             {
                 _configuration.CountdownNumberSaturation = Math.Clamp(s, -1f, 1f);
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             // --- Hue ---
@@ -575,6 +632,7 @@ namespace EngageTimer.UI
             {
                 _configuration.CountdownNumberHue = 0;
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             var h = _configuration.CountdownNumberHue;
@@ -593,6 +651,7 @@ namespace EngageTimer.UI
                 if (h < 0) h = 360;
                 _configuration.CountdownNumberHue = h;
                 _numberTextures.CreateTextures();
+                _configuration.Save();
             }
 
             if (_configuration.CountdownNumberRecolorMode)

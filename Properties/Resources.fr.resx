@@ -305,6 +305,18 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
     <value>Taille</value>
   </data>
   <data name="Settings_CountdownTab_Animate" xml:space="preserve">
-    <value>Animer</value>
+    <value>Activer l'animation</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
+    <value>Décalage</value>
+  </data>
+  <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
+    <value>Position et taille</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
+    <value>Effet d'échelle</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
+    <value>Effet de lumière</value>
   </data>
 </root>

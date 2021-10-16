@@ -37,6 +37,9 @@ namespace EngageTimer
         public float CountdownNumberLuminance { get; set; }
         public bool CountdownNumberRecolorMode { get; set; }
         public bool CountdownAnimate { get; set; }
+        public bool CountdownAnimateScale { get; set; } = true;
+        public bool CountdownAnimateOpacity { get; set; } = true;
+        public Vector2 CountdownWindowOffset { get; set; } = Vector2.Zero;
 
         // Floating window
         public bool DisplayFloatingWindow { get; set; } = true;

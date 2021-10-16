@@ -89,11 +89,29 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Animate numbers.
+        ///   Looks up a localized string similar to Enable animation.
         /// </summary>
         internal static string Settings_CountdownTab_Animate {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_Animate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light effect.
+        /// </summary>
+        internal static string Settings_CountdownTab_AnimateOpacity {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_AnimateOpacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scaling effect.
+        /// </summary>
+        internal static string Settings_CountdownTab_AnimateScale {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_AnimateScale", resourceCulture);
             }
         }
         
@@ -206,6 +224,33 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countdown offset.
+        /// </summary>
+        internal static string Settings_CountdownTab_OffsetText {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_OffsetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X.
+        /// </summary>
+        internal static string Settings_CountdownTab_OffsetX {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_OffsetX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        internal static string Settings_CountdownTab_OffsetY {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_OffsetY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play a ticking sound for all numbers.
         /// </summary>
         internal static string Settings_CountdownTab_PlaySound {
@@ -220,6 +265,15 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_PlaySound_Volume {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_PlaySound_Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position and size.
+        /// </summary>
+        internal static string Settings_CountdownTab_PositioningTitle {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_PositioningTitle", resourceCulture);
             }
         }
         

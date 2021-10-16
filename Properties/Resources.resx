@@ -306,6 +306,24 @@ This setting only works when the original countdown is hidden.</value>
     <value>Scale</value>
   </data>
   <data name="Settings_CountdownTab_Animate" xml:space="preserve">
-    <value>Animate numbers</value>
+    <value>Enable animation</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
+    <value>Countdown offset</value>
+  </data>
+  <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
+    <value>Position and size</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
+    <value>Scaling effect</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
+    <value>Light effect</value>
   </data>
 </root>

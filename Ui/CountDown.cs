@@ -127,31 +127,33 @@ namespace EngageTimer.UI
 
                     _easing.Update();
                     _easingOpacity.Update();
-                    numberScale += .7f * (1 - (float)_easing.Value);
+                    if (_configuration.CountdownAnimateScale) numberScale += .7f * (1 - (float)_easing.Value);
                 }
             }
 
             var negativeMargin = _numberTextures.NumberNegativeMargin * numberScale;
             var io = ImGui.GetIO();
-            ImGui.SetNextWindowSize(new Vector2(
-                    io.DisplaySize.X,
-                    (_numberTextures.MaxTextureHeight * numberScale) + 30
-                ),
+            ImGui.SetNextWindowPos(
+                new Vector2(0, io.DisplaySize.Y * 0.5f + _configuration.CountdownWindowOffset.Y),
+                ImGuiCond.Always, new Vector2(0, 0.5f));
+            ImGui.SetNextWindowSize(
+                new Vector2(io.DisplaySize.X, (_numberTextures.MaxTextureHeight * numberScale) + 30),
                 ImGuiCond.Always);
-            ImGui.SetNextWindowPos(new Vector2(0, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0, 0.5f));
-            const ImGuiWindowFlags flags = ImGuiWindowFlags.NoTitleBar
-                                           | ImGuiWindowFlags.NoDecoration
-                                           | ImGuiWindowFlags.NoScrollbar
-                                           | ImGuiWindowFlags.NoInputs
-                                           | ImGuiWindowFlags.NoBackground
-                                           | ImGuiWindowFlags.NoMouseInputs
-                                           | ImGuiWindowFlags.AlwaysAutoResize
-                                           | ImGuiWindowFlags.NoResize;
+
+            var flags = ImGuiWindowFlags.AlwaysAutoResize
+                        | ImGuiWindowFlags.NoResize
+                        | ImGuiWindowFlags.NoTitleBar
+                        | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
+                        | ImGuiWindowFlags.NoDecoration
+                        | ImGuiWindowFlags.NoInputs
+                        | ImGuiWindowFlags.NoBackground
+                        | ImGuiWindowFlags.NoMouseInputs;
+
             var visible = true;
             if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
             {
                 DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, false);
-                if (_configuration.CountdownAnimate)
+                if (_configuration.CountdownAnimate && _configuration.CountdownAnimateOpacity)
                 {
                     ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
                     DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, true);
@@ -173,7 +175,6 @@ namespace EngageTimer.UI
                     : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
                 var integers = NumberList(number);
-
                 // First loop to compute total width
                 var totalWidth = 0f;
                 foreach (var i in integers)
@@ -185,7 +186,7 @@ namespace EngageTimer.UI
                 totalWidth += negativeMargin;
 
                 // Center the cursor
-                ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f);
+                ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f + _configuration.CountdownWindowOffset.X);
 
                 // Draw the images \o/
                 foreach (var i in integers)
@@ -207,8 +208,7 @@ namespace EngageTimer.UI
             {
                 var decimalPart =
                     (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
-                    .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)
-                    .Substring(2);
+                    .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)[2..];
                 var smolNumberScale = numberScale * .5f;
                 var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
 

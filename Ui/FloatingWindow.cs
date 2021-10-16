@@ -21,7 +21,6 @@ namespace EngageTimer.UI
             _configuration = configuration;
             _state = state;
             _pluginInterface = pluginInterface;
-
             _pluginInterface.UiBuilder.BuildFonts += BuildFont;
         }
 
@@ -31,10 +30,9 @@ namespace EngageTimer.UI
             set => _stopwatchVisible = value;
         }
 
-        private float _maxTextWidth = 0f;
-
-        private float _paddingLeft = 0f;
-        private float _paddingRight = 0f;
+        private float _maxTextWidth;
+        private float _paddingLeft;
+        private float _paddingRight;
         private const float WindowPadding = 5f;
 
         public void Draw()
@@ -89,7 +87,7 @@ namespace EngageTimer.UI
                 var stopwatchDecimals = _configuration.FloatingWindowDecimalStopwatchPrecision > 0;
 
                 var text = ""; // text to be displayed
-                // the largest possible string, taking advantage of the default font's has fixed number width:
+                // the largest possible string, taking advantage that the default font has fixed number width
                 var maxText = "00:00";
 
                 var displayed = false;
