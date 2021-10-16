@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Logging;
 using EngageTimer.Properties;
@@ -264,6 +265,13 @@ namespace EngageTimer.UI
         private void CountdownPositionAndSize()
         {
             ImGui.Indent();
+            if (!_configuration.HideOriginalCountdown)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+                ImGui.TextWrapped(Trans("Settings_CountdownTab_PositionWarning"));
+                ImGui.PopStyleColor();
+            }
+
             var countdownOffsetX = _configuration.CountdownWindowOffset.X;
             if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX))
             {

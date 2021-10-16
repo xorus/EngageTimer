@@ -319,4 +319,7 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
   <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
     <value>Effet de lumière</value>
   </data>
+  <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
+    <value>Attention : ces paramètres peuvent se comporter incorrectement si l'option "Cacher le compte à rebours original" n'est pas active.</value>
+  </data>
 </root>

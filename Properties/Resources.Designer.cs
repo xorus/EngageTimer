@@ -278,6 +278,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Warning : when not hiding the original countdown, rescaling/offseting might behave wrongly.
+        /// </summary>
+        internal static string Settings_CountdownTab_PositionWarning {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_PositionWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable test mode.
         /// </summary>
         internal static string Settings_CountdownTab_Test_Start {
