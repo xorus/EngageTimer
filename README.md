@@ -15,6 +15,8 @@ The original motivation for this plugin was to do something like
 ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
 but with a big stopwatch timer for my recordings.
 
+*Living on the edge ? You can add my testing repository : https://xorus.dev/xiv/*
+
 ## Countdown
 
 Adds the missing numbers in the standard countdown thing!

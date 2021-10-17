@@ -1,4 +1,4 @@
-﻿### Make your own number textures
+﻿# Make your own number textures
 
 Select `Custom` as Style in the settings for Big Countdown and set your own texture folder !
 
@@ -23,9 +23,9 @@ Example JSON contents with default values:
 }
 ```
 
-- NumberNegativeMargin: margin to remove when positioning the next number
-- NumberNegativeMarginMono: same but for monospaced mode
-- NumberBottomMargin: margin to the number baseline in pixels (to align decimal numbers)
+- `NumberNegativeMargin`: margin to remove when positioning the next number
+- `NumberNegativeMarginMono`: same but for monospaced mode
+- `NumberBottomMargin`: margin to the number baseline in pixels (to align decimal numbers)
 
 **Example:**
 
