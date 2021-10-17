@@ -18,11 +18,13 @@ Example JSON contents with default values:
 ```json
 {
   "NumberNegativeMargin": 10,
+  "NumberNegativeMarginMono": 10,
   "NumberBottomMargin": 0
 }
 ```
 
 - NumberNegativeMargin: margin to remove when positioning the next number
+- NumberNegativeMarginMono: same but for monospaced mode
 - NumberBottomMargin: margin to the number baseline in pixels (to align decimal numbers)
 
 **Example:**

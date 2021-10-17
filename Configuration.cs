@@ -30,6 +30,9 @@ namespace EngageTimer
         public string CountdownTextureDirectory { get; set; } = null;
         public static readonly string[] BundledTextures = { "default", "yellow", "wow" };
         public float CountdownScale { get; set; } = 1f;
+        public bool CountdownMonospaced { get; set; }
+        public float? CountdownCustomNegativeMargin { get; set; } = null;
+        public bool CountdownLeadingZero { get; set; }
 
         // Countdown color
         public int CountdownNumberHue { get; set; }

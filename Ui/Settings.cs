@@ -567,9 +567,6 @@ namespace EngageTimer.UI
 
         private void CountdownNumberStyle()
         {
-            ImGui.Indent();
-            // ImGui.Separator();
-            // ImGui.Text(Trans("Settings_CountdownTab_Texture"));
             var texture = _numberTextures.GetTexture(_exampleNumber);
             const float scale = .5f;
             ImGui.BeginGroup();
@@ -605,9 +602,17 @@ namespace EngageTimer.UI
 
             ImGui.PopItemWidth();
 
+            ImGui.SameLine();
+            var monospaced = _configuration.CountdownMonospaced;
+            if (ImGui.Checkbox(TransId("Settings_CountdownTab_Monospaced"), ref monospaced))
+            {
+                _configuration.CountdownMonospaced = monospaced;
+                _configuration.Save();
+            }
+
             if (_configuration.CountdownTexturePreset == "")
             {
-                if (_tempTexturePath == null) _tempTexturePath = _configuration.CountdownTextureDirectory ?? "";
+                _tempTexturePath ??= _configuration.CountdownTextureDirectory ?? "";
 
                 ImGui.PushItemWidth(400f);
                 ImGui.InputText(TransId("Settings_CountdownTab_Texture_Custom_Path"), ref _tempTexturePath, 1024);
@@ -625,9 +630,40 @@ namespace EngageTimer.UI
                 CountdownNumberColor();
             }
 
+            if (ImGui.CollapsingHeader(TransId("Settings_CountdownTab_NumberStyle_Advanced")))
+            {
+                var leading0 = _configuration.CountdownLeadingZero;
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_NumberStyle_LeadingZero"), ref leading0))
+                {
+                    _configuration.CountdownLeadingZero = leading0;
+                    _configuration.Save();
+                }
+
+                var enableCustomNegativeMargin = _configuration.CountdownCustomNegativeMargin != null;
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin"),
+                    ref enableCustomNegativeMargin))
+                {
+                    _configuration.CountdownCustomNegativeMargin = enableCustomNegativeMargin ? 20f : null;
+                    _configuration.Save();
+                }
+
+                if (enableCustomNegativeMargin)
+                {
+                    ImGui.Indent();
+                    ImGui.PushItemWidth(100f);
+                    var nm = _configuration.CountdownCustomNegativeMargin ?? 20f;
+                    if (ImGui.InputFloat(TransId("Settings_CountdownTab_NumberStyle_CustomNegativeMargin"), ref nm, 1f))
+                    {
+                        _configuration.CountdownCustomNegativeMargin = nm;
+                        _configuration.Save();
+                    }
+
+                    ImGui.PopItemWidth();
+                }
+            }
+
             ImGui.EndGroup();
             ImGui.EndGroup();
-            ImGui.Unindent();
         }
 
         private void CountdownNumberColor()

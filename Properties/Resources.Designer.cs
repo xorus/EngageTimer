@@ -188,6 +188,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fixed width.
+        /// </summary>
+        internal static string Settings_CountdownTab_Monospaced {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Monospaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hue.
         /// </summary>
         internal static string Settings_CountdownTab_NumberHue {
@@ -220,6 +229,42 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_NumberSaturation {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_NumberSaturation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More options.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberStyle_Advanced {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberStyle_Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pixels.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberStyle_CustomNegativeMargin {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberStyle_CustomNegativeMargin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable custom negative margin.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a leading 0.
+        /// </summary>
+        internal static string Settings_CountdownTab_NumberStyle_LeadingZero {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_NumberStyle_LeadingZero", resourceCulture);
             }
         }
         

@@ -23,7 +23,7 @@ namespace EngageTimer.UI
         private readonly GameGui _gui;
         private readonly NumberTextures _numberTextures;
         private readonly string _path;
-        private bool _accurateMode = false;
+        private bool _accurateMode;
 
         public CountDown(Configuration configuration, State state, GameGui gui, NumberTextures numberTextures,
             string path)
@@ -50,7 +50,7 @@ namespace EngageTimer.UI
         }
 
         private const byte VisibleFlag = 0x20;
-        private bool _originalAddonHidden = false;
+        private bool _originalAddonHidden;
 
         // finds the original CountDown addon and toggles its visibility flag
         private unsafe void ToggleOriginalAddon()
@@ -80,11 +80,7 @@ namespace EngageTimer.UI
             1, -0.02, .71, 1
         );
 
-        // private readonly Easing _easingOpacity = new InCubic(
-        // new TimeSpan(0, 0, 0, 0, 1000)
-        // );
-
-        private int _lastSecond = 0;
+        private int _lastSecond;
 
         public void Draw()
         {
@@ -131,7 +127,12 @@ namespace EngageTimer.UI
                 }
             }
 
-            var negativeMargin = _numberTextures.NumberNegativeMargin * numberScale;
+            var negativeMargin = _configuration.CountdownCustomNegativeMargin ?? (
+                _configuration.CountdownMonospaced
+                    ? _numberTextures.NumberNegativeMarginMono
+                    : _numberTextures.NumberNegativeMargin
+            ) * numberScale;
+
             var io = ImGui.GetIO();
             ImGui.SetNextWindowPos(
                 new Vector2(0, io.DisplaySize.Y * 0.5f + _configuration.CountdownWindowOffset.Y),
@@ -164,7 +165,7 @@ namespace EngageTimer.UI
             ImGui.End();
         }
 
-        private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMargin,
+        private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMarginScaled,
             bool alternateMode)
         {
             ImGui.SetCursorPosY(0f);
@@ -174,16 +175,25 @@ namespace EngageTimer.UI
                     ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
                     : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
+                if (_configuration.CountdownLeadingZero && number.Length == 1) number = "0" + number;
+
                 var integers = NumberList(number);
                 // First loop to compute total width
                 var totalWidth = 0f;
-                foreach (var i in integers)
+                if (_configuration.CountdownMonospaced)
                 {
-                    var texture = _numberTextures.GetAltTexture(i);
-                    totalWidth += (texture.Width * numberScale) - negativeMargin;
+                    totalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) * integers.Count;
+                }
+                else
+                {
+                    foreach (var i in integers)
+                    {
+                        var texture = _numberTextures.GetAltTexture(i);
+                        totalWidth += texture.Width * numberScale - negativeMarginScaled;
+                    }
                 }
 
-                totalWidth += negativeMargin;
+                totalWidth += negativeMarginScaled;
 
                 // Center the cursor
                 ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f + _configuration.CountdownWindowOffset.X);
@@ -191,12 +201,9 @@ namespace EngageTimer.UI
                 // Draw the images \o/
                 foreach (var i in integers)
                 {
-                    var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
-                    var cursorX = ImGui.GetCursorPosX();
-                    ImGui.Image(texture.ImGuiHandle,
-                        new Vector2(texture.Width * numberScale, texture.Height * numberScale));
-                    ImGui.SameLine();
-                    ImGui.SetCursorPosX(cursorX + (texture.Width * numberScale) - negativeMargin);
+                    DrawNumber(alternateMode, i,
+                        numberScale, negativeMarginScaled,
+                        _numberTextures.MaxTextureWidth * numberScale, _configuration.CountdownMonospaced);
                 }
             }
             else if (_configuration.EnableCountdownDecimal)
@@ -217,19 +224,48 @@ namespace EngageTimer.UI
                               - _numberTextures.MaxTextureHeight * smolNumberScale
                               - _numberTextures.NumberBottomMargin * smolNumberScale;
 
-                var cursorY = ImGui.GetCursorPosY();
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + _numberTextures.NumberNegativeMargin);
+                var cursorY = ImGui.GetCursorPosY() + offsetY;
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + negativeMarginScaled);
                 foreach (var i in NumberList(decimalPart))
                 {
-                    var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
-                    var cursorX = ImGui.GetCursorPosX();
-                    var height = texture.Height * smolNumberScale;
-                    ImGui.SetCursorPosY(cursorY + offsetY);
-                    ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
-                    ImGui.SameLine();
-                    ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled -
-                                        _numberTextures.NumberNegativeMargin * smolNumberScale);
+                    ImGui.SetCursorPosY(cursorY);
+                    // small numbers are always fixed width
+                    DrawNumber(alternateMode, i, smolNumberScale,
+                        negativeMarginScaled * smolNumberScale, smolMaxWidthScaled, true);
+
+                    // var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
+                    // var cursorX = ImGui.GetCursorPosX();
+                    // var height = texture.Height * smolNumberScale;
+                    // ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
+                    // ImGui.SameLine();
+                    // ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - negativeMargin * smolNumberScale);
                 }
+            }
+        }
+
+        private void DrawNumber(bool alternateMode, int i, float numberScale, float negativeMarginScaled,
+            float maxWidthScaled,
+            bool fixedWidth)
+        {
+            var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
+            var width = texture.Width * numberScale;
+            var cursorX = ImGui.GetCursorPosX();
+            if (fixedWidth)
+            {
+                ImGui.SetCursorPosX(cursorX + (maxWidthScaled - width) / 2);
+            }
+
+            ImGui.Image(texture.ImGuiHandle,
+                new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+            ImGui.SameLine();
+
+            if (fixedWidth)
+            {
+                ImGui.SetCursorPosX(cursorX + maxWidthScaled - negativeMarginScaled);
+            }
+            else
+            {
+                ImGui.SetCursorPosX(cursorX + width - negativeMarginScaled);
             }
         }
 

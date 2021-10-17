@@ -338,4 +338,19 @@ This setting only works when the original countdown is hidden.</value>
   <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
     <value>Scale</value>
   </data>
+  <data name="Settings_CountdownTab_Monospaced" xml:space="preserve">
+    <value>Fixed width</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
+    <value>Add a leading 0</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
+    <value>Enable custom negative margin</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
+    <value>pixels</value>
+  </data>
 </root>

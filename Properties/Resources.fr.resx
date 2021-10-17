@@ -331,4 +331,16 @@ Ce paramètre ne fonctionne que si le compte à rebours original est caché.</va
   <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
     <value>Échelle</value>
   </data>
+  <data name="Settings_CountdownTab_Monospaced" xml:space="preserve">
+    <value>Taille fixe</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
+    <value>Options avancées</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
+    <value>Préfixer par 0</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
+    <value>Utiliser une marge négative personnalisée</value>
+  </data>
 </root>

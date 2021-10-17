@@ -26,6 +26,7 @@ namespace EngageTimer.UI
         public int MaxTextureHeight { get; private set; }
 
         public int NumberNegativeMargin { get; private set; }
+        public int NumberNegativeMarginMono { get; private set; }
         public int NumberBottomMargin { get; private set; }
 
         public NumberTextures(Configuration configuration, UiBuilder uiBuilder, string dataPath)
@@ -65,6 +66,7 @@ namespace EngageTimer.UI
 
             // Read pack settings file
             NumberNegativeMargin = 10;
+            NumberNegativeMarginMono = 10;
             NumberBottomMargin = 20;
             ReadPackSettings(Path.Combine(texturePath, "settings.json"));
 
@@ -103,6 +105,16 @@ namespace EngageTimer.UI
                         if (nnnToken != null)
                         {
                             NumberNegativeMargin = nnnToken.Value<int>();
+                        }
+
+                        var nnnmToken = parsed.SelectToken("NumberNegativeMarginMono");
+                        if (nnnmToken != null)
+                        {
+                            NumberNegativeMarginMono = nnnmToken.Value<int>();
+                        }
+                        else
+                        {
+                            NumberNegativeMarginMono = NumberNegativeMargin;
                         }
 
                         var nbmToken = parsed.SelectToken("NumberBottomMargin");
