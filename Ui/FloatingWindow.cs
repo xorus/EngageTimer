@@ -119,11 +119,9 @@ namespace EngageTimer.UI
                 {
                     if (_configuration.FloatingWindowStopwatchAsSeconds)
                     {
-                        text = Math.Floor(_state.CombatDuration.TotalSeconds).ToString(CultureInfo.InvariantCulture);
-                        if (stopwatchDecimals)
-                            text += "." + _state.CombatDuration.ToString(
-                                new string('f', _configuration.FloatingWindowDecimalStopwatchPrecision)
-                            );
+                        text = string.Format(CultureInfo.InvariantCulture,
+                            "{0:0." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision) + "}",
+                            _state.CombatDuration.TotalSeconds);
                     }
                     else
                     {
