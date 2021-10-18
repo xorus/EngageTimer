@@ -9,7 +9,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <Version>1.0.0</Version>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <AssemblyVersion>2.1.1.1</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -81,9 +81,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dalamud, Version=6.0.0.10, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Dalamud, Version=6.0.0.12, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
-      <Private>false</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FFXIVClientStructs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Users\jdpep\AppData\Roaming\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>

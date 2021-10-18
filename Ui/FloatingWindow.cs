@@ -90,18 +90,29 @@ namespace EngageTimer.UI
 
                 var text = ""; // text to be displayed
                 // the largest possible string, taking advantage that the default font has fixed number width
-                var maxText = (_configuration.FloatingWindowStopwatchAsSeconds ? "0000" : "00") +
-                              (stopwatchDecimals
-                                  ? new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision)
+                var maxText = "";
+                if (_configuration.FloatingWindowStopwatch)
+                {
+                    maxText = (_configuration.FloatingWindowStopwatchAsSeconds ? "0000" : "00:00")
+                              + (stopwatchDecimals
+                                  ? ("." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision))
                                   : "");
+                }
+                else if (_configuration.FloatingWindowCountdown)
+                {
+                    maxText = (_configuration.FloatingWindowCountdownNegativeSign ? "-" : "") + "00" +
+                              (_configuration.FloatingWindowDecimalCountdownPrecision > 0 ? "." : "") +
+                              new string('0', _configuration.FloatingWindowDecimalCountdownPrecision);
+                }
 
                 var displayed = false;
                 if (countdownActive)
                 {
-                    text = string.Format(
-                        (_configuration.FloatingWindowCountdownNegativeSign ? "-" : "")
-                        + "{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) + "}",
-                        _state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1));
+                    var negative = (_configuration.FloatingWindowCountdownNegativeSign ? "-" : "");
+                    var format = "{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) +
+                                 "}";
+                    var number = (_state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1));
+                    text = negative + string.Format(CultureInfo.InvariantCulture, format, number);
                     displayed = true;
                 }
                 else if (stopwatchActive)
