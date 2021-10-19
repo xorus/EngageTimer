@@ -169,11 +169,14 @@
     <value>Petite fenêtre</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
-    <value>Le jeu termine normalement son compte à rebours à 1 au lieu de 0.
-Ce paramètre ne fonctionne que si le compte à rebours original est caché.</value>
+    <value>Utilise la valeur réelle et précise du compte à rebours au lieu de la valeur arrondie au supérieur que le jeu affiche normalement.
+Je recommande fortement d'activer cette option lorsque vous utilisez des décimales car elles n'auraient aucun sens autrement.
+Cependant, je recommanderais de désactiver cette option si vous n'utilisez pas de décimales afin que les nombres correspondent à ce qui est affiché pour les membres de votre groupe.
+
+Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu est masqué (sinon il afficherait 6 - 5 - 5 - 4...)</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
-    <value>Activer le mode précis si possible</value>
+    <value>Activer le mode précis</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
     <value>Afficher la durée du combat</value>

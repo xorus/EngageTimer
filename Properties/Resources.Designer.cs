@@ -70,7 +70,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable accurate countdown mode for big countdown when possible.
+        ///   Looks up a localized string similar to Enable accurate countdown mode (countdown - 1).
         /// </summary>
         internal static string Settings_CountdownTab_AccurateMode {
             get {
@@ -79,8 +79,11 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The game countdown shows the &quot;START&quot; text at 1 instead of 0.
-        ///This setting only works when the original countdown is hidden..
+        ///   Looks up a localized string similar to Uses the actual and precise countdown value instead of the rounded-up value the game originally shows.
+        ///I strongly recommend enabling this option when using decimals as they would not make sense otherwise.
+        ///However, I would recommend disabling this if you don&apos;t use decimals so the numbers will match what is displayed for your party members.
+        ///        
+        ///Note: this setting only works when the original countdown is hidden (otherwise it would display 6 - 5 - 5 - 4...).
         /// </summary>
         internal static string Settings_CountdownTab_AccurateMode_Help {
             get {

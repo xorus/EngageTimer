@@ -259,7 +259,11 @@ namespace EngageTimer.UI
             }
 
             ImGui.Indent();
-            ImGui.TextDisabled(Trans("Settings_CountdownTab_AccurateMode_Help"));
+            ImGui.PushTextWrapPos(500f);
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudGrey);
+            ImGui.TextWrapped(Trans("Settings_CountdownTab_AccurateMode_Help"));
+            ImGui.PopTextWrapPos();
+            ImGui.PopStyleColor();
         }
 
         private void CountdownPositionAndSize()
