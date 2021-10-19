@@ -17,6 +17,8 @@ but with a big stopwatch timer for my recordings.
 
 *Living on the edge ? You can add my testing repository : https://xorus.dev/xiv/*
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T26N988)
+
 ## Countdown
 
 Adds the missing numbers in the standard countdown thing!
