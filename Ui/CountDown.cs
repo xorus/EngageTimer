@@ -34,6 +34,7 @@ namespace EngageTimer.UI
             _numberTextures = numberTextures;
             _path = path;
             configuration.OnSave += ConfigurationOnOnSave;
+            UpdateFromConfig();
         }
 
         private void ConfigurationOnOnSave(object? sender, EventArgs e)
@@ -182,7 +183,8 @@ namespace EngageTimer.UI
                 var totalWidth = 0f;
                 if (_configuration.CountdownMonospaced)
                 {
-                    totalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) * integers.Count;
+                    totalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
+                                 integers.Count;
                 }
                 else
                 {
@@ -232,17 +234,10 @@ namespace EngageTimer.UI
                     // small numbers are always fixed width
                     DrawNumber(alternateMode, i, smolNumberScale,
                         negativeMarginScaled * smolNumberScale, smolMaxWidthScaled, true);
-
-                    // var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
-                    // var cursorX = ImGui.GetCursorPosX();
-                    // var height = texture.Height * smolNumberScale;
-                    // ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * smolNumberScale, height));
-                    // ImGui.SameLine();
-                    // ImGui.SetCursorPosX(cursorX + smolMaxWidthScaled - negativeMargin * smolNumberScale);
                 }
             }
         }
-
+        
         private void DrawNumber(bool alternateMode, int i, float numberScale, float negativeMarginScaled,
             float maxWidthScaled,
             bool fixedWidth)

@@ -156,12 +156,12 @@
     <value>Enable accurate countdown mode (countdown - 1)</value>
   </data>
     <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
-    <value>Uses the actual and precise countdown value instead of the rounded-up value the game originally shows.
+      <value>Uses the actual and precise countdown value instead of the rounded-up value the game originally shows.
 I strongly recommend enabling this option when using decimals as they would not make sense otherwise.
-However, I would recommend disabling this if you don't use decimals so the numbers will match what is displayed for your party members.
+However, I recommend disabling this if you don't use decimals so that the numbers will match what is displayed for your party members.
         
 Note: this setting only works when the original countdown is hidden (otherwise it would display 6 - 5 - 5 - 4...)</value>
-  </data>
+    </data>
     <data name="Settings_FWTab_Title" xml:space="preserve">
     <value>Floating window</value>
   </data>
