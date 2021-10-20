@@ -32,7 +32,11 @@ namespace EngageTimer.UI
         public bool Visible
         {
             get => _visible;
-            set => _visible = value;
+            set
+            {
+                _visible = value;
+                if (!_visible && _mocking) ToggleMock();
+            }
         }
 
         private string TransId(string id)
@@ -78,18 +82,17 @@ namespace EngageTimer.UI
             _state.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
         }
 
-        private bool _forceDebug = false;
+        // private bool _forceDebug = false;
 
         public void Draw()
         {
             // debug
-            if (_forceDebug)
-            {
-                Visible = true;
-                ToggleMock();
-                _forceDebug = false;
-            }
-
+            // if (_forceDebug)
+            // {
+            //     Visible = true;
+            //     ToggleMock();
+            //     _forceDebug = false;
+            // }
             if (!Visible) return;
             UpdateMock();
 
@@ -124,6 +127,8 @@ namespace EngageTimer.UI
                 ImGui.Separator();
                 if (ImGui.Button(TransId("Settings_Close"))) Visible = false;
             }
+
+            if (!_visible) Visible = false;
 
             ImGui.End();
         }
