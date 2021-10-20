@@ -21,10 +21,10 @@ tags:
   - streaming
   - combat
 repo_url: https://github.com/xorus/EngageTimer
-icon_url: https://github.com/xorus/EngageTimer/blob/main/images/icon.png
+icon_url: https://raw.githubusercontent.com/xorus/EngageTimer/main/images/icon.png
 image_urls:
-  - https://github.com/xorus/EngageTimer/blob/main/images/image1.png
-  - https://github.com/xorus/EngageTimer/blob/main/images/image2.png
-  - https://github.com/xorus/EngageTimer/blob/main/images/image3.png
+  - https://raw.githubusercontent.com/xorus/EngageTimer/main/images/image1.png
+  - https://raw.githubusercontent.com/xorus/EngageTimer/main/images/image2.png
+  - https://raw.githubusercontent.com/xorus/EngageTimer/main/images/image3.png
 category_tags:
   - jobs
