@@ -1,84 +1,84 @@
-﻿ <Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <PlatformTarget>x64</PlatformTarget>
-    <Platforms>AnyCPU</Platforms>
-    <LangVersion>9.0</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>2.1.1.3</AssemblyVersion>
-    <Deterministic>false</Deterministic>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Configurations>Debug;Release</Configurations>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <Platforms>AnyCPU</Platforms>
+        <LangVersion>9.0</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>2.1.1.4</AssemblyVersion>
+        <Deterministic>false</Deterministic>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release</Configurations>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="bin\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <None Remove="bin\**" />
-    <None Update="Data\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="images\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Remove="Doc\icon - Copy.png" />
-    <EmbeddedResource Update="Resources\strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Update="Resources\strings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>strings.resx</DependentUpon>
-    </Compile>
-    <None Update="Data\numbers\default\*.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\numbers\yellow\*.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\numbers\wow\*.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Remove="Doc\source\numbers.png" />
-    <None Update="Data\numbers\wow\settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\numbers\yellow\settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Doc\custom_example\settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="bin\**" />
+        <EmbeddedResource Remove="bin\**" />
+        <None Remove="bin\**" />
+        <None Update="Data\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="images\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Remove="Doc\icon - Copy.png" />
+        <EmbeddedResource Update="Resources\strings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <Compile Update="Resources\strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>strings.resx</DependentUpon>
+        </Compile>
+        <None Update="Data\numbers\default\*.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\numbers\yellow\*.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\numbers\wow\*.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Remove="Doc\source\numbers.png" />
+        <None Update="Data\numbers\wow\settings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\numbers\yellow\settings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Doc\custom_example\settings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.4" />
-    <PackageReference Include="EmbedIO" Version="3.4.3" />
-    <PackageReference Include="NAudio" Version="2.0.1" />
-    <PackageReference Include="NAudio.Core" Version="2.0.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="DalamudPackager" Version="2.1.4" />
+        <PackageReference Include="EmbedIO" Version="3.4.3" />
+        <PackageReference Include="NAudio" Version="2.0.1" />
+        <PackageReference Include="NAudio.Core" Version="2.0.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Dalamud, Version=6.0.0.12, Culture=neutral, PublicKeyToken=null">
