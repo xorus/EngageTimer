@@ -336,8 +336,8 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <value>Light effect</value>
   </data>
     <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
-    <value>Warning : when not hiding the original countdown, rescaling/offseting might behave wrongly</value>
-  </data>
+      <value>Warning : when not hiding the original countdown, changing values in this section might create incoherent results</value>
+    </data>
     <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
     <value>Display combat time in seconds instead of time format</value>
   </data>
@@ -364,5 +364,8 @@ Note: this setting only works when the original countdown is hidden (otherwise i
   </data>
     <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
       <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
+    </data>
+    <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
+      <value>Alignement</value>
     </data>
 </root>

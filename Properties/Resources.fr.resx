@@ -346,4 +346,7 @@ Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu e
   <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
     <value>Utiliser une marge négative personnalisée</value>
   </data>
+  <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
+    <value>Alignement</value>
+  </data>
 </root>

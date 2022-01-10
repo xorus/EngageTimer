@@ -119,6 +119,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alignement.
+        /// </summary>
+        internal static string Settings_CountdownTab_CountdownAlign {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_CountdownAlign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display.
         /// </summary>
         internal static string Settings_CountdownTab_CountdownDecimals_Left {
@@ -344,7 +353,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning : when not hiding the original countdown, rescaling/offseting might behave wrongly.
+        ///   Looks up a localized string similar to Warning : when not hiding the original countdown, changing values in this section might create incoherent results.
         /// </summary>
         internal static string Settings_CountdownTab_PositionWarning {
             get {

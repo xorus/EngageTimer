@@ -351,8 +351,18 @@ namespace EngageTimer.UI
                 _configuration.CountdownScale = Math.Clamp(countdownScale, 0.05f, 15f);
                 _configuration.Save();
             }
-
             ImGui.PopItemWidth();
+            
+            var align = (int)_configuration.CountdownAlign;
+            if (ImGui.Combo(TransId("Settings_CountdownTab_CountdownAlign"), ref align,
+                    Trans("Settings_FWTab_TextAlign_Left") + "###Left\0" +
+                    Trans("Settings_FWTab_TextAlign_Center") + "###Center\0" +
+                    Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
+            {
+                _configuration.CountdownAlign = (Configuration.TextAlign)align;
+            }
+
+            
             ImGui.Unindent();
         }
 

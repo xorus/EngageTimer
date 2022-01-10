@@ -213,6 +213,9 @@ namespace EngageTimer.UI
             var totalHeight = _numberTextures.MaxTextureHeight * numberScale;
             ImGui.SetCursorPosY((displaySize.Y - totalHeight) / 2f);
 
+            var mainTotalWidth = 0f;
+            List<int> mainNumbers = null;
+
             if (showMainCountdown)
             {
                 var number = _accurateMode
@@ -221,63 +224,80 @@ namespace EngageTimer.UI
 
                 if (_configuration.CountdownLeadingZero && number.Length == 1) number = "0" + number;
 
-                var integers = NumberList(number);
+                mainNumbers = NumberList(number);
                 // First loop to compute total width
-                var totalWidth = 0f;
                 if (_configuration.CountdownMonospaced)
                 {
-                    totalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
-                                 integers.Count;
+                    mainTotalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
+                                     mainNumbers.Count;
                 }
                 else
                 {
-                    foreach (var i in integers)
+                    foreach (var i in mainNumbers)
                     {
                         var texture = _numberTextures.GetAltTexture(i);
-                        totalWidth += texture.Width * numberScale - negativeMarginScaled;
+                        mainTotalWidth += texture.Width * numberScale - negativeMarginScaled;
                     }
                 }
 
-                totalWidth += negativeMarginScaled;
-
-                // Center the cursor
-                ImGui.SetCursorPosX(displaySize.X / 2f - totalWidth / 2f);
-
-                // Draw the images \o/
-                foreach (var i in integers)
-                {
-                    DrawNumber(alternateMode, i,
-                        numberScale, negativeMarginScaled,
-                        _numberTextures.MaxTextureWidth * numberScale, _configuration.CountdownMonospaced);
-                }
-            }
-            else if (_configuration.EnableCountdownDecimal)
-            {
-                ImGui.SetCursorPosX(displaySize.X / 2f + GameCountdownWidth);
+                mainTotalWidth += negativeMarginScaled;
             }
 
+            var decimalTotalWidth = 0f;
+            List<int> decimalNumbers = null;
+
+            var smolNumberScale = numberScale * .5f;
+            var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
+            var smolNumberCursorY = 0f;
             if (_configuration.EnableCountdownDecimal)
             {
                 var decimalPart =
                     (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
                     .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)[2..];
-                var smolNumberScale = numberScale * .5f;
-                var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
 
                 // align the small numbers on the number baseline
                 var offsetY = _numberTextures.MaxTextureHeight * numberScale
                               - _numberTextures.MaxTextureHeight * smolNumberScale
                               - _numberTextures.NumberBottomMargin * smolNumberScale;
 
-                var cursorY = ImGui.GetCursorPosY() + offsetY;
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + negativeMarginScaled);
-                foreach (var i in NumberList(decimalPart))
+                smolNumberCursorY = ImGui.GetCursorPosY() + offsetY;
+                decimalNumbers = NumberList(decimalPart);
+                decimalTotalWidth = _numberTextures.MaxTextureWidth * (decimalNumbers.Count * smolNumberScale) -
+                                    ((decimalNumbers.Count - 1) * negativeMarginScaled * smolNumberScale);
+            }
+
+            // draw main
+            if (mainNumbers != null)
+            {
+                if (_configuration.CountdownAlign == Configuration.TextAlign.Left)
+                    ImGui.SetCursorPosX(0f);
+                else if (_configuration.CountdownAlign == Configuration.TextAlign.Center)
+                    ImGui.SetCursorPosX(displaySize.X / 2f - mainTotalWidth / 2f);
+                else if (_configuration.CountdownAlign == Configuration.TextAlign.Right)
+                    ImGui.SetCursorPosX(displaySize.X - (mainTotalWidth + decimalTotalWidth));
+
+                // Draw the images \o/
+                foreach (var i in mainNumbers)
                 {
-                    ImGui.SetCursorPosY(cursorY);
-                    // small numbers are always fixed width
-                    DrawNumber(alternateMode, i, smolNumberScale,
-                        negativeMarginScaled * smolNumberScale, smolMaxWidthScaled, true);
+                    DrawNumber(alternateMode, i,
+                        numberScale, negativeMarginScaled,
+                        _numberTextures.MaxTextureWidth * numberScale, _configuration.CountdownMonospaced);
                 }
+            }
+
+            if (mainNumbers == null && decimalNumbers != null)
+            {
+                ImGui.SetCursorPosX(displaySize.X / 2f + GameCountdownWidth);
+            }
+
+            if (decimalNumbers == null) return;
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + negativeMarginScaled);
+            foreach (var i in decimalNumbers)
+            {
+                ImGui.SetCursorPosY(smolNumberCursorY);
+                // small numbers are always fixed width
+                DrawNumber(alternateMode, i, smolNumberScale,
+                    negativeMarginScaled * smolNumberScale, smolMaxWidthScaled, true);
             }
         }
 
