@@ -25,6 +25,8 @@ namespace EngageTimer.UI
         private readonly string _path;
         private bool _accurateMode;
 
+        public const string WindowName = "EngageTimer Countdown";
+
         public CountDown(Configuration configuration, State state, GameGui gui, NumberTextures numberTextures,
             string path)
         {
@@ -72,7 +74,7 @@ namespace EngageTimer.UI
         }
 
         private const float BaseNumberScale = 1f;
-        private const int GameCountdownWidth = 60; // yes, this number came from my arse
+        private const int GameCountdownWidth = 60; // just trust in the magic numbers
 
         private readonly Easing _easing = new OutCubic(new TimeSpan(0, 0, 0, 0, 1000));
 
@@ -82,6 +84,12 @@ namespace EngageTimer.UI
         );
 
         private int _lastSecond;
+
+        public static bool ResetWindow { get; set; } = false;
+
+        public static bool ShowBackground { get; set; } = false;
+        private const float AnimationSize = .7f;
+        private bool _wasInMainViewport = true;
 
         public void Draw()
         {
@@ -107,9 +115,11 @@ namespace EngageTimer.UI
             var showMainCountdown = _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
 
             var numberScale = BaseNumberScale;
+            var maxNumberScale = numberScale;
             if (showMainCountdown)
             {
                 numberScale *= _configuration.CountdownScale;
+                maxNumberScale = numberScale;
                 // numberScale += (_state.CountDownValue % 1) * 0.7f;
 
                 if (_configuration.CountdownAnimate)
@@ -124,7 +134,11 @@ namespace EngageTimer.UI
 
                     _easing.Update();
                     _easingOpacity.Update();
-                    if (_configuration.CountdownAnimateScale) numberScale += .7f * (1 - (float)_easing.Value);
+                    if (_configuration.CountdownAnimateScale)
+                    {
+                        maxNumberScale = numberScale + AnimationSize;
+                        numberScale += AnimationSize * (1 - (float)_easing.Value);
+                    }
                 }
             }
 
@@ -135,25 +149,49 @@ namespace EngageTimer.UI
             ) * numberScale;
 
             var io = ImGui.GetIO();
-            ImGui.SetNextWindowPos(
-                new Vector2(0, io.DisplaySize.Y * 0.5f + _configuration.CountdownWindowOffset.Y),
-                ImGuiCond.Always, new Vector2(0, 0.5f));
-            ImGui.SetNextWindowSize(
-                new Vector2(io.DisplaySize.X, (_numberTextures.MaxTextureHeight * numberScale) + 30),
-                ImGuiCond.Always);
+            var windowPosition = new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f) +
+                                 _configuration.CountdownWindowOffset;
+            var windowSize = new Vector2(
+                maxNumberScale * (_numberTextures.MaxTextureWidth *
+                                  (_configuration.EnableCountdownDecimal
+                                      ? 3f + _configuration.CountdownDecimalPrecision * .5f
+                                      : 2
+                                  )),
+                _numberTextures.MaxTextureHeight * maxNumberScale + 30);
 
-            var flags = ImGuiWindowFlags.AlwaysAutoResize
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
+            ImGui.SetNextWindowPos(windowPosition, ImGuiCond.Always, new Vector2(0.5f, 0.5f));
+            ImGui.SetNextWindowSize(windowSize, ImGuiCond.Always);
+
+            var flags = /*ImGuiWindowFlags.AlwaysAutoResize
                         | ImGuiWindowFlags.NoResize
-                        | ImGuiWindowFlags.NoTitleBar
-                        | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
-                        | ImGuiWindowFlags.NoDecoration
-                        | ImGuiWindowFlags.NoInputs
-                        | ImGuiWindowFlags.NoBackground
-                        | ImGuiWindowFlags.NoMouseInputs;
+                        |*/ ImGuiWindowFlags.NoTitleBar
+                            | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
+                            | ImGuiWindowFlags.NoDecoration
+                            | ImGuiWindowFlags.NoFocusOnAppearing
+                            | ImGuiWindowFlags.NoNavFocus
+                            | ImGuiWindowFlags.NoInputs
+                            // | ImGuiWindowFlags.NoBackground
+                            | ImGuiWindowFlags.NoMouseInputs
+                ;
+
+            if (_wasInMainViewport) flags |= ImGuiWindowFlags.NoBackground;
 
             var visible = true;
-            if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
+            if (ImGui.Begin(WindowName, ref visible, flags))
             {
+                _wasInMainViewport = ImGui.GetWindowViewport().ID == ImGui.GetMainViewport().ID;
+                if (ShowBackground)
+                {
+                    var d = ImGui.GetBackgroundDrawList();
+                    d.AddRect(
+                        ImGui.GetWindowPos(),
+                        ImGui.GetWindowPos() + ImGui.GetWindowSize(),
+                        ImGui.GetColorU32(ImGuiCol.Text), 0f, ImDrawFlags.None,
+                        7f + ((float)Math.Sin(ImGui.GetTime() * 2) * 5f));
+                    ShowBackground = false;
+                }
+
                 DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, false);
                 if (_configuration.CountdownAnimate && _configuration.CountdownAnimateOpacity)
                 {
@@ -163,13 +201,18 @@ namespace EngageTimer.UI
                 }
             }
 
+            ImGui.PopStyleVar();
             ImGui.End();
         }
 
         private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMarginScaled,
             bool alternateMode)
         {
-            ImGui.SetCursorPosY(0f);
+            var displaySize = ImGui.GetWindowSize();
+
+            var totalHeight = _numberTextures.MaxTextureHeight * numberScale;
+            ImGui.SetCursorPosY((displaySize.Y - totalHeight) / 2f);
+
             if (showMainCountdown)
             {
                 var number = _accurateMode
@@ -198,7 +241,7 @@ namespace EngageTimer.UI
                 totalWidth += negativeMarginScaled;
 
                 // Center the cursor
-                ImGui.SetCursorPosX(io.DisplaySize.X / 2f - totalWidth / 2f + _configuration.CountdownWindowOffset.X);
+                ImGui.SetCursorPosX(displaySize.X / 2f - totalWidth / 2f);
 
                 // Draw the images \o/
                 foreach (var i in integers)
@@ -210,7 +253,7 @@ namespace EngageTimer.UI
             }
             else if (_configuration.EnableCountdownDecimal)
             {
-                ImGui.SetCursorPosX(io.DisplaySize.X / 2f + GameCountdownWidth);
+                ImGui.SetCursorPosX(displaySize.X / 2f + GameCountdownWidth);
             }
 
             if (_configuration.EnableCountdownDecimal)
@@ -237,7 +280,7 @@ namespace EngageTimer.UI
                 }
             }
         }
-        
+
         private void DrawNumber(bool alternateMode, int i, float numberScale, float negativeMarginScaled,
             float maxWidthScaled,
             bool fixedWidth)

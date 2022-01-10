@@ -362,4 +362,7 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
     <value>pixels</value>
   </data>
+    <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
+      <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
+    </data>
 </root>

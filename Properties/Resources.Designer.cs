@@ -200,6 +200,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide..
+        /// </summary>
+        internal static string Settings_CountdownTab_MultiMonitorWarning {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_MultiMonitorWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hue.
         /// </summary>
         internal static string Settings_CountdownTab_NumberHue {

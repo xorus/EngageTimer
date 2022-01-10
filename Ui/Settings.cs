@@ -82,17 +82,49 @@ namespace EngageTimer.UI
             _state.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
         }
 
-        // private bool _forceDebug = false;
+        private bool _forceDebug = true;
 
         public void Draw()
         {
-            // debug
-            // if (_forceDebug)
+            // var visible1 = true;
+            // var flags1 = /*ImGuiWindowFlags.AlwaysAutoResize
+            //             |*/ ImGuiWindowFlags.NoResize
+            //                 // | ImGuiWindowFlags.NoTitleBar
+            //                 | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
+            //     // | ImGuiWindowFlags.NoDecoration
+            //     // | ImGuiWindowFlags.NoInputs
+            //     // | ImGuiWindowFlags.NoBackground
+            //     // | ImGuiWindowFlags.NoMouseInputs
+            //     ;
+            // ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+            // // ImGui.PushClipRect(new Vector2(-100, -100), new Vector2(100, 100), false);
+            // if (ImGui.Begin("EngageTimer test", ref visible1, flags1))
             // {
-            //     Visible = true;
-            //     ToggleMock();
-            //     _forceDebug = false;
+            //     ImGui.PushFont(UiBuilder.IconFont);
+            //     ImGui.SetWindowFontScale(4);
+            //
+            //     var d = ImGui.GetForegroundDrawList();
+            //     d.AddCircle(new Vector2(10, 10), 5, (uint)ImGuiCol.Text);
+            //     
+            //     ImGui.Text(FontAwesomeIcon.ArrowsAlt.ToString());
+            //     ImGui.PopFont();
+            //
+            //     ImGui.SetCursorPosX(-100);
+            //     ImGui.Text("asdfpjñ?");
             // }
+            //
+            // // ImGui.PopClipRect();
+            // ImGui.PopStyleVar();
+            // ImGui.End();
+
+            // debug
+            if (_forceDebug)
+            {
+                Visible = true;
+                ToggleMock();
+                _forceDebug = false;
+            }
+
             if (!Visible) return;
             UpdateMock();
 
@@ -143,10 +175,10 @@ namespace EngageTimer.UI
             ImGui.PushTextWrapPos();
             ImGui.Text(Trans("Settings_CountdownTab_Info1"));
             if (ImGui.Button(
-                (this._mocking
-                    ? Trans("Settings_CountdownTab_Test_Stop")
-                    : Trans("Settings_CountdownTab_Test_Start"))
-                + "###Settings_CountdownTab_Test"))
+                    (this._mocking
+                        ? Trans("Settings_CountdownTab_Test_Stop")
+                        : Trans("Settings_CountdownTab_Test_Start"))
+                    + "###Settings_CountdownTab_Test"))
             {
                 ToggleMock();
             }
@@ -156,7 +188,7 @@ namespace EngageTimer.UI
 
             var displayCountdown = _configuration.DisplayCountdown;
             if (ImGui.Checkbox(TransId("Settings_CountdownTab_Enable"),
-                ref displayCountdown))
+                    ref displayCountdown))
             {
                 _configuration.DisplayCountdown = displayCountdown;
                 _configuration.Save();
@@ -164,7 +196,7 @@ namespace EngageTimer.UI
 
             var hideOriginalCountdown = _configuration.HideOriginalCountdown;
             if (ImGui.Checkbox(TransId("Settings_CountdownTab_HideOriginalCountDown"),
-                ref hideOriginalCountdown))
+                    ref hideOriginalCountdown))
             {
                 _configuration.HideOriginalCountdown = hideOriginalCountdown;
                 _configuration.Save();
@@ -174,7 +206,7 @@ namespace EngageTimer.UI
 
             var enableCountdownDecimal = _configuration.EnableCountdownDecimal;
             if (ImGui.Checkbox(TransId("Settings_CountdownTab_CountdownDecimals_Left"),
-                ref enableCountdownDecimal))
+                    ref enableCountdownDecimal))
             {
                 _configuration.EnableCountdownDecimal = enableCountdownDecimal;
                 _configuration.Save();
@@ -184,7 +216,7 @@ namespace EngageTimer.UI
             ImGui.PushItemWidth(70f);
             var countdownDecimalPrecision = _configuration.CountdownDecimalPrecision;
             if (ImGui.InputInt(TransId("Settings_CountdownTab_CountdownDecimals_Right"),
-                ref countdownDecimalPrecision, 1, 0))
+                    ref countdownDecimalPrecision, 1, 0))
             {
                 countdownDecimalPrecision = Math.Max(1, Math.Min(3, countdownDecimalPrecision));
                 _configuration.CountdownDecimalPrecision = countdownDecimalPrecision;
@@ -203,7 +235,7 @@ namespace EngageTimer.UI
                 ImGui.SameLine();
                 var volume = _configuration.TickingSoundVolume * 100f;
                 if (ImGui.DragFloat(TransId("Settings_CountdownTab_PlaySound_Volume"), ref volume, .1f, 0f,
-                    100f, "%.1f%%"))
+                        100f, "%.1f%%"))
                 {
                     _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
                     _configuration.Save();
@@ -252,7 +284,7 @@ namespace EngageTimer.UI
             }
 
             if (ImGui.Checkbox(TransId("Settings_CountdownTab_AccurateMode"),
-                ref countdownAccurateCountdown))
+                    ref countdownAccurateCountdown))
             {
                 _configuration.CountdownAccurateCountdown = countdownAccurateCountdown;
                 _configuration.Save();
@@ -273,6 +305,7 @@ namespace EngageTimer.UI
 
         private void CountdownPositionAndSize()
         {
+            CountDown.ShowBackground = true;
             ImGui.Indent();
             if (!_configuration.HideOriginalCountdown)
             {
@@ -280,6 +313,8 @@ namespace EngageTimer.UI
                 ImGui.TextWrapped(Trans("Settings_CountdownTab_PositionWarning"));
                 ImGui.PopStyleColor();
             }
+            
+            ImGui.TextWrapped(Trans("Settings_CountdownTab_MultiMonitorWarning"));
 
             var countdownOffsetX = _configuration.CountdownWindowOffset.X;
             if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX))
@@ -356,7 +391,7 @@ namespace EngageTimer.UI
             var autoHideTimeout = _configuration.AutoHideTimeout;
             ImGui.SameLine();
             if (ImGui.InputFloat(TransId("Settings_FWTab_AutoHide_Right"), ref autoHideTimeout, .1f, 1f,
-                "%.1f%"))
+                    "%.1f%"))
             {
                 _configuration.AutoHideTimeout = Math.Max(0, autoHideTimeout);
                 _configuration.Save();
@@ -366,9 +401,9 @@ namespace EngageTimer.UI
 
             var floatingWindowCountdown = _configuration.FloatingWindowCountdown;
             if (ImGui.Checkbox(
-                TransId("Settings_FWTab_CountdownPrecision" +
-                        (floatingWindowCountdown ? "_With" : "") + "_Left"),
-                ref floatingWindowCountdown))
+                    TransId("Settings_FWTab_CountdownPrecision" +
+                            (floatingWindowCountdown ? "_With" : "") + "_Left"),
+                    ref floatingWindowCountdown))
             {
                 _configuration.FloatingWindowCountdown = floatingWindowCountdown;
                 _configuration.Save();
@@ -381,8 +416,8 @@ namespace EngageTimer.UI
                 var fwDecimalCountdownPrecision = _configuration.FloatingWindowDecimalCountdownPrecision;
                 // the little space is necessary because imgui id's the fields by label
                 if (ImGui.InputInt(
-                    TransId("Settings_FWTab_CountdownPrecision_Right"),
-                    ref fwDecimalCountdownPrecision, 1, 0))
+                        TransId("Settings_FWTab_CountdownPrecision_Right"),
+                        ref fwDecimalCountdownPrecision, 1, 0))
                 {
                     fwDecimalCountdownPrecision = Math.Max(0, Math.Min(3, fwDecimalCountdownPrecision));
                     _configuration.FloatingWindowDecimalCountdownPrecision = fwDecimalCountdownPrecision;
@@ -396,9 +431,9 @@ namespace EngageTimer.UI
 
             var floatingWindowStopwatch = _configuration.FloatingWindowStopwatch;
             if (ImGui.Checkbox(
-                TransId("Settings_FWTab_StopwatchPrecision" +
-                        (floatingWindowStopwatch ? "_With" : "") + "_Left"),
-                ref floatingWindowStopwatch))
+                    TransId("Settings_FWTab_StopwatchPrecision" +
+                            (floatingWindowStopwatch ? "_With" : "") + "_Left"),
+                    ref floatingWindowStopwatch))
             {
                 _configuration.FloatingWindowStopwatch = floatingWindowStopwatch;
                 _configuration.Save();
@@ -410,7 +445,7 @@ namespace EngageTimer.UI
                 ImGui.PushItemWidth(70f);
                 var fwDecimalStopwatchPrecision = _configuration.FloatingWindowDecimalStopwatchPrecision;
                 if (ImGui.InputInt(TransId("Settings_FWTab_StopwatchPrecision_Right"),
-                    ref fwDecimalStopwatchPrecision, 1, 0))
+                        ref fwDecimalStopwatchPrecision, 1, 0))
                 {
                     fwDecimalStopwatchPrecision = Math.Max(0, Math.Min(3, fwDecimalStopwatchPrecision));
                     _configuration.FloatingWindowDecimalStopwatchPrecision = fwDecimalStopwatchPrecision;
@@ -427,7 +462,7 @@ namespace EngageTimer.UI
             ImGui.Separator();
 
             if (ImGui.Checkbox(TransId("Settings_FWTab_AccurateCountdown"),
-                ref floatingWindowAccurateCountdown))
+                    ref floatingWindowAccurateCountdown))
             {
                 _configuration.FloatingWindowAccurateCountdown = floatingWindowAccurateCountdown;
                 _configuration.Save();
@@ -437,7 +472,7 @@ namespace EngageTimer.UI
 
             var fWDisplayStopwatchOnlyInDuty = _configuration.FloatingWindowDisplayStopwatchOnlyInDuty;
             if (ImGui.Checkbox(TransId("Settings_FWTab_DisplayStopwatchOnlyInDuty"),
-                ref fWDisplayStopwatchOnlyInDuty))
+                    ref fWDisplayStopwatchOnlyInDuty))
             {
                 _configuration.FloatingWindowDisplayStopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
                 _configuration.Save();
@@ -475,9 +510,9 @@ namespace EngageTimer.UI
 
             var textAlign = (int)_configuration.StopwatchTextAlign;
             if (ImGui.Combo(TransId("Settings_FWTab_TextAlign"), ref textAlign,
-                Trans("Settings_FWTab_TextAlign_Left") + "###Left\0" +
-                Trans("Settings_FWTab_TextAlign_Center") + "###Center\0" +
-                Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
+                    Trans("Settings_FWTab_TextAlign_Left") + "###Left\0" +
+                    Trans("Settings_FWTab_TextAlign_Center") + "###Center\0" +
+                    Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
             {
                 _configuration.StopwatchTextAlign = (Configuration.TextAlign)textAlign;
             }
@@ -580,9 +615,9 @@ namespace EngageTimer.UI
             const float scale = .5f;
             ImGui.BeginGroup();
             if (ImGui.ImageButton(
-                texture.ImGuiHandle,
-                new Vector2(texture.Width * scale, texture.Height * scale)
-            ))
+                    texture.ImGuiHandle,
+                    new Vector2(texture.Width * scale, texture.Height * scale)
+                ))
             {
                 _exampleNumber -= 1;
                 if (_exampleNumber < 0) _exampleNumber = 9;
@@ -650,7 +685,7 @@ namespace EngageTimer.UI
 
                 var enableCustomNegativeMargin = _configuration.CountdownCustomNegativeMargin != null;
                 if (ImGui.Checkbox(TransId("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin"),
-                    ref enableCustomNegativeMargin))
+                        ref enableCustomNegativeMargin))
                 {
                     _configuration.CountdownCustomNegativeMargin = enableCustomNegativeMargin ? 20f : null;
                     _configuration.Save();
