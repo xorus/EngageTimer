@@ -82,7 +82,7 @@ namespace EngageTimer.UI
             _state.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
         }
 
-        private bool _forceDebug = true;
+        // private bool _forceDebug = true;
 
         public void Draw()
         {
@@ -118,12 +118,12 @@ namespace EngageTimer.UI
             // ImGui.End();
 
             // debug
-            if (_forceDebug)
-            {
-                Visible = true;
-                ToggleMock();
-                _forceDebug = false;
-            }
+            // if (_forceDebug)
+            // {
+            //     Visible = true;
+            //     ToggleMock();
+            //     _forceDebug = false;
+            // }
 
             if (!Visible) return;
             UpdateMock();
