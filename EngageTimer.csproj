@@ -82,27 +82,27 @@
 
     <ItemGroup>
         <Reference Include="Dalamud, Culture=neutral, PublicKeyToken=null">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\Dalamud.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="FFXIVClientStructs, Culture=neutral, PublicKeyToken=null">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\FFXIVClientStructs.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="ImGui.NET, Culture=neutral, PublicKeyToken=null">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\ImGui.NET.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="ImGuiScene, Culture=neutral, PublicKeyToken=null">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\ImGuiScene.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\Newtonsoft.Json.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\Newtonsoft.Json.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="StbiSharp, Culture=neutral, PublicKeyToken=null">
-            <HintPath>C:\Users\jdpep\source\repos\Dalamud\bin\Debug\StbiSharp.dll</HintPath>
+            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\StbiSharp.dll</HintPath>
             <Private>false</Private>
         </Reference>
     </ItemGroup>
