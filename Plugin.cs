@@ -113,7 +113,6 @@ namespace EngageTimer
             _pluginInterface.SavePluginConfig(_configuration);
             _pluginInterface.UiBuilder.Draw -= _ui.Draw;
             _ui?.Dispose();
-            _pluginInterface.Dispose();
             _stopWatchHook?.Dispose();
         }
     }

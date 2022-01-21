@@ -9,7 +9,7 @@ namespace EngageTimer
     [Serializable]
     public class Configuration : IPluginConfiguration
     {
-        public int Version { get; set; } = 1;
+        public int Version { get; set; } = 2;
 
         // Counting mode
         public bool CountdownAccurateCountdown { get; set; } = false;
@@ -89,6 +89,8 @@ namespace EngageTimer
         public bool StopwatchTenths { get; set; } = false;
         public int StopwatchDecimalPrecision { get; set; } = 1;
 
+        public bool MigrateCountdownOffsetToPercent { get; set; } = false;
+        
         // Add any other properties or methods here.
         [NonSerialized] private DalamudPluginInterface _pluginInterface;
 
@@ -117,9 +119,7 @@ namespace EngageTimer
         {
             if (Version == 0)
             {
-                PluginLog.Information("Mother. I require migration. Migrating plugin configuration from version " +
-                                      Version);
-
+                PluginLog.Information($"Migrating plugin configuration from version {Version}");
                 DisplayFloatingWindow = DisplayStopwatch;
                 FloatingWindowBackgroundColor = new Vector4(0, 0, 0, 255 * StopwatchOpacity);
                 FloatingWindowTextColor = StopwatchColor;
@@ -128,7 +128,14 @@ namespace EngageTimer
                 FloatingWindowDecimalCountdownPrecision = StopwatchTenths ? StopwatchDecimalPrecision : 0;
                 FloatingWindowAccurateCountdown = true;
                 Version = 1;
+                this.Save();
+            }
 
+            if (Version == 1)
+            {
+                PluginLog.Information($"Migrating plugin configuration from version {Version}");
+                if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0) MigrateCountdownOffsetToPercent = true;
+                Version = 2;
                 this.Save();
             }
         }

@@ -318,11 +318,11 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <value>Enable animation</value>
   </data>
     <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
-    <value>X</value>
-  </data>
+      <value>X%</value>
+    </data>
     <data name="Settings_CountdownTab_OffsetY" xml:space="preserve">
-    <value>Y</value>
-  </data>
+      <value>Y%</value>
+    </data>
     <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
     <value>Countdown offset</value>
   </data>
@@ -367,5 +367,8 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     </data>
     <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
       <value>Alignement</value>
+    </data>
+    <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
+      <value>Center countdown window</value>
     </data>
 </root>

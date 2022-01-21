@@ -4,7 +4,6 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
-using Dalamud.Logging;
 using EngageTimer.Properties;
 using EngageTimer.UI.Color;
 using ImGuiNET;
@@ -82,48 +81,19 @@ namespace EngageTimer.UI
             _state.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
         }
 
-        // private bool _forceDebug = true;
-
+#if DEBUG
+        private bool _forceDebug = true;
+#endif
         public void Draw()
         {
-            // var visible1 = true;
-            // var flags1 = /*ImGuiWindowFlags.AlwaysAutoResize
-            //             |*/ ImGuiWindowFlags.NoResize
-            //                 // | ImGuiWindowFlags.NoTitleBar
-            //                 | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
-            //     // | ImGuiWindowFlags.NoDecoration
-            //     // | ImGuiWindowFlags.NoInputs
-            //     // | ImGuiWindowFlags.NoBackground
-            //     // | ImGuiWindowFlags.NoMouseInputs
-            //     ;
-            // ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-            // // ImGui.PushClipRect(new Vector2(-100, -100), new Vector2(100, 100), false);
-            // if (ImGui.Begin("EngageTimer test", ref visible1, flags1))
-            // {
-            //     ImGui.PushFont(UiBuilder.IconFont);
-            //     ImGui.SetWindowFontScale(4);
-            //
-            //     var d = ImGui.GetForegroundDrawList();
-            //     d.AddCircle(new Vector2(10, 10), 5, (uint)ImGuiCol.Text);
-            //     
-            //     ImGui.Text(FontAwesomeIcon.ArrowsAlt.ToString());
-            //     ImGui.PopFont();
-            //
-            //     ImGui.SetCursorPosX(-100);
-            //     ImGui.Text("asdfpjñ?");
-            // }
-            //
-            // // ImGui.PopClipRect();
-            // ImGui.PopStyleVar();
-            // ImGui.End();
-
-            // debug
-            // if (_forceDebug)
-            // {
-            //     Visible = true;
-            //     ToggleMock();
-            //     _forceDebug = false;
-            // }
+#if DEBUG
+            if (_forceDebug)
+            {
+                Visible = true;
+                ToggleMock();
+                _forceDebug = false;
+            }
+#endif
 
             if (!Visible) return;
             UpdateMock();
@@ -313,24 +283,24 @@ namespace EngageTimer.UI
                 ImGui.TextWrapped(Trans("Settings_CountdownTab_PositionWarning"));
                 ImGui.PopStyleColor();
             }
-            
+
             ImGui.TextWrapped(Trans("Settings_CountdownTab_MultiMonitorWarning"));
 
-            var countdownOffsetX = _configuration.CountdownWindowOffset.X;
-            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX))
+            var countdownOffsetX = _configuration.CountdownWindowOffset.X * 100;
+            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX, .1f))
             {
                 _configuration.CountdownWindowOffset =
-                    new Vector2(countdownOffsetX, _configuration.CountdownWindowOffset.Y);
+                    new Vector2(countdownOffsetX / 100, _configuration.CountdownWindowOffset.Y);
                 _configuration.Save();
             }
 
             ImGui.SameLine();
 
-            var countdownOffsetY = _configuration.CountdownWindowOffset.Y;
-            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetY"), ref countdownOffsetY))
+            var countdownOffsetY = _configuration.CountdownWindowOffset.Y * 100;
+            if (ImGui.DragFloat(TransId("Settings_CountdownTab_OffsetY"), ref countdownOffsetY, .1f))
             {
                 _configuration.CountdownWindowOffset =
-                    new Vector2(_configuration.CountdownWindowOffset.X, countdownOffsetY);
+                    new Vector2(_configuration.CountdownWindowOffset.X, countdownOffsetY / 100);
                 _configuration.Save();
             }
 
@@ -351,8 +321,9 @@ namespace EngageTimer.UI
                 _configuration.CountdownScale = Math.Clamp(countdownScale, 0.05f, 15f);
                 _configuration.Save();
             }
+
             ImGui.PopItemWidth();
-            
+
             var align = (int)_configuration.CountdownAlign;
             if (ImGui.Combo(TransId("Settings_CountdownTab_CountdownAlign"), ref align,
                     Trans("Settings_FWTab_TextAlign_Left") + "###Left\0" +
@@ -362,7 +333,7 @@ namespace EngageTimer.UI
                 _configuration.CountdownAlign = (Configuration.TextAlign)align;
             }
 
-            
+
             ImGui.Unindent();
         }
 

@@ -155,6 +155,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center countdown window.
+        /// </summary>
+        internal static string Settings_CountdownTab_CountdownWindowCentered {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_CountdownWindowCentered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable big countdown.
         /// </summary>
         internal static string Settings_CountdownTab_Enable {
@@ -308,7 +317,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X.
+        ///   Looks up a localized string similar to X%.
         /// </summary>
         internal static string Settings_CountdownTab_OffsetX {
             get {
@@ -317,7 +326,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Y.
+        ///   Looks up a localized string similar to Y%.
         /// </summary>
         internal static string Settings_CountdownTab_OffsetY {
             get {

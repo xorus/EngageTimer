@@ -349,4 +349,10 @@ Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu e
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
     <value>Alignement</value>
   </data>
+  <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
+    <value>Centrer le compte à rebours</value>
+  </data>
+  <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
+    <value>Quand le mode multi-moniteur est activé, positionner le compte à rebours en dehors de la fenêtre du jeu (même juste d'un pixel) causera l'apparition d'un fond noir. Il est impossible pour l'instant de créer une fenêtre transparente en dehors du jeu. Servez vous de la bordure qui s'affiche maintenant comme guide de positionnement.</value>
+  </data>
 </root>

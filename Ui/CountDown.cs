@@ -85,14 +85,19 @@ namespace EngageTimer.UI
 
         private int _lastSecond;
 
-        public static bool ResetWindow { get; set; } = false;
-
         public static bool ShowBackground { get; set; } = false;
         private const float AnimationSize = .7f;
         private bool _wasInMainViewport = true;
 
         public void Draw()
         {
+            if (_configuration.MigrateCountdownOffsetToPercent)
+            {
+                _configuration.CountdownWindowOffset /= ImGui.GetIO().DisplaySize;
+                _configuration.MigrateCountdownOffsetToPercent = false;
+                _configuration.Save();
+            }
+
             if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
                 TickSound((int)Math.Ceiling(_state.CountDownValue));
 
@@ -150,7 +155,7 @@ namespace EngageTimer.UI
 
             var io = ImGui.GetIO();
             var windowPosition = new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f) +
-                                 _configuration.CountdownWindowOffset;
+                                 _configuration.CountdownWindowOffset * io.DisplaySize;
             var windowSize = new Vector2(
                 maxNumberScale * (_numberTextures.MaxTextureWidth *
                                   (_configuration.EnableCountdownDecimal
@@ -163,18 +168,14 @@ namespace EngageTimer.UI
             ImGui.SetNextWindowPos(windowPosition, ImGuiCond.Always, new Vector2(0.5f, 0.5f));
             ImGui.SetNextWindowSize(windowSize, ImGuiCond.Always);
 
-            var flags = /*ImGuiWindowFlags.AlwaysAutoResize
-                        | ImGuiWindowFlags.NoResize
-                        |*/ ImGuiWindowFlags.NoTitleBar
-                            | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
-                            | ImGuiWindowFlags.NoDecoration
-                            | ImGuiWindowFlags.NoFocusOnAppearing
-                            | ImGuiWindowFlags.NoNavFocus
-                            | ImGuiWindowFlags.NoInputs
-                            // | ImGuiWindowFlags.NoBackground
-                            | ImGuiWindowFlags.NoMouseInputs
+            var flags = ImGuiWindowFlags.NoTitleBar
+                        | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
+                        | ImGuiWindowFlags.NoDecoration
+                        | ImGuiWindowFlags.NoFocusOnAppearing
+                        | ImGuiWindowFlags.NoNavFocus
+                        | ImGuiWindowFlags.NoInputs
+                        | ImGuiWindowFlags.NoMouseInputs
                 ;
-
             if (_wasInMainViewport) flags |= ImGuiWindowFlags.NoBackground;
 
             var visible = true;
