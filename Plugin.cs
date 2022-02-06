@@ -6,6 +6,8 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
+using Dalamud.Game.Gui.Dtr;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using EngageTimer.Attributes;
 using EngageTimer.Properties;
@@ -26,6 +28,7 @@ namespace EngageTimer
         private readonly PluginUi _ui;
         private readonly ClientState _clientState;
         private readonly Localization _localization;
+        private readonly DtrBar _dtrBar;
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AssemblyLocation { get; set; }
@@ -38,10 +41,13 @@ namespace EngageTimer
             GameGui gameGui,
             CommandManager commands,
             SigScanner sigScanner,
-            Condition condition)
+            Condition condition,
+            DtrBar dtrBar
+        )
         {
             _pluginInterface = pluginInterface;
             _clientState = clientState;
+            _dtrBar = dtrBar;
 
             var localPath = pluginInterface.AssemblyLocation.DirectoryName;
             this._localization = new Localization(_pluginInterface.GetPluginLocDirectory());
@@ -51,14 +57,15 @@ namespace EngageTimer
             _configuration.Migrate();
 
             var state = new State();
-            _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state);
+            _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state, dtrBar);
 
             _pluginCommandManager = new PluginCommandManager<Plugin>(this, _pluginInterface, commands);
             _stopWatchHook = new StopWatchHook(_pluginInterface, state, sigScanner, condition);
 
             _pluginInterface.UiBuilder.Draw += DrawUi;
             _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
-
+            
+            _server = new WebServer(_configuration, localPath, state);
             _server = new WebServer(_configuration, localPath, state);
             _pluginInterface.LanguageChanged += ConfigureLanguage;
             ConfigureLanguage();
@@ -85,7 +92,7 @@ namespace EngageTimer
         {
             // disable plugin operation when not logged in
             // if (!_clientState.IsLoggedIn)
-                // return;
+            // return;
 
             _stopWatchHook?.Update();
             _server?.Update();

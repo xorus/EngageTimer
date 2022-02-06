@@ -355,4 +355,34 @@ Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu e
   <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
     <value>Quand le mode multi-moniteur est activé, positionner le compte à rebours en dehors de la fenêtre du jeu (même juste d'un pixel) causera l'apparition d'un fond noir. Il est impossible pour l'instant de créer une fenêtre transparente en dehors du jeu. Servez vous de la bordure qui s'affiche maintenant comme guide de positionnement.</value>
   </data>
+  <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
+    <value>Cacher automatiquement</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
+    <value>Préfixe</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
+    <value>Suffixe</value>
+  </data>
+  <data name="Settings_DtrTab_Title" xml:space="preserve">
+    <value>Barre d'info</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
+    <value>Toujours cacher hors instance</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
+    <value>Nombre de millisecondes à afficher</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
+    <value>Activer l'intégration dans la barre d'infos serveur</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
+    <value>scondes après la fin du combat</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="Settings_DtrTab_Info" xml:space="preserve">
+    <value>Cet onglet permet de configurer l'affichage du temps de combat dans la barre d'informations serveur, c'est à dire là ou il sont normalement affichés le nom du serveur et l'heure. Vous pouvez réordonner les modules depuis les paramètres de Dalamud.</value>
+  </data>
 </root>

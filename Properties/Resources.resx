@@ -371,4 +371,34 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
       <value>Center countdown window</value>
     </data>
+    <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
+      <value>Enable Server Info Bar integation</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
+      <value>Prefix</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
+      <value>Suffix</value>
+    </data>
+    <data name="Settings_DtrTab_Title" xml:space="preserve">
+      <value>Server Info Bar</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
+      <value>Always hide when not bound by duty</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
+      <value>Milliseconds to show</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
+      <value>Hide</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
+      <value>seconds after combat end</value>
+    </data>
+    <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
+      <value>Reset to default</value>
+    </data>
+    <data name="Settings_DtrTab_Info" xml:space="preserve">
+      <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
+    </data>
 </root>

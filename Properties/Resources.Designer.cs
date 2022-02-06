@@ -461,6 +461,96 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always hide when not bound by duty.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_AlwaysDisableOutsideDuty {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_AlwaysDisableOutsideDuty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Milliseconds to show.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_DecimalPrecision {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_DecimalPrecision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset to default.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_Defaults {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_Defaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Server Info Bar integation.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_Enable {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_HideAfter {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_HideAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds after combat end.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_HideAfterRight {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_HideAfterRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prefix.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_Prefix {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_Prefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suffix.
+        /// </summary>
+        internal static string Settings_DtrCombatTimer_Suffix {
+            get {
+                return ResourceManager.GetString("Settings_DtrCombatTimer_Suffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings..
+        /// </summary>
+        internal static string Settings_DtrTab_Info {
+            get {
+                return ResourceManager.GetString("Settings_DtrTab_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Info Bar.
+        /// </summary>
+        internal static string Settings_DtrTab_Title {
+            get {
+                return ResourceManager.GetString("Settings_DtrTab_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable accurate countdown in floating window.
         /// </summary>
         internal static string Settings_FWTab_AccurateCountdown {

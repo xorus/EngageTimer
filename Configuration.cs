@@ -1,8 +1,8 @@
 ﻿using System;
-using Dalamud.Configuration;
-using Dalamud.Plugin;
 using System.Numerics;
+using Dalamud.Configuration;
 using Dalamud.Logging;
+using Dalamud.Plugin;
 
 namespace EngageTimer
 {
@@ -90,7 +90,29 @@ namespace EngageTimer
         public int StopwatchDecimalPrecision { get; set; } = 1;
 
         public bool MigrateCountdownOffsetToPercent { get; set; } = false;
-        
+
+        // Dtr bar
+        [NonSerialized] private bool _dtrCombatTimeEnabled = false;
+
+        public bool DtrCombatTimeEnabled
+        {
+            get => _dtrCombatTimeEnabled;
+            set
+            {
+                _dtrCombatTimeEnabled = value;
+                DtrBarCombatTimerEnableChange?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public const string DefaultCombatTimePrefix = "【 ";
+        public const string DefaultCombatTimeSuffix = "】";
+        public string DtrCombatTimePrefix { get; set; } = DefaultCombatTimePrefix;
+        public string DtrCombatTimeSuffix { get; set; } = DefaultCombatTimeSuffix;
+        public int DtrCombatTimeDecimalPrecision { get; set; } = 0;
+        public bool DtrCombatTimeAlwaysDisableOutsideDuty { get; set; }
+        public bool DtrCombatTimeEnableHideAfter { get; set; } = false;
+        public float DtrCombatTimeHideAfter { get; set; } = 20f;
+
         // Add any other properties or methods here.
         [NonSerialized] private DalamudPluginInterface _pluginInterface;
 
@@ -114,6 +136,7 @@ namespace EngageTimer
         }
 
         public event EventHandler OnSave;
+        public event EventHandler DtrBarCombatTimerEnableChange;
 
         public void Migrate()
         {
@@ -134,7 +157,8 @@ namespace EngageTimer
             if (Version == 1)
             {
                 PluginLog.Information($"Migrating plugin configuration from version {Version}");
-                if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0) MigrateCountdownOffsetToPercent = true;
+                if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0)
+                    MigrateCountdownOffsetToPercent = true;
                 Version = 2;
                 this.Save();
             }

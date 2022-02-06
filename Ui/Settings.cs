@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface;
@@ -90,7 +91,7 @@ namespace EngageTimer.UI
             if (_forceDebug)
             {
                 Visible = true;
-                ToggleMock();
+                // ToggleMock();
                 _forceDebug = false;
             }
 #endif
@@ -115,9 +116,55 @@ namespace EngageTimer.UI
                         ImGui.EndTabItem();
                     }
 
+
+                    if (ImGui.BeginTabItem(TransId("Settings_DtrTab_Title")))
+                    {
+                        DtrTabContent();
+                        ImGui.EndTabItem();
+                    }
+
                     if (ImGui.BeginTabItem(TransId("Settings_Web_Title")))
                     {
                         WebServerTabContent();
+                        ImGui.EndTabItem();
+                    }
+
+                    if (ImGui.BeginTabItem("About")) //TransId("Settings_Web_Title")))
+                    {
+                        ImGui.PushTextWrapPos();
+                        ImGui.Text("Hi there! I'm Xorus.");
+                        ImGui.Text("If you have any suggestions or bugs to report, the best way is to leave it in the" +
+                                   "issues section of my GitHub repository.");
+
+                        if (ImGui.Button("https://github.com/xorus/EngageTimer"))
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "https://github.com/xorus/EngageTimer",
+                                UseShellExecute = true
+                            });
+                        }
+
+                        ImGui.Text("If you don't wan to/can't use GitHub, just use the feedback button in the plugin" +
+                                   "list. I don't get notifications for those, but I try to keep up with them as much " +
+                                   "as I can.");
+                        ImGui.Text(
+                            "Please note that if you leave a discord username as contact info, I may not be able to " +
+                            "DM you back if you are not on the Dalamud Discord server because of discord privacy settings.");
+                        ImGui.PopTextWrapPos();
+                        ImGui.Separator();
+
+                        ImGui.Text("Feel like supporting me?");
+                        ImGui.SameLine();
+                        if (ImGui.Button("Buy me a coffee (ko-fi.com/xorus)"))
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "https://ko-fi.com/xorus",
+                                UseShellExecute = true
+                            });
+                        }
+
                         ImGui.EndTabItem();
                     }
 
@@ -133,6 +180,74 @@ namespace EngageTimer.UI
             if (!_visible) Visible = false;
 
             ImGui.End();
+        }
+
+        private void DtrTabContent()
+        {
+            ImGui.PushTextWrapPos();
+            ImGui.Text(Trans("Settings_DtrTab_Info"));
+            ImGui.PopTextWrapPos();
+            ImGui.Separator();
+
+            var enabled = _configuration.DtrCombatTimeEnabled;
+            if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_Enable"), ref enabled))
+            {
+                _configuration.DtrCombatTimeEnabled = enabled;
+            }
+
+            var prefix = _configuration.DtrCombatTimePrefix;
+            if (ImGui.InputText(TransId("Settings_DtrCombatTimer_Prefix"), ref prefix, 50))
+            {
+                _configuration.DtrCombatTimePrefix = prefix;
+            }
+
+            ImGui.SameLine();
+            var suffix = _configuration.DtrCombatTimeSuffix;
+            if (ImGui.InputText(TransId("Settings_DtrCombatTimer_Suffix"), ref suffix, 50))
+            {
+                _configuration.DtrCombatTimeSuffix = suffix;
+            }
+
+            ImGui.SameLine();
+            if (ImGui.Button(TransId("Settings_DtrCombatTimer_Defaults")))
+            {
+                _configuration.DtrCombatTimePrefix = "【 ";
+                _configuration.DtrCombatTimeSuffix = "】";
+            }
+
+
+            var outside = _configuration.DtrCombatTimeAlwaysDisableOutsideDuty;
+            if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_AlwaysDisableOutsideDuty"), ref outside))
+            {
+                _configuration.DtrCombatTimeAlwaysDisableOutsideDuty = outside;
+            }
+
+            var decimals = _configuration.DtrCombatTimeDecimalPrecision;
+            if (ImGui.InputInt(TransId("Settings_DtrCombatTimer_DecimalPrecision"), ref decimals, 1, 0))
+            {
+                _configuration.DtrCombatTimeDecimalPrecision = Math.Max(0, Math.Min(3, decimals));
+            }
+
+            var enableHideAfter = _configuration.DtrCombatTimeEnableHideAfter;
+            if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_HideAfter"), ref enableHideAfter))
+            {
+                _configuration.DtrCombatTimeEnableHideAfter = enableHideAfter;
+            }
+
+            ImGui.SameLine();
+            var hideAfter = _configuration.DtrCombatTimeHideAfter;
+            if (ImGui.InputFloat(TransId("Settings_DtrCombatTimer_HideAfterRight"), ref hideAfter, 0.1f, 1f, "%.1f%"))
+            {
+                _configuration.DtrCombatTimeHideAfter = Math.Max(0, hideAfter);
+            }
+            /*
+        public string DtrCombatTimePrefix { get; set; } = null;
+        public string DtrCombatTimeSuffix { get; set; } = null;
+        public int DtrCombatTimeDecimals { get; set; } = 0;
+        public bool DtrCombatTimeAlwaysDisableOutsideDuty { get; set; }
+        public bool DtrCombatTimeEnableHideAfter { get; set; } = false;
+        public float DtrCombatTimeHideAfter { get; set; } = 0f;
+*/
         }
 
         private string _tempTexturePath;
