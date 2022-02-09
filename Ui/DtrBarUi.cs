@@ -52,7 +52,8 @@ namespace EngageTimer.UI
 
         public void Dispose()
         {
-            _entry.Dispose();
+            GC.SuppressFinalize(this);
+            _entry?.Dispose();
         }
     }
 }

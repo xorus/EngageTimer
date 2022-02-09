@@ -44,6 +44,7 @@ namespace EngageTimer
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             _stopwatch?.Dispose();
             _dtrBarUi?.Dispose();
         }

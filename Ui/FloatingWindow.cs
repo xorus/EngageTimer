@@ -208,6 +208,7 @@ namespace EngageTimer.UI
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             _pluginInterface.UiBuilder.BuildFonts -= BuildFont;
             _pluginInterface.UiBuilder.RebuildFonts();
             // _font.Destroy(); - crashes when I do this

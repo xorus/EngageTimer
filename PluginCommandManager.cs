@@ -80,6 +80,7 @@ namespace EngageTimer
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             RemoveCommandHandlers();
         }
     }
