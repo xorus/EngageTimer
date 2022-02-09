@@ -211,8 +211,8 @@ namespace EngageTimer.UI
             ImGui.SameLine();
             if (ImGui.Button(TransId("Settings_DtrCombatTimer_Defaults")))
             {
-                _configuration.DtrCombatTimePrefix = "【 ";
-                _configuration.DtrCombatTimeSuffix = "】";
+                _configuration.DtrCombatTimePrefix = Configuration.DefaultCombatTimePrefix;
+                _configuration.DtrCombatTimeSuffix = Configuration.DefaultCombatTimeSuffix;
             }
 
 
@@ -240,14 +240,6 @@ namespace EngageTimer.UI
             {
                 _configuration.DtrCombatTimeHideAfter = Math.Max(0, hideAfter);
             }
-            /*
-        public string DtrCombatTimePrefix { get; set; } = null;
-        public string DtrCombatTimeSuffix { get; set; } = null;
-        public int DtrCombatTimeDecimals { get; set; } = 0;
-        public bool DtrCombatTimeAlwaysDisableOutsideDuty { get; set; }
-        public bool DtrCombatTimeEnableHideAfter { get; set; } = false;
-        public float DtrCombatTimeHideAfter { get; set; } = 0f;
-*/
         }
 
         private string _tempTexturePath;
