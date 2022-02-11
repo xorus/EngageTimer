@@ -1,6 +1,7 @@
 ﻿using System;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using EngageTimer.UI;
 
@@ -44,9 +45,9 @@ namespace EngageTimer
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             _stopwatch?.Dispose();
             _dtrBarUi?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

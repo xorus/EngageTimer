@@ -7,6 +7,9 @@ using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 
+/*
+ * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
+ */
 namespace EngageTimer
 {
     public class StopWatchHook : IDisposable

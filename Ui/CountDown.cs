@@ -39,7 +39,7 @@ namespace EngageTimer.UI
             UpdateFromConfig();
         }
 
-        private void ConfigurationOnOnSave(object? sender, EventArgs e)
+        private void ConfigurationOnOnSave(object sender, EventArgs e)
         {
             UpdateFromConfig();
         }

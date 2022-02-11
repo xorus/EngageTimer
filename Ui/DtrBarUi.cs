@@ -1,5 +1,6 @@
 ﻿using System;
 using Dalamud.Game.Gui.Dtr;
+using Dalamud.Logging;
 
 namespace EngageTimer.UI
 {
@@ -7,20 +8,54 @@ namespace EngageTimer.UI
     {
         private readonly Configuration _configuration;
         private readonly State _state;
-        private DtrBarEntry? _entry = null;
+        private readonly DtrBar _dtrBar;
+        private DtrBarEntry _entry = null;
 
         public DtrBarUi(Configuration configuration, State state, DtrBar dtrBar)
         {
             _configuration = configuration;
             _state = state;
-            GetOrReset(_configuration.DtrCombatTimeEnabled, dtrBar);
+            _dtrBar = dtrBar;
+            GetOrReset(_configuration.DtrCombatTimeEnabled);
             _configuration.DtrBarCombatTimerEnableChange +=
-                (_, _) => GetOrReset(_configuration.DtrCombatTimeEnabled, dtrBar);
+                (_, _) => GetOrReset(_configuration.DtrCombatTimeEnabled);
         }
 
-        private void GetOrReset(bool enabled, DtrBar dtrBar)
+        private DtrBarEntry GetEntry()
         {
-            if (enabled) _entry = dtrBar.Get("EngageTimer stopwatch");
+            var dtrBarTitle = "EngageTimer stopwatch";
+            try
+            {
+                this._entry = _dtrBar.Get(dtrBarTitle);
+            }
+            catch (ArgumentException e)
+            {
+                var random = new Random();
+                // this can happen when Dalamud did not have the time to update it's internal dictionary
+                // https://github.com/goatcorp/Dalamud/issues/759
+                for (var i = 0; i < 5; i++)
+                {
+                    var attempt = $"{dtrBarTitle} ({random.Next().ToString()})";
+                    PluginLog.LogError(e, $"Failed to acquire DtrBarEntry {dtrBarTitle}, trying {attempt}");
+                    try
+                    {
+                        this._entry = _dtrBar.Get(attempt);
+                    }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
+
+                    break;
+                }
+            }
+
+            return this._entry;
+        }
+
+        private void GetOrReset(bool enabled)
+        {
+            if (enabled) _entry = GetEntry();
             else _entry?.Remove();
         }
 
@@ -52,8 +87,8 @@ namespace EngageTimer.UI
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             _entry?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

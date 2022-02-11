@@ -7,15 +7,11 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
-using Dalamud.IoC;
 using Dalamud.Plugin;
 using EngageTimer.Attributes;
 using EngageTimer.Properties;
 using EngageTimer.Web;
 
-/*
- * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
- */
 namespace EngageTimer
 {
     public class Plugin : IDalamudPlugin
@@ -71,7 +67,7 @@ namespace EngageTimer
             ConfigureLanguage();
         }
 
-        private void ConfigureLanguage(string? langCode = null)
+        private void ConfigureLanguage(string langCode = null)
         {
             var lang = (langCode ?? this._pluginInterface.UiLanguage) switch
             {
@@ -81,11 +77,17 @@ namespace EngageTimer
             Resources.Culture = new CultureInfo(lang ?? "en");
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _server?.Dispose();
+            _pluginCommandManager?.Dispose();
+            _pluginInterface.SavePluginConfig(_configuration);
+            _pluginInterface.UiBuilder.Draw -= _ui.Draw;
+            _ui?.Dispose();
+            _stopWatchHook?.Dispose();
+            
             _pluginInterface.LanguageChanged -= ConfigureLanguage;
+            GC.SuppressFinalize(this);
         }
 
         private void DrawUi()
@@ -109,18 +111,6 @@ namespace EngageTimer
         public void OpenSettingsCommand(string command, string args)
         {
             _ui.OpenSettings();
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-
-            _server?.Dispose();
-            _pluginCommandManager?.Dispose();
-            _pluginInterface.SavePluginConfig(_configuration);
-            _pluginInterface.UiBuilder.Draw -= _ui.Draw;
-            _ui?.Dispose();
-            _stopWatchHook?.Dispose();
         }
     }
 }
