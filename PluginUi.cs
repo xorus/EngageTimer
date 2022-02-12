@@ -1,7 +1,6 @@
 ﻿using System;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using EngageTimer.UI;
 
@@ -23,11 +22,11 @@ namespace EngageTimer
         )
         {
             var numbers = new NumberTextures(configuration, pluginInterface.UiBuilder, pluginPath);
+            numbers.Load();
             _countDown = new CountDown(configuration, state, gui, numbers, pluginPath);
             _stopwatch = new FloatingWindow(configuration, state, pluginInterface);
             _settings = new Settings(configuration, state, pluginInterface.UiBuilder, numbers);
             _dtrBarUi = new DtrBarUi(configuration, state, dtrBar);
-            numbers.Load();
         }
 
         public void Draw()

@@ -1,5 +1,7 @@
 ﻿using System;
 using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
 
 namespace EngageTimer.UI
@@ -77,12 +79,14 @@ namespace EngageTimer.UI
             }
 
             if (!_entry.Shown) _entry.Shown = true;
-            _entry.Text = _configuration.DtrCombatTimePrefix +
-                          (_configuration.DtrCombatTimeDecimalPrecision > 0
-                              ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
-                                  _configuration.DtrCombatTimeDecimalPrecision))
-                              : _state.CombatDuration.ToString(@"mm\:ss"))
-                          + _configuration.DtrCombatTimeSuffix;
+
+            var seString = (SeString)(_configuration.DtrCombatTimePrefix +
+                           (_configuration.DtrCombatTimeDecimalPrecision > 0
+                               ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
+                                   _configuration.DtrCombatTimeDecimalPrecision))
+                               : _state.CombatDuration.ToString(@"mm\:ss"))
+                           + _configuration.DtrCombatTimeSuffix);
+            if (_entry.Text == null || !_entry.Text.Equals(seString)) _entry.Text = seString;
         }
 
         public void Dispose()
