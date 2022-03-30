@@ -145,18 +145,18 @@ namespace EngageTimer.UI
                             });
                         }
 
-                        ImGui.Text("If you don't wan to/can't use GitHub, just use the feedback button in the plugin" +
+                        ImGui.Text("If you don't want to/can't use GitHub, just use the feedback button in the plugin" +
                                    "list. I don't get notifications for those, but I try to keep up with them as much " +
                                    "as I can.");
                         ImGui.Text(
                             "Please note that if you leave a discord username as contact info, I may not be able to " +
-                            "DM you back if you are not on the Dalamud Discord server because of discord privacy settings.");
+                            "DM you back if you are not on the Dalamud Discord server because of discord privacy settings." +
+                            "I might try to DM you / add you as a friend in those cases.");
                         ImGui.PopTextWrapPos();
                         ImGui.Separator();
 
-                        ImGui.Text("Feel like supporting me?");
                         ImGui.SameLine();
-                        if (ImGui.Button("Buy me a coffee (ko-fi.com/xorus)"))
+                        if (ImGui.Button("Support this plugin by buying me a coffee (ko-fi.com/xorus)"))
                         {
                             Process.Start(new ProcessStartInfo
                             {
@@ -193,12 +193,14 @@ namespace EngageTimer.UI
             if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_Enable"), ref enabled))
             {
                 _configuration.DtrCombatTimeEnabled = enabled;
+                _configuration.Save();
             }
 
             var prefix = _configuration.DtrCombatTimePrefix;
             if (ImGui.InputText(TransId("Settings_DtrCombatTimer_Prefix"), ref prefix, 50))
             {
                 _configuration.DtrCombatTimePrefix = prefix;
+                _configuration.Save();
             }
 
             ImGui.SameLine();
@@ -206,6 +208,7 @@ namespace EngageTimer.UI
             if (ImGui.InputText(TransId("Settings_DtrCombatTimer_Suffix"), ref suffix, 50))
             {
                 _configuration.DtrCombatTimeSuffix = suffix;
+                _configuration.Save();
             }
 
             ImGui.SameLine();
@@ -213,6 +216,7 @@ namespace EngageTimer.UI
             {
                 _configuration.DtrCombatTimePrefix = Configuration.DefaultCombatTimePrefix;
                 _configuration.DtrCombatTimeSuffix = Configuration.DefaultCombatTimeSuffix;
+                _configuration.Save();
             }
 
 
@@ -220,18 +224,21 @@ namespace EngageTimer.UI
             if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_AlwaysDisableOutsideDuty"), ref outside))
             {
                 _configuration.DtrCombatTimeAlwaysDisableOutsideDuty = outside;
+                _configuration.Save();
             }
 
             var decimals = _configuration.DtrCombatTimeDecimalPrecision;
             if (ImGui.InputInt(TransId("Settings_DtrCombatTimer_DecimalPrecision"), ref decimals, 1, 0))
             {
                 _configuration.DtrCombatTimeDecimalPrecision = Math.Max(0, Math.Min(3, decimals));
+                _configuration.Save();
             }
 
             var enableHideAfter = _configuration.DtrCombatTimeEnableHideAfter;
             if (ImGui.Checkbox(TransId("Settings_DtrCombatTimer_HideAfter"), ref enableHideAfter))
             {
                 _configuration.DtrCombatTimeEnableHideAfter = enableHideAfter;
+                _configuration.Save();
             }
 
             ImGui.SameLine();
@@ -239,6 +246,7 @@ namespace EngageTimer.UI
             if (ImGui.InputFloat(TransId("Settings_DtrCombatTimer_HideAfterRight"), ref hideAfter, 0.1f, 1f, "%.1f%"))
             {
                 _configuration.DtrCombatTimeHideAfter = Math.Max(0, hideAfter);
+                _configuration.Save();
             }
         }
 
@@ -438,6 +446,7 @@ namespace EngageTimer.UI
                     Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
             {
                 _configuration.CountdownAlign = (Configuration.TextAlign)align;
+                _configuration.Save();
             }
 
 
@@ -603,6 +612,7 @@ namespace EngageTimer.UI
                     Trans("Settings_FWTab_TextAlign_Right") + "###Right"))
             {
                 _configuration.StopwatchTextAlign = (Configuration.TextAlign)textAlign;
+                _configuration.Save();
             }
 
             var fontSize = _configuration.FontSize;
