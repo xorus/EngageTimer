@@ -9,7 +9,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
         <Version>1.0.0</Version>
-        <AssemblyVersion>2.2.0.3</AssemblyVersion>
+        <AssemblyVersion>2.2.0.4</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -59,7 +59,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.5" />
+        <PackageReference Include="DalamudPackager" Version="2.1.6" />
         <PackageReference Include="EmbedIO" Version="3.4.3" />
         <PackageReference Include="NAudio" Version="2.0.1" />
         <PackageReference Include="NAudio.Core" Version="2.0.0" />

@@ -153,10 +153,8 @@ namespace EngageTimer.UI
                             "DM you back if you are not on the Dalamud Discord server because of discord privacy settings." +
                             "I might try to DM you / add you as a friend in those cases.");
                         ImGui.PopTextWrapPos();
-                        ImGui.Separator();
 
-                        ImGui.SameLine();
-                        if (ImGui.Button("Support this plugin by buying me a coffee (ko-fi.com/xorus)"))
+                        if (ImGui.Button("Not a big red ko-fi button"))
                         {
                             Process.Start(new ProcessStartInfo
                             {
