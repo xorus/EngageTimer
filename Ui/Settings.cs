@@ -99,7 +99,7 @@ namespace EngageTimer.UI
             if (!Visible) return;
             UpdateMock();
 
-            if (ImGui.Begin(Resources.Settings_Title, ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
+            if (ImGui.Begin(TransId("Settings_Title"), ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
             {
                 if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
                 {
@@ -307,7 +307,7 @@ namespace EngageTimer.UI
             }
 
             var enableTickingSound = _configuration.EnableTickingSound;
-            if (ImGui.Checkbox(TransId("Settings_CountdownTab_PlaySound"), ref enableTickingSound))
+            if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_Enable"), ref enableTickingSound))
             {
                 _configuration.EnableTickingSound = enableTickingSound;
                 _configuration.Save();
@@ -315,14 +315,38 @@ namespace EngageTimer.UI
 
             if (enableTickingSound)
             {
-                ImGui.SameLine();
-                var volume = _configuration.TickingSoundVolume * 100f;
-                if (ImGui.DragFloat(TransId("Settings_CountdownTab_PlaySound_Volume"), ref volume, .1f, 0f,
-                        100f, "%.1f%%"))
+                ImGui.Indent();
+                var legacy = _configuration.EnableLegacyAudio;
+
+                var alternativeSound = _configuration.UseAlternativeSound;
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_UseAlternativeSound"),
+                        ref alternativeSound))
                 {
-                    _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
+                    _configuration.UseAlternativeSound = alternativeSound;
                     _configuration.Save();
                 }
+
+                if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_LegacyAudio"), ref legacy))
+                {
+                    _configuration.EnableLegacyAudio = legacy;
+                    _configuration.Save();
+                }
+
+                ImGuiComponents.HelpMarker(Trans("Settings_CountdownTab_Audio_LegacyAudio_Help"));
+
+                if (legacy)
+                {
+                    ImGui.SameLine();
+                    var volume = _configuration.TickingSoundVolume * 100f;
+                    if (ImGui.DragFloat(TransId("Settings_CountdownTab_Audio_LegacyVolume"), ref volume, .1f, 0f,
+                            100f, "%.1f%%"))
+                    {
+                        _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
+                        _configuration.Save();
+                    }
+                }
+
+                ImGui.Unindent();
             }
 
             var animate = _configuration.CountdownAnimate;

@@ -119,6 +119,51 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play a ticking sound for all numbers.
+        /// </summary>
+        internal static string Settings_CountdownTab_Audio_Enable {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Audio_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use legacy audio (breaks linux).
+        /// </summary>
+        internal static string Settings_CountdownTab_Audio_LegacyAudio {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Audio_LegacyAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will be removed, please contact me if you use it. Crashes on non-Windows systems..
+        /// </summary>
+        internal static string Settings_CountdownTab_Audio_LegacyAudio_Help {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Audio_LegacyAudio_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sound volume.
+        /// </summary>
+        internal static string Settings_CountdownTab_Audio_LegacyVolume {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Audio_LegacyVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use duty pop timer sound.
+        /// </summary>
+        internal static string Settings_CountdownTab_Audio_UseAlternativeSound {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_Audio_UseAlternativeSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alignement.
         /// </summary>
         internal static string Settings_CountdownTab_CountdownAlign {
@@ -331,24 +376,6 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_OffsetY {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_OffsetY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Play a ticking sound for all numbers.
-        /// </summary>
-        internal static string Settings_CountdownTab_PlaySound {
-            get {
-                return ResourceManager.GetString("Settings_CountdownTab_PlaySound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sound volume.
-        /// </summary>
-        internal static string Settings_CountdownTab_PlaySound_Volume {
-            get {
-                return ResourceManager.GetString("Settings_CountdownTab_PlaySound_Volume", resourceCulture);
             }
         }
         

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Numerics;
-using System.Threading;
 using Dalamud.Game.Gui;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
-using Dalamud.Logging;
 using EngageTimer.UI.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
-using NAudio.Wave;
 
 namespace EngageTimer.UI
 {
@@ -340,46 +336,13 @@ namespace EngageTimer.UI
             return integers;
         }
 
-        /**
-         * https://git.sr.ht/~jkcclemens/PeepingTom
-         */
         private void TickSound(int n)
         {
             if (!_configuration.EnableTickingSound || _lastNumberPlayed == n)
                 return;
             _lastNumberPlayed = n;
-
-            new Thread(() =>
-            {
-                WaveStream reader;
-                try
-                {
-                    reader = new WaveFileReader(Path.Combine(_path, "Data", "tick.wav"));
-                }
-                catch (Exception e)
-                {
-                    PluginLog.Log($"Could not play sound file: {e.Message}");
-                    return;
-                }
-
-                using WaveChannel32 channel = new(reader)
-                {
-                    Volume = _configuration.TickingSoundVolume,
-                    PadWithZeroes = false
-                };
-
-                using (reader)
-                {
-                    using var output = new WaveOutEvent
-                    {
-                        DeviceNumber = -1
-                    };
-                    output.Init(channel);
-                    output.Play();
-
-                    while (output.PlaybackState == PlaybackState.Playing) Thread.Sleep(500);
-                }
-            }).Start();
+            if (_configuration.EnableLegacyAudio) SfxPlay.Legacy(_path, _configuration.TickingSoundVolume);
+            else SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
         }
     }
 }

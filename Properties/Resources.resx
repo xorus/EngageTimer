@@ -143,10 +143,10 @@
     <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
     <value>decimals in countdown</value>
   </data>
-    <data name="Settings_CountdownTab_PlaySound" xml:space="preserve">
+    <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
     <value>Play a ticking sound for all numbers</value>
   </data>
-    <data name="Settings_CountdownTab_PlaySound_Volume" xml:space="preserve">
+    <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
     <value>Sound volume</value>
   </data>
     <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
@@ -400,5 +400,14 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     </data>
     <data name="Settings_DtrTab_Info" xml:space="preserve">
       <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
+    </data>
+    <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
+      <value>Use duty pop timer sound</value>
+    </data>
+    <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
+      <value>Use legacy audio (breaks linux)</value>
+    </data>
+    <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
+      <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
     </data>
 </root>
