@@ -1,14 +1,14 @@
 ﻿name: EngageTimer
 author: Xorus
-punchline: Combat countdown with all numbers, stopwatch and OBS support
+punchline: Combat countdown with all numbers and pull timer (with a bonus OBS source)
 description: |-
   Finally, display all the numbers when starting a countdown!
 
   Features :
   - Big countdown that displays all the numbers
   - Customizable big-number textures (default, yellow, WoW style or custom files)
-  - Floating window with combat timer and countdown
-  - OBS browser-source compatible page
+  - Display combat time in the Server Info Bar, and/or a floating window
+  - OBS browser-source compatible page with countdown and current combat duration
 
   Why the OBS thing ? Well, it can be useful if you want a big stylized stopwatch in your recordings.
   See repository for more info.
