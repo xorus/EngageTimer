@@ -189,14 +189,19 @@ namespace EngageTimer.UI
          * UI font code adapted from ping plugin by karashiiro
          * https://github.com/karashiiro/PingPlugin/blob/feex/PingPlugin/PingUI.cs
          */
-        private void BuildFont()
+        private unsafe void BuildFont()
         {
             try
             {
                 var filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes",
                     "NotoSansCJKjp-Medium.otf");
                 if (!File.Exists(filePath)) throw new FileNotFoundException("Font file not found!");
-                _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize), null);
+                var grBuilder = new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
+                grBuilder.AddText("-0123456789:.");
+                grBuilder.BuildRanges(out var ranges);
+                _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize),
+                    null, ranges.Data);
+                grBuilder.Destroy();
             }
             catch (Exception e)
             {
@@ -211,7 +216,6 @@ namespace EngageTimer.UI
             GC.SuppressFinalize(this);
             _pluginInterface.UiBuilder.BuildFonts -= BuildFont;
             _pluginInterface.UiBuilder.RebuildFonts();
-            // _font.Destroy(); - crashes when I do this
         }
     }
 }
