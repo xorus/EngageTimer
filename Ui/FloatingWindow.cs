@@ -36,6 +36,8 @@ namespace EngageTimer.UI
         private float _paddingRight;
         private const float WindowPadding = 5f;
 
+        private bool _firstLoad = true;
+
         public void Draw()
         {
             if (!_configuration.DisplayFloatingWindow) return;
@@ -47,13 +49,14 @@ namespace EngageTimer.UI
 
             var stopwatchActive = StopwatchActive();
             var countdownActive = CountdownActive();
-            if (!stopwatchActive && !countdownActive) return;
+
+            if (!_firstLoad && !stopwatchActive && !countdownActive) return;
 
             if (_font.IsLoaded()) ImGui.PushFont(_font);
-
             this.DrawWindow(stopwatchActive, countdownActive);
-
             if (_font.IsLoaded()) ImGui.PopFont();
+
+            if (_firstLoad) _firstLoad = false;
         }
 
         private bool StopwatchActive()
@@ -196,7 +199,8 @@ namespace EngageTimer.UI
                 var filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes",
                     "NotoSansCJKjp-Medium.otf");
                 if (!File.Exists(filePath)) throw new FileNotFoundException("Font file not found!");
-                var grBuilder = new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
+                var grBuilder =
+                    new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
                 grBuilder.AddText("-0123456789:.");
                 grBuilder.BuildRanges(out var ranges);
                 _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize),
