@@ -205,10 +205,9 @@ namespace EngageTimer.UI
         private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMarginScaled,
             bool alternateMode)
         {
-            var displaySize = ImGui.GetWindowSize();
-
+            var windowSize = ImGui.GetWindowSize();
             var totalHeight = _numberTextures.MaxTextureHeight * numberScale;
-            ImGui.SetCursorPosY((displaySize.Y - totalHeight) / 2f);
+            ImGui.SetCursorPosY((windowSize.Y - totalHeight) / 2f);
 
             var mainTotalWidth = 0f;
             List<int> mainNumbers = null;
@@ -269,9 +268,9 @@ namespace EngageTimer.UI
                 if (_configuration.CountdownAlign == Configuration.TextAlign.Left)
                     ImGui.SetCursorPosX(0f);
                 else if (_configuration.CountdownAlign == Configuration.TextAlign.Center)
-                    ImGui.SetCursorPosX(displaySize.X / 2f - mainTotalWidth / 2f);
+                    ImGui.SetCursorPosX(windowSize.X / 2f - mainTotalWidth / 2f);
                 else if (_configuration.CountdownAlign == Configuration.TextAlign.Right)
-                    ImGui.SetCursorPosX(displaySize.X - (mainTotalWidth + decimalTotalWidth));
+                    ImGui.SetCursorPosX(windowSize.X - (mainTotalWidth + decimalTotalWidth));
 
                 // Draw the images \o/
                 foreach (var i in mainNumbers)
@@ -284,7 +283,7 @@ namespace EngageTimer.UI
 
             if (mainNumbers == null && decimalNumbers != null)
             {
-                ImGui.SetCursorPosX(displaySize.X / 2f + GameCountdownWidth);
+                ImGui.SetCursorPosX(windowSize.X / 2f + GameCountdownWidth);
             }
 
             if (decimalNumbers == null) return;

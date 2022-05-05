@@ -22,9 +22,7 @@ namespace EngageTimer.UI
         private readonly Dictionary<int, TextureWrap> _numberTexturesAlt = new();
         private readonly TextureWrap _error = null;
         public int MaxTextureWidth { get; private set; }
-
         public int MaxTextureHeight { get; private set; }
-
         public int NumberNegativeMargin { get; private set; }
         public int NumberNegativeMarginMono { get; private set; }
         public int NumberBottomMargin { get; private set; }
