@@ -4,6 +4,7 @@ using Dalamud;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
@@ -38,7 +39,8 @@ namespace EngageTimer
             CommandManager commands,
             SigScanner sigScanner,
             Condition condition,
-            DtrBar dtrBar
+            DtrBar dtrBar,
+            PartyList partyList
         )
         {
             _pluginInterface = pluginInterface;
@@ -51,16 +53,16 @@ namespace EngageTimer
             _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
             _configuration.Initialize(_pluginInterface);
             _configuration.Migrate();
-
+            
             var state = new State();
             _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state, dtrBar);
 
             _pluginCommandManager = new PluginCommandManager<Plugin>(this, _pluginInterface, commands);
-            _stopWatchHook = new StopWatchHook(_pluginInterface, state, sigScanner, condition);
+            _stopWatchHook = new StopWatchHook(state, sigScanner, condition, partyList);
 
             _pluginInterface.UiBuilder.Draw += DrawUi;
             _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
-            
+
             _server = new WebServer(_configuration, localPath, state);
             _server = new WebServer(_configuration, localPath, state);
             _pluginInterface.LanguageChanged += ConfigureLanguage;
@@ -85,7 +87,7 @@ namespace EngageTimer
             _pluginInterface.UiBuilder.Draw -= _ui.Draw;
             _ui?.Dispose();
             _stopWatchHook?.Dispose();
-            
+
             _pluginInterface.LanguageChanged -= ConfigureLanguage;
             GC.SuppressFinalize(this);
         }
