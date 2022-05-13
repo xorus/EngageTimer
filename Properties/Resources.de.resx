@@ -345,13 +345,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Lichteffekt</value>
   </data>
   <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
-    <value>Warning : when not hiding the original countdown, changing values in this section might create incoherent results</value>
+    <value>Achtung: wenn der ursprüngliche Countdown nicht ausgeblendet wird, kann eine Änderung dieser Einstellungen zu verwirrenden Darstellungen des Countdowns führen.</value>
   </data>
   <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
     <value>Kampfdauer in Sekunden anzeigen</value>
   </data>
   <data name="Settings_FWTab_CountdownNegativeSign" xml:space="preserve">
-    <value>Display the "-" sign</value>
+    <value>"-" anzeigen</value>
   </data>
   <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
     <value>Skalierung</value>
@@ -372,13 +372,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Pixel</value>
   </data>
   <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
-    <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
+    <value>Wenn Multi-Monitor-Fenster genutzt werden, führt die Positionierung des Countdowns außerhalb des Spiels (egal, um wie viel) dazu, dass ein Hintergrund angezeigt wird. Es ist nicht möglich, außerhalb des Spiels transparente Fenster anzuzeigen, dies kann bis auf weiteres auch nicht behoben werden. Bitte benutze den Rahmen als Orientierungshilfe.</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
     <value>Ausrichtung</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
-    <value>Center countdown window</value>
+    <value>Countdown zentrieren</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
     <value>Integration mit Server-Infoleiste aktivieren</value>
@@ -393,30 +393,30 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Server-Infoleiste</value>
   </data>
   <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
-    <value>Always hide when not bound by duty</value>
+    <value>Ausblenden wenn nicht in Inhalt</value>
   </data>
   <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
-    <value>Milliseconds to show</value>
+    <value>Dezimalstellen</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
-    <value>Hide</value>
+    <value>Anzeige</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
-    <value>seconds after combat end</value>
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
   </data>
   <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="Settings_DtrTab_Info" xml:space="preserve">
-    <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
+    <value>Dieses Feature zeigt die aktuelle Kampfdauer in der Server-Infoleiste an (gleich neben Server &amp; Uhrzeit). Die Anordnung von Elementen in der Server-Infoleiste kann in den Dalamud-Einstellungen angepasst werden.</value>
   </data>
   <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
-    <value>Use duty pop timer sound</value>
+    <value>Benutze "Inhalt gefunden"-Ton</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
-    <value>Use legacy audio (breaks linux)</value>
+    <value>Legacy-Audio verwenden (funktioniert nicht auf Linux)</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
-    <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
+    <value>Wird in Zukunft entfernt, bitte kontaktiere mich, wenn du diese Einstellung benutzt. Stürzt auf Nicht-Windows-Systemen ab.</value>
   </data>
 </root>
