@@ -122,57 +122,57 @@
         </value>
   </resheader>
   <data name="Settings_Title" xml:space="preserve">
-    <value>EngageTimer settings</value>
+    <value>EngageTimer Einstellungen</value>
   </data>
   <data name="Settings_CountdownTab_Info1" xml:space="preserve">
-    <value>The "big countdown" feature adds the missing numbers to the in-game timer !</value>
+    <value>Der "große Countdown" erweitert den ingame Countdown.</value>
   </data>
   <data name="Settings_CountdownTab_Enable" xml:space="preserve">
-    <value>Enable big countdown</value>
+    <value>Großen Countdown aktivieren</value>
   </data>
   <data name="Settings_CountdownTab_Title" xml:space="preserve">
-    <value>Big countdown</value>
+    <value>Großer Countdown</value>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
-    <value>Also replace numbers before 5</value>
+    <value>Ersetzt auch die Zahlen von 5 abwärts</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
-    <value>Display</value>
+    <value>Zeige</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
-    <value>decimals in countdown</value>
+    <value>Dezimalstellen im Countdown</value>
   </data>
   <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
-    <value>Play a ticking sound for all numbers</value>
+    <value>Tickender Ton für jede Zahl</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
-    <value>Sound volume</value>
+    <value>Lautstärke</value>
     <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
-    <value>Hide original countdown</value>
+    <value>Ursprünglichen Countdown ausblenden</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
-    <value>Enable accurate countdown mode (countdown - 1)</value>
+    <value>Präzisen Countdown aktivieren (Countdown - 1)</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
-    <value>Uses the actual and precise countdown value instead of the rounded-up value the game originally shows.
-I strongly recommend enabling this option when using decimals as they would not make sense otherwise.
-However, I recommend disabling this if you don't use decimals so that the numbers will match what is displayed for your party members.
-        
-Note: this setting only works when the original countdown is hidden (otherwise it would display 6 - 5 - 5 - 4...)</value>
+    <value>Verwendet den tatsächlichen und präzisen Countdown-Wert anstatt des aufgerundeten Wertes, den das Spiel ursprünglich anzeigt.
+Stark empfohlen, wenn Dezimalstellen aktiviert sind, da diese sonst keinen Sinn ergeben.
+Andernfalls sollte diese Einstellung deaktiviert werden, damit der angezeigte Countdown mit dem anderer Gruppenmitglieder übereinstimmt.
+
+Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown ausgeblendet wird (sonst wäre der Countdown 6 - 5 - 5 - 4 etc.).</value>
   </data>
   <data name="Settings_FWTab_Title" xml:space="preserve">
-    <value>Floating window</value>
+    <value>Overlay-Anzeige</value>
   </data>
   <data name="Settings_FWTab_Help" xml:space="preserve">
-    <value>The floating window is a movable window that can display the countdown and the current combat duration.</value>
+    <value>Das Overlay ist ein verschiebbares Fenster, das den Countdown und die Dauer des aktuellen Kampfes anzeigen kann.</value>
   </data>
   <data name="Settings_FWTab_Display" xml:space="preserve">
-    <value>Enable floating window</value>
+    <value>Overlay aktivieren</value>
   </data>
   <data name="Settings_FWTab_Lock" xml:space="preserve">
-    <value>Lock floating window</value>
+    <value>Overlay sperren</value>
   </data>
   <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
     <value>Disables clicking and moving the window.</value>
