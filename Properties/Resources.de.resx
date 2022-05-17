@@ -113,166 +113,166 @@
   </resheader>
   <resheader name="reader">
     <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    </value>
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    </value>
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <data name="Settings_Title" xml:space="preserve">
-    <value>EngageTimer settings</value>
+    <value>EngageTimer Einstellungen</value>
   </data>
   <data name="Settings_CountdownTab_Info1" xml:space="preserve">
-    <value>The "big countdown" feature adds the missing numbers to the in-game timer !</value>
+    <value>Der "große Countdown" erweitert den ingame Countdown.</value>
   </data>
   <data name="Settings_CountdownTab_Enable" xml:space="preserve">
-    <value>Enable big countdown</value>
+    <value>Großen Countdown aktivieren</value>
   </data>
   <data name="Settings_CountdownTab_Title" xml:space="preserve">
-    <value>Big countdown</value>
+    <value>Großer Countdown</value>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
-    <value>Also replace numbers before 5</value>
+    <value>Ersetzt auch die Zahlen von 5 abwärts</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
-    <value>Display</value>
+    <value>Zeige</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
-    <value>decimals in countdown</value>
+    <value>Dezimalstellen im Countdown</value>
   </data>
   <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
-    <value>Play a ticking sound for all numbers</value>
+    <value>Tickender Ton für jede Zahl</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
-    <value>Sound volume</value>
+    <value>Lautstärke</value>
     <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
-    <value>Hide original countdown</value>
+    <value>Ursprünglichen Countdown ausblenden</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
-    <value>Enable accurate countdown mode (countdown - 1)</value>
+    <value>Präzisen Countdown aktivieren (Countdown - 1)</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
-    <value>Uses the actual and precise countdown value instead of the rounded-up value the game originally shows.
-I strongly recommend enabling this option when using decimals as they would not make sense otherwise.
-However, I recommend disabling this if you don't use decimals so that the numbers will match what is displayed for your party members.
-        
-Note: this setting only works when the original countdown is hidden (otherwise it would display 6 - 5 - 5 - 4...)</value>
+    <value>Verwendet den tatsächlichen und präzisen Countdown-Wert anstatt des aufgerundeten Wertes, den das Spiel ursprünglich anzeigt.
+Stark empfohlen, wenn Dezimalstellen aktiviert sind, da diese sonst keinen Sinn ergeben.
+Andernfalls sollte diese Einstellung deaktiviert werden, damit der angezeigte Countdown mit dem anderer Gruppenmitglieder übereinstimmt.
+
+Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown ausgeblendet wird (sonst wäre der Countdown 6 - 5 - 5 - 4 etc.).</value>
   </data>
   <data name="Settings_FWTab_Title" xml:space="preserve">
-    <value>Floating window</value>
+    <value>Overlay-Anzeige</value>
   </data>
   <data name="Settings_FWTab_Help" xml:space="preserve">
-    <value>The floating window is a movable window that can display the countdown and the current combat duration.</value>
+    <value>Das Overlay ist ein verschiebbares Fenster, das den Countdown und die Dauer des aktuellen Kampfes anzeigen kann.</value>
   </data>
   <data name="Settings_FWTab_Display" xml:space="preserve">
-    <value>Enable floating window</value>
+    <value>Overlay aktivieren</value>
   </data>
   <data name="Settings_FWTab_Lock" xml:space="preserve">
-    <value>Lock floating window</value>
+    <value>Overlay sperren</value>
   </data>
   <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
-    <value>Disables clicking and moving the window.</value>
+    <value>Verhindert Interaktion (Klicken &amp; Verschieben) mit dem Overlay.</value>
   </data>
   <data name="Settings_FWTab_AutoHide_Left" xml:space="preserve">
-    <value>Hide</value>
+    <value>Overlay</value>
   </data>
   <data name="Settings_FWTab_AutoHide_Right" xml:space="preserve">
-    <value>seconds after combat end</value>
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
-    <value>Shows the current countdown value (e.g. -13)</value>
+    <value>Zeigt den aktuellen Countdown an (z.B. -13)</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
-    <value>Display countdown</value>
+    <value>Countdown anzeigen</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
-    <value>Display countdown with</value>
+    <value>Countdown mit</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+    <value>Dezimalstellen anzeigen</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
-    <value>Display combat timer</value>
+    <value>Kampfdauer anzeigen</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_With_Left" xml:space="preserve">
-    <value>Display combat timer with</value>
+    <value>Kampfdauer mit</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+    <value>Dezimalstellen anzeigen</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
-    <value>Shows the current combat duration</value>
+    <value>Zeigt die Dauer des aktuellen Kampfes an.</value>
   </data>
   <data name="Settings_FWTab_Styling" xml:space="preserve">
     <value>Styling</value>
   </data>
   <data name="Settings_FWTab_TextAlign" xml:space="preserve">
-    <value>Text align</value>
+    <value>Textausrichtung</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
-    <value>Left</value>
+    <value>Links</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Center" xml:space="preserve">
-    <value>Center</value>
+    <value>Zentriert</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Right" xml:space="preserve">
-    <value>Right</value>
+    <value>Rechts</value>
   </data>
   <data name="Settings_FWTab_FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>Schriftgröße</value>
   </data>
   <data name="Settings_FWTab_TextColor" xml:space="preserve">
-    <value>Text color</value>
+    <value>Textfarbe</value>
   </data>
   <data name="Settings_FWTab_BackgroundColor" xml:space="preserve">
-    <value>Background color and opacity</value>
+    <value>Hintergrundfarbe und Deckkraft</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown" xml:space="preserve">
-    <value>Enable accurate countdown in floating window</value>
+    <value>Aktiviere präzisen Countdown im Overlay</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
-    <value>See the Big countdown tab for an explanation</value>
+    <value>Siehe "Großer Countdown"-Tab für mehr Informationen.</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
-    <value>Hide combat time when not bound by duty</value>
+    <value>Kampfdauer ausblenden, wenn nicht in Inhalt</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
-    <value>Basically hides the stopwatch when you are in the overworld</value>
+    <value>Blendet die Kampfdauer außerhalb von Instanzen aus.</value>
   </data>
   <data name="Settings_Web_Title" xml:space="preserve">
-    <value>Web Server (OBS)</value>
+    <value>Webserver (OBS)</value>
   </data>
   <data name="Settings_Web_Help" xml:space="preserve">
-    <value>This feature allows you to add a countdown and stopwatch overlay into your OBS (or other software) streams and recordings via a browser source.</value>
+    <value>Dieses Feature ermöglicht es, Countdown oder Kampfdauer in OBS (oder anderer Software) Streams und Aufnahmen via Browser-Quelle anzuzeigen.</value>
   </data>
   <data name="Settings_Web_HelpAdd" xml:space="preserve">
-    <value>To add it to your scene, enable the webserver then create a browser source in your scene and add the following URL : </value>
+    <value>Um es zu deiner Szene hinzuzufügen, aktiviere den Webserver und erstelle dann eine Browser-Quelle mit folgender URL: </value>
   </data>
   <data name="Settings_Web_HelpSize" xml:space="preserve">
-    <value>Recommended window size is 300x100.</value>
+    <value>Die empfohlene Größe ist 300x100.</value>
   </data>
   <data name="Settings_Web_EnablePort" xml:space="preserve">
-    <value>Enable webserver on port</value>
+    <value>Port für Webserver: </value>
   </data>
   <data name="Settings_Web_Hide_Left" xml:space="preserve">
-    <value>Hide overlay</value>
+    <value>Overlay</value>
   </data>
   <data name="Settings_Web_Hide_Right" xml:space="preserve">
-    <value>seconds after combat ends</value>
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
   </data>
   <data name="Settings_Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Schließen</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="Settings_CountdownTab_Texture" xml:space="preserve">
-    <value>Number style</value>
+    <value>Zahlenstyling</value>
   </data>
   <data name="Settings_CountdownTab_Texture_custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Benutzerdefiniert</value>
   </data>
   <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
     <value>FFXIV</value>
@@ -285,46 +285,46 @@ The FFXIV number style preset name</comment>
 The wow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
-    <value>Texture Folder</value>
+    <value>Ordner mit Texturen</value>
     <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
-    <value>Load</value>
+    <value>Laden</value>
   </data>
   <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
-    <value>Readable</value>
+    <value>Lesbar</value>
     <comment>Settings_CountdownTab_Texture_yellow
 The yellow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
-    <value>Disable test mode</value>
+    <value>Testmodus deaktivieren</value>
     <comment>Settings_CountdownTab_Test_Stop
 Displays "stop" when the test button is clicked and test mode is enabled.
 </comment>
   </data>
   <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
-    <value>Enable test mode</value>
+    <value>Testmodus aktivieren</value>
   </data>
   <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
-    <value>brightness</value>
+    <value>Helligkeit</value>
   </data>
   <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
-    <value>hue</value>
+    <value>Farbton</value>
   </data>
   <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
-    <value>saturation</value>
+    <value>Sättigung</value>
   </data>
   <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
-    <value>Recolor instead of shifting hue</value>
+    <value>Umfärben statt Farbton zu ändern</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
-    <value>Color</value>
+    <value>Farbe</value>
   </data>
   <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
-    <value>Scale</value>
+    <value>Skalierung</value>
   </data>
   <data name="Settings_CountdownTab_Animate" xml:space="preserve">
-    <value>Enable animation</value>
+    <value>Animationen aktivieren</value>
   </data>
   <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
     <value>X%</value>
@@ -333,90 +333,90 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Y%</value>
   </data>
   <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
-    <value>Countdown offset</value>
+    <value>Countdown-Offset</value>
   </data>
   <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
-    <value>Position and size</value>
+    <value>Position und Größe</value>
   </data>
   <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
-    <value>Scaling effect</value>
+    <value>Skalierungseffekt</value>
   </data>
   <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
-    <value>Light effect</value>
+    <value>Lichteffekt</value>
   </data>
   <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
-    <value>Warning : when not hiding the original countdown, changing values in this section might create incoherent results</value>
+    <value>Achtung: wenn der ursprüngliche Countdown nicht ausgeblendet wird, kann eine Änderung dieser Einstellungen zu verwirrenden Darstellungen des Countdowns führen.</value>
   </data>
   <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
-    <value>Display combat time in seconds instead of time format</value>
+    <value>Kampfdauer in Sekunden anzeigen</value>
   </data>
   <data name="Settings_FWTab_CountdownNegativeSign" xml:space="preserve">
-    <value>Display the "-" sign</value>
+    <value>"-" anzeigen</value>
   </data>
   <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
-    <value>Scale</value>
+    <value>Skalierung</value>
   </data>
   <data name="Settings_CountdownTab_Monospaced" xml:space="preserve">
-    <value>Fixed width</value>
+    <value>Feste Breite</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
-    <value>More options</value>
+    <value>Weitere Optionen</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
-    <value>Add a leading 0</value>
+    <value>Führende 0 anzeigen</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
-    <value>Enable custom negative margin</value>
+    <value>Negativen Rand aktivieren</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
-    <value>pixels</value>
+    <value>Pixel</value>
   </data>
   <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
-    <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
+    <value>Wenn Multi-Monitor-Fenster genutzt werden, führt die Positionierung des Countdowns außerhalb des Spiels (egal, um wie viel) dazu, dass ein Hintergrund angezeigt wird. Es ist nicht möglich, außerhalb des Spiels transparente Fenster anzuzeigen, dies kann bis auf weiteres auch nicht behoben werden. Bitte benutze den Rahmen als Orientierungshilfe.</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>Alignement</value>
+    <value>Ausrichtung</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
-    <value>Center countdown window</value>
+    <value>Countdown zentrieren</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>Enable Server Info Bar integation</value>
+    <value>Integration mit Server-Infoleiste aktivieren</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
-    <value>Prefix</value>
+    <value>Präfix</value>
   </data>
   <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
     <value>Suffix</value>
   </data>
   <data name="Settings_DtrTab_Title" xml:space="preserve">
-    <value>Server Info Bar</value>
+    <value>Server-Infoleiste</value>
   </data>
   <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
-    <value>Always hide when not bound by duty</value>
+    <value>Ausblenden wenn nicht in Inhalt</value>
   </data>
   <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
-    <value>Milliseconds to show</value>
+    <value>Dezimalstellen</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
-    <value>Hide</value>
+    <value>Anzeige</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
-    <value>seconds after combat end</value>
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
   </data>
   <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="Settings_DtrTab_Info" xml:space="preserve">
-    <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
+    <value>Dieses Feature zeigt die aktuelle Kampfdauer in der Server-Infoleiste an (gleich neben Server &amp; Uhrzeit). Die Anordnung von Elementen in der Server-Infoleiste kann in den Dalamud-Einstellungen angepasst werden.</value>
   </data>
   <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
-    <value>Use duty pop timer sound</value>
+    <value>Benutze "Inhalt gefunden"-Ton</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
-    <value>Use legacy audio (breaks linux)</value>
+    <value>Legacy-Audio verwenden (funktioniert nicht auf Linux)</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
-    <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
+    <value>Wird in Zukunft entfernt, bitte kontaktiere mich, wenn du diese Einstellung benutzt. Stürzt auf Nicht-Windows-Systemen ab.</value>
   </data>
 </root>
