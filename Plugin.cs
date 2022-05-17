@@ -74,6 +74,8 @@ namespace EngageTimer
             var lang = (langCode ?? this._pluginInterface.UiLanguage) switch
             {
                 "fr" => "fr",
+                "de" => "de",
+                // "ja" => "ja",
                 _ => "en"
             };
             Resources.Culture = new CultureInfo(lang ?? "en");
