@@ -1,5 +1,8 @@
 # EngageTimer
 
+**Help translating** : https://crwd.in/engagetimer
+
+
 Finally, display all the numbers when starting a countdown!
 
 **Main features :**
@@ -15,11 +18,8 @@ The original motivation for this plugin was to do something like
 ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
 but with a big stopwatch timer for my recordings.
 
-Help translating : https://crowdin.com/project/engagetimer
 
 *Living on the edge ? You can add my testing repository : https://xorus.dev/xiv/*
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T26N988)
 
 ## Countdown
 
@@ -86,3 +86,7 @@ for the countdown pointer and on the [Peeping Tom plugin by asclemens](https://g
 idea of using NAudio lib to play the sound.
 
 Smooth font size was adapted from ["Ping Plugin" by karashiiro](https://github.com/karashiiro/PingPlugin) 
+
+---------
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T26N988)
