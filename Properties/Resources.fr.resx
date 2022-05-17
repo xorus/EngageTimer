@@ -172,7 +172,7 @@ Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu e
     <value>Activer la petite fenêtre</value>
   </data>
   <data name="Settings_FWTab_Lock" xml:space="preserve">
-    <value>Verouiller</value>
+    <value>Verrouiller</value>
   </data>
   <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
     <value>Empêche de cliquer et déplacer accidentellement la fenêtre.</value>
@@ -250,7 +250,7 @@ Remarque : ce paramètre ne fonctionne que lorsque le compte à rebours du jeu e
     <value>Cette fonctionnalité vous permet d'afficher le compte à rebours et le temps de combat dans un logiciel ou d'enregistrement de streaming tel qu'OBS via une source d'overlay navigateur.</value>
   </data>
   <data name="Settings_Web_HelpAdd" xml:space="preserve">
-    <value>Pour l'ajouter à votre scène, démarrez le serveur en cochant la case, puis créez une source navigateur avec l'URL suivante :</value>
+    <value>Pour l'ajouter à votre scène, démarrez le serveur en cochant la case, puis créez une source navigateur avec l'URL suivante : </value>
   </data>
   <data name="Settings_Web_HelpSize" xml:space="preserve">
     <value>La taille recommandée est de 300x100.</value>
