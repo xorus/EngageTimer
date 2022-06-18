@@ -15,58 +15,60 @@ using EngageTimer.Web;
 
 namespace EngageTimer
 {
-    public class Plugin : IDalamudPlugin
+    public sealed class Plugin : IDalamudPlugin
     {
         private readonly PluginCommandManager<Plugin> _pluginCommandManager;
         private readonly Configuration _configuration;
         private readonly DalamudPluginInterface _pluginInterface;
         private readonly WebServer _server;
-        private readonly StopWatchHook _stopWatchHook;
+        private readonly CountdownHook _countdownHook;
         private readonly PluginUi _ui;
-        private readonly ClientState _clientState;
-        private readonly Localization _localization;
-        private readonly DtrBar _dtrBar;
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string AssemblyLocation { get; set; }
+        private readonly Framework _framework;
+        private readonly CombatStopwatch _combatStopwatch;
 
         public string Name => "Engage Timer";
 
         public Plugin(
             DalamudPluginInterface pluginInterface,
-            ClientState clientState,
             GameGui gameGui,
             CommandManager commands,
-            SigScanner sigScanner,
             Condition condition,
             DtrBar dtrBar,
-            PartyList partyList
+            PartyList partyList,
+            Framework framework
         )
         {
             _pluginInterface = pluginInterface;
-            _clientState = clientState;
-            _dtrBar = dtrBar;
-
+            _framework = framework;
+            
             var localPath = pluginInterface.AssemblyLocation.DirectoryName;
-            this._localization = new Localization(_pluginInterface.GetPluginLocDirectory());
+            // new Localization(_pluginInterface.GetPluginLocDirectory());
 
             _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
             _configuration.Initialize(_pluginInterface);
             _configuration.Migrate();
-            
+
             var state = new State();
             _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state, dtrBar);
 
             _pluginCommandManager = new PluginCommandManager<Plugin>(this, _pluginInterface, commands);
-            _stopWatchHook = new StopWatchHook(state, sigScanner, condition, partyList);
+            _countdownHook = new CountdownHook(state, condition);
 
             _pluginInterface.UiBuilder.Draw += DrawUi;
             _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
+            _framework.Update += FrameworkOnUpdate;
+            _combatStopwatch = new CombatStopwatch(state, condition, partyList, _configuration);
 
             _server = new WebServer(_configuration, localPath, state);
             _server = new WebServer(_configuration, localPath, state);
             _pluginInterface.LanguageChanged += ConfigureLanguage;
             ConfigureLanguage();
+        }
+
+        private void FrameworkOnUpdate(Framework framework)
+        {
+            _combatStopwatch.UpdateEncounterTimer();
+            _countdownHook?.Update();
         }
 
         private void ConfigureLanguage(string langCode = null)
@@ -88,10 +90,10 @@ namespace EngageTimer
             _pluginInterface.SavePluginConfig(_configuration);
             _pluginInterface.UiBuilder.Draw -= _ui.Draw;
             _ui?.Dispose();
-            _stopWatchHook?.Dispose();
+            _framework.Update -= FrameworkOnUpdate;
+            _countdownHook?.Dispose();
 
             _pluginInterface.LanguageChanged -= ConfigureLanguage;
-            GC.SuppressFinalize(this);
         }
 
         private void DrawUi()
@@ -99,8 +101,6 @@ namespace EngageTimer
             // disable plugin operation when not logged in
             // if (!_clientState.IsLoggedIn)
             // return;
-
-            _stopWatchHook?.Update();
             _server?.Update();
             _ui?.Draw();
         }
