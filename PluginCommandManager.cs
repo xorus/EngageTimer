@@ -1,87 +1,74 @@
-﻿using Dalamud.Game.Command;
-using Dalamud.Plugin;
-using EngageTimer.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dalamud.Game.Command;
+using EngageTimer.Attributes;
 using static Dalamud.Game.Command.CommandInfo;
 
 // ReSharper disable ForCanBeConvertedToForeach
 
-namespace EngageTimer
+namespace EngageTimer;
+
+public class PluginCommandManager<THost> : IDisposable
 {
-    public class PluginCommandManager<THost> : IDisposable
+    private readonly CommandManager _commandManager;
+    private readonly THost _host;
+    private readonly (string, CommandInfo)[] _pluginCommands;
+
+    public PluginCommandManager(THost host, CommandManager commandManager)
     {
-        private readonly DalamudPluginInterface _pluginInterface;
-        private readonly CommandManager _commandManager;
-        private readonly (string, CommandInfo)[] _pluginCommands;
-        private readonly THost _host;
+        _commandManager = commandManager;
+        _host = host;
 
-        public PluginCommandManager(THost host, DalamudPluginInterface pluginInterface, CommandManager commandManager)
+        _pluginCommands = host.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Public |
+                                                    BindingFlags.Static | BindingFlags.Instance)
+            .Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
+            .SelectMany(GetCommandInfoTuple)
+            .ToArray();
+
+        AddCommandHandlers();
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        RemoveCommandHandlers();
+    }
+
+    private void AddCommandHandlers()
+    {
+        for (var i = 0; i < _pluginCommands.Length; i++)
         {
-            this._pluginInterface = pluginInterface;
-            this._commandManager = commandManager;
-            this._host = host;
-
-            this._pluginCommands = host.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Public |
-                                                             BindingFlags.Static | BindingFlags.Instance)
-                .Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
-                .SelectMany(GetCommandInfoTuple)
-                .ToArray();
-
-            AddCommandHandlers();
+            var (command, commandInfo) = _pluginCommands[i];
+            _commandManager.AddHandler(command, commandInfo);
         }
+    }
 
-        private void AddCommandHandlers()
+    private void RemoveCommandHandlers()
+    {
+        for (var i = 0; i < _pluginCommands.Length; i++)
         {
-            for (var i = 0; i < this._pluginCommands.Length; i++)
-            {
-                var (command, commandInfo) = this._pluginCommands[i];
-                this._commandManager.AddHandler(command, commandInfo);
-            }
+            var (command, _) = _pluginCommands[i];
+            _commandManager.RemoveHandler(command);
         }
+    }
 
-        private void RemoveCommandHandlers()
+    private IEnumerable<(string, CommandInfo)> GetCommandInfoTuple(MethodInfo method)
+    {
+        var handlerDelegate = (HandlerDelegate)Delegate.CreateDelegate(typeof(HandlerDelegate), _host, method);
+
+        var command = handlerDelegate.Method.GetCustomAttribute<CommandAttribute>();
+        var helpMessage = handlerDelegate.Method.GetCustomAttribute<HelpMessageAttribute>();
+
+        var commandInfo = new CommandInfo(handlerDelegate)
         {
-            for (var i = 0; i < this._pluginCommands.Length; i++)
-            {
-                var (command, _) = this._pluginCommands[i];
-                this._commandManager.RemoveHandler(command);
-            }
-        }
+            HelpMessage = helpMessage?.HelpMessage ?? string.Empty,
+            ShowInHelp = true
+        };
 
-        private IEnumerable<(string, CommandInfo)> GetCommandInfoTuple(MethodInfo method)
-        {
-            var handlerDelegate = (HandlerDelegate)Delegate.CreateDelegate(typeof(HandlerDelegate), this._host, method);
-
-            var command = handlerDelegate.Method.GetCustomAttribute<CommandAttribute>();
-            var aliases = handlerDelegate.Method.GetCustomAttribute<AliasesAttribute>();
-            var helpMessage = handlerDelegate.Method.GetCustomAttribute<HelpMessageAttribute>();
-            var doNotShowInHelp = handlerDelegate.Method.GetCustomAttribute<DoNotShowInHelpAttribute>();
-
-            var commandInfo = new CommandInfo(handlerDelegate)
-            {
-                HelpMessage = helpMessage?.HelpMessage ?? string.Empty,
-                ShowInHelp = doNotShowInHelp == null,
-            };
-
-            // Create list of tuples that will be filled with one tuple per alias, in addition to the base command tuple.
-            var commandInfoTuples = new List<(string, CommandInfo)> { (command.Command, commandInfo) };
-            if (aliases == null) return commandInfoTuples;
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            for (var i = 0; i < aliases.Aliases.Length; i++)
-            {
-                commandInfoTuples.Add((aliases.Aliases[i], commandInfo));
-            }
-
-            return commandInfoTuples;
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-            RemoveCommandHandlers();
-        }
+        // Create list of tuples that will be filled with one tuple per alias, in addition to the base command tuple.
+        var commandInfoTuples = new List<(string, CommandInfo)> { (command.Command, commandInfo) };
+        return commandInfoTuples;
     }
 }

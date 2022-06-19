@@ -4,7 +4,7 @@
         <TargetFramework>net5.0-windows</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <Platforms>AnyCPU</Platforms>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
@@ -27,7 +27,6 @@
         <None Update="images\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Remove="Doc\icon - Copy.png" />
         <EmbeddedResource Update="Resources\strings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>strings.Designer.cs</LastGenOutput>
@@ -46,7 +45,6 @@
         <None Update="Data\numbers\wow\*.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Remove="Doc\source\numbers.png" />
         <None Update="Data\numbers\wow\settings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -56,6 +54,8 @@
         <None Update="Doc\custom_example\settings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <Compile Remove="Attributes\DoNotShowInHelpAttribute.cs" />
+        <Compile Remove="Attributes\AliasesAttribute.cs" />
     </ItemGroup>
 
     <ItemGroup>
