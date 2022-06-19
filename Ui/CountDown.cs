@@ -85,6 +85,15 @@ namespace EngageTimer.UI
         private const float AnimationSize = .7f;
         private bool _wasInMainViewport = true;
 
+        /**
+         * This is a workaround for ImGui taking some time to render a window for the first time.
+         * It can cause a small amount on lag when starting a countdown, which we do not want, and this is why I will
+         * draw the countdown windows for the first frame the plugin gets loaded so ImGui doesn't get a chance to lag
+         *
+         * In my testing, this is about 10 to 20ms.
+         */
+        private bool _firstLoad = true;
+
         public void Draw()
         {
             if (_configuration.MigrateCountdownOffsetToPercent)
@@ -96,24 +105,22 @@ namespace EngageTimer.UI
 
             if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
                 TickSound((int)Math.Ceiling(_state.CountDownValue));
-
+            if (_firstLoad) TickSoundInit();
 
             // display is disabled
-            if (!_configuration.DisplayCountdown)
-                return;
+            if (!_configuration.DisplayCountdown) return;
 
-            if (!_state.CountingDown || !_configuration.DisplayCountdown)
+            if (!_firstLoad && (!_state.CountingDown || !_configuration.DisplayCountdown))
             {
                 // re-enable the original addon at the last possible moment (when done counting down) to show "START"
                 if (this._originalAddonHidden && _configuration.HideOriginalCountdown) this.ToggleOriginalAddon();
                 return;
             }
 
-
             if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !this._originalAddonHidden)
                 this.ToggleOriginalAddon();
 
-            var showMainCountdown = _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
+            var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
 
             var numberScale = BaseNumberScale;
             var maxNumberScale = numberScale;
@@ -175,6 +182,8 @@ namespace EngageTimer.UI
             if (_wasInMainViewport) flags |= ImGuiWindowFlags.NoBackground;
 
             var visible = true;
+            // prevent a big 0 appearing on screen when "initializing" the countdown window by alpha-ing it
+            if (_firstLoad) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0f);
             if (ImGui.Begin(WindowName, ref visible, flags))
             {
                 _wasInMainViewport = ImGui.GetWindowViewport().ID == ImGui.GetMainViewport().ID;
@@ -196,6 +205,12 @@ namespace EngageTimer.UI
                     DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, true);
                     ImGui.PopStyleVar();
                 }
+            }
+
+            if (_firstLoad)
+            {
+                ImGui.PopStyleVar();
+                _firstLoad = false;
             }
 
             ImGui.PopStyleVar();
@@ -342,6 +357,12 @@ namespace EngageTimer.UI
             _lastNumberPlayed = n;
             if (_configuration.EnableLegacyAudio) SfxPlay.Legacy(_path, _configuration.TickingSoundVolume);
             else SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
+        }
+
+        private void TickSoundInit()
+        {
+            if (!_configuration.EnableTickingSound && !_configuration.EnableLegacyAudio) return;
+            SfxPlay.SoundEffect(0);
         }
     }
 }

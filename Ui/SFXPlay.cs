@@ -31,10 +31,14 @@ namespace EngageTimer.UI
          */
         public static void SoundEffect(uint id)
         {
+            // var s = new Stopwatch();
+            // s.Start();
             unsafe
             {
                 GameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
             }
+            // s.Stop();
+            // PluginLog.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
         }
 
         /**
