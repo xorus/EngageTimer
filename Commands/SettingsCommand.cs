@@ -1,6 +1,5 @@
 ﻿using System;
 using Dalamud.Game.Command;
-using EngageTimer.Attributes;
 
 namespace EngageTimer.Commands;
 
@@ -13,7 +12,7 @@ public class SettingsCommand : IDisposable
         _container = container;
         _container.Resolve<CommandManager>().AddHandler("/egsettings", new CommandInfo(OpenSettingsCommand)
         {
-            HelpMessage = "open the settings menu"
+            HelpMessage = container.Resolve<Translator>().Trans("MainCommand_Help_Settings")
         });
     }
 

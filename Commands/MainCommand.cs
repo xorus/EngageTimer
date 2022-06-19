@@ -1,35 +1,46 @@
 ﻿using System;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
-using Dalamud.Logging;
-using EngageTimer.Attributes;
 
 namespace EngageTimer.Commands;
 
 public class MainCommand : IDisposable
 {
     private readonly Container _container;
+    private readonly Translator _tr;
     private const string Command = "/eg";
     private const string Tab = "   ";
 
     public MainCommand(Container container)
     {
         _container = container;
+        _tr = _container.Resolve<Translator>();
+        Register();
+        _tr.LocaleChanged += OnLocaleChanged;
+    }
+
+    private void Register()
+    {
         _container.Resolve<CommandManager>().AddHandler(Command, new CommandInfo(OnCommand)
         {
             HelpMessage = "\n" +
                           Tab + Command + " c|countdown [on|off] → " +
-                          "enable or disable the big countdown (toggles by default)\n" +
+                          $"{_tr.Trans("MainCommand_Help_Countdown")}\n" +
                           Tab + Command + " fw [on|off] → " +
-                          "enable or disable the floating window (toggles by default)\n" +
+                          $"{_tr.Trans("MainCommand_Help_FW")}\n" +
                           Tab + Command + " dtr [on|off] → " +
-                          "enable or disable the server info bar (toggles by default)\n" +
+                          $"{_tr.Trans("MainCommand_Help_Dtr")}\n" +
                           Tab + Command + " s|settings → " +
-                          "open the settings menu\n"
+                          $"{_tr.Trans("MainCommand_Help_Settings")}\n"
         });
     }
 
-    private bool ToStatus(string input, bool current)
+    private void Unregister()
+    {
+        _container.Resolve<CommandManager>().RemoveHandler(Command);
+    }
+
+    private static bool ToStatus(string input, bool current)
     {
         return input switch
         {
@@ -40,10 +51,7 @@ public class MainCommand : IDisposable
         };
     }
 
-    private string BoolStatus(bool value)
-    {
-        return value ? "enabled" : "disabled";
-    }
+    private string StatusStr(bool value) => _tr.Trans(value ? "MainCommand_Status_On" : "MainCommand_Status_Off");
 
     private void OnCommand(string command, string args)
     {
@@ -69,32 +77,39 @@ public class MainCommand : IDisposable
                 case "countdown":
                     config.DisplayCountdown = ToStatus(argument, config.DisplayCountdown);
                     config.Save();
-                    chat.Print("Countdown is now " + BoolStatus(config.DisplayCountdown));
+                    chat.Print(_tr.Trans("MainCommand_Help_Countdown_Success", StatusStr(config.DisplayCountdown)));
                     break;
                 case "sw":
                 case "fw":
                     config.DisplayFloatingWindow = ToStatus(argument, config.DisplayFloatingWindow);
                     config.Save();
-                    chat.Print("Floating window is now " + BoolStatus(config.DisplayFloatingWindow));
+                    chat.Print(_tr.Trans("MainCommand_Help_FW_Success", StatusStr(config.DisplayFloatingWindow)));
                     break;
                 case "dtr":
                     config.DtrCombatTimeEnabled = ToStatus(argument, config.DtrCombatTimeEnabled);
                     config.Save();
-                    chat.Print("server info bar is now " + BoolStatus(config.DtrCombatTimeEnabled));
+                    chat.Print(_tr.Trans("MainCommand_Help_Dtr_Success", StatusStr(config.DtrCombatTimeEnabled)));
                     break;
                 default:
-                    chat.PrintError("unrecognized subcommand: " + subcommand);
+                    chat.PrintError(_tr.Trans("MainCommand_Error_InvalidSubcommand", subcommand));
                     break;
             }
         }
         catch (ArgumentOutOfRangeException e)
         {
-            chat.PrintError("unrecognized argument for " + subcommand + ": " + argument);
+            chat.PrintError(_tr.Trans("MainCommand_Error_InvalidArgument", subcommand, argument));
         }
+    }
+
+    private void OnLocaleChanged(object sender, EventArgs e)
+    {
+        Unregister();
+        Register();
     }
 
     public void Dispose()
     {
-        _container.Resolve<CommandManager>().RemoveHandler(Command);
+        _tr.LocaleChanged -= OnLocaleChanged;
+        Unregister();
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using EngageTimer.Commands;
 using JetBrains.Annotations;
@@ -21,6 +19,10 @@ public sealed class Plugin : IDalamudPlugin
 
     public string PluginPath { get; }
 
+    private Container Container { get; }
+
+    public string Name => "Engage Timer";
+
     public Plugin(
         DalamudPluginInterface pluginInterface,
         GameGui gameGui,
@@ -32,8 +34,6 @@ public sealed class Plugin : IDalamudPlugin
         ChatGui chatGui
     )
     {
-        var sw = new Stopwatch();
-        sw.Start();
         PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
         Container = new Container();
         Container.Register(this);
@@ -53,19 +53,12 @@ public sealed class Plugin : IDalamudPlugin
         _configuration.Migrate();
 
         Container.Register(new State());
+        Container.RegisterDisposable<Translator>();
         Container.RegisterDisposable<PluginUi>();
-        Container.RegisterDisposable<Locale>();
         Container.RegisterDisposable<FwThings>();
         Container.RegisterDisposable<MainCommand>();
         Container.RegisterDisposable<SettingsCommand>();
-
-        sw.Stop();
-        PluginLog.Debug("Plugin initialized in {0}ms", sw.ElapsedMilliseconds);
     }
-
-    private Container Container { get; }
-
-    public string Name => "Engage Timer";
 
     void IDisposable.Dispose()
     {

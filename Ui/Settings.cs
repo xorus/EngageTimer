@@ -5,7 +5,6 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
-using EngageTimer.Properties;
 using EngageTimer.UI.Color;
 using ImGuiNET;
 
@@ -17,6 +16,7 @@ public class Settings
     private readonly UiBuilder _uiBuilder;
     private readonly NumberTextures _numberTextures;
     private readonly State _state;
+    private readonly Translator _tr;
     private bool _visible;
 
     public Settings(Container container)
@@ -25,6 +25,7 @@ public class Settings
         _uiBuilder = container.Resolve<UiBuilder>();
         _numberTextures = container.Resolve<NumberTextures>();
         _state = container.Resolve<State>();
+        _tr = container.Resolve<Translator>();
     }
 
     public bool Visible
@@ -37,15 +38,8 @@ public class Settings
         }
     }
 
-    private string TransId(string id)
-    {
-        return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? id}###EngageTimer_{id}";
-    }
-
-    private string Trans(string id)
-    {
-        return Resources.ResourceManager.GetString(id, Resources.Culture);
-    }
+    private string TransId(string id) => _tr.TransId(id);
+    private string Trans(string id) => _tr.Trans(id);
 
     private bool _mocking;
     private double _mockStart;
