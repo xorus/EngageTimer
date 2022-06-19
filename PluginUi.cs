@@ -1,49 +1,41 @@
 ﻿using System;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Dtr;
-using Dalamud.Plugin;
+using Dalamud.Interface;
 using EngageTimer.UI;
 
 namespace EngageTimer;
 
-public class PluginUi : IDisposable
+public sealed class PluginUi : IDisposable
 {
+    private readonly Container _container;
     private readonly CountDown _countDown;
-    private readonly DtrBarUi _dtrBarUi;
     private readonly Settings _settings;
-    private readonly FloatingWindow _stopwatch;
+    private readonly FloatingWindow _floatingWindow;
 
     public PluginUi(Container container)
     {
+        _container = container;
         var numbers = new NumberTextures(container);
         container.Register(numbers);
 
-        _countDown = new CountDown(container);
-        _stopwatch = new FloatingWindow(container);
-        _dtrBarUi = new DtrBarUi(container);
-        _settings = new Settings(container);
-        
-        container.Register(_countDown);
-        container.RegisterDisposable(_stopwatch);
-        container.RegisterDisposable(_dtrBarUi);
-        container.Register(_settings);
+        _countDown = container.Register<CountDown>();
+        _floatingWindow = container.RegisterDisposable<FloatingWindow>();
+        _settings = container.Register<Settings>();
+
+        container.Resolve<UiBuilder>().Draw += Draw;
+        container.Resolve<UiBuilder>().OpenConfigUi += OpenSettings;
     }
 
     public void Dispose()
     {
-        _stopwatch?.Dispose();
-        _dtrBarUi?.Dispose();
-        GC.SuppressFinalize(this);
+        _container.Resolve<UiBuilder>().Draw -= Draw;
+        _container.Resolve<UiBuilder>().OpenConfigUi -= OpenSettings;
     }
 
-    public void Draw()
+    private void Draw()
     {
         _settings.Draw();
         _countDown.Draw();
-        _stopwatch.Draw();
-        
-        // fixme: move to framework update
-        _dtrBarUi.Update();
+        _floatingWindow.Draw();
     }
 
     public void OpenSettings()

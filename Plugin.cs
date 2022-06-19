@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Globalization;
+using System.Diagnostics;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
+using Dalamud.Logging;
 using Dalamud.Plugin;
-using EngageTimer.Attributes;
-using EngageTimer.Properties;
-using EngageTimer.Web;
+using EngageTimer.Commands;
+using JetBrains.Annotations;
 
 namespace EngageTimer;
 
+[PublicAPI]
 public sealed class Plugin : IDalamudPlugin
 {
-    private readonly CombatStopwatch _combatStopwatch;
     private readonly Configuration _configuration;
-    private readonly CountdownHook _countdownHook;
-    private readonly Framework _framework;
-    private readonly PluginCommandManager<Plugin> _pluginCommandManager;
     private readonly DalamudPluginInterface _pluginInterface;
-    private readonly WebServer _server;
-    private readonly PluginUi _ui;
 
     public string PluginPath { get; }
 
@@ -33,20 +28,24 @@ public sealed class Plugin : IDalamudPlugin
         Condition condition,
         DtrBar dtrBar,
         PartyList partyList,
-        Framework framework
+        Framework framework,
+        ChatGui chatGui
     )
     {
+        var sw = new Stopwatch();
+        sw.Start();
         PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
         Container = new Container();
         Container.Register(this);
         _pluginInterface = Container.Register(pluginInterface);
-        _framework = Container.Register(framework);
         Container.Register(pluginInterface.UiBuilder);
         Container.Register(gameGui);
         Container.Register(commands);
         Container.Register(condition);
         Container.Register(dtrBar);
         Container.Register(partyList);
+        Container.Register(framework);
+        Container.Register(chatGui);
         // new Localization(_pluginInterface.GetPluginLocDirectory());
 
         _configuration = Container.Register((Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration());
@@ -54,18 +53,14 @@ public sealed class Plugin : IDalamudPlugin
         _configuration.Migrate();
 
         Container.Register(new State());
-        _ui = Container.RegisterDisposable(new PluginUi(Container));
+        Container.RegisterDisposable<PluginUi>();
+        Container.RegisterDisposable<Locale>();
+        Container.RegisterDisposable<FwThings>();
+        Container.RegisterDisposable<MainCommand>();
+        Container.RegisterDisposable<SettingsCommand>();
 
-        _pluginCommandManager = Container.RegisterDisposable(new PluginCommandManager<Plugin>(this, commands));
-        _countdownHook = Container.RegisterDisposable(new CountdownHook(Container));
-
-        _pluginInterface.UiBuilder.Draw += DrawUi;
-        _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
-        _framework.Update += FrameworkOnUpdate;
-        _combatStopwatch = Container.Register(new CombatStopwatch(Container));
-        _server = Container.RegisterDisposable(new WebServer(Container));
-        _pluginInterface.LanguageChanged += ConfigureLanguage;
-        ConfigureLanguage();
+        sw.Stop();
+        PluginLog.Debug("Plugin initialized in {0}ms", sw.ElapsedMilliseconds);
     }
 
     private Container Container { get; }
@@ -75,48 +70,6 @@ public sealed class Plugin : IDalamudPlugin
     void IDisposable.Dispose()
     {
         _pluginInterface.SavePluginConfig(_configuration);
-        _pluginInterface.UiBuilder.Draw -= _ui.Draw;
-        _framework.Update -= FrameworkOnUpdate;
-        _pluginInterface.LanguageChanged -= ConfigureLanguage;
         Container.DoDispose();
-    }
-
-    private void FrameworkOnUpdate(Framework framework)
-    {
-        _combatStopwatch.UpdateEncounterTimer();
-        _countdownHook?.Update();
-    }
-
-    private void ConfigureLanguage(string langCode = null)
-    {
-        var lang = (langCode ?? _pluginInterface.UiLanguage) switch
-        {
-            "fr" => "fr",
-            "de" => "de",
-            // "ja" => "ja",
-            _ => "en"
-        };
-        Resources.Culture = new CultureInfo(lang ?? "en");
-    }
-
-    private void DrawUi()
-    {
-        // disable plugin operation when not logged in
-        // if (!_clientState.IsLoggedIn)
-        // return;
-        _server?.Update();
-        _ui?.Draw();
-    }
-
-    private void OpenConfigUi()
-    {
-        _ui.OpenSettings();
-    }
-
-    [Command("/egsettings")]
-    [HelpMessage("Opens up the settings")]
-    public void OpenSettingsCommand(string command, string args)
-    {
-        _ui.OpenSettings();
     }
 }

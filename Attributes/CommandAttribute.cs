@@ -1,7 +1,9 @@
 using System;
+using JetBrains.Annotations;
 
 namespace EngageTimer.Attributes;
 
+[MeansImplicitUse]
 [AttributeUsage(AttributeTargets.Method)]
 public class CommandAttribute : Attribute
 {
