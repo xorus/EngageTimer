@@ -12,11 +12,11 @@ public sealed class DtrBarUi : IDisposable
     private readonly State _state;
     private DtrBarEntry _entry;
 
-    public DtrBarUi(Configuration configuration, State state, DtrBar dtrBar)
+    public DtrBarUi(Container container)
     {
-        _configuration = configuration;
-        _state = state;
-        _dtrBar = dtrBar;
+        _configuration = container.Resolve<Configuration>();
+        _state = container.Resolve<State>();
+        _dtrBar = container.Resolve<DtrBar>();
         GetOrReset(_configuration.DtrCombatTimeEnabled);
         _configuration.DtrBarCombatTimerEnableChange +=
             (_, _) => GetOrReset(_configuration.DtrCombatTimeEnabled);

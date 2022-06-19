@@ -19,11 +19,11 @@ internal class WebServer : IDisposable
 
     private Websocket _websocket;
 
-    public WebServer(Configuration configuration, string dir, State state)
+    public WebServer(Container container)
     {
-        _configuration = configuration;
-        _state = state;
-        _staticDirectory = Path.Combine(dir, "Data", "html");
+        _configuration = container.Resolve<Configuration>();
+        _state = container.Resolve<State>();
+        _staticDirectory = Path.Combine(container.Resolve<Plugin>().PluginPath, "Data", "html");
     }
 
     public void Dispose()

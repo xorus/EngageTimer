@@ -24,6 +24,8 @@ public sealed class Plugin : IDalamudPlugin
     private readonly WebServer _server;
     private readonly PluginUi _ui;
 
+    public string PluginPath { get; }
+
     public Plugin(
         DalamudPluginInterface pluginInterface,
         GameGui gameGui,
@@ -34,46 +36,49 @@ public sealed class Plugin : IDalamudPlugin
         Framework framework
     )
     {
-        _pluginInterface = pluginInterface;
-        _framework = framework;
-
-        var localPath = pluginInterface.AssemblyLocation.DirectoryName;
+        PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
+        Container = new Container();
+        Container.Register(this);
+        _pluginInterface = Container.Register(pluginInterface);
+        _framework = Container.Register(framework);
+        Container.Register(pluginInterface.UiBuilder);
+        Container.Register(gameGui);
+        Container.Register(commands);
+        Container.Register(condition);
+        Container.Register(dtrBar);
+        Container.Register(partyList);
         // new Localization(_pluginInterface.GetPluginLocDirectory());
 
-        _configuration = (Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration();
+        _configuration = Container.Register((Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration());
         _configuration.Initialize(_pluginInterface);
         _configuration.Migrate();
 
-        var state = new State();
-        _ui = new PluginUi(_pluginInterface, _configuration, gameGui, localPath, state, dtrBar);
+        Container.Register(new State());
+        _ui = Container.RegisterDisposable(new PluginUi(Container));
 
-        _pluginCommandManager = new PluginCommandManager<Plugin>(this, commands);
-        _countdownHook = new CountdownHook(state, condition);
+        _pluginCommandManager = Container.RegisterDisposable(new PluginCommandManager<Plugin>(this, commands));
+        _countdownHook = Container.RegisterDisposable(new CountdownHook(Container));
 
         _pluginInterface.UiBuilder.Draw += DrawUi;
         _pluginInterface.UiBuilder.OpenConfigUi += OpenConfigUi;
         _framework.Update += FrameworkOnUpdate;
-        _combatStopwatch = new CombatStopwatch(state, condition, partyList, _configuration);
-
-        _server = new WebServer(_configuration, localPath, state);
-        _server = new WebServer(_configuration, localPath, state);
+        _combatStopwatch = Container.Register(new CombatStopwatch(Container));
+        _server = Container.RegisterDisposable(new WebServer(Container));
         _pluginInterface.LanguageChanged += ConfigureLanguage;
         ConfigureLanguage();
     }
+
+    private Container Container { get; }
 
     public string Name => "Engage Timer";
 
     void IDisposable.Dispose()
     {
-        _server?.Dispose();
-        _pluginCommandManager?.Dispose();
         _pluginInterface.SavePluginConfig(_configuration);
         _pluginInterface.UiBuilder.Draw -= _ui.Draw;
-        _ui?.Dispose();
         _framework.Update -= FrameworkOnUpdate;
-        _countdownHook?.Dispose();
-
         _pluginInterface.LanguageChanged -= ConfigureLanguage;
+        Container.DoDispose();
     }
 
     private void FrameworkOnUpdate(Framework framework)

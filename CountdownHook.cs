@@ -30,10 +30,10 @@ public sealed class CountdownHook : IDisposable
     private float _lastCountDownValue;
 
 
-    public CountdownHook(State state, Condition condition)
+    public CountdownHook(Container container)
     {
-        _state = state;
-        _condition = condition;
+        _state = container.Resolve<State>();
+        _condition = container.Resolve<Condition>();
         _countDown = 0;
         SignatureHelper.Initialise(this);
         _countdownTimerHook?.Enable();

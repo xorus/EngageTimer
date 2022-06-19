@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using ImGuiNET;
@@ -14,6 +15,7 @@ public sealed class FloatingWindow : IDisposable
     private readonly Configuration _configuration;
     private readonly DalamudPluginInterface _pluginInterface;
     private readonly State _state;
+    private readonly UiBuilder _ui;
 
     private bool _firstLoad = true;
     private ImFontPtr _font;
@@ -24,12 +26,13 @@ public sealed class FloatingWindow : IDisposable
     private float _paddingRight;
     private bool _stopwatchVisible;
 
-    public FloatingWindow(Configuration configuration, State state, DalamudPluginInterface pluginInterface)
+    public FloatingWindow(Container container)
     {
-        _configuration = configuration;
-        _state = state;
-        _pluginInterface = pluginInterface;
-        _pluginInterface.UiBuilder.BuildFonts += BuildFont;
+        _configuration = container.Resolve<Configuration>();
+        _state = container.Resolve<State>();
+        _pluginInterface = container.Resolve<DalamudPluginInterface>();
+        _ui = container.Resolve<UiBuilder>();
+        _ui.BuildFonts += BuildFont;
     }
 
     public bool StopwatchVisible
@@ -40,8 +43,8 @@ public sealed class FloatingWindow : IDisposable
 
     public void Dispose()
     {
-        _pluginInterface.UiBuilder.BuildFonts -= BuildFont;
-        _pluginInterface.UiBuilder.RebuildFonts();
+        _ui.BuildFonts -= BuildFont;
+        _ui.RebuildFonts();
     }
 
     public void Draw()
@@ -49,7 +52,7 @@ public sealed class FloatingWindow : IDisposable
         if (!_configuration.DisplayFloatingWindow) return;
         if (!_fontLoaded)
         {
-            _pluginInterface.UiBuilder.RebuildFonts();
+            _ui.RebuildFonts();
             return;
         }
 

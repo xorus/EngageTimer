@@ -16,12 +16,12 @@ public class CombatStopwatch
     private DateTime _combatTimeStart;
     private bool _shouldRestartCombatTimer = true;
 
-    public CombatStopwatch(State state, Condition condition, PartyList partyList, Configuration configuration)
+    public CombatStopwatch(Container container)
     {
-        _state = state;
-        _condition = condition;
-        _partyList = partyList;
-        _configuration = configuration;
+        _state = container.Resolve<State>();
+        _condition = container.Resolve<Condition>();
+        _partyList = container.Resolve<PartyList>();
+        _configuration = container.Resolve<Configuration>();
     }
 
     public void UpdateEncounterTimer()

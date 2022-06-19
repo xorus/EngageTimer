@@ -13,20 +13,20 @@ public class PluginUi : IDisposable
     private readonly Settings _settings;
     private readonly FloatingWindow _stopwatch;
 
-    public PluginUi(DalamudPluginInterface pluginInterface,
-        Configuration configuration,
-        GameGui gui,
-        string pluginPath,
-        State state,
-        DtrBar dtrBar
-    )
+    public PluginUi(Container container)
     {
-        var numbers = new NumberTextures(configuration, pluginInterface.UiBuilder, pluginPath);
-        numbers.Load();
-        _countDown = new CountDown(configuration, state, gui, numbers, pluginPath);
-        _stopwatch = new FloatingWindow(configuration, state, pluginInterface);
-        _settings = new Settings(configuration, state, pluginInterface.UiBuilder, numbers);
-        _dtrBarUi = new DtrBarUi(configuration, state, dtrBar);
+        var numbers = new NumberTextures(container);
+        container.Register(numbers);
+
+        _countDown = new CountDown(container);
+        _stopwatch = new FloatingWindow(container);
+        _dtrBarUi = new DtrBarUi(container);
+        _settings = new Settings(container);
+        
+        container.Register(_countDown);
+        container.RegisterDisposable(_stopwatch);
+        container.RegisterDisposable(_dtrBarUi);
+        container.Register(_settings);
     }
 
     public void Dispose()
@@ -41,6 +41,8 @@ public class PluginUi : IDisposable
         _settings.Draw();
         _countDown.Draw();
         _stopwatch.Draw();
+        
+        // fixme: move to framework update
         _dtrBarUi.Update();
     }
 

@@ -11,7 +11,7 @@ using ImGuiNET;
 
 namespace EngageTimer.UI;
 
-public class CountDown
+public sealed class CountDown
 {
     public const string WindowName = "EngageTimer Countdown";
 
@@ -50,15 +50,14 @@ public class CountDown
     private bool _originalAddonHidden;
     private bool _wasInMainViewport = true;
 
-    public CountDown(Configuration configuration, State state, GameGui gui, NumberTextures numberTextures,
-        string path)
+    public CountDown(Container container)
     {
-        _configuration = configuration;
-        _state = state;
-        _gui = gui;
-        _numberTextures = numberTextures;
-        _path = path;
-        configuration.OnSave += ConfigurationOnOnSave;
+        _configuration = container.Resolve<Configuration>();
+        _state = container.Resolve<State>();
+        _gui = container.Resolve<GameGui>();
+        _numberTextures = container.Resolve<NumberTextures>();
+        _path = container.Resolve<Plugin>().PluginPath;
+        _configuration.OnSave += ConfigurationOnOnSave;
         UpdateFromConfig();
     }
 

@@ -12,7 +12,7 @@ using StbiSharp;
 
 namespace EngageTimer.UI;
 
-public class NumberTextures
+public sealed class NumberTextures
 {
     private readonly Configuration _configuration;
     private readonly string _dataPath;
@@ -22,12 +22,14 @@ public class NumberTextures
     private readonly Dictionary<int, TextureWrap> _numberTexturesAlt = new();
     private readonly UiBuilder _uiBuilder;
 
-    public NumberTextures(Configuration configuration, UiBuilder uiBuilder, string dataPath)
+    public NumberTextures(Container container)
     {
-        _configuration = configuration;
-        _uiBuilder = uiBuilder;
-        _dataPath = dataPath;
+        _configuration = container.Resolve<Configuration>();
+        _uiBuilder = container.Resolve<UiBuilder>();
+        _dataPath = container.Resolve<Plugin>().PluginPath;
         _error = _uiBuilder.LoadImage(Path.Combine(_dataPath, "Data", "error.png"));
+
+        Load();
     }
 
     public int MaxTextureWidth { get; private set; }

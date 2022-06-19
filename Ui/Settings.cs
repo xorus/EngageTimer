@@ -17,16 +17,14 @@ public class Settings
     private readonly UiBuilder _uiBuilder;
     private readonly NumberTextures _numberTextures;
     private readonly State _state;
-
     private bool _visible;
 
-
-    public Settings(Configuration configuration, State state, UiBuilder uiBuilder, NumberTextures _numberTextures)
+    public Settings(Container container)
     {
-        _configuration = configuration;
-        _uiBuilder = uiBuilder;
-        this._numberTextures = _numberTextures;
-        _state = state;
+        _configuration = container.Resolve<Configuration>();
+        _uiBuilder = container.Resolve<UiBuilder>();
+        _numberTextures = container.Resolve<NumberTextures>();
+        _state = container.Resolve<State>();
     }
 
     public bool Visible
