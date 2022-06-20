@@ -105,7 +105,7 @@ public sealed class CountDown
 
         if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
             TickSound((int)Math.Ceiling(_state.CountDownValue));
-        if (_firstLoad) TickSoundInit();
+        if (!_firstLoad) TickSoundInit();
 
         // display is disabled
         if (!_configuration.DisplayCountdown) return;
