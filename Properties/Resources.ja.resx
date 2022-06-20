@@ -419,4 +419,37 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
     <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
   </data>
+  <data name="MainCommand_Help_Countdown" xml:space="preserve">
+    <value>enable or disable the big countdown (toggles by default)</value>
+  </data>
+  <data name="MainCommand_Help_FW" xml:space="preserve">
+    <value>enable or disable the floating window (toggles by default)</value>
+  </data>
+  <data name="MainCommand_Help_Dtr" xml:space="preserve">
+    <value>enable or disable the server info bar (toggles by default)</value>
+  </data>
+  <data name="MainCommand_Help_Settings" xml:space="preserve">
+    <value>open the settings menu</value>
+  </data>
+  <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
+    <value>Countdown is now {0}</value>
+  </data>
+  <data name="MainCommand_Status_On" xml:space="preserve">
+    <value>enabled</value>
+  </data>
+  <data name="MainCommand_Status_Off" xml:space="preserve">
+    <value>disabled</value>
+  </data>
+  <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
+    <value>Server info bar is now {0}</value>
+  </data>
+  <data name="MainCommand_Help_FW_Success" xml:space="preserve">
+    <value>Floating window is now {0}</value>
+  </data>
+  <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
+    <value>Unrecognized subcommand: {0}</value>
+  </data>
+  <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
+    <value>Unrecognized argument for {0}: {1}</value>
+  </data>
 </root>

@@ -419,37 +419,37 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
     <value>Sera supprimé, merci de me contacter si vous l'utilisez. Ne fonctionne pas sous autre chose que Windows.</value>
   </data>
-  <data name="MainCommand_Status_Off" xml:space="preserve">
-    <value>désactivé(e)</value>
-  </data>
-  <data name="MainCommand_Status_On" xml:space="preserve">
-    <value>activé(e)</value>
-  </data>
-  <data name="MainCommand_Help_Dtr" xml:space="preserve">
-    <value>modifie la barre d'infos serveur</value>
-  </data>
-  <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
-    <value>la barre d'infos serveur est </value>
-  </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>modifie l'affichage du compte à rebours</value>
-  </data>
-  <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
-    <value>le compte à rebours est</value>
-  </data>
-  <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
-    <value>Paramètre non reconnu pour {0} : {1}</value>
-  </data>
-  <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
-    <value>Commande non reconnue : {0}</value>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>modifie l'affichage de la petite fenêtre</value>
   </data>
-  <data name="MainCommand_Help_FW_Success" xml:space="preserve">
-    <value>la petite fenêtre est</value>
+  <data name="MainCommand_Help_Dtr" xml:space="preserve">
+    <value>modifie la barre d'infos serveur</value>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>ouvre les paramètres</value>
+  </data>
+  <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
+    <value>le compte à rebours est</value>
+  </data>
+  <data name="MainCommand_Status_On" xml:space="preserve">
+    <value>activé(e)</value>
+  </data>
+  <data name="MainCommand_Status_Off" xml:space="preserve">
+    <value>désactivé(e)</value>
+  </data>
+  <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
+    <value>la barre d'infos serveur est </value>
+  </data>
+  <data name="MainCommand_Help_FW_Success" xml:space="preserve">
+    <value>la petite fenêtre est</value>
+  </data>
+  <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
+    <value>Commande non reconnue : {0}</value>
+  </data>
+  <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
+    <value>Paramètre non reconnu pour {0} : {1}</value>
   </data>
 </root>
