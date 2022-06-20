@@ -1,52 +1,45 @@
 ﻿using System;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Dtr;
-using Dalamud.Plugin;
+using Dalamud.Interface;
 using EngageTimer.UI;
 
-namespace EngageTimer
+namespace EngageTimer;
+
+public sealed class PluginUi : IDisposable
 {
-    public class PluginUi : IDisposable
+    private readonly Container _container;
+    private readonly CountDown _countDown;
+    private readonly Settings _settings;
+    private readonly FloatingWindow _floatingWindow;
+
+    public PluginUi(Container container)
     {
-        private readonly CountDown _countDown;
-        private readonly Settings _settings;
-        private readonly FloatingWindow _stopwatch;
-        private readonly DtrBarUi _dtrBarUi;
+        _container = container;
+        var numbers = new NumberTextures(container);
+        container.Register(numbers);
 
-        public PluginUi(DalamudPluginInterface pluginInterface,
-            Configuration configuration,
-            GameGui gui,
-            string pluginPath,
-            State state,
-            DtrBar dtrBar
-        )
-        {
-            var numbers = new NumberTextures(configuration, pluginInterface.UiBuilder, pluginPath);
-            numbers.Load();
-            _countDown = new CountDown(configuration, state, gui, numbers, pluginPath);
-            _stopwatch = new FloatingWindow(configuration, state, pluginInterface);
-            _settings = new Settings(configuration, state, pluginInterface.UiBuilder, numbers);
-            _dtrBarUi = new DtrBarUi(configuration, state, dtrBar);
-        }
+        _countDown = container.Register<CountDown>();
+        _floatingWindow = container.RegisterDisposable<FloatingWindow>();
+        _settings = container.Register<Settings>();
 
-        public void Draw()
-        {
-            _settings.Draw();
-            _countDown.Draw();
-            _stopwatch.Draw();
-            _dtrBarUi.Update();
-        }
+        container.Resolve<UiBuilder>().Draw += Draw;
+        container.Resolve<UiBuilder>().OpenConfigUi += OpenSettings;
+    }
 
-        public void OpenSettings()
-        {
-            _settings.Visible = true;
-        }
+    public void Dispose()
+    {
+        _container.Resolve<UiBuilder>().Draw -= Draw;
+        _container.Resolve<UiBuilder>().OpenConfigUi -= OpenSettings;
+    }
 
-        public void Dispose()
-        {
-            _stopwatch?.Dispose();
-            _dtrBarUi?.Dispose();
-            GC.SuppressFinalize(this);
-        }
+    private void Draw()
+    {
+        _settings.Draw();
+        _countDown.Draw();
+        _floatingWindow.Draw();
+    }
+
+    public void OpenSettings()
+    {
+        _settings.Visible = true;
     }
 }

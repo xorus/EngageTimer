@@ -1,8 +1,9 @@
 ﻿name: EngageTimer
 author: Xorus
-punchline: Combat countdown with all numbers and pull timer (with a bonus OBS source)
+punchline: Complete combat countdown, pull timer and OBS overlay
 description: |-
   Finally, display all the numbers when starting a countdown!
+  Comes with an accurate pull timer that starts when you or any of your party members enter combat.
 
   Features :
   - Big countdown that displays all the numbers
@@ -16,8 +17,10 @@ description: |-
   Feel free so send me feedback, bugs and potential improvements!
 tags:
   - countdown
+  - pull timer
   - stopwatch
   - OBS
+  - overlay
   - streaming
   - combat
 repo_url: https://github.com/xorus/EngageTimer

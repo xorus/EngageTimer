@@ -2,7 +2,6 @@
 
 **Help translating** : https://crwd.in/engagetimer
 
-
 Finally, display all the numbers when starting a countdown!
 
 **Main features :**
@@ -17,7 +16,6 @@ This is a plugin for the [FFXIV plugin platform Dalamud](https://github.com/goat
 The original motivation for this plugin was to do something like
 ["Acurate Countdown" plugin by Haplo064](https://github.com/Haplo064/Europe)
 but with a big stopwatch timer for my recordings.
-
 
 *Living on the edge ? You can add my testing repository : https://xorus.dev/xiv/*
 
@@ -85,7 +83,7 @@ I have based myself on the work of ["Acurate Countdown" plugin by Haplo064](http
 for the countdown pointer and on the [Peeping Tom plugin by asclemens](https://git.sr.ht/~jkcclemens/PeepingTom) for the
 idea of using NAudio lib to play the sound.
 
-Smooth font size was adapted from ["Ping Plugin" by karashiiro](https://github.com/karashiiro/PingPlugin) 
+Smooth font size was adapted from ["Ping Plugin" by karashiiro](https://github.com/karashiiro/PingPlugin)
 
 ---------
 

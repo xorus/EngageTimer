@@ -61,6 +61,105 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unrecognized argument for {0}: {1}.
+        /// </summary>
+        internal static string MainCommand_Error_InvalidArgument {
+            get {
+                return ResourceManager.GetString("MainCommand_Error_InvalidArgument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized subcommand: {0}.
+        /// </summary>
+        internal static string MainCommand_Error_InvalidSubcommand {
+            get {
+                return ResourceManager.GetString("MainCommand_Error_InvalidSubcommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to enable or disable the big countdown (toggles by default).
+        /// </summary>
+        internal static string MainCommand_Help_Countdown {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_Countdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Countdown is now {0}.
+        /// </summary>
+        internal static string MainCommand_Help_Countdown_Success {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_Countdown_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to enable or disable the server info bar (toggles by default).
+        /// </summary>
+        internal static string MainCommand_Help_Dtr {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_Dtr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server info bar is now {0}.
+        /// </summary>
+        internal static string MainCommand_Help_Dtr_Success {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_Dtr_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to enable or disable the floating window (toggles by default).
+        /// </summary>
+        internal static string MainCommand_Help_FW {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_FW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Floating window is now {0}.
+        /// </summary>
+        internal static string MainCommand_Help_FW_Success {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_FW_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to open the settings menu.
+        /// </summary>
+        internal static string MainCommand_Help_Settings {
+            get {
+                return ResourceManager.GetString("MainCommand_Help_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disabled.
+        /// </summary>
+        internal static string MainCommand_Status_Off {
+            get {
+                return ResourceManager.GetString("MainCommand_Status_Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to enabled.
+        /// </summary>
+        internal static string MainCommand_Status_On {
+            get {
+                return ResourceManager.GetString("MainCommand_Status_On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string Settings_Close {
