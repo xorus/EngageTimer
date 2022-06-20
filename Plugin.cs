@@ -55,7 +55,7 @@ public sealed class Plugin : IDalamudPlugin
         Container.Register(new State());
         Container.RegisterDisposable<Translator>();
         Container.RegisterDisposable<PluginUi>();
-        Container.RegisterDisposable<FwThings>();
+        Container.RegisterDisposable<FrameworkThings>();
         Container.RegisterDisposable<MainCommand>();
         Container.RegisterDisposable<SettingsCommand>();
     }

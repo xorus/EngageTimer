@@ -13,8 +13,6 @@ namespace EngageTimer.UI;
 
 public sealed class CountDown
 {
-    public const string WindowName = "EngageTimer Countdown";
-
     private const byte VisibleFlag = 0x20;
 
     private const float BaseNumberScale = 1f;
@@ -44,8 +42,6 @@ public sealed class CountDown
      */
     private bool _firstLoad = true;
 
-    private int _lastNumberPlayed;
-
     private int _lastSecond;
     private bool _originalAddonHidden;
     private bool _wasInMainViewport = true;
@@ -69,8 +65,8 @@ public sealed class CountDown
     }
 
     /**
-         * Things I need to simplify/re-use in this class but dont need to compute every frame
-         */
+     * Things I need to simplify/re-use in this class but dont need to compute every frame
+     */
     private void UpdateFromConfig()
     {
         _accurateMode = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
@@ -102,10 +98,6 @@ public sealed class CountDown
             _configuration.MigrateCountdownOffsetToPercent = false;
             _configuration.Save();
         }
-
-        if (_state.CountingDown && _configuration.EnableTickingSound && _state.CountDownValue > 5 && !_state.Mocked)
-            TickSound((int)Math.Ceiling(_state.CountDownValue));
-        if (!_firstLoad) TickSoundInit();
 
         // display is disabled
         if (!_configuration.DisplayCountdown) return;
@@ -184,7 +176,7 @@ public sealed class CountDown
         var visible = true;
         // prevent a big 0 appearing on screen when "initializing" the countdown window by alpha-ing it
         if (_firstLoad) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0f);
-        if (ImGui.Begin(WindowName, ref visible, flags))
+        if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
         {
             _wasInMainViewport = ImGui.GetWindowViewport().ID == ImGui.GetMainViewport().ID;
             if (ShowBackground)
@@ -332,20 +324,5 @@ public sealed class CountDown
         }
 
         return integers;
-    }
-
-    private void TickSound(int n)
-    {
-        if (!_configuration.EnableTickingSound || _lastNumberPlayed == n)
-            return;
-        _lastNumberPlayed = n;
-        if (_configuration.EnableLegacyAudio) SfxPlay.Legacy(_path, _configuration.TickingSoundVolume);
-        else SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
-    }
-
-    private void TickSoundInit()
-    {
-        if (!_configuration.EnableTickingSound && !_configuration.EnableLegacyAudio) return;
-        SfxPlay.SoundEffect(0);
     }
 }
