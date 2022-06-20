@@ -421,18 +421,26 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>enable or disable the big countdown (toggles by default)</value>
+    <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>enable or disable the floating window (toggles by default)</value>
+    <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
     <value>enable or disable the server info bar (toggles by default)</value>
+    <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>open the settings menu</value>
+    <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
     <value>Countdown is now {0}</value>
+    <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
     <value>enabled</value>
