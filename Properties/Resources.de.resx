@@ -205,7 +205,7 @@ Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown
     <value>Dezimalstellen anzeigen</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
-    <value>Zeigt die Dauer des aktuellen Kampfes an.</value>
+    <value>Zeigt die Dauer des aktuellen Kampfes an</value>
   </data>
   <data name="Settings_FWTab_Styling" xml:space="preserve">
     <value>Styling</value>
@@ -235,13 +235,13 @@ Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown
     <value>Aktiviere präzisen Countdown im Overlay</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
-    <value>Siehe "Großer Countdown"-Tab für mehr Informationen.</value>
+    <value>Siehe "Großer Countdown"-Tab für mehr Informationen</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
     <value>Kampfdauer ausblenden, wenn nicht in Inhalt</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
-    <value>Blendet die Kampfdauer außerhalb von Instanzen aus.</value>
+    <value>Blendet die Kampfdauer außerhalb von Instanzen aus</value>
   </data>
   <data name="Settings_Web_Title" xml:space="preserve">
     <value>Webserver (OBS)</value>
@@ -256,7 +256,7 @@ Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown
     <value>Die empfohlene Größe ist 300x100.</value>
   </data>
   <data name="Settings_Web_EnablePort" xml:space="preserve">
-    <value>Port für Webserver: </value>
+    <value>Port für Webserver:</value>
   </data>
   <data name="Settings_Web_Hide_Left" xml:space="preserve">
     <value>Overlay</value>
@@ -345,7 +345,7 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Lichteffekt</value>
   </data>
   <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
-    <value>Achtung: wenn der ursprüngliche Countdown nicht ausgeblendet wird, kann eine Änderung dieser Einstellungen zu verwirrenden Darstellungen des Countdowns führen.</value>
+    <value>Achtung: wenn der ursprüngliche Countdown nicht ausgeblendet wird, kann eine Änderung dieser Einstellungen zu verwirrenden Darstellungen des Countdowns führen</value>
   </data>
   <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
     <value>Kampfdauer in Sekunden anzeigen</value>
