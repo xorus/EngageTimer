@@ -421,35 +421,51 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>modifie l'affichage du compte à rebours</value>
+    <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>modifie l'affichage de la petite fenêtre</value>
+    <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
     <value>modifie la barre d'infos serveur</value>
+    <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>ouvre les paramètres</value>
+    <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
-    <value>le compte à rebours est</value>
+    <value>Le compte à rebours est {0}</value>
+    <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
     <value>activé(e)</value>
+    <comment>For use in success sentences "Countdown is now enabled"</comment>
   </data>
   <data name="MainCommand_Status_Off" xml:space="preserve">
     <value>désactivé(e)</value>
+    <comment>For use in success sentences "Countdown is now disabled"</comment>
   </data>
   <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
-    <value>la barre d'infos serveur est </value>
+    <value>La barre d'infos serveur est {0}</value>
   </data>
   <data name="MainCommand_Help_FW_Success" xml:space="preserve">
-    <value>la petite fenêtre est</value>
+    <value>La petite fenêtre est {0}</value>
   </data>
   <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
     <value>Commande non reconnue : {0}</value>
+    <comment>MainCommand_Error_InvalidSubcommand
+{0} is the un recognized command name
+</comment>
   </data>
   <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
     <value>Paramètre non reconnu pour {0} : {1}</value>
+    <comment>MainCommand_Error_InvalidArgument
+{0} is the command name (countdown, c, fw, settings, ...)
+{1} is the unrecognized argument typed</comment>
   </data>
 </root>
