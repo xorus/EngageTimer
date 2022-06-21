@@ -140,7 +140,7 @@
     <value>Zeige</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
-    <value>Dezimalstellen im Countdown</value>
+    <value>dezimalstellen im Countdown</value>
   </data>
   <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
     <value>Tickender Ton für jede Zahl</value>
@@ -421,24 +421,34 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>enable or disable the big countdown (toggles by default)</value>
+    <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>enable or disable the floating window (toggles by default)</value>
+    <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
     <value>enable or disable the server info bar (toggles by default)</value>
+    <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>open the settings menu</value>
+    <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
     <value>Countdown is now {0}</value>
+    <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
     <value>enabled</value>
+    <comment>For use in success sentences "Countdown is now enabled"</comment>
   </data>
   <data name="MainCommand_Status_Off" xml:space="preserve">
     <value>disabled</value>
+    <comment>For use in success sentences "Countdown is now disabled"</comment>
   </data>
   <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
     <value>Server info bar is now {0}</value>
@@ -448,8 +458,14 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   </data>
   <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
     <value>Unrecognized subcommand: {0}</value>
+    <comment>MainCommand_Error_InvalidSubcommand
+{0} is the un recognized command name
+</comment>
   </data>
   <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
     <value>Unrecognized argument for {0}: {1}</value>
+    <comment>MainCommand_Error_InvalidArgument
+{0} is the command name (countdown, c, fw, settings, ...)
+{1} is the unrecognized argument typed</comment>
   </data>
 </root>
