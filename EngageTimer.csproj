@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0-windows</TargetFramework>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <Platforms>AnyCPU</Platforms>
         <LangVersion>10</LangVersion>
@@ -9,12 +9,13 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
         <Version>1.0.0</Version>
-        <AssemblyVersion>2.2.2.1</AssemblyVersion>
+        <AssemblyVersion>2.2.2.2</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release</Configurations>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -59,11 +60,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.6" />
+        <PackageReference Include="DalamudPackager" Version="2.1.7" />
         <PackageReference Include="EmbedIO" Version="3.4.3" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-        <PackageReference Include="NAudio" Version="2.0.1" />
-        <PackageReference Include="NAudio.Core" Version="2.0.0" />
+        <PackageReference Include="NAudio" Version="2.1.0" />
+        <PackageReference Include="NAudio.Core" Version="2.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -81,30 +82,72 @@
         </EmbeddedResource>
     </ItemGroup>
 
+    <PropertyGroup>
+        <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+    </PropertyGroup>
+    
     <ItemGroup>
         <Reference Include="Dalamud, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
+            <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="FFXIVClientStructs, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
+            <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="ImGui.NET, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+            <HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="ImGuiScene, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
+            <HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\Newtonsoft.Json.dll</HintPath>
+            <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="StbiSharp, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(APPDATA)\XIVLauncher\addon\Hooks\dev\StbiSharp.dll</HintPath>
+            <HintPath>$(DalamudLibPath)StbiSharp.dll</HintPath>
             <Private>false</Private>
         </Reference>
     </ItemGroup>
+
+    <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" />
+    </Target>
+        
+    <ProjectExtensions>
+        <DalamudPlugin>
+            <ApiLevel>7</ApiLevel>
+            <Author>Xorus</Author>
+            <Name>EngageTimer</Name>
+            <Punchline>Complete combat countdown, pull timer and OBS overlay</Punchline>
+            <Description>Finally, display all the numbers when starting a countdown!
+                Comes with an accurate pull timer that starts when you or any of your party members enter combat.
+
+                Features :
+                - Big countdown that displays all the numbers
+                - Customizable big-number textures (default, yellow, WoW style or custom files)
+                - Display combat time in the Server Info Bar, and/or a floating window
+                - OBS browser-source compatible page with countdown and current combat duration
+
+                Why the OBS thing ? Well, it can be useful if you want a big stylized stopwatch in your recordings.
+                See repository for more info.
+
+                Feel free so send me feedback, bugs and potential improvements!</Description>
+            <IconUrl>https://raw.githubusercontent.com/xorus/EngageTimer/main/images/icon.png</IconUrl>
+            <Tags>
+                <Tag>Countdown</Tag>
+                <Tag>Pull Timer</Tag>
+                <Tag>Stopwatch</Tag>
+                <Tag>OBS</Tag>
+                <Tag>Overlay</Tag>
+                <Tag>Streaming</Tag>
+                <Tag>Combat</Tag>
+            </Tags>
+            <Hidden>False</Hidden>
+            <CategoryTags>jobs</CategoryTags>
+        </DalamudPlugin>
+    </ProjectExtensions>
 </Project>

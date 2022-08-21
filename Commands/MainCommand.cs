@@ -95,7 +95,7 @@ public class MainCommand : IDisposable
                     break;
             }
         }
-        catch (ArgumentOutOfRangeException e)
+        catch (ArgumentOutOfRangeException)
         {
             chat.PrintError(_tr.Trans("MainCommand_Error_InvalidArgument", subcommand, argument));
         }
