@@ -61,6 +61,8 @@
         <PackageReference Include="DalamudPackager" Version="2.1.7" />
         <PackageReference Include="EmbedIO" Version="3.4.3" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+        <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
