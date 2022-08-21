@@ -25,7 +25,7 @@ public class TickingSound
     {
         // if (!_configuration.DisplayCountdown) return;
         if (!_configuration.EnableTickingSound || _state.Mocked) return;
-        if (!_configuration.EnableLegacyAudio && !_soundLoaded)
+        if (!_soundLoaded)
         {
             SfxPlay.SoundEffect(0); // should be cursor sound
             _soundLoaded = true;
@@ -41,7 +41,6 @@ public class TickingSound
         if (!_configuration.EnableTickingSound || _lastNumberPlayed == n)
             return;
         _lastNumberPlayed = n;
-        if (_configuration.EnableLegacyAudio) SfxPlay.Legacy(_path, _configuration.TickingSoundVolume);
-        else SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
+        SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
     }
 }

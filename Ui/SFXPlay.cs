@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Threading;
-using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
-using NAudio.Wave;
 
 namespace EngageTimer.UI;
 
@@ -40,43 +36,5 @@ public static class SfxPlay
         }
         // s.Stop();
         // PluginLog.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
-    }
-
-    /**
-         * https://git.sr.ht/~jkcclemens/PeepingTom
-         */
-    public static void Legacy(string path, float volume)
-    {
-        new Thread(() =>
-        {
-            WaveStream reader;
-            try
-            {
-                reader = new WaveFileReader(Path.Combine(path, "Data", "tick.wav"));
-            }
-            catch (Exception e)
-            {
-                PluginLog.Log($"Could not play sound file: {e.Message}");
-                return;
-            }
-
-            using WaveChannel32 channel = new(reader)
-            {
-                Volume = volume,
-                PadWithZeroes = false
-            };
-
-            using (reader)
-            {
-                using var output = new WaveOutEvent
-                {
-                    DeviceNumber = -1
-                };
-                output.Init(channel);
-                output.Play();
-
-                while (output.PlaybackState == PlaybackState.Playing) Thread.Sleep(500);
-            }
-        }).Start();
     }
 }

@@ -36,9 +36,7 @@ public class Configuration : IPluginConfiguration
     public bool AutoHideStopwatch { get; set; } = true;
     public float AutoHideTimeout { get; set; } = 20f;
     public bool EnableTickingSound { get; set; } = false;
-    public bool EnableLegacyAudio { get; set; } = false;
     public bool UseAlternativeSound { get; set; } = false;
-    public float TickingSoundVolume { get; set; } = 0.05f;
     public bool EnableCountdownDecimal { get; set; } = false;
     public int CountdownDecimalPrecision { get; set; } = 1;
 

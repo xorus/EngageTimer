@@ -299,34 +299,12 @@ public class Settings
         if (enableTickingSound)
         {
             ImGui.Indent();
-            var legacy = _configuration.EnableLegacyAudio;
-
             var alternativeSound = _configuration.UseAlternativeSound;
             if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_UseAlternativeSound"),
                     ref alternativeSound))
             {
                 _configuration.UseAlternativeSound = alternativeSound;
                 _configuration.Save();
-            }
-
-            if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_LegacyAudio"), ref legacy))
-            {
-                _configuration.EnableLegacyAudio = legacy;
-                _configuration.Save();
-            }
-
-            ImGuiComponents.HelpMarker(Trans("Settings_CountdownTab_Audio_LegacyAudio_Help"));
-
-            if (legacy)
-            {
-                ImGui.SameLine();
-                var volume = _configuration.TickingSoundVolume * 100f;
-                if (ImGui.DragFloat(TransId("Settings_CountdownTab_Audio_LegacyVolume"), ref volume, .1f, 0f,
-                        100f, "%.1f%%"))
-                {
-                    _configuration.TickingSoundVolume = Math.Max(0f, Math.Min(1f, volume / 100f));
-                    _configuration.Save();
-                }
             }
 
             ImGui.Unindent();
