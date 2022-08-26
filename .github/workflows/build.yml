@@ -35,3 +35,4 @@ jobs:
           path: |
             bin/Release/EngageTimer/latest.zip
             bin/Release/EngageTimer/EngageTimer.json
+

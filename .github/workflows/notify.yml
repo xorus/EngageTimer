@@ -1,0 +1,14 @@
+﻿name: Notify
+on:
+  workflow_run:
+    workflows: [".NET Build"]
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: windows-latest
+    steps:
+      - name: Update testing repository
+        run: |
+          Invoke-WebRequest -Uri https://plogon.xorus.dev/update
