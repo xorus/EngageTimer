@@ -36,7 +36,7 @@ internal class WebServer : IDisposable
 
     public void Enable()
     {
-        PluginLog.Log($"WebServer enabled - serving files from ${_staticDirectory}");
+        PluginLog.Log($"WebServer enabled - serving files from {_staticDirectory}");
         _websocket = new Websocket("/ws", _state, _configuration);
         _server = new EmbedIO.WebServer(o => o
                     .WithUrlPrefix($"http://+:{_configuration.WebServerPort}/")
