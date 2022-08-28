@@ -10,9 +10,9 @@
       },
       "EmbedIO": {
         "type": "Direct",
-        "requested": "[3.4.3, )",
-        "resolved": "3.4.3",
-        "contentHash": "YM6hpZNAfvbbixfG9T4lWDGfF0D/TqutbTROL4ogVcHKwPF1hp+xS3ABwd3cxxTxvDFkj/zZl57QgWuFA8Igxw==",
+        "requested": "[3.5.0, )",
+        "resolved": "3.5.0",
+        "contentHash": "WShOVau/y9ETcTidcHlK/U7px94BLfaIqwoioLD2fAAVh16kayXJj8rL91l68fOjItq3jEvSNDyOj0kqLmiFww==",
         "dependencies": {
           "Unosquare.Swan.Lite": "3.0.0"
         }
@@ -32,7 +32,10 @@
       "Unosquare.Swan.Lite": {
         "type": "Transitive",
         "resolved": "3.0.0",
-        "contentHash": "noPwJJl1Q9uparXy1ogtkmyAPGNfSGb0BLT1292nFH1jdMKje6o2kvvrQUvF9Xklj+IoiAI0UzF6Aqxlvo10lw=="
+        "contentHash": "noPwJJl1Q9uparXy1ogtkmyAPGNfSGb0BLT1292nFH1jdMKje6o2kvvrQUvF9Xklj+IoiAI0UzF6Aqxlvo10lw==",
+        "dependencies": {
+          "System.ValueTuple": "4.5.0"
+        }
       }
     }
   }

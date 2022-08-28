@@ -45,7 +45,7 @@ public sealed class Translator : IDisposable
         {
             "fr" => "fr",
             "de" => "de",
-            // "ja" => "ja",
+            "ja" => "ja",
             _ => "en"
         };
         Resources.Culture = new CultureInfo(lang ?? "en");

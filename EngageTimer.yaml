@@ -31,3 +31,5 @@ image_urls:
   - https://raw.githubusercontent.com/xorus/EngageTimer/main/images/image3.png
 category_tags:
   - jobs
+changelog: |-
+  - Update translations and add a new contributed Japanese translation (thank you!)
