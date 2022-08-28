@@ -54,6 +54,7 @@ public sealed class CountDown
         _numberTextures = container.Resolve<NumberTextures>();
         _path = container.Resolve<Plugin>().PluginPath;
         _configuration.OnSave += ConfigurationOnOnSave;
+        _state.StartCountingDown += Start;
         UpdateFromConfig();
     }
 
@@ -90,8 +91,31 @@ public sealed class CountDown
         }
     }
 
+    // Fix for #19 (countdown overlapping when restarting)
+    // ensures the countdown addon is marked as not hidden when starting or restarting a timer
+    private void Start(object sender, EventArgs e)
+    {
+        _originalAddonHidden = false;
+    }
+
     public void Draw()
     {
+#if DEBUG
+        if (ImGui.Begin("egdebug"))
+        {
+            ImGui.Text("_originalAddonHidden: " + _originalAddonHidden);
+            ImGui.Text("CountingDown: " + _state.CountingDown);
+            ImGui.Text("CountDownValue: " + _state.CountDownValue);
+            ImGui.Text("Mocked: " + _state.Mocked);
+            ImGui.Text("CombatDuration: " + _state.CombatDuration);
+            ImGui.Text("CombatEnd: " + _state.CombatEnd);
+            ImGui.Text("CombatStart: " + _state.CombatStart);
+            ImGui.Text("InCombat: " + _state.InCombat);
+            ImGui.Text("InInstance: " + _state.InInstance);
+        }
+        ImGui.End();
+#endif
+
         if (_configuration.MigrateCountdownOffsetToPercent)
         {
             _configuration.CountdownWindowOffset /= ImGui.GetIO().DisplaySize;

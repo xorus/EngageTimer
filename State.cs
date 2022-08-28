@@ -39,4 +39,9 @@ public class State
     public float CountDownValue { get; set; } = 0f;
     public event EventHandler InCombatChanged;
     public event EventHandler CountingDownChanged;
+    public event EventHandler StartCountingDown;
+    public void FireStartCountingDown()
+    {
+        StartCountingDown?.Invoke(this, EventArgs.Empty);
+    }
 }

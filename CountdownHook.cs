@@ -80,7 +80,9 @@ public sealed class CountdownHook : IDisposable
 
         if (countDownPointerValue > 0 && _countDownRunning)
         {
-            _state.CountDownValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
+            var newValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
+            if (newValue > _state.CountDownValue) _state.FireStartCountingDown();
+            _state.CountDownValue = newValue;
             _state.CountingDown = true;
         }
 
