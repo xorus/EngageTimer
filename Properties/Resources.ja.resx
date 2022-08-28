@@ -122,35 +122,35 @@
         </value>
   </resheader>
   <data name="Settings_Title" xml:space="preserve">
-    <value>EngageTimer settings</value>
+    <value>EngageTimerの設定</value>
   </data>
   <data name="Settings_CountdownTab_Info1" xml:space="preserve">
-    <value>The "big countdown" feature adds the missing numbers to the in-game timer !</value>
+    <value>ビッグカウントダウン機能は、ゲーム内オリジナルのタイマーより詳細な数字を表示します。</value>
   </data>
   <data name="Settings_CountdownTab_Enable" xml:space="preserve">
-    <value>Enable big countdown</value>
+    <value>大きなカウントダウンを有効にする</value>
   </data>
   <data name="Settings_CountdownTab_Title" xml:space="preserve">
-    <value>Big countdown</value>
+    <value>ビッグカウントダウン</value>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
     <value>Also replace numbers before 5</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
-    <value>Display</value>
+    <value>表示する小数点以下の桁数</value>
   </data>
   <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
-    <value>decimals in countdown</value>
+    <value>桁</value>
   </data>
   <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
-    <value>Play a ticking sound for all numbers</value>
+    <value>全ての数字のカウント音を鳴らす</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
-    <value>Sound volume</value>
+    <value>音量</value>
     <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
-    <value>Hide original countdown</value>
+    <value>オリジナルのカウントダウンを非表示にする</value>
   </data>
   <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
     <value>Enable accurate countdown mode (countdown - 1)</value>
@@ -163,19 +163,19 @@ However, I recommend disabling this if you don't use decimals so that the number
 Note: this setting only works when the original countdown is hidden (otherwise it would display 6 - 5 - 5 - 4...)</value>
   </data>
   <data name="Settings_FWTab_Title" xml:space="preserve">
-    <value>Floating window</value>
+    <value>フローティングウィンドウ</value>
   </data>
   <data name="Settings_FWTab_Help" xml:space="preserve">
-    <value>The floating window is a movable window that can display the countdown and the current combat duration.</value>
+    <value>フローティングウィンドウは、カウントダウンと戦闘時間の経過を表示できる可動式ウィンドウです。</value>
   </data>
   <data name="Settings_FWTab_Display" xml:space="preserve">
-    <value>Enable floating window</value>
+    <value>フローティングウィンドウを有効にする</value>
   </data>
   <data name="Settings_FWTab_Lock" xml:space="preserve">
-    <value>Lock floating window</value>
+    <value>フローティングウインドウを固定する</value>
   </data>
   <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
-    <value>Disables clicking and moving the window.</value>
+    <value>クリックとウィンドウの移動を無効にします。</value>
   </data>
   <data name="Settings_FWTab_AutoHide_Left" xml:space="preserve">
     <value>Hide</value>
@@ -184,67 +184,67 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <value>seconds after combat end</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
-    <value>Shows the current countdown value (e.g. -13)</value>
+    <value>現在のカウントダウン値(例:-13)を表示する</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
-    <value>Display countdown</value>
+    <value>カウントダウンを表示する</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
-    <value>Display countdown with</value>
+    <value>カウントダウンを小数点</value>
   </data>
   <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+    <value>桁まで表示する</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
-    <value>Display combat timer</value>
+    <value>戦闘の経過時間を表示する</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_With_Left" xml:space="preserve">
-    <value>Display combat timer with</value>
+    <value>戦闘の経過時間を小数点</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Right" xml:space="preserve">
-    <value>decimals</value>
+    <value>桁まで表示する</value>
   </data>
   <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
     <value>Shows the current combat duration</value>
   </data>
   <data name="Settings_FWTab_Styling" xml:space="preserve">
-    <value>Styling</value>
+    <value>スタイル</value>
   </data>
   <data name="Settings_FWTab_TextAlign" xml:space="preserve">
-    <value>Text align</value>
+    <value>テキストの配置</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
-    <value>Left</value>
+    <value>左寄せ</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Center" xml:space="preserve">
-    <value>Center</value>
+    <value>中央寄せ</value>
   </data>
   <data name="Settings_FWTab_TextAlign_Right" xml:space="preserve">
-    <value>Right</value>
+    <value>右寄せ</value>
   </data>
   <data name="Settings_FWTab_FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>文字サイズ</value>
   </data>
   <data name="Settings_FWTab_TextColor" xml:space="preserve">
-    <value>Text color</value>
+    <value>文字色</value>
   </data>
   <data name="Settings_FWTab_BackgroundColor" xml:space="preserve">
-    <value>Background color and opacity</value>
+    <value>背景色と透明度</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown" xml:space="preserve">
     <value>Enable accurate countdown in floating window</value>
   </data>
   <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
-    <value>See the Big countdown tab for an explanation</value>
+    <value>詳細はビッグカウントダウンのタブを参照してください。</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
-    <value>Hide combat time when not bound by duty</value>
+    <value>非戦闘時間を非表示にする</value>
   </data>
   <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
     <value>Basically hides the stopwatch when you are in the overworld</value>
   </data>
   <data name="Settings_Web_Title" xml:space="preserve">
-    <value>Web Server (OBS)</value>
+    <value>ウェブサーバ(OBS)</value>
   </data>
   <data name="Settings_Web_Help" xml:space="preserve">
     <value>This feature allows you to add a countdown and stopwatch overlay into your OBS (or other software) streams and recordings via a browser source.</value>
@@ -253,10 +253,10 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <value>To add it to your scene, enable the webserver then create a browser source in your scene and add the following URL : </value>
   </data>
   <data name="Settings_Web_HelpSize" xml:space="preserve">
-    <value>Recommended window size is 300x100.</value>
+    <value>推奨ウィンドウサイズは300x100です。</value>
   </data>
   <data name="Settings_Web_EnablePort" xml:space="preserve">
-    <value>Enable webserver on port</value>
+    <value>以下のポートでWebサーバを有効にする：</value>
   </data>
   <data name="Settings_Web_Hide_Left" xml:space="preserve">
     <value>Hide overlay</value>
@@ -265,14 +265,14 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <value>seconds after combat ends</value>
   </data>
   <data name="Settings_Close" xml:space="preserve">
-    <value>Close</value>
+    <value>閉じる</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="Settings_CountdownTab_Texture" xml:space="preserve">
-    <value>Number style</value>
+    <value>数字のスタイル</value>
   </data>
   <data name="Settings_CountdownTab_Texture_custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>カスタム</value>
   </data>
   <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
     <value>FFXIV</value>
@@ -285,11 +285,11 @@ The FFXIV number style preset name</comment>
 The wow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
-    <value>Texture Folder</value>
+    <value>テクスチャフォルダ</value>
     <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
-    <value>Load</value>
+    <value>ロード</value>
   </data>
   <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
     <value>Readable</value>
@@ -297,34 +297,34 @@ The wow number style preset name</comment>
 The yellow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
-    <value>Disable test mode</value>
+    <value>テストモードを無効にする</value>
     <comment>Settings_CountdownTab_Test_Stop
 Displays "stop" when the test button is clicked and test mode is enabled.
 </comment>
   </data>
   <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
-    <value>Enable test mode</value>
+    <value>テストモードを有効にする</value>
   </data>
   <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
-    <value>brightness</value>
+    <value>明度</value>
   </data>
   <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
-    <value>hue</value>
+    <value>色温度</value>
   </data>
   <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
-    <value>saturation</value>
+    <value>彩度</value>
   </data>
   <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
     <value>Recolor instead of shifting hue</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
-    <value>Color</value>
+    <value>色</value>
   </data>
   <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
-    <value>Scale</value>
+    <value>サイズ</value>
   </data>
   <data name="Settings_CountdownTab_Animate" xml:space="preserve">
-    <value>Enable animation</value>
+    <value>アニメーションを有効にする</value>
   </data>
   <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
     <value>X%</value>
@@ -336,7 +336,7 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Countdown offset</value>
   </data>
   <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
-    <value>Position and size</value>
+    <value>位置とサイズ</value>
   </data>
   <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
     <value>Scaling effect</value>
@@ -345,7 +345,7 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Light effect</value>
   </data>
   <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
-    <value>Warning : when not hiding the original countdown, changing values in this section might create incoherent results</value>
+    <value>注意：オリジナルのカウントダウンを非表示にしない場合、このセクションの設定値を変更すると一貫性のない結果が生じる可能性があります。</value>
   </data>
   <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
     <value>Display combat time in seconds instead of time format</value>
@@ -360,7 +360,7 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Fixed width</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
-    <value>More options</value>
+    <value>その他の設定</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
     <value>Add a leading 0</value>
@@ -369,34 +369,34 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Enable custom negative margin</value>
   </data>
   <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
-    <value>pixels</value>
+    <value>ピクセル</value>
   </data>
   <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
-    <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
+    <value>マルチウィンドウ表示の場合、少しでもゲームウィンドウの外側にカウントダウンを配置すると背景が作成されます。透過レンダリングはゲームウィンドウ外では使用できず、これは現在は修正できません。ボーダーをガイドとして使用してください。</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>Alignement</value>
+    <value>配置</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>Center countdown window</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>Enable Server Info Bar integation</value>
+    <value>サーバ情報バーの設定を有効にする</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
-    <value>Prefix</value>
+    <value>接頭辞</value>
   </data>
   <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
-    <value>Suffix</value>
+    <value>接尾辞</value>
   </data>
   <data name="Settings_DtrTab_Title" xml:space="preserve">
-    <value>Server Info Bar</value>
+    <value>サーバ情報バー</value>
   </data>
   <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
     <value>Always hide when not bound by duty</value>
   </data>
   <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
-    <value>Milliseconds to show</value>
+    <value>ミリ秒表示する</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
     <value>Hide</value>
@@ -405,7 +405,7 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>seconds after combat end</value>
   </data>
   <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>初期設定に戻す</value>
   </data>
   <data name="Settings_DtrTab_Info" xml:space="preserve">
     <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
@@ -417,39 +417,55 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Use legacy audio (breaks linux)</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
-    <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
+    <value>削除予定のため、利用する場合はプラグイン作成者に連絡してください。Windows以外のOSで利用するとクラッシュします。</value>
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>enable or disable the big countdown (toggles by default)</value>
+    <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>enable or disable the floating window (toggles by default)</value>
+    <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
     <value>enable or disable the server info bar (toggles by default)</value>
+    <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>open the settings menu</value>
+    <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
-    <value>Countdown is now {0}</value>
+    <value>カウントダウンは {0} です</value>
+    <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
-    <value>enabled</value>
+    <value>有効</value>
+    <comment>For use in success sentences "Countdown is now enabled"</comment>
   </data>
   <data name="MainCommand_Status_Off" xml:space="preserve">
-    <value>disabled</value>
+    <value>無効</value>
+    <comment>For use in success sentences "Countdown is now disabled"</comment>
   </data>
   <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
-    <value>Server info bar is now {0}</value>
+    <value>サーバ情報バーは {0} です</value>
   </data>
   <data name="MainCommand_Help_FW_Success" xml:space="preserve">
-    <value>Floating window is now {0}</value>
+    <value>フローティングウィンドウは {0} です</value>
   </data>
   <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
     <value>Unrecognized subcommand: {0}</value>
+    <comment>MainCommand_Error_InvalidSubcommand
+{0} is the un recognized command name
+</comment>
   </data>
   <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
     <value>Unrecognized argument for {0}: {1}</value>
+    <comment>MainCommand_Error_InvalidArgument
+{0} is the command name (countdown, c, fw, settings, ...)
+{1} is the unrecognized argument typed</comment>
   </data>
 </root>
