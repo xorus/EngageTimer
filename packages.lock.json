@@ -37,6 +37,15 @@
         "dependencies": {
           "System.ValueTuple": "4.5.0"
         }
+      },
+      "Xorus.XwContainer": {
+        "type": "Direct",
+        "requested": "[0.0.2, )",
+        "resolved": "0.0.2",
+        "contentHash": "Ja6CjbEDelxnGZ/iQXoe9HoufnsDmGxQrA1LOBMlreQny/QRgo6/6XiuLjLyPvmr0tKcGIoEriGsaGZ/sm1A1w==",
+        "dependencies": {
+          "JetBrains.Annotations": "2022.1.0"
+        }
       }
     }
   }

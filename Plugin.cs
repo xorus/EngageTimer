@@ -8,6 +8,7 @@ using Dalamud.Game.Gui.Dtr;
 using Dalamud.Plugin;
 using EngageTimer.Commands;
 using JetBrains.Annotations;
+using XwContainer;
 
 namespace EngageTimer;
 
@@ -63,6 +64,6 @@ public sealed class Plugin : IDalamudPlugin
     void IDisposable.Dispose()
     {
         _pluginInterface.SavePluginConfig(_configuration);
-        Container.DoDispose();
+        Container.Dispose();
     }
 }
