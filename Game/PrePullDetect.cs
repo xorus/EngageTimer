@@ -26,7 +26,7 @@ public class PrePullDetect
         var actionManager = (TrimmedDownActionManager*)FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
         if (!_state.CountingDown || !actionManager->isCasting) return;
         _state.PrePulling =
-            (actionManager->castTime - actionManager->elapsedCastTime + _configuration.FloatingWindowPrePullOffset) >
+            (actionManager->castTime - actionManager->elapsedCastTime + _configuration.FloatingWindowPrePullOffset) <
             _state.CountDownValue;
     }
 }
