@@ -1,65 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-      Microsoft ResX Schema 
-      
-      Version 2.0
-      
-      The primary goals of this format is to allow a simple XML format 
-      that is mostly human readable. The generation and parsing of the 
-      various data types are done through the TypeConverter classes 
-      associated with the data types.
-      
-      Example:
-      
-      ... ado.net/XML headers & schema ...
-      <resheader name="resmimetype">text/microsoft-resx</resheader>
-      <resheader name="version">2.0</resheader>
-      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-          <value>[base64 mime encoded serialized .NET Framework object]</value>
-      </data>
-      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-          <comment>This is a comment</comment>
-      </data>
-                  
-      There are any number of "resheader" rows that contain simple 
-      name/value pairs.
-      
-      Each data row contains a name, and value. The row also contains a 
-      type or mimetype. Type corresponds to a .NET class that support 
-      text/value conversion through the TypeConverter architecture. 
-      Classes that don't support this are serialized and stored with the 
-      mimetype set.
-      
-      The mimetype is used for serialized objects, and tells the 
-      ResXResourceReader how to depersist the object. This is currently not 
-      extensible. For a given mimetype the value must be set accordingly:
-      
-      Note - application/x-microsoft.net.object.binary.base64 is the format 
-      that the ResXResourceWriter will generate, however the reader can 
-      read any of the formats listed below.
-      
-      mimetype: application/x-microsoft.net.object.binary.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-              : and then encoded with base64 encoding.
-      
-      mimetype: application/x-microsoft.net.object.soap.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-              : and then encoded with base64 encoding.
-  
-      mimetype: application/x-microsoft.net.object.bytearray.base64
-      value   : The object must be serialized into a byte array 
-              : using a System.ComponentModel.TypeConverter
-              : and then encoded with base64 encoding.
-      -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+        Microsoft ResX Schema 
+        
+        Version 2.0
+        
+        The primary goals of this format is to allow a simple XML format 
+        that is mostly human readable. The generation and parsing of the 
+        various data types are done through the TypeConverter classes 
+        associated with the data types.
+        
+        Example:
+        
+        ... ado.net/XML headers & schema ...
+        <resheader name="resmimetype">text/microsoft-resx</resheader>
+        <resheader name="version">2.0</resheader>
+        <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+        <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+        <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+        <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+        <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+            <value>[base64 mime encoded serialized .NET Framework object]</value>
+        </data>
+        <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+            <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+            <comment>This is a comment</comment>
+        </data>
+                    
+        There are any number of "resheader" rows that contain simple 
+        name/value pairs.
+        
+        Each data row contains a name, and value. The row also contains a 
+        type or mimetype. Type corresponds to a .NET class that support 
+        text/value conversion through the TypeConverter architecture. 
+        Classes that don't support this are serialized and stored with the 
+        mimetype set.
+        
+        The mimetype is used for serialized objects, and tells the 
+        ResXResourceReader how to depersist the object. This is currently not 
+        extensible. For a given mimetype the value must be set accordingly:
+        
+        Note - application/x-microsoft.net.object.binary.base64 is the format 
+        that the ResXResourceWriter will generate, however the reader can 
+        read any of the formats listed below.
+        
+        mimetype: application/x-microsoft.net.object.binary.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                : and then encoded with base64 encoding.
+        
+        mimetype: application/x-microsoft.net.object.soap.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+                : and then encoded with base64 encoding.
+    
+        mimetype: application/x-microsoft.net.object.bytearray.base64
+        value   : The object must be serialized into a byte array 
+                : using a System.ComponentModel.TypeConverter
+                : and then encoded with base64 encoding.
+        -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns="" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -147,7 +147,7 @@
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
     <value>音量</value>
-    <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
+        <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
   </data>
   <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
     <value>オリジナルのカウントダウンを非表示にする</value>
@@ -276,29 +276,29 @@ Note: this setting only works when the original countdown is hidden (otherwise i
   </data>
   <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
     <value>FFXIV</value>
-    <comment>Settings_CountdownTab_Texture_default
+        <comment>Settings_CountdownTab_Texture_default
 The FFXIV number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
     <value>WoW</value>
-    <comment>Settings_CountdownTab_Texture_wow
+        <comment>Settings_CountdownTab_Texture_wow
 The wow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
     <value>テクスチャフォルダ</value>
-    <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
+        <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
   </data>
   <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
     <value>ロード</value>
   </data>
   <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
     <value>Readable</value>
-    <comment>Settings_CountdownTab_Texture_yellow
+        <comment>Settings_CountdownTab_Texture_yellow
 The yellow number style preset name</comment>
   </data>
   <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
     <value>テストモードを無効にする</value>
-    <comment>Settings_CountdownTab_Test_Stop
+        <comment>Settings_CountdownTab_Test_Stop
 Displays "stop" when the test button is clicked and test mode is enabled.
 </comment>
   </data>
@@ -421,34 +421,34 @@ Displays "stop" when the test button is clicked and test mode is enabled.
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
     <value>enable or disable the big countdown (toggles by default)</value>
-    <comment>help text for the /eg c [on|off] command</comment>
+        <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
     <value>enable or disable the floating window (toggles by default)</value>
-    <comment>help text for the /eg fw [on|off] command</comment>
+        <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
     <value>enable or disable the server info bar (toggles by default)</value>
-    <comment>MainCommand_Help_Dtr
+        <comment>MainCommand_Help_Dtr
 help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
     <value>open the settings menu</value>
-    <comment>MainCommand_Help_Settings
+        <comment>MainCommand_Help_Settings
 help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
     <value>カウントダウンは {0} です</value>
-    <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+        <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
 </comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
     <value>有効</value>
-    <comment>For use in success sentences "Countdown is now enabled"</comment>
+        <comment>For use in success sentences "Countdown is now enabled"</comment>
   </data>
   <data name="MainCommand_Status_Off" xml:space="preserve">
     <value>無効</value>
-    <comment>For use in success sentences "Countdown is now disabled"</comment>
+        <comment>For use in success sentences "Countdown is now disabled"</comment>
   </data>
   <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
     <value>サーバ情報バーは {0} です</value>
@@ -458,14 +458,26 @@ help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
     <value>Unrecognized subcommand: {0}</value>
-    <comment>MainCommand_Error_InvalidSubcommand
+        <comment>MainCommand_Error_InvalidSubcommand
 {0} is the un recognized command name
 </comment>
   </data>
   <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
     <value>Unrecognized argument for {0}: {1}</value>
-    <comment>MainCommand_Error_InvalidArgument
+        <comment>MainCommand_Error_InvalidArgument
 {0} is the command name (countdown, c, fw, settings, ...)
 {1} is the unrecognized argument typed</comment>
   </data>
+  <data name="Settings_FWTab_ShowPrePulling" xml:space="preserve">
+      <value>Enable pre-pull warning</value>
+    </data>
+  <data name="Settings_FWTab_ShowPrePulling_Help" xml:space="preserve">
+      <value>Changes the countdown color when casting a spell that would result in a pre-pull.</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset" xml:space="preserve">
+      <value>Offset in seconds</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
+      <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
+    </data>
 </root>
