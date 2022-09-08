@@ -5,12 +5,13 @@ using System.Numerics;
 using Dalamud.Game.Gui;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
-using EngageTimer.UI.CustomEasing;
+using EngageTimer.Status;
+using EngageTimer.Ui.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 using XwContainer;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Ui;
 
 public sealed class CountDown
 {

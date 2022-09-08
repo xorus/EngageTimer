@@ -1,19 +1,19 @@
 ﻿using System;
-using EngageTimer.UI;
+using EngageTimer.Status;
 using XwContainer;
 
-namespace EngageTimer;
+namespace EngageTimer.Game;
 
 public class TickingSound
 {
     private readonly Configuration _configuration;
+    private readonly string _path;
     private readonly State _state;
 
-    // This is a workaround for CLR taking some time to init the pointy method call. 
-    private bool _soundLoaded = false;
+    private int? _lastNumberPlayed;
 
-    private int? _lastNumberPlayed = null;
-    private readonly string _path;
+    // This is a workaround for CLR taking some time to init the pointy method call. 
+    private bool _soundLoaded;
 
     public TickingSound(Container container)
     {

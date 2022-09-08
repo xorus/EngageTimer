@@ -1,7 +1,7 @@
 ﻿using System;
 using Dalamud.Utility.Signatures;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Game;
 
 /**
  * thanks aers

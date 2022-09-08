@@ -4,12 +4,11 @@ using Dalamud.Plugin;
 using EngageTimer.Properties;
 using XwContainer;
 
-namespace EngageTimer;
+namespace EngageTimer.Ui;
 
 public sealed class Translator : IDisposable
 {
     private readonly DalamudPluginInterface _pluginInterface;
-    public event EventHandler LocaleChanged;
 
     public Translator(Container container)
     {
@@ -17,6 +16,13 @@ public sealed class Translator : IDisposable
         _pluginInterface.LanguageChanged += ConfigureLanguage;
         ConfigureLanguage();
     }
+
+    public void Dispose()
+    {
+        _pluginInterface.LanguageChanged -= ConfigureLanguage;
+    }
+
+    public event EventHandler LocaleChanged;
 
     public string TransId(string id)
     {
@@ -51,10 +57,5 @@ public sealed class Translator : IDisposable
         };
         Resources.Culture = new CultureInfo(lang ?? "en");
         LocaleChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void Dispose()
-    {
-        _pluginInterface.LanguageChanged -= ConfigureLanguage;
     }
 }

@@ -4,12 +4,13 @@ using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
+using EngageTimer.Status;
 using XwContainer;
 
 /*
  * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
  */
-namespace EngageTimer;
+namespace EngageTimer.Game;
 
 public sealed class CountdownHook : IDisposable
 {

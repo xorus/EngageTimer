@@ -84,7 +84,7 @@
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <Reference Include="Dalamud, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
@@ -115,7 +115,7 @@
     <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" />
     </Target>
-        
+
     <ProjectExtensions>
         <DalamudPlugin>
             <ApiLevel>7</ApiLevel>
@@ -134,7 +134,8 @@
                 Why the OBS thing ? Well, it can be useful if you want a big stylized stopwatch in your recordings.
                 See repository for more info.
 
-                Feel free so send me feedback, bugs and potential improvements!</Description>
+                Feel free so send me feedback, bugs and potential improvements!
+            </Description>
             <IconUrl>https://raw.githubusercontent.com/xorus/EngageTimer/main/images/icon.png</IconUrl>
             <Tags>
                 <Tag>Countdown</Tag>

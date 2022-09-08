@@ -1,5 +1,6 @@
 ﻿using System;
 using Dalamud.Game.Command;
+using EngageTimer.Ui;
 using XwContainer;
 
 namespace EngageTimer.Commands;
@@ -17,10 +18,13 @@ public class SettingsCommand : IDisposable
         });
     }
 
-    private void OpenSettingsCommand(string command, string args) => _container.Resolve<PluginUi>().OpenSettings();
-
     public void Dispose()
     {
         _container.Resolve<CommandManager>().RemoveHandler("/egsettings");
+    }
+
+    private void OpenSettingsCommand(string command, string args)
+    {
+        _container.Resolve<PluginUi>().OpenSettings();
     }
 }

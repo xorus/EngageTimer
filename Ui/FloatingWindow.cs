@@ -5,10 +5,11 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Logging;
 using Dalamud.Plugin;
+using EngageTimer.Status;
 using ImGuiNET;
 using XwContainer;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Ui;
 
 public sealed class FloatingWindow : IDisposable
 {

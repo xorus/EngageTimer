@@ -1,7 +1,7 @@
 ﻿using System;
 using Dalamud.Interface.Animation;
 
-namespace EngageTimer.UI.CustomEasing;
+namespace EngageTimer.Ui.CustomEasing;
 
 public class OpacityEasing : Easing
 {

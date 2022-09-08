@@ -7,6 +7,8 @@ using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Plugin;
 using EngageTimer.Commands;
+using EngageTimer.Status;
+using EngageTimer.Ui;
 using JetBrains.Annotations;
 using XwContainer;
 
@@ -17,12 +19,6 @@ public sealed class Plugin : IDalamudPlugin
 {
     private readonly Configuration _configuration;
     private readonly DalamudPluginInterface _pluginInterface;
-
-    public string PluginPath { get; }
-
-    private Container Container { get; }
-
-    public string Name => "Engage Timer";
 
     public Plugin(
         DalamudPluginInterface pluginInterface,
@@ -60,6 +56,10 @@ public sealed class Plugin : IDalamudPlugin
         Container.RegisterDisposable<MainCommand>();
         Container.RegisterDisposable<SettingsCommand>();
     }
+
+    public string PluginPath { get; }
+    private Container Container { get; }
+    public string Name => "Engage Timer";
 
     void IDisposable.Dispose()
     {

@@ -5,7 +5,7 @@ using System.Numerics;
  * https://www.programmingalgorithms.com/algorithm/rgb-to-hsl/
  * https://www.programmingalgorithms.com/algorithm/hsl-to-rgb/
  */
-namespace EngageTimer.UI.Color;
+namespace EngageTimer.Ui.Color;
 
 public class HslConv
 {

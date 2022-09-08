@@ -1,16 +1,17 @@
 ﻿using System;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
+using EngageTimer.Ui;
 using XwContainer;
 
 namespace EngageTimer.Commands;
 
-public class MainCommand : IDisposable
+public sealed class MainCommand : IDisposable
 {
-    private readonly Container _container;
-    private readonly Translator _tr;
     private const string Command = "/eg";
     private const string Tab = "   ";
+    private readonly Container _container;
+    private readonly Translator _tr;
 
     public MainCommand(Container container)
     {
@@ -18,6 +19,12 @@ public class MainCommand : IDisposable
         _tr = _container.Resolve<Translator>();
         Register();
         _tr.LocaleChanged += OnLocaleChanged;
+    }
+
+    public void Dispose()
+    {
+        _tr.LocaleChanged -= OnLocaleChanged;
+        Unregister();
     }
 
     private void Register()
@@ -52,7 +59,10 @@ public class MainCommand : IDisposable
         };
     }
 
-    private string StatusStr(bool value) => _tr.Trans(value ? "MainCommand_Status_On" : "MainCommand_Status_Off");
+    private string StatusStr(bool value)
+    {
+        return _tr.Trans(value ? "MainCommand_Status_On" : "MainCommand_Status_Off");
+    }
 
     private void OnCommand(string command, string args)
     {
@@ -106,11 +116,5 @@ public class MainCommand : IDisposable
     {
         Unregister();
         Register();
-    }
-
-    public void Dispose()
-    {
-        _tr.LocaleChanged -= OnLocaleChanged;
-        Unregister();
     }
 }

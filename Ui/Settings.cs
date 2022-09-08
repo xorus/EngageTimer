@@ -6,19 +6,28 @@ using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
-using EngageTimer.UI.Color;
+using EngageTimer.Status;
+using EngageTimer.Ui.Color;
 using ImGuiNET;
 using XwContainer;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Ui;
 
 public class Settings : Window
 {
     private readonly Configuration _configuration;
-    private readonly UiBuilder _uiBuilder;
     private readonly NumberTextures _numberTextures;
     private readonly State _state;
     private readonly Translator _tr;
+    private readonly UiBuilder _uiBuilder;
+    private int _exampleNumber = 9;
+
+    private bool _mocking;
+    private double _mockStart;
+    private double _mockTarget;
+
+    private string _tempTexturePath;
+
     public Settings(Container container) : base("Settings", ImGuiWindowFlags.AlwaysAutoResize)
     {
         _configuration = container.Resolve<Configuration>();
@@ -33,13 +42,20 @@ public class Settings : Window
 #endif
     }
 
-    private void UpdateWindowName() => WindowName = TransId("Settings_Title");
-    private string TransId(string id) => _tr.TransId(id);
-    private string Trans(string id) => _tr.Trans(id);
+    private void UpdateWindowName()
+    {
+        WindowName = TransId("Settings_Title");
+    }
 
-    private bool _mocking;
-    private double _mockStart;
-    private double _mockTarget;
+    private string TransId(string id)
+    {
+        return _tr.TransId(id);
+    }
+
+    private string Trans(string id)
+    {
+        return _tr.Trans(id);
+    }
 
     private void ToggleMock()
     {
@@ -134,6 +150,7 @@ public class Settings : Window
             ImGui.PopItemWidth();
             ImGui.EndTabBar();
         }
+
         ImGui.NewLine();
         ImGui.Separator();
         if (ImGui.Button(TransId("Settings_Close"))) IsOpen = false;
@@ -206,9 +223,6 @@ public class Settings : Window
             _configuration.Save();
         }
     }
-
-    private string _tempTexturePath;
-    private int _exampleNumber = 9;
 
     private void CountdownTabContent()
     {

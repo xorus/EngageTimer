@@ -2,9 +2,10 @@
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
+using EngageTimer.Status;
 using XwContainer;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Ui;
 
 public sealed class DtrBarUi : IDisposable
 {

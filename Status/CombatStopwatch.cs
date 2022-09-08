@@ -5,7 +5,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Party;
 using XwContainer;
 
-namespace EngageTimer;
+namespace EngageTimer.Status;
 
 public class CombatStopwatch
 {

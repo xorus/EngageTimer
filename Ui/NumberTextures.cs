@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using Dalamud.Interface;
 using Dalamud.Logging;
-using EngageTimer.UI.Color;
+using EngageTimer.Ui.Color;
 using ImGuiScene;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StbiSharp;
 using XwContainer;
 
-namespace EngageTimer.UI;
+namespace EngageTimer.Ui;
 
 public sealed class NumberTextures
 {

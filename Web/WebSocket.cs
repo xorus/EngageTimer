@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbedIO.WebSockets;
+using EngageTimer.Status;
 using Swan.Formatters;
 
 namespace EngageTimer.Web;

@@ -1,18 +1,19 @@
 ﻿using System;
 using Dalamud.Game;
-using EngageTimer.UI;
+using EngageTimer.Game;
+using EngageTimer.Ui;
 using EngageTimer.Web;
 using XwContainer;
 
-namespace EngageTimer;
+namespace EngageTimer.Status;
 
 public sealed class FrameworkThings : IDisposable
 {
     private readonly CombatStopwatch _combatStopwatch;
-    private readonly CountdownHook _countdownHook;
-    private readonly WebServer _server;
-    private readonly DtrBarUi _dtrBarUi;
     private readonly Container _container;
+    private readonly CountdownHook _countdownHook;
+    private readonly DtrBarUi _dtrBarUi;
+    private readonly WebServer _server;
     private readonly TickingSound _sound;
 
     public FrameworkThings(Container container)
@@ -27,6 +28,11 @@ public sealed class FrameworkThings : IDisposable
         _container.Resolve<Framework>().Update += OnUpdate;
     }
 
+    public void Dispose()
+    {
+        _container.Resolve<Framework>().Update -= OnUpdate;
+    }
+
     private void OnUpdate(Framework framework)
     {
         _server.Update();
@@ -34,10 +40,5 @@ public sealed class FrameworkThings : IDisposable
         _countdownHook.Update();
         _dtrBarUi.Update();
         _sound.Update();
-    }
-
-    public void Dispose()
-    {
-        _container.Resolve<Framework>().Update -= OnUpdate;
     }
 }
