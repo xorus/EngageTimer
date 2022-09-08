@@ -8,15 +8,16 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-        <AssemblyVersion>2.2.3.0</AssemblyVersion>
+        <AssemblyVersion>2.2.4.0</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release</Configurations>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <AssemblyName>EngageTimer</AssemblyName>
     </PropertyGroup>
-
+ 
     <ItemGroup>
         <Compile Remove="bin\**" />
         <EmbeddedResource Remove="bin\**" />
@@ -36,22 +37,13 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>strings.resx</DependentUpon>
         </Compile>
-        <None Update="Data\numbers\default\*.png">
+        <None Update="Data\numbers\default\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Data\numbers\yellow\*.png">
+        <None Update="Data\numbers\yellow\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Data\numbers\wow\*.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Data\numbers\wow\settings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Data\numbers\yellow\settings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Doc\custom_example\settings.json">
+        <None Update="Data\numbers\wow\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
