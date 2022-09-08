@@ -63,7 +63,7 @@
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
         <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />
-        <PackageReference Include="Xorus.XwContainer" Version="0.0.2" />
+        <PackageReference Include="Xorus.XwContainer" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>

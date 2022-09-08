@@ -40,9 +40,9 @@
       },
       "Xorus.XwContainer": {
         "type": "Direct",
-        "requested": "[0.0.2, )",
-        "resolved": "0.0.2",
-        "contentHash": "Ja6CjbEDelxnGZ/iQXoe9HoufnsDmGxQrA1LOBMlreQny/QRgo6/6XiuLjLyPvmr0tKcGIoEriGsaGZ/sm1A1w==",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "LdJnYqUOzrVmaqaP3PvKf2Ku1IYNQJbfnPtFY+hVpWzn1RzmaI+Cd7VtvNIZXzJwrLCy4NRCKJ8A+lPWk4GW+w==",
         "dependencies": {
           "JetBrains.Annotations": "2022.1.0"
         }
