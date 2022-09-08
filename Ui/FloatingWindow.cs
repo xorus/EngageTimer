@@ -206,7 +206,7 @@ public sealed class FloatingWindow : IDisposable
                 new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
             grBuilder.AddText("-0123456789:.");
             grBuilder.BuildRanges(out var ranges);
-            _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize),
+            _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize * ImGui.GetIO().FontGlobalScale),
                 null, ranges.Data);
             grBuilder.Destroy();
         }

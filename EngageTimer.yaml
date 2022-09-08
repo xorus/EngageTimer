@@ -1,4 +1,4 @@
-﻿name: EngageTimer
+name: EngageTimer
 author: Xorus
 punchline: Complete combat countdown, pull timer and OBS overlay
 description: |-
@@ -32,4 +32,6 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Allow for closing the settings window with Escape (and more WindowSystem features)
+  - Floating Window: uses the global font-scale, you might need to adjust the font size after the update.
+  - Settings: support for closing the settings window with Escape (WindowSystem features)
+
