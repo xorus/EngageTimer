@@ -5,40 +5,35 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Interface.Windowing;
 using EngageTimer.UI.Color;
 using ImGuiNET;
 using XwContainer;
 
 namespace EngageTimer.UI;
 
-public class Settings
+public class Settings : Window
 {
     private readonly Configuration _configuration;
     private readonly UiBuilder _uiBuilder;
     private readonly NumberTextures _numberTextures;
     private readonly State _state;
     private readonly Translator _tr;
-    private bool _visible;
-
-    public Settings(Container container)
+    public Settings(Container container) : base("Settings", ImGuiWindowFlags.AlwaysAutoResize)
     {
         _configuration = container.Resolve<Configuration>();
         _uiBuilder = container.Resolve<UiBuilder>();
         _numberTextures = container.Resolve<NumberTextures>();
         _state = container.Resolve<State>();
         _tr = container.Resolve<Translator>();
+        _tr.LocaleChanged += (_, _) => UpdateWindowName();
+        UpdateWindowName();
+#if DEBUG
+        IsOpen = true;
+#endif
     }
 
-    public bool Visible
-    {
-        get => _visible;
-        set
-        {
-            _visible = value;
-            if (!_visible && _mocking) ToggleMock();
-        }
-    }
-
+    private void UpdateWindowName() => WindowName = TransId("Settings_Title");
     private string TransId(string id) => _tr.TransId(id);
     private string Trans(string id) => _tr.Trans(id);
 
@@ -72,98 +67,76 @@ public class Settings
         _state.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
     }
 
-#if DEBUG
-        private bool _forceDebug = true;
-#endif
-    public void Draw()
+    public override void Draw()
     {
-#if DEBUG
-            if (_forceDebug)
-            {
-                Visible = true;
-                // ToggleMock();
-                _forceDebug = false;
-            }
-#endif
-
-        if (!Visible) return;
         UpdateMock();
-
-        if (ImGui.Begin(TransId("Settings_Title"), ref _visible, ImGuiWindowFlags.AlwaysAutoResize))
+        if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
         {
-            if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
+            ImGui.PushItemWidth(100f);
+            if (ImGui.BeginTabItem(TransId("Settings_CountdownTab_Title")))
             {
-                ImGui.PushItemWidth(100f);
-                if (ImGui.BeginTabItem(TransId("Settings_CountdownTab_Title")))
-                {
-                    CountdownTabContent();
-                    ImGui.EndTabItem();
-                }
-
-                if (ImGui.BeginTabItem(TransId("Settings_FWTab_Title")))
-                {
-                    FloatingWindowTabContent();
-                    ImGui.EndTabItem();
-                }
-
-
-                if (ImGui.BeginTabItem(TransId("Settings_DtrTab_Title")))
-                {
-                    DtrTabContent();
-                    ImGui.EndTabItem();
-                }
-
-                if (ImGui.BeginTabItem(TransId("Settings_Web_Title")))
-                {
-                    WebServerTabContent();
-                    ImGui.EndTabItem();
-                }
-
-                if (ImGui.BeginTabItem("About")) //TransId("Settings_Web_Title")))
-                {
-                    ImGui.PushTextWrapPos();
-                    ImGui.Text("Hi there! I'm Xorus.");
-                    ImGui.Text("If you have any suggestions or bugs to report, the best way is to leave it in the" +
-                               "issues section of my GitHub repository.");
-
-                    if (ImGui.Button("https://github.com/xorus/EngageTimer"))
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = "https://github.com/xorus/EngageTimer",
-                            UseShellExecute = true
-                        });
-
-                    ImGui.Text("If you don't want to/can't use GitHub, just use the feedback button in the plugin" +
-                               "list. I don't get notifications for those, but I try to keep up with them as much " +
-                               "as I can.");
-                    ImGui.Text(
-                        "Please note that if you leave a discord username as contact info, I may not be able to " +
-                        "DM you back if you are not on the Dalamud Discord server because of discord privacy settings." +
-                        "I might try to DM you / add you as a friend in those cases.");
-                    ImGui.PopTextWrapPos();
-
-                    if (ImGui.Button("Not a big red ko-fi button"))
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = "https://ko-fi.com/xorus",
-                            UseShellExecute = true
-                        });
-
-                    ImGui.EndTabItem();
-                }
-
-                ImGui.PopItemWidth();
-                ImGui.EndTabBar();
+                CountdownTabContent();
+                ImGui.EndTabItem();
             }
 
-            ImGui.NewLine();
-            ImGui.Separator();
-            if (ImGui.Button(TransId("Settings_Close"))) Visible = false;
+            if (ImGui.BeginTabItem(TransId("Settings_FWTab_Title")))
+            {
+                FloatingWindowTabContent();
+                ImGui.EndTabItem();
+            }
+
+
+            if (ImGui.BeginTabItem(TransId("Settings_DtrTab_Title")))
+            {
+                DtrTabContent();
+                ImGui.EndTabItem();
+            }
+
+            if (ImGui.BeginTabItem(TransId("Settings_Web_Title")))
+            {
+                WebServerTabContent();
+                ImGui.EndTabItem();
+            }
+
+            if (ImGui.BeginTabItem("About")) //TransId("Settings_Web_Title")))
+            {
+                ImGui.PushTextWrapPos();
+                ImGui.Text("Hi there! I'm Xorus.");
+                ImGui.Text("If you have any suggestions or bugs to report, the best way is to leave it in the" +
+                           "issues section of my GitHub repository.");
+
+                if (ImGui.Button("https://github.com/xorus/EngageTimer"))
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://github.com/xorus/EngageTimer",
+                        UseShellExecute = true
+                    });
+
+                ImGui.Text("If you don't want to/can't use GitHub, just use the feedback button in the plugin" +
+                           "list. I don't get notifications for those, but I try to keep up with them as much " +
+                           "as I can.");
+                ImGui.Text(
+                    "Please note that if you leave a discord username as contact info, I may not be able to " +
+                    "DM you back if you are not on the Dalamud Discord server because of discord privacy settings." +
+                    "I might try to DM you / add you as a friend in those cases.");
+                ImGui.PopTextWrapPos();
+
+                if (ImGui.Button("Not a big red ko-fi button"))
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://ko-fi.com/xorus",
+                        UseShellExecute = true
+                    });
+
+                ImGui.EndTabItem();
+            }
+
+            ImGui.PopItemWidth();
+            ImGui.EndTabBar();
         }
-
-        if (!_visible) Visible = false;
-
-        ImGui.End();
+        ImGui.NewLine();
+        ImGui.Separator();
+        if (ImGui.Button(TransId("Settings_Close"))) IsOpen = false;
     }
 
     private void DtrTabContent()
@@ -364,6 +337,7 @@ public class Settings
         ImGui.TextWrapped(Trans("Settings_CountdownTab_AccurateMode_Help"));
         ImGui.PopTextWrapPos();
         ImGui.PopStyleColor();
+        ImGui.Unindent();
     }
 
     private void CountdownPositionAndSize()

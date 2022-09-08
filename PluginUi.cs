@@ -1,5 +1,6 @@
 ﻿using System;
 using Dalamud.Interface;
+using Dalamud.Interface.Windowing;
 using EngageTimer.UI;
 using XwContainer;
 
@@ -11,6 +12,7 @@ public sealed class PluginUi : IDisposable
     private readonly CountDown _countDown;
     private readonly Settings _settings;
     private readonly FloatingWindow _floatingWindow;
+    private readonly WindowSystem _windowSystem;
 
     public PluginUi(Container container)
     {
@@ -18,9 +20,12 @@ public sealed class PluginUi : IDisposable
         var numbers = new NumberTextures(container);
         container.Register(numbers);
 
+        _windowSystem = new WindowSystem(container.Resolve<Plugin>().Name);
         _countDown = container.Register<CountDown>();
         _floatingWindow = container.RegisterDisposable<FloatingWindow>();
         _settings = container.Register<Settings>();
+        
+        _windowSystem.AddWindow(_settings);
 
         container.Resolve<UiBuilder>().Draw += Draw;
         container.Resolve<UiBuilder>().OpenConfigUi += OpenSettings;
@@ -34,13 +39,13 @@ public sealed class PluginUi : IDisposable
 
     private void Draw()
     {
-        _settings.Draw();
+        _windowSystem.Draw();
         _countDown.Draw();
         _floatingWindow.Draw();
     }
 
     public void OpenSettings()
     {
-        _settings.Visible = true;
+        _settings.IsOpen = true;
     }
 }

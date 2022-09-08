@@ -32,5 +32,4 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Fix overlapping countdowns when a countdown was cancelled then restarted too quickly
-  - Update translations and add a new contributed Japanese translation (thank you!)
+  - Allow for closing the settings window with Escape (and more WindowSystem features)
