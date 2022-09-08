@@ -556,6 +556,42 @@ public class Settings : Window
             _configuration.FloatingWindowStopwatchAsSeconds = displaySeconds;
             _configuration.Save();
         }
+
+        var prePullWarning = _configuration.FloatingWindowShowPrePulling;
+        if (ImGui.Checkbox(TransId("Settings_FWTab_ShowPrePulling"), ref prePullWarning))
+        {
+            _configuration.FloatingWindowShowPrePulling = prePullWarning;
+            _configuration.Save();
+        }
+        ImGuiComponents.HelpMarker(Trans("Settings_FWTab_ShowPrePulling_Help"));
+
+        if (prePullWarning)
+        {
+            ImGui.Indent();
+            var offset = _configuration.FloatingWindowPrePullOffset;
+            ImGui.PushItemWidth(110f);
+            if (ImGui.InputFloat(Trans("Settings_FWTab_PrePullOffset"), ref offset, 0.1f, 1f, "%.3fs"))
+            {
+                _configuration.FloatingWindowPrePullOffset = offset;
+                _configuration.Save();
+            }
+            ImGui.PopItemWidth();
+            ImGuiComponents.HelpMarker(Trans("Settings_FWTab_PrePullOffset_Help"));
+
+            ImGui.SameLine();
+            var prePullColor = ImGuiComponents.ColorPickerWithPalette(10,
+                TransId("Settings_FWTab_TextColor"),
+                _configuration.FloatingWindowPrePullColor);
+            if (prePullColor != _configuration.FloatingWindowPrePullColor)
+            {
+                _configuration.FloatingWindowPrePullColor = prePullColor;
+                _configuration.Save();
+            }
+            ImGui.SameLine();
+            ImGui.Text(Trans("Settings_FWTab_TextColor"));
+            
+            ImGui.Unindent();
+        }
     }
 
     private void FwStyling()

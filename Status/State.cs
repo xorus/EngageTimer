@@ -9,7 +9,6 @@ public class State
     public TimeSpan CombatDuration { get; set; }
     public DateTime CombatEnd { get; set; }
     public DateTime CombatStart { get; set; }
-
     public bool Mocked { get; set; }
 
     public bool InCombat
@@ -35,8 +34,8 @@ public class State
     }
 
     public bool InInstance { get; set; }
-
     public float CountDownValue { get; set; } = 0f;
+    public bool PrePulling { get; set; } = false;
     public event EventHandler InCombatChanged;
     public event EventHandler CountingDownChanged;
     public event EventHandler StartCountingDown;

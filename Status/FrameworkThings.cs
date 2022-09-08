@@ -15,6 +15,7 @@ public sealed class FrameworkThings : IDisposable
     private readonly DtrBarUi _dtrBarUi;
     private readonly WebServer _server;
     private readonly TickingSound _sound;
+    private readonly PrePullDetect _prePull;
 
     public FrameworkThings(Container container)
     {
@@ -24,6 +25,7 @@ public sealed class FrameworkThings : IDisposable
         _server = _container.RegisterDisposable<WebServer>();
         _dtrBarUi = _container.RegisterDisposable<DtrBarUi>();
         _sound = _container.Register<TickingSound>();
+        _prePull = _container.Register<PrePullDetect>();
 
         _container.Resolve<Framework>().Update += OnUpdate;
     }
@@ -40,5 +42,6 @@ public sealed class FrameworkThings : IDisposable
         _countdownHook.Update();
         _dtrBarUi.Update();
         _sound.Update();
+        _prePull.Update();
     }
 }

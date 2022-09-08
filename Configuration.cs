@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Dalamud.Configuration;
+using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 
@@ -71,9 +72,11 @@ public class Configuration : IPluginConfiguration
     public bool FloatingWindowStopwatchAsSeconds { get; set; } = false;
     public bool FloatingWindowCountdownNegativeSign { get; set; } = true;
     public float FloatingWindowScale { get; set; } = 1f;
+    public bool FloatingWindowShowPrePulling { get; set; } = false;
+    public float FloatingWindowPrePullOffset { get; set; } = .0f;
+    public Vector4 FloatingWindowPrePullColor { get; set; } = ImGuiColors.DalamudRed;
 
     // Stopwatch cosmetics
-
     public Vector4 FloatingWindowTextColor { get; set; } = new(255, 255, 255, 1);
     public Vector4 FloatingWindowBackgroundColor { get; set; } = new(0, 0, 0, 0);
 

@@ -181,7 +181,9 @@ public sealed class FloatingWindow : IDisposable
 
                 #endregion
 
+                if (_state.PrePulling) ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindowPrePullColor);
                 ImGui.Text(text);
+                if (_state.PrePulling) ImGui.PopStyleColor();
             }
 
             ImGui.PopStyleColor();
