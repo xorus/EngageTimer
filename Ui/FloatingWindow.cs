@@ -27,6 +27,7 @@ public sealed class FloatingWindow : IDisposable
     private float _paddingLeft;
     private float _paddingRight;
     private bool _stopwatchVisible;
+    private ImFontGlyphRangesBuilderPtr? _grBuilder = null;
 
     public FloatingWindow(Container container)
     {
@@ -46,6 +47,7 @@ public sealed class FloatingWindow : IDisposable
     public void Dispose()
     {
         _ui.BuildFonts -= BuildFont;
+        _grBuilder?.Destroy();
         _ui.RebuildFonts();
     }
 
@@ -193,12 +195,14 @@ public sealed class FloatingWindow : IDisposable
         ImGui.PopStyleColor();
     }
 
+
     /**
      * UI font code adapted from ping plugin by karashiiro
      * https://github.com/karashiiro/PingPlugin/blob/feex/PingPlugin/PingUI.cs
      */
     private unsafe void BuildFont()
     {
+        _grBuilder?.Destroy();
         try
         {
             var filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes",
@@ -206,11 +210,13 @@ public sealed class FloatingWindow : IDisposable
             if (!File.Exists(filePath)) throw new FileNotFoundException("Font file not found!");
             var grBuilder =
                 new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
-            grBuilder.AddText("-0123456789:.");
+            grBuilder.AddText("-0123456789:.z");
             grBuilder.BuildRanges(out var ranges);
-            _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath, Math.Max(8, _configuration.FontSize * ImGui.GetIO().FontGlobalScale),
+            _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath,
+                Math.Max(8, _configuration.FontSize),
                 null, ranges.Data);
-            grBuilder.Destroy();
+
+            _grBuilder = grBuilder;
         }
         catch (Exception e)
         {
