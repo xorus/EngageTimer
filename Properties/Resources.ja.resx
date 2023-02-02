@@ -480,4 +480,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
       <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
     </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+    <value>この設定はカウントダウン中にタイマーが可視になる時点を決定します。例えば、値が7に設定されている場合、カウントダウンタイマーは7秒経過してから表示され、カウントダウンの終了まで表示されます。</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
+    <value>表示閾値</value>
+  </data>
 </root>

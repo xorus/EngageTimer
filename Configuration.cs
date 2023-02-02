@@ -40,6 +40,8 @@ public class Configuration : IPluginConfiguration
     public bool UseAlternativeSound { get; set; } = false;
     public bool EnableCountdownDecimal { get; set; } = false;
     public int CountdownDecimalPrecision { get; set; } = 1;
+    public bool EnableCountdownDisplayThreshold { get; set; } = false;
+    public int CountdownDisplayThreshold { get; set; } = 5;
 
     // Countdown style
     public string CountdownTexturePreset { get; set; } = "default";
