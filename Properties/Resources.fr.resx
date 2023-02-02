@@ -480,10 +480,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
       <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
     </data>
-  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
-    <value>Ce paramètre détermine à quel moment pendant le compte à rebours le minuteur deviendra visible. Par exemple, si la valeur est définie sur 7, le minuteur de compte à rebours ne sera pas affiché jusqu'à ce que 7 secondes se soient écoulées, puis il sera affiché jusqu'à la fin du compte à rebours.</value>
-  </data>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
-    <value>Seuil d'affichage</value>
-  </data>
+      <value>Seuil d’affichage</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+      <value>Ce paramètre détermine à quel moment pendant le compte à rebours le minuteur deviendra visible.</value>
+    </data>
 </root>

@@ -480,10 +480,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
       <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
     </data>
-  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
-    <value>Diese Einstellung bestimmt, zu welchem Zeitpunkt während des Countdowns der Timer sichtbar wird. Wenn beispielsweise der Wert auf 7 eingestellt ist, wird der Countdown-Timer erst nach 7 Sekunden sichtbar und bleibt bis zum Ende des Countdowns sichtbar.</value>
-  </data>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
-    <value>Anzeigeschwellenwert</value>
-  </data>
+      <value>Anzeigeschwellenwert</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+      <value>Diese Einstellung bestimmt, zu welchem Zeitpunkt während des Countdowns der Timer sichtbar wird.</value>
+    </data>
 </root>
