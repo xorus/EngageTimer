@@ -480,4 +480,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
       <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
     </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
+      <value>Display threshold</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+      <value>This setting determines at what point during the countdown the timer will become visible. For example, if the value is set to 7, the countdown timer will not be shown until 7 seconds have passed, and will then be displayed until the end of the countdown.</value>
+    </data>
 </root>
