@@ -289,6 +289,24 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display threshold.
+        /// </summary>
+        internal static string Settings_CountdownTab_CountdownDisplayThreshold {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_CountdownDisplayThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This setting determines at what point during the countdown the timer will become visible. For example, if the value is set to 7, the countdown timer will not be shown until 7 seconds have passed, and will then be displayed until the end of the countdown..
+        /// </summary>
+        internal static string Settings_CountdownTab_CountdownDisplayThreshold_Help {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_CountdownDisplayThreshold_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale.
         /// </summary>
         internal static string Settings_CountdownTab_CountdownScale {

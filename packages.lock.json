@@ -1,27 +1,27 @@
 {
   "version": 1,
   "dependencies": {
-    "net6.0-windows7.0": {
+    "net7.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
-        "requested": "[2.1.8, )",
-        "resolved": "2.1.8",
-        "contentHash": "YqagNXs9InxmqkXzq7kLveImxnodkBEicAhydMXVp7dFjC7xb76U6zGgAax4/BWIWfZeWzr5DJyQSev31kj81A=="
+        "requested": "[2.1.10, )",
+        "resolved": "2.1.10",
+        "contentHash": "S6NrvvOnLgT4GDdgwuKVJjbFo+8ZEj+JsEYk9ojjOR/MMfv1dIFpT8aRJQfI24rtDcw1uF+GnSSMN4WW1yt7fw=="
       },
       "EmbedIO": {
         "type": "Direct",
-        "requested": "[3.5.0, )",
-        "resolved": "3.5.0",
-        "contentHash": "WShOVau/y9ETcTidcHlK/U7px94BLfaIqwoioLD2fAAVh16kayXJj8rL91l68fOjItq3jEvSNDyOj0kqLmiFww==",
+        "requested": "[3.5.2, )",
+        "resolved": "3.5.2",
+        "contentHash": "YU4j+3XvuO8/VPkNf7KWOF1TpMhnyVhXnPsG1mvnDhTJ9D5BZOFXVDvCpE/SkQ1AJ0Aa+dXOVSW3ntgmLL7aJg==",
         "dependencies": {
-          "Unosquare.Swan.Lite": "3.0.0"
+          "Unosquare.Swan.Lite": "3.1.0"
         }
       },
       "JetBrains.Annotations": {
         "type": "Direct",
-        "requested": "[2022.1.0, )",
-        "resolved": "2022.1.0",
-        "contentHash": "ASfpoFJxiRsC9Xc4TWuPM41Zb/gl64xwfMOhnOZ3RnVWGYIZchjpWQV5zshJgoc/ZxVtgjaF7b577lURj7E6ig=="
+        "requested": "[2022.3.1, )",
+        "resolved": "2022.3.1",
+        "contentHash": "11nsS3+lFICGkztVs9PP2NRItxf9fF+qD6xEW/T0YGto52zj07wseUeBdMAU1ah9HNVTDZyRC1u4NWdtJScwhw=="
       },
       "System.ValueTuple": {
         "type": "Direct",

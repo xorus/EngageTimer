@@ -24,7 +24,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.300
+          dotnet-version: 7.0.*
       - name: Restore dependencies
         run: dotnet restore
       - name: Download Dalamud
@@ -41,4 +41,6 @@ jobs:
           path: |
             bin/Release/EngageTimerDev/latest.zip
             bin/Release/EngageTimerDev/EngageTimerDev.json
-
+      - name: Update testing repository
+        run: |
+          Invoke-WebRequest -Uri https://plogon.xorus.dev/update

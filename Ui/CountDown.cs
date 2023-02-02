@@ -31,7 +31,6 @@ public sealed class CountDown
 
     private readonly GameGui _gui;
     private readonly NumberTextures _numberTextures;
-    private readonly string _path;
     private readonly State _state;
     private bool _accurateMode;
 
@@ -54,7 +53,6 @@ public sealed class CountDown
         _state = container.Resolve<State>();
         _gui = container.Resolve<GameGui>();
         _numberTextures = container.Resolve<NumberTextures>();
-        _path = container.Resolve<Plugin>().PluginPath;
         _configuration.OnSave += ConfigurationOnOnSave;
         _state.StartCountingDown += Start;
         UpdateFromConfig();
@@ -115,6 +113,7 @@ public sealed class CountDown
             ImGui.Text("InCombat: " + _state.InCombat);
             ImGui.Text("InInstance: " + _state.InInstance);
         }
+
         ImGui.End();
 #endif
 
@@ -139,7 +138,10 @@ public sealed class CountDown
             ToggleOriginalAddon();
 
         var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
-
+        if (showMainCountdown && _configuration.EnableCountdownDisplayThreshold &&
+            _state.CountDownValue > _configuration.CountdownDisplayThreshold)
+            showMainCountdown = false;
+        
         var numberScale = BaseNumberScale;
         var maxNumberScale = numberScale;
         if (showMainCountdown)

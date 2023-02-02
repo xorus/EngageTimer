@@ -277,6 +277,8 @@ public class Settings : Window
             _configuration.Save();
         }
 
+        ImGui.PopItemWidth();
+
         var enableTickingSound = _configuration.EnableTickingSound;
         if (ImGui.Checkbox(TransId("Settings_CountdownTab_Audio_Enable"), ref enableTickingSound))
         {
@@ -326,6 +328,28 @@ public class Settings : Window
                 _numberTextures.CreateTextures();
             }
         }
+
+        var enableCountdownDisplayThreshold = _configuration.EnableCountdownDisplayThreshold;
+        if (ImGui.Checkbox(TransId("Settings_CountdownTab_CountdownDisplayThreshold"),
+                ref enableCountdownDisplayThreshold))
+        {
+            _configuration.EnableCountdownDisplayThreshold = enableCountdownDisplayThreshold;
+            _configuration.Save();
+        }
+
+        ImGui.SameLine();
+
+        var countdownDisplayThreshold = _configuration.CountdownDisplayThreshold;
+        if (ImGui.InputInt("###Settings_CountdownTab_CountdownDisplayThreshold_Value",
+                ref countdownDisplayThreshold, 1))
+        {
+            countdownDisplayThreshold = Math.Clamp(countdownDisplayThreshold, 0, 30);
+            _configuration.CountdownDisplayThreshold = countdownDisplayThreshold;
+            _configuration.Save();
+        }
+
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(Trans("Settings_CountdownTab_CountdownDisplayThreshold_Help"));
 
         ImGui.Separator();
         if (ImGui.CollapsingHeader(TransId("Settings_CountdownTab_PositioningTitle"))) CountdownPositionAndSize();
@@ -563,6 +587,7 @@ public class Settings : Window
             _configuration.FloatingWindowShowPrePulling = prePullWarning;
             _configuration.Save();
         }
+
         ImGuiComponents.HelpMarker(Trans("Settings_FWTab_ShowPrePulling_Help"));
 
         if (prePullWarning)
@@ -575,6 +600,7 @@ public class Settings : Window
                 _configuration.FloatingWindowPrePullOffset = offset;
                 _configuration.Save();
             }
+
             ImGui.PopItemWidth();
             ImGuiComponents.HelpMarker(Trans("Settings_FWTab_PrePullOffset_Help"));
 
@@ -587,9 +613,10 @@ public class Settings : Window
                 _configuration.FloatingWindowPrePullColor = prePullColor;
                 _configuration.Save();
             }
+
             ImGui.SameLine();
             ImGui.Text(Trans("Settings_FWTab_TextColor"));
-            
+
             ImGui.Unindent();
         }
     }
