@@ -752,7 +752,7 @@ public class Settings : Window
         var currentTexture = choices.Count();
         for (var i = 0; i < choices.Count(); i++)
         {
-            choiceString += TransId("Settings_CountdownTab_Texture_" + choices[i]) + "\0";
+            choiceString += _tr.TransId("Settings_CountdownTab_Texture_" + choices[i], choices[i]) + "\0";
             if (_configuration.CountdownTexturePreset == choices[i]) currentTexture = i;
         }
 

@@ -29,6 +29,11 @@ public sealed class Translator : IDisposable
         return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? id}###EngageTimer_{id}";
     }
 
+    public string TransId(string id, string fallback)
+    {
+        return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? fallback}###EngageTimer_{id}";
+    }
+
     public string Trans(string id)
     {
         return Resources.ResourceManager.GetString(id, Resources.Culture) ?? id;
