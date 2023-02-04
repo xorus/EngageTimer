@@ -19,7 +19,7 @@ public class Configuration : IPluginConfiguration
 
     public const string DefaultCombatTimePrefix = "【 ";
     public const string DefaultCombatTimeSuffix = "】";
-    public static readonly string[] BundledTextures = { "default", "yellow", "wow" };
+    public static readonly string[] BundledTextures = { "default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint" };
 
     // Dtr bar
     [NonSerialized] private bool _dtrCombatTimeEnabled;
