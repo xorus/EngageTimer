@@ -127,6 +127,7 @@ public sealed class CountDown
         // display is disabled
         if (!_configuration.DisplayCountdown) return;
 
+
         if (!_firstLoad && (!_state.CountingDown || !_configuration.DisplayCountdown))
         {
             // re-enable the original addon at the last possible moment (when done counting down) to show "START"
@@ -140,8 +141,8 @@ public sealed class CountDown
         var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
         if (showMainCountdown && _configuration.EnableCountdownDisplayThreshold &&
             _state.CountDownValue > _configuration.CountdownDisplayThreshold)
-            showMainCountdown = false;
-        
+            return;
+
         var numberScale = BaseNumberScale;
         var maxNumberScale = numberScale;
         if (showMainCountdown)
