@@ -21,7 +21,8 @@ public sealed class FloatingWindow : IDisposable
 
     private bool _firstLoad = true;
     private ImFontPtr _font;
-    private bool _fontLoaded;
+    private bool _triggerFontRebuild = true;
+    private bool _useFont = false;
 
     private float _maxTextWidth;
     private float _paddingLeft;
@@ -54,7 +55,7 @@ public sealed class FloatingWindow : IDisposable
     public void Draw()
     {
         if (!_configuration.DisplayFloatingWindow) return;
-        if (!_fontLoaded)
+        if (_triggerFontRebuild)
         {
             _ui.RebuildFonts();
             return;
@@ -65,9 +66,9 @@ public sealed class FloatingWindow : IDisposable
 
         if (!_firstLoad && !stopwatchActive && !countdownActive) return;
 
-        if (_font.IsLoaded()) ImGui.PushFont(_font);
+        if (_useFont && _font.IsLoaded()) ImGui.PushFont(_font);
         DrawWindow(stopwatchActive, countdownActive);
-        if (_font.IsLoaded()) ImGui.PopFont();
+        if (_useFont && _font.IsLoaded()) ImGui.PopFont();
 
         if (_firstLoad) _firstLoad = false;
     }
@@ -173,6 +174,7 @@ public sealed class FloatingWindow : IDisposable
                     _paddingRight = 0f;
                 }
 
+
                 var size = ImGui.CalcTextSize(text);
                 ImGui.SetCursorPosY(0f);
                 ImGui.SetCursorPosX(_paddingLeft + WindowPadding);
@@ -202,14 +204,27 @@ public sealed class FloatingWindow : IDisposable
      */
     private unsafe void BuildFont()
     {
+        _triggerFontRebuild = false;
+
         _grBuilder?.Destroy();
         try
         {
-            var filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes",
-                "NotoSansCJKjp-Medium.otf");
-            if (!File.Exists(filePath)) throw new FileNotFoundException("Font file not found!");
+            // attempt to load the correct font (I'm only using numbers anyway)
+            string[] fonts = { "NotoSansCJKsc-Medium.otf", "NotoSansCJKjp-Medium.otf" };
+            string filePath = null;
+            foreach (var font in fonts)
+            {
+                filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes", font);
+                if (File.Exists(filePath)) break;
+                filePath = null;
+            }
+
+            if (filePath == null) throw new FileNotFoundException("Font file not found!");
+
             var grBuilder =
                 new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
+            // the "z" at the end of this range is still required because of a dalamud issue that somehow removes the
+            // ":" from my text range.
             grBuilder.AddText("-0123456789:.z");
             grBuilder.BuildRanges(out var ranges);
             _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath,
@@ -223,6 +238,6 @@ public sealed class FloatingWindow : IDisposable
             PluginLog.LogError(e.Message);
         }
 
-        _fontLoaded = true;
+        _useFont = true;
     }
 }
