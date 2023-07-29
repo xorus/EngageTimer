@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+        Microsoft ResX Schema 
+        
+        Version 2.0
+        
+        The primary goals of this format is to allow a simple XML format 
+        that is mostly human readable. The generation and parsing of the 
+        various data types are done through the TypeConverter classes 
+        associated with the data types.
+        
+        Example:
+        
+        ... ado.net/XML headers & schema ...
+        <resheader name="resmimetype">text/microsoft-resx</resheader>
+        <resheader name="version">2.0</resheader>
+        <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+        <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+        <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+        <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+        <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+            <value>[base64 mime encoded serialized .NET Framework object]</value>
+        </data>
+        <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+            <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+            <comment>This is a comment</comment>
+        </data>
+                    
+        There are any number of "resheader" rows that contain simple 
+        name/value pairs.
+        
+        Each data row contains a name, and value. The row also contains a 
+        type or mimetype. Type corresponds to a .NET class that support 
+        text/value conversion through the TypeConverter architecture. 
+        Classes that don't support this are serialized and stored with the 
+        mimetype set.
+        
+        The mimetype is used for serialized objects, and tells the 
+        ResXResourceReader how to depersist the object. This is currently not 
+        extensible. For a given mimetype the value must be set accordingly:
+        
+        Note - application/x-microsoft.net.object.binary.base64 is the format 
+        that the ResXResourceWriter will generate, however the reader can 
+        read any of the formats listed below.
+        
+        mimetype: application/x-microsoft.net.object.binary.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                : and then encoded with base64 encoding.
+        
+        mimetype: application/x-microsoft.net.object.soap.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+                : and then encoded with base64 encoding.
+    
+        mimetype: application/x-microsoft.net.object.bytearray.base64
+        value   : The object must be serialized into a byte array 
+                : using a System.ComponentModel.TypeConverter
+                : and then encoded with base64 encoding.
+        -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns="" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>战斗计时器设置</value>
+  </data>
+  <data name="Settings_CountdownTab_Info1" xml:space="preserve">
+    <value>"倒计时"功能会填补游戏原始计时器中缺失的数字。</value>
+  </data>
+  <data name="Settings_CountdownTab_Enable" xml:space="preserve">
+    <value>启用倒计时功能</value>
+  </data>
+  <data name="Settings_CountdownTab_Title" xml:space="preserve">
+    <value>倒计时</value>
+  </data>
+  <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
+    <value>同时替换5秒倒计时的数字。</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
+    <value>位小数</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
+    <value>播放每秒倒计时音效</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
+    <value>音量</value>
+        <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
+  </data>
+  <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
+    <value>隐藏游戏原始倒计时</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
+    <value>启用更精准的倒计时模式（倒计时-1）</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
+    <value>使用实际和精确的倒计时数值，而不是游戏最初显示的四舍五入后的数值。
+强烈建议在启用小数位数显示时启用此选项，否则小数可能没有意义。
+如果您不使用小数，建议禁用此选项，以便数字与您的队友显示的内容相匹配。
+
+注意：此设置仅在原始倒计时被隐藏时有效（否则将显示 6，5，5，4...）。</value>
+  </data>
+  <data name="Settings_FWTab_Title" xml:space="preserve">
+    <value>悬浮计时器</value>
+  </data>
+  <data name="Settings_FWTab_Help" xml:space="preserve">
+    <value>悬浮计时器是一个可显示倒计时和当前战斗持续时间的可移动计时器。</value>
+  </data>
+  <data name="Settings_FWTab_Display" xml:space="preserve">
+    <value>启用悬浮计时器</value>
+  </data>
+  <data name="Settings_FWTab_Lock" xml:space="preserve">
+    <value>锁定计时器</value>
+  </data>
+  <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
+    <value>禁用点击和拖动计时器（鼠标穿透）</value>
+  </data>
+  <data name="Settings_FWTab_AutoHide_Left" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="Settings_FWTab_AutoHide_Right" xml:space="preserve">
+    <value>战斗结束几秒后</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
+    <value>显示当前倒计时数值 (例如，13)</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
+    <value>显示倒计时</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
+    <value>位小数</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
+    <value>显示战斗时间</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_With_Left" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Right" xml:space="preserve">
+    <value>位小数</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
+    <value>显示当前战斗持续时间</value>
+  </data>
+  <data name="Settings_FWTab_Styling" xml:space="preserve">
+    <value>样式</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign" xml:space="preserve">
+    <value>文本对齐方式</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
+    <value>左对齐</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Center" xml:space="preserve">
+    <value>居中</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Right" xml:space="preserve">
+    <value>右对齐</value>
+  </data>
+  <data name="Settings_FWTab_FontSize" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="Settings_FWTab_TextColor" xml:space="preserve">
+    <value>文本颜色</value>
+  </data>
+  <data name="Settings_FWTab_BackgroundColor" xml:space="preserve">
+    <value>背景颜色和透明度</value>
+  </data>
+  <data name="Settings_FWTab_AccurateCountdown" xml:space="preserve">
+    <value>在悬浮计时器中启用精确倒计时</value>
+  </data>
+  <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
+    <value>参考倒计时选项卡以获取说明</value>
+  </data>
+  <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
+    <value>副本外隐藏战斗时间</value>
+  </data>
+  <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
+    <value>当您处于野外和休息区时隐藏计时</value>
+  </data>
+  <data name="Settings_Web_Title" xml:space="preserve">
+    <value>网络服务器(OBS)</value>
+  </data>
+  <data name="Settings_Web_Help" xml:space="preserve">
+    <value>此功能允许您通过浏览器源添加倒计时和秒表覆盖到您的 OBS (或其他软件) 流和录像中。</value>
+  </data>
+  <data name="Settings_Web_HelpAdd" xml:space="preserve">
+    <value>若有相关需求场景，请启用web服务器，然后在您的场景中创建一个浏览器源，并添加该网址： </value>
+  </data>
+  <data name="Settings_Web_HelpSize" xml:space="preserve">
+    <value>推荐窗口大小为 300x100。</value>
+  </data>
+  <data name="Settings_Web_EnablePort" xml:space="preserve">
+    <value>启用端口上的 Web 服务器</value>
+  </data>
+  <data name="Settings_Web_Hide_Left" xml:space="preserve">
+    <value>隐藏叠加层</value>
+  </data>
+  <data name="Settings_Web_Hide_Right" xml:space="preserve">
+    <value>战斗结束几秒后</value>
+  </data>
+  <data name="Settings_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <data name="Settings_CountdownTab_Texture" xml:space="preserve">
+    <value>数字风格</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_custom" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
+    <value>FFXIV</value>
+        <comment>Settings_CountdownTab_Texture_default
+The FFXIV number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
+    <value>魔兽风格</value>
+        <comment>Settings_CountdownTab_Texture_wow
+The wow number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
+    <value>纹理文件夹</value>
+        <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
+    <value>载入</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
+    <value>可读</value>
+        <comment>Settings_CountdownTab_Texture_yellow
+The yellow number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
+    <value>关闭调试模式</value>
+        <comment>Settings_CountdownTab_Test_Stop
+Displays "stop" when the test button is clicked and test mode is enabled.
+</comment>
+  </data>
+  <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
+    <value>启用调试模式</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
+    <value>亮度</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
+    <value>色调</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
+    <value>饱和度</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
+    <value>重新着色而非改变色调</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
+    <value>尺寸</value>
+  </data>
+  <data name="Settings_CountdownTab_Animate" xml:space="preserve">
+    <value>动画效果</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
+    <value>X轴%</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetY" xml:space="preserve">
+    <value>Y轴%</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
+    <value>倒计时偏移</value>
+  </data>
+  <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
+    <value>位置和尺寸</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
+    <value>缩放效果</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
+    <value>闪烁效果</value>
+  </data>
+  <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
+    <value>警告：当不隐藏游戏原始计数时，改变此选项卡中的值可能会产生位置偏移的结果！</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
+    <value>以秒为单位显示战斗时间而非通常时间格式</value>
+  </data>
+  <data name="Settings_FWTab_CountdownNegativeSign" xml:space="preserve">
+    <value>显示 "-" 标志</value>
+  </data>
+  <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
+    <value>尺寸</value>
+  </data>
+  <data name="Settings_CountdownTab_Monospaced" xml:space="preserve">
+    <value>固定宽度</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
+    <value>更多选项</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
+    <value>添加前缀 0</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
+    <value>启用自定义负边距</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
+    <value>像素</value>
+  </data>
+  <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
+    <value>当使用多显示器窗口选项时，将倒计时置于游戏外(哪怕一点) 将会创建一个背景。 由于无法在游戏外渲染透明窗口，暂时无法修复。请使用边框作为参考。</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
+    <value>对齐方式</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
+    <value>居中倒计时窗口</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
+    <value>启用服务器信息栏计时</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
+    <value>前缀</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
+    <value>后缀</value>
+  </data>
+  <data name="Settings_DtrTab_Title" xml:space="preserve">
+    <value>服务器栏计时</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
+    <value>副本外总是隐藏</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
+    <value>显示毫秒数</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
+    <value>战斗结束几秒后</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Settings_DtrTab_Info" xml:space="preserve">
+    <value>此选项将在服务器信息栏中显示当前的战斗时间(正好在服务器和时间旁)。 请注意，您可以在 Dalamud 设置中重新排序这些元素。</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
+    <value>使用副本匹配时的音效</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
+    <value>使用传统音频(linux冲突)</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
+    <value>如果您使用此功能在非Windows系统上崩溃了，请联系我，该功能将被移除。</value>
+  </data>
+  <data name="MainCommand_Help_Countdown" xml:space="preserve">
+    <value>启用或禁用倒计时(默认切换)</value>
+        <comment>help text for the /eg c [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_FW" xml:space="preserve">
+    <value>启用或禁用悬浮计时器(默认切换)</value>
+        <comment>help text for the /eg fw [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_Dtr" xml:space="preserve">
+    <value>启用或禁用服务器信息栏计时器(默认切换)</value>
+        <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_Settings" xml:space="preserve">
+    <value>打开设置界面。</value>
+        <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
+  </data>
+  <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
+    <value>倒计时 {0}</value>
+        <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
+  </data>
+  <data name="MainCommand_Status_On" xml:space="preserve">
+    <value>已启用</value>
+        <comment>For use in success sentences "Countdown is now enabled"</comment>
+  </data>
+  <data name="MainCommand_Status_Off" xml:space="preserve">
+    <value>已禁用</value>
+        <comment>For use in success sentences "Countdown is now disabled"</comment>
+  </data>
+  <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
+    <value>服务器信息栏倒计时 {0}</value>
+  </data>
+  <data name="MainCommand_Help_FW_Success" xml:space="preserve">
+    <value>悬浮计时器{0}</value>
+  </data>
+  <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
+    <value>无法识别的子命令： {0}</value>
+        <comment>MainCommand_Error_InvalidSubcommand
+{0} is the un recognized command name
+</comment>
+  </data>
+  <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
+    <value>无法识别的参数 {0}: {1}</value>
+        <comment>MainCommand_Error_InvalidArgument
+{0} is the command name (countdown, c, fw, settings, ...)
+{1} is the unrecognized argument typed</comment>
+  </data>
+  <data name="Settings_FWTab_ShowPrePulling" xml:space="preserve">
+      <value>启用抢开警告</value>
+    </data>
+  <data name="Settings_FWTab_ShowPrePulling_Help" xml:space="preserve">
+      <value>咏唱会导致抢开的技能时将会更改倒计时颜色。</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset" xml:space="preserve">
+      <value>偏差秒数</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
+      <value>除非您有非常一致的延迟或某些特定的原因，否则请保持为0。</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
+      <value>显示阈值</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+      <value>此设置确定在倒计时进行过程中计时器何时会变得可见。例如，如果该值设置为7，倒计时计时器将在经过7秒后才开始显示，并将一直显示到倒计时结束。</value>
+    </data>
+</root>
