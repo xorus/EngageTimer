@@ -402,88 +402,88 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>隐藏</value>
   </data>
   <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
-    <value>seconds after combat end</value>
+    <value>战斗结束几秒后</value>
   </data>
   <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>重置</value>
   </data>
   <data name="Settings_DtrTab_Info" xml:space="preserve">
-    <value>This option will display the current combat time in the Server Info Bar (right next to the world &amp; time). Please note that you can reorder all integrations in Dalamud Settings.</value>
+    <value>此选项将在服务器信息栏中显示当前的战斗时间(正好在服务器和时间旁)。 请注意，您可以在 Dalamud 设置中重新排序这些元素。</value>
   </data>
   <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
-    <value>Use duty pop timer sound</value>
+    <value>使用副本匹配时的音效</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
-    <value>Use legacy audio (breaks linux)</value>
+    <value>使用传统音频(linux冲突)</value>
   </data>
   <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
-    <value>Will be removed, please contact me if you use it. Crashes on non-Windows systems.</value>
+    <value>如果您使用此功能在非Windows系统上崩溃了，请联系我，该功能将被移除。</value>
   </data>
   <data name="MainCommand_Help_Countdown" xml:space="preserve">
-    <value>enable or disable the big countdown (toggles by default)</value>
+    <value>启用或禁用倒计时(默认切换)</value>
         <comment>help text for the /eg c [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_FW" xml:space="preserve">
-    <value>enable or disable the floating window (toggles by default)</value>
+    <value>启用或禁用悬浮计时器(默认切换)</value>
         <comment>help text for the /eg fw [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Dtr" xml:space="preserve">
-    <value>enable or disable the server info bar (toggles by default)</value>
+    <value>启用或禁用服务器信息栏计时器(默认切换)</value>
         <comment>MainCommand_Help_Dtr
 help text for the /eg dtr [on|off] command</comment>
   </data>
   <data name="MainCommand_Help_Settings" xml:space="preserve">
-    <value>open the settings menu</value>
+    <value>打开设置界面。</value>
         <comment>MainCommand_Help_Settings
 help text for the /eg settings command</comment>
   </data>
   <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
-    <value>Countdown is now {0}</value>
+    <value>倒计时 {0}</value>
         <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
 </comment>
   </data>
   <data name="MainCommand_Status_On" xml:space="preserve">
-    <value>enabled</value>
+    <value>已启用</value>
         <comment>For use in success sentences "Countdown is now enabled"</comment>
   </data>
   <data name="MainCommand_Status_Off" xml:space="preserve">
-    <value>disabled</value>
+    <value>已禁用</value>
         <comment>For use in success sentences "Countdown is now disabled"</comment>
   </data>
   <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
-    <value>Server info bar is now {0}</value>
+    <value>服务器信息栏倒计时 {0}</value>
   </data>
   <data name="MainCommand_Help_FW_Success" xml:space="preserve">
-    <value>Floating window is now {0}</value>
+    <value>悬浮计时器{0}</value>
   </data>
   <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
-    <value>Unrecognized subcommand: {0}</value>
+    <value>无法识别的子命令： {0}</value>
         <comment>MainCommand_Error_InvalidSubcommand
 {0} is the un recognized command name
 </comment>
   </data>
   <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
-    <value>Unrecognized argument for {0}: {1}</value>
+    <value>无法识别的参数 {0}: {1}</value>
         <comment>MainCommand_Error_InvalidArgument
 {0} is the command name (countdown, c, fw, settings, ...)
 {1} is the unrecognized argument typed</comment>
   </data>
   <data name="Settings_FWTab_ShowPrePulling" xml:space="preserve">
-      <value>Enable pre-pull warning</value>
+      <value>启用抢开警告</value>
     </data>
   <data name="Settings_FWTab_ShowPrePulling_Help" xml:space="preserve">
-      <value>Changes the countdown color when casting a spell that would result in a pre-pull.</value>
+      <value>咏唱会导致抢开的技能时将会更改倒计时颜色。</value>
     </data>
   <data name="Settings_FWTab_PrePullOffset" xml:space="preserve">
-      <value>Offset in seconds</value>
+      <value>偏差秒数</value>
     </data>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
-      <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
+      <value>除非您有非常一致的延迟或某些特定的原因，否则请保持为0。</value>
     </data>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
-      <value>Display threshold</value>
+      <value>显示阈值</value>
     </data>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
-      <value>This setting determines at what point during the countdown the timer will become visible. For example, if the value is set to 7, the countdown timer will not be shown until 7 seconds have passed, and will then be displayed until the end of the countdown.</value>
+      <value>此设置确定在倒计时进行过程中计时器何时会变得可见。例如，如果该值设置为7，倒计时计时器将在经过7秒后才开始显示，并将一直显示到倒计时结束。</value>
     </data>
 </root>
