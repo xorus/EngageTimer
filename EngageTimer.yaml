@@ -11,10 +11,11 @@ description: |-
   - Display combat time in the Server Info Bar, and/or a floating window
   - OBS browser-source compatible page with countdown and current combat duration
 
-  Why the OBS thing ? Well, it can be useful if you want a big stylized stopwatch in your recordings.
+  Why the OBS thing ? I like having a big stylized stopwatch in my private recordings and that's about it.
   See repository for more info.
 
-  Feel free so send me feedback, bugs and potential improvements!
+  Feel free so send me feedback, bugs and potential improvements! Check the about page in the plugin settings for more
+  info. Please report urgent feedback on GitHub or XIVLauncher Discord's support thread for this plugin.
 tags:
   - countdown
   - pull timer
