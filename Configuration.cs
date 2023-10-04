@@ -19,7 +19,9 @@ public class Configuration : IPluginConfiguration
 
     public const string DefaultCombatTimePrefix = "【 ";
     public const string DefaultCombatTimeSuffix = "】";
-    public static readonly string[] BundledTextures = { "default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint" };
+
+    public static readonly string[] BundledTextures =
+        { "default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint" };
 
     // Dtr bar
     [NonSerialized] private bool _dtrCombatTimeEnabled;
@@ -38,6 +40,7 @@ public class Configuration : IPluginConfiguration
     public float AutoHideTimeout { get; set; } = 20f;
     public bool EnableTickingSound { get; set; } = false;
     public bool UseAlternativeSound { get; set; } = false;
+    public int StartTickingFrom { get; set; } = 30;
     public bool EnableCountdownDecimal { get; set; } = false;
     public int CountdownDecimalPrecision { get; set; } = 1;
     public bool EnableCountdownDisplayThreshold { get; set; } = false;

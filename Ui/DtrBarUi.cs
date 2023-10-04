@@ -2,6 +2,7 @@
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using EngageTimer.Status;
 using XwContainer;
 
@@ -10,7 +11,7 @@ namespace EngageTimer.Ui;
 public sealed class DtrBarUi : IDisposable
 {
     private readonly Configuration _configuration;
-    private readonly DtrBar _dtrBar;
+    private readonly IDtrBar _dtrBar;
     private readonly State _state;
     private DtrBarEntry _entry;
 
@@ -18,7 +19,7 @@ public sealed class DtrBarUi : IDisposable
     {
         _configuration = container.Resolve<Configuration>();
         _state = container.Resolve<State>();
-        _dtrBar = container.Resolve<DtrBar>();
+        _dtrBar = container.Resolve<IDtrBar>();
         GetOrReset(_configuration.DtrCombatTimeEnabled);
         _configuration.DtrBarCombatTimerEnableChange +=
             (_, _) => GetOrReset(_configuration.DtrCombatTimeEnabled);

@@ -1,6 +1,6 @@
 ﻿using System;
 using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using EngageTimer.Ui;
 using XwContainer;
 
@@ -29,7 +29,7 @@ public sealed class MainCommand : IDisposable
 
     private void Register()
     {
-        _container.Resolve<CommandManager>().AddHandler(Command, new CommandInfo(OnCommand)
+        _container.Resolve<ICommandManager>().AddHandler(Command, new CommandInfo(OnCommand)
         {
             HelpMessage = "\n" +
                           Tab + Command + " c|countdown [on|off] → " +
@@ -45,7 +45,7 @@ public sealed class MainCommand : IDisposable
 
     private void Unregister()
     {
-        _container.Resolve<CommandManager>().RemoveHandler(Command);
+        _container.Resolve<ICommandManager>().RemoveHandler(Command);
     }
 
     private static bool ToStatus(string input, bool current)
@@ -67,7 +67,7 @@ public sealed class MainCommand : IDisposable
     private void OnCommand(string command, string args)
     {
         var config = _container.Resolve<Configuration>();
-        var chat = _container.Resolve<ChatGui>();
+        var chat = _container.Resolve<IChatGui>();
 
         var argsArray = args.Split(' ');
         var subcommand = "";

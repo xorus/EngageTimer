@@ -1,5 +1,7 @@
 ﻿using System;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
+using XwContainer;
 
 namespace EngageTimer.Game;
 
@@ -14,25 +16,30 @@ internal unsafe class GameSound
     [Signature("E8 ?? ?? ?? ?? 4D 39 BE ?? ?? ?? ??")]
     public readonly delegate* unmanaged<uint, IntPtr, IntPtr, byte, void> PlaySoundEffect = null;
 
-    public GameSound()
+    public GameSound(IGameInteropProvider gameInterop)
     {
-        SignatureHelper.Initialise(this);
+        gameInterop.InitializeFromAttributes(this);
     }
 }
 
-public static class SfxPlay
+public class SfxPlay
 {
     public const uint SmallTick = 29;
     public const uint CdTick = 48;
-    private static readonly GameSound GameSound = new();
+    private readonly GameSound _gameSound;
 
-    public static void SoundEffect(uint id)
+    public SfxPlay(Container container)
+    {
+        _gameSound = new GameSound(container.Resolve<IGameInteropProvider>());
+    }
+
+    public void SoundEffect(uint id)
     {
         // var s = new Stopwatch();
         // s.Start();
         unsafe
         {
-            GameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
+            _gameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
         }
         // s.Stop();
         // PluginLog.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");

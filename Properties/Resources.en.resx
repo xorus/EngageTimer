@@ -416,4 +416,10 @@ Note: this setting only works when the original countdown is hidden (otherwise i
     <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
       <value>Display threshold</value>
     </data>
+    <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
+      <value>Start ticking from</value>
+    </data>
+    <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
+      <value>This setting will make it so the sound plays from numbers 5 to the selected value. Note: this plugin cannot remove the tick sound for numbers 1-5.</value>
+    </data>
 </root>

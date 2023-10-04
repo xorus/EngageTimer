@@ -1,11 +1,6 @@
 ﻿using System;
-using Dalamud.Game;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Dtr;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using EngageTimer.Commands;
 using EngageTimer.Status;
 using EngageTimer.Ui;
@@ -22,13 +17,14 @@ public sealed class Plugin : IDalamudPlugin
 
     public Plugin(
         DalamudPluginInterface pluginInterface,
-        GameGui gameGui,
-        CommandManager commands,
-        Condition condition,
-        DtrBar dtrBar,
-        PartyList partyList,
-        Framework framework,
-        ChatGui chatGui
+        IGameGui gameGui,
+        ICommandManager commands,
+        ICondition condition,
+        IDtrBar dtrBar,
+        IPartyList partyList,
+        IFramework framework,
+        IChatGui chatGui,
+        IGameInteropProvider gameInterop
     )
     {
         PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
@@ -43,6 +39,7 @@ public sealed class Plugin : IDalamudPlugin
         Container.Register(partyList);
         Container.Register(framework);
         Container.Register(chatGui);
+        Container.Register(gameInterop);
         // new Localization(_pluginInterface.GetPluginLocDirectory());
 
         _configuration = Container.Register((Configuration)_pluginInterface.GetPluginConfig() ?? new Configuration());
@@ -59,7 +56,6 @@ public sealed class Plugin : IDalamudPlugin
 
     public string PluginPath { get; }
     private Container Container { get; }
-    public string Name => "Engage Timer";
 
     void IDisposable.Dispose()
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dalamud.Interface;
+using Dalamud.Interface.Internal;
 using Dalamud.Logging;
 using EngageTimer.Ui.Color;
 using ImGuiScene;
@@ -17,10 +18,10 @@ public sealed class NumberTextures
 {
     private readonly Configuration _configuration;
     private readonly string _dataPath;
-    private readonly TextureWrap _error;
+    private readonly IDalamudTextureWrap _error;
     private readonly Dictionary<int, StbiImage> _numberImages = new();
-    private readonly Dictionary<int, TextureWrap> _numberTextures = new();
-    private readonly Dictionary<int, TextureWrap> _numberTexturesAlt = new();
+    private readonly Dictionary<int, IDalamudTextureWrap> _numberTextures = new();
+    private readonly Dictionary<int, IDalamudTextureWrap> _numberTexturesAlt = new();
     private readonly UiBuilder _uiBuilder;
 
     public NumberTextures(Container container)
@@ -193,12 +194,12 @@ public sealed class NumberTextures
         }
     }
 
-    public TextureWrap GetTexture(int i)
+    public IDalamudTextureWrap GetTexture(int i)
     {
         return _numberTextures.ContainsKey(i) ? _numberTextures[i] : _error;
     }
 
-    public TextureWrap GetAltTexture(int i)
+    public IDalamudTextureWrap GetAltTexture(int i)
     {
         return _numberTexturesAlt.ContainsKey(i) ? _numberTexturesAlt[i] : _error;
     }

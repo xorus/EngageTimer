@@ -7,8 +7,8 @@ namespace EngageTimer.Game;
 public class TickingSound
 {
     private readonly Configuration _configuration;
-    private readonly string _path;
     private readonly State _state;
+    private readonly SfxPlay _sfx;
 
     private int? _lastNumberPlayed;
 
@@ -19,7 +19,7 @@ public class TickingSound
     {
         _configuration = container.Resolve<Configuration>();
         _state = container.Resolve<State>();
-        _path = container.Resolve<Plugin>().PluginPath;
+        _sfx = new SfxPlay(container);
     }
 
     public void Update()
@@ -28,12 +28,13 @@ public class TickingSound
         if (!_configuration.EnableTickingSound || _state.Mocked) return;
         if (!_soundLoaded)
         {
-            SfxPlay.SoundEffect(0); // should be cursor sound
+            _sfx.SoundEffect(0); // should be cursor sound
             _soundLoaded = true;
             return;
         }
 
-        if (_state.CountingDown && _state.CountDownValue > 5)
+        if (_state.CountingDown &&
+            _state.CountDownValue > 5 && _state.CountDownValue <= _configuration.StartTickingFrom)
             TickSound((int)Math.Ceiling(_state.CountDownValue));
     }
 
@@ -42,6 +43,6 @@ public class TickingSound
         if (!_configuration.EnableTickingSound || _lastNumberPlayed == n)
             return;
         _lastNumberPlayed = n;
-        SfxPlay.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
+        _sfx.SoundEffect(_configuration.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
     }
 }
