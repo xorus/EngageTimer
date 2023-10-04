@@ -1,5 +1,5 @@
 ﻿using System;
-using Dalamud.Game;
+using Dalamud.Plugin.Services;
 using EngageTimer.Game;
 using EngageTimer.Ui;
 using EngageTimer.Web;
@@ -27,15 +27,15 @@ public sealed class FrameworkThings : IDisposable
         _sound = _container.Register<TickingSound>();
         _prePull = _container.Register<PrePullDetect>();
 
-        _container.Resolve<Framework>().Update += OnUpdate;
+        _container.Resolve<IFramework>().Update += OnUpdate;
     }
 
     public void Dispose()
     {
-        _container.Resolve<Framework>().Update -= OnUpdate;
+        _container.Resolve<IFramework>().Update -= OnUpdate;
     }
 
-    private void OnUpdate(Framework framework)
+    private void OnUpdate(IFramework framework)
     {
         _server.Update();
         _combatStopwatch.UpdateEncounterTimer();

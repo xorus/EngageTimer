@@ -3,6 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using EngageTimer.Status;
 using XwContainer;
@@ -14,7 +15,7 @@ namespace EngageTimer.Game;
 
 public sealed class CountdownHook : IDisposable
 {
-    private readonly Condition _condition;
+    private readonly ICondition _condition;
 
     [Signature("48 89 5C 24 ?? 57 48 83 EC 40 8B 41", DetourName = nameof(CountdownTimerFunc))]
     private readonly Hook<CountdownTimerDelegate>? _countdownTimerHook = null;
@@ -35,9 +36,9 @@ public sealed class CountdownHook : IDisposable
     public CountdownHook(Container container)
     {
         _state = container.Resolve<State>();
-        _condition = container.Resolve<Condition>();
+        _condition = container.Resolve<ICondition>();
         _countDown = 0;
-        SignatureHelper.Initialise(this);
+        container.Resolve<IGameInteropProvider>().InitializeFromAttributes(this);
         _countdownTimerHook?.Enable();
     }
 

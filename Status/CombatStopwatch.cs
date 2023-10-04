@@ -2,16 +2,16 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Party;
+using Dalamud.Plugin.Services;
 using XwContainer;
 
 namespace EngageTimer.Status;
 
 public class CombatStopwatch
 {
-    private readonly Condition _condition;
+    private readonly ICondition _condition;
     private readonly Configuration _configuration;
-    private readonly PartyList _partyList;
+    private readonly IPartyList _partyList;
     private readonly State _state;
     private DateTime _combatTimeEnd;
     private DateTime _combatTimeStart;
@@ -20,8 +20,8 @@ public class CombatStopwatch
     public CombatStopwatch(Container container)
     {
         _state = container.Resolve<State>();
-        _condition = container.Resolve<Condition>();
-        _partyList = container.Resolve<PartyList>();
+        _condition = container.Resolve<ICondition>();
+        _partyList = container.Resolve<IPartyList>();
         _configuration = container.Resolve<Configuration>();
     }
 

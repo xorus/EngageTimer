@@ -5,6 +5,7 @@ using System.Numerics;
 using Dalamud.Game.Gui;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
+using Dalamud.Plugin.Services;
 using EngageTimer.Status;
 using EngageTimer.Ui.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -29,7 +30,7 @@ public sealed class CountDown
         1, -0.02, .71, 1
     );
 
-    private readonly GameGui _gui;
+    private readonly IGameGui _gui;
     private readonly NumberTextures _numberTextures;
     private readonly State _state;
     private bool _accurateMode;
@@ -38,7 +39,7 @@ public sealed class CountDown
      * This is a workaround for ImGui taking some time to render a window for the first time.
      * It can cause a small amount on lag when starting a countdown, which we do not want, and this is why I will
      * draw the countdown windows for the first frame the plugin gets loaded so ImGui doesn't get a chance to lag
-     * 
+     *
      * In my testing, this is about 10 to 20ms.
      */
     private bool _firstLoad = true;
@@ -51,7 +52,7 @@ public sealed class CountDown
     {
         _configuration = container.Resolve<Configuration>();
         _state = container.Resolve<State>();
-        _gui = container.Resolve<GameGui>();
+        _gui = container.Resolve<IGameGui>();
         _numberTextures = container.Resolve<NumberTextures>();
         _configuration.OnSave += ConfigurationOnOnSave;
         _state.StartCountingDown += Start;
