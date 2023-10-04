@@ -32,7 +32,6 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Floating Window: option to change the countdown color when casting a spell that will result in a pre-pull.
-  - Floating Window: uses the global font-scale, you might need to adjust the font size after the update.
-  - Settings: support for closing the settings window with Escape (WindowSystem features)
+  - Countdown Ticks: option to make them start at a certain time (e.g. only tick 1 to 10 numbers)
+  - Updated to api 9
 
