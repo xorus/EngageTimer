@@ -21,7 +21,7 @@ public sealed class FrameworkThings : IDisposable
     {
         _container = container;
         _combatStopwatch = _container.Register<CombatStopwatch>();
-        _countdownHook = _container.Register<CountdownHook>();
+        _countdownHook = _container.RegisterDisposable<CountdownHook>();
         _server = _container.RegisterDisposable<WebServer>();
         _dtrBarUi = _container.RegisterDisposable<DtrBarUi>();
         _sound = _container.Register<TickingSound>();
