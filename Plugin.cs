@@ -56,7 +56,6 @@ public sealed class Plugin : IDalamudPlugin
 
     public string PluginPath { get; }
     private Container Container { get; }
-    public string Name => "Engage Timer";
 
     void IDisposable.Dispose()
     {

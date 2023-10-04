@@ -19,7 +19,7 @@ public sealed class PluginUi : IDisposable
         var numbers = new NumberTextures(container);
         container.Register(numbers);
 
-        _windowSystem = new WindowSystem(container.Resolve<Plugin>().Name);
+        _windowSystem = new WindowSystem("Engage Timer");
         _countDown = container.Register<CountDown>();
         _floatingWindow = container.RegisterDisposable<FloatingWindow>();
         _settings = container.Register<Settings>();
