@@ -487,9 +487,9 @@ help text for the /eg settings command</comment>
       <value>此设置确定在倒计时进行过程中计时器何时会变得可见。例如，如果该值设置为7，倒计时计时器将在经过7秒后才开始显示，并将一直显示到倒计时结束。</value>
     </data>
   <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
-    <value>开始</value>
-  </data>
+      <value>开始</value>
+    </data>
   <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
-    <value>此设置将从数字5播放声音，直到所选的值。请注意，此插件无法消除数字1到5的滴答声。</value>
-  </data>
+      <value>此设置将从数字5播放声音，直到所选的值。请注意，此插件无法消除数字1到5的滴答声。</value>
+    </data>
 </root>
