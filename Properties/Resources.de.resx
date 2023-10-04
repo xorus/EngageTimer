@@ -487,9 +487,9 @@ help text for the /eg settings command</comment>
       <value>Diese Einstellung bestimmt, zu welchem Zeitpunkt während des Countdowns der Timer sichtbar wird.</value>
     </data>
   <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
-      <value>Start playing from</value>
+      <value>Starte das Ticken ab</value>
     </data>
   <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
-      <value>This setting will make it so the sound plays from numbers 5 to the selected value. Note: this plugin cannot remove the tick sound for numbers 1-5.</value>
+      <value>Diese Einstellung spielt den Ton von der Zahl 5 bis zum ausgewählten Wert ab. Bitte beachten Sie, dass dieses Plugin den Tick-Ton für die Zahlen 1 bis 5 nicht entfernen kann.</value>
     </data>
 </root>
