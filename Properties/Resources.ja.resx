@@ -486,4 +486,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
       <value>この設定はカウントダウン中にタイマーが可視になる時点を決定します。</value>
     </data>
+  <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
+    <value>この設定では、選択した値から5までの数字で音が鳴ります。なお、このプラグインは1から5までの数字のチック音を取り除くことはできません。</value>
+  </data>
 </root>

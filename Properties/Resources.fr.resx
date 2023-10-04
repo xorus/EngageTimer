@@ -486,4 +486,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
       <value>Ce paramètre détermine à quel moment pendant le compte à rebours le minuteur deviendra visible.</value>
     </data>
+  <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
+    <value>Jouer à partir de</value>
+  </data>
+  <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
+    <value>Ce paramètre jouera le son des chiffres de 5 jusqu'à la valeur sélectionnée. Note : ce plugin ne peut pas supprimer le son pour les chiffres de 1 à 5.</value>
+  </data>
 </root>

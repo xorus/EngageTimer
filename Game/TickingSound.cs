@@ -33,7 +33,8 @@ public class TickingSound
             return;
         }
 
-        if (_state.CountingDown && _state.CountDownValue > 5)
+        if (_state.CountingDown &&
+            _state.CountDownValue > 5 && _state.CountDownValue <= _configuration.StartTickingFrom)
             TickSound((int)Math.Ceiling(_state.CountDownValue));
     }
 

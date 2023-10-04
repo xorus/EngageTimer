@@ -297,6 +297,15 @@ public class Settings : Window
                 _configuration.Save();
             }
 
+            var tickFrom = _configuration.StartTickingFrom;
+            // ImGui.Text(Trans("Settings_CountdownTab_TickFrom"));
+            if (ImGui.InputInt(TransId("Settings_CountdownTab_TickFrom"), ref tickFrom, 1, 0))
+            {
+                _configuration.StartTickingFrom = Math.Min(30, Math.Max(5, tickFrom));
+                _configuration.Save();
+            }
+            ImGuiComponents.HelpMarker(Trans("Settings_CountdownTab_TickFrom_Help"));
+            
             ImGui.Unindent();
         }
 

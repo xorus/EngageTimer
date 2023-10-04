@@ -595,6 +595,24 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start playing from.
+        /// </summary>
+        internal static string Settings_CountdownTab_TickFrom {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_TickFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This setting will make it so the sound plays from numbers 5 to the selected value. Note: this plugin cannot remove the tick sound for numbers 1-5..
+        /// </summary>
+        internal static string Settings_CountdownTab_TickFrom_Help {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_TickFrom_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Big countdown.
         /// </summary>
         internal static string Settings_CountdownTab_Title {
