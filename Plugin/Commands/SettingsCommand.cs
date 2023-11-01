@@ -16,30 +16,27 @@
 using System;
 using Dalamud.Game.Command;
 using EngageTimer.Ui;
-using XwContainer;
 
 namespace EngageTimer.Commands;
 
 public class SettingsCommand : IDisposable
 {
-    private readonly Container _container;
-
-    public SettingsCommand(Container container)
+    public SettingsCommand()
     {
-        _container = container;
-        Bag.Commands.AddHandler("/egsettings", new CommandInfo(OpenSettingsCommand)
+        Plugin.Commands.AddHandler("/egsettings", new CommandInfo(OpenSettingsCommand)
         {
-            HelpMessage = container.Resolve<Translator>().Trans("MainCommand_Help_Settings")
+            HelpMessage = Translator.Tr("MainCommand_Help_Settings")
         });
     }
 
     public void Dispose()
     {
-        Bag.Commands.RemoveHandler("/egsettings");
+        Plugin.Commands.RemoveHandler("/egsettings");
+        GC.SuppressFinalize(this);
     }
 
-    private void OpenSettingsCommand(string command, string args)
+    private static void OpenSettingsCommand(string command, string args)
     {
-        _container.Resolve<PluginUi>().OpenSettings();
+        Plugin.PluginUi.OpenSettings();
     }
 }

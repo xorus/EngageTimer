@@ -24,27 +24,20 @@ using EngageTimer.Ui.Color;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StbiSharp;
-using XwContainer;
 
 namespace EngageTimer.Ui;
 
 public sealed class NumberTextures
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly string _dataPath;
     private readonly IDalamudTextureWrap _error;
     private readonly Dictionary<int, StbiImage> _numberImages = new();
     private readonly Dictionary<int, IDalamudTextureWrap> _numberTextures = new();
     private readonly Dictionary<int, IDalamudTextureWrap> _numberTexturesAlt = new();
-    private readonly UiBuilder _uiBuilder;
+    private readonly UiBuilder _uiBuilder = Plugin.PluginInterface.UiBuilder;
 
-    public NumberTextures(Container container)
+    public NumberTextures()
     {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _uiBuilder = Bag.PluginInterface.UiBuilder;
-        _dataPath = container.Resolve<Plugin>().PluginPath;
-        _error = _uiBuilder.LoadImage(Path.Combine(_dataPath, "Data", "error.png"));
-
+        _error = _uiBuilder.LoadImage(Path.Combine(Plugin.PluginPath, "Data", "error.png"));
         Load();
     }
 
@@ -68,17 +61,17 @@ public sealed class NumberTextures
         string texturePath;
 
         // if mode is custom and a directory is specified
-        if (_configuration.Countdown.TexturePreset == "" && _configuration.Countdown.TextureDirectory != null)
+        if (Plugin.Config.Countdown.TexturePreset == "" && Plugin.Config.Countdown.TextureDirectory != null)
         {
-            texturePath = _configuration.Countdown.TextureDirectory;
+            texturePath = Plugin.Config.Countdown.TextureDirectory;
         }
         else
         {
             // otherwise we load the selected preset (or default is not found)
             var preset = CountdownConfiguration.BundledTextures[0];
-            if (CountdownConfiguration.BundledTextures.Contains(_configuration.Countdown.TexturePreset ?? ""))
-                preset = _configuration.Countdown.TexturePreset;
-            texturePath = Path.Combine(_dataPath, "Data", "numbers", preset ?? "");
+            if (CountdownConfiguration.BundledTextures.Contains(Plugin.Config.Countdown.TexturePreset ?? ""))
+                preset = Plugin.Config.Countdown.TexturePreset;
+            texturePath = Path.Combine(Plugin.PluginPath, "Data", "numbers", preset ?? "");
         }
 
         // Read pack settings file
@@ -109,7 +102,7 @@ public sealed class NumberTextures
             var json = File.ReadAllText(settingsFile);
             var parsed = JsonConvert.DeserializeObject<JToken>(json);
             if (parsed == null)
-                Bag.Logger.Warning("Invalid json in " + settingsFile);
+                Plugin.Logger.Warning("Invalid json in " + settingsFile);
             else
                 try
                 {
@@ -127,18 +120,18 @@ public sealed class NumberTextures
                 }
                 catch (Exception exception)
                 {
-                    Bag.Logger.Warning("Invalid json or missing property in " + settingsFile + "\n" +
+                    Plugin.Logger.Warning("Invalid json or missing property in " + settingsFile + "\n" +
                                        exception);
                 }
         }
         catch (IOException)
         {
-            Bag.Logger.Information("No settings.json found in number texture directory");
+            Plugin.Logger.Information("No settings.json found in number texture directory");
             // the file/directory does not exist or is invalid, we don't have to worry about it here
         }
         catch (Exception e)
         {
-            Bag.Logger.Warning(e.ToString());
+            Plugin.Logger.Warning(e.ToString());
             // some other error we don't really care about
         }
     }
@@ -157,23 +150,24 @@ public sealed class NumberTextures
                     var image = _numberImages[i];
                     var bytes = image.Data.ToArray();
                     var bytesAlt = new byte[bytes.Length];
+                    var configuration = Plugin.Config;
                     if (image.NumChannels == 4)
                         for (var p = 0; p < bytes.Length; p += 4)
                         {
                             var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
                             var hsl = HslConv.RgbToHsl(originalRgb);
-                            if (_configuration.Countdown.NumberRecolorMode)
-                                hsl.H = Math.Clamp(_configuration.Countdown.Hue, 0, 360);
+                            if (configuration.Countdown.NumberRecolorMode)
+                                hsl.H = Math.Clamp(configuration.Countdown.Hue, 0, 360);
                             else
-                                hsl.H += _configuration.Countdown.Hue;
-                            hsl.S = Math.Clamp(hsl.S + _configuration.Countdown.Saturation, 0f, 1f);
-                            hsl.L = Math.Clamp(hsl.L + _configuration.Countdown.Luminance, 0f, 1f);
+                                hsl.H += configuration.Countdown.Hue;
+                            hsl.S = Math.Clamp(hsl.S + configuration.Countdown.Saturation, 0f, 1f);
+                            hsl.L = Math.Clamp(hsl.L + configuration.Countdown.Luminance, 0f, 1f);
                             var modifiedRgb = HslConv.HslToRgb(hsl);
                             bytes[p] = modifiedRgb.R;
                             bytes[p + 1] = modifiedRgb.G;
                             bytes[p + 2] = modifiedRgb.B;
 
-                            if (!_configuration.Countdown.Animate) continue;
+                            if (!configuration.Countdown.Animate) continue;
                             var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
                             hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
                             var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
@@ -193,7 +187,7 @@ public sealed class NumberTextures
                     _numberTextures.Add(i, texture);
                     success = true;
 
-                    if (!_configuration.Countdown.Animate) continue;
+                    if (!configuration.Countdown.Animate) continue;
                     _numberTexturesAlt.Remove(i);
                     _numberTexturesAlt.Add(i, textureAlt);
                 }

@@ -14,53 +14,59 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using EngageTimer.Commands;
 using EngageTimer.Configuration;
 using EngageTimer.Status;
 using EngageTimer.Ui;
 using JetBrains.Annotations;
-using XwContainer;
 
 namespace EngageTimer;
 
 [PublicAPI]
 public sealed class Plugin : IDalamudPlugin
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly DalamudPluginInterface _pluginInterface;
+    [PluginService] public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+    [PluginService] public static IGameGui GameGui { get; private set; } = null!;
+    [PluginService] public static ICommandManager Commands { get; private set; } = null!;
+    [PluginService] public static ICondition Condition { get; private set; } = null!;
+    [PluginService] public static IDtrBar DtrBar { get; private set; } = null!;
+    [PluginService] public static IPartyList PartyList { get; private set; } = null!;
+    [PluginService] public static IFramework Framework { get; private set; } = null!;
+    [PluginService] public static IChatGui ChatGui { get; private set; } = null!;
+    [PluginService] public static IGameInteropProvider GameInterop { get; private set; } = null!;
+    [PluginService] public static IPluginLog Logger { get; private set; } = null!;
+    public static ConfigurationFile Config { get; private set; } = null!;
+    public static State State { get; private set; } = null!;
+    public static Translator Translator { get; private set; } = null!;
+    public static PluginUi PluginUi { get; private set; } = null!;
+    public static NumberTextures NumberTextures { get; set; } = null!;
+    public static string PluginPath { get; private set; } = null!;
+    private static FrameworkThings FrameworkThings { get; set; } = null!;
+    private static MainCommand MainCommand { get; set; } = null!;
+    private static SettingsCommand SettingsCommand { get; set; } = null!;
 
     public Plugin(DalamudPluginInterface pluginInterface)
     {
-        pluginInterface.Create<Bag>();
-        Bag.Init();
-        
-        PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
-        Container = new Container();
-        Container.Register(this);
-        _pluginInterface = Container.Register(pluginInterface);
-        Container.Register(pluginInterface.UiBuilder);
-        // new Localization(_pluginInterface.GetPluginLocDirectory());
-
-        _configuration = Container.Register(Bag.Config);
-
-        // _configuration =
-        // Container.Register((ConfigurationFile)_pluginInterface.GetPluginConfig() ?? new ConfigurationFile());
-
-        Container.Register(new State());
-        Container.RegisterDisposable<Translator>();
-        Container.RegisterDisposable<PluginUi>();
-        Container.RegisterDisposable<FrameworkThings>();
-        Container.RegisterDisposable<MainCommand>();
-        Container.RegisterDisposable<SettingsCommand>();
+        PluginPath = PluginInterface.AssemblyLocation.DirectoryName;
+        Config = ConfigurationLoader.Load();
+        State = new State();
+        Translator = new Translator();
+        FrameworkThings = new FrameworkThings();
+        MainCommand = new MainCommand();
+        SettingsCommand = new SettingsCommand();
+        PluginUi = new PluginUi();
     }
-
-    public string PluginPath { get; }
-    private Container Container { get; }
 
     void IDisposable.Dispose()
     {
-        _pluginInterface.SavePluginConfig(_configuration);
-        Container.Dispose();
+        PluginInterface.SavePluginConfig(Config);
+        Translator.Dispose();
+        PluginUi.Dispose();
+        FrameworkThings.Dispose();
+        MainCommand.Dispose();
+        SettingsCommand.Dispose();
     }
 }

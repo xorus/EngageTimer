@@ -14,33 +14,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using EngageTimer.Configuration;
-using EngageTimer.Status;
-using XwContainer;
 
 namespace EngageTimer.Game;
 
 public class TickingSound
 {
-    private readonly ConfigurationFile _configuration;
     private readonly SfxPlay _sfx = new();
-    private readonly State _state;
 
     private int? _lastNumberPlayed;
 
     // This is a workaround for CLR taking some time to init the pointy method call. 
     private bool _soundLoaded;
 
-    public TickingSound(Container container)
-    {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-    }
-
     public void Update()
     {
         // if (!_configuration.DisplayCountdown) return;
-        if (!_configuration.Countdown.EnableTickingSound || _state.Mocked) return;
+        var configuration = Plugin.Config;
+        var state = Plugin.State;
+        if (!configuration.Countdown.EnableTickingSound || state.Mocked) return;
         if (!_soundLoaded)
         {
             _sfx.SoundEffect(0); // should be cursor sound
@@ -48,16 +39,17 @@ public class TickingSound
             return;
         }
 
-        if (_state.CountingDown &&
-            _state.CountDownValue > 5 && _state.CountDownValue <= _configuration.Countdown.StartTickingFrom)
-            TickSound((int)Math.Ceiling(_state.CountDownValue));
+        if (state.CountingDown &&
+            state.CountDownValue > 5 && state.CountDownValue <= configuration.Countdown.StartTickingFrom)
+            TickSound((int)Math.Ceiling(state.CountDownValue));
     }
 
     private void TickSound(int n)
     {
-        if (!_configuration.Countdown.EnableTickingSound || _lastNumberPlayed == n)
+        var configuration = Plugin.Config;
+        if (!configuration.Countdown.EnableTickingSound || _lastNumberPlayed == n)
             return;
         _lastNumberPlayed = n;
-        _sfx.SoundEffect(_configuration.Countdown.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
+        _sfx.SoundEffect(configuration.Countdown.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
     }
 }

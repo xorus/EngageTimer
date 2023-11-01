@@ -18,21 +18,15 @@ using System.Globalization;
 using System.IO;
 using System.Numerics;
 using Dalamud.Interface;
-using Dalamud.Plugin;
 using EngageTimer.Configuration;
 using EngageTimer.Status;
 using ImGuiNET;
-using XwContainer;
 
 namespace EngageTimer.Ui;
 
 public sealed class FloatingWindow : IDisposable
 {
     private const float WindowPadding = 5f;
-    private readonly ConfigurationFile _configuration;
-    private readonly DalamudPluginInterface _pluginInterface;
-    private readonly State _state;
-    private readonly UiBuilder _ui;
 
     private bool _firstLoad = true;
     private ImFontPtr _font;
@@ -45,13 +39,9 @@ public sealed class FloatingWindow : IDisposable
     private bool _triggerFontRebuild = true;
     private bool _useFont;
 
-    public FloatingWindow(Container container)
+    public FloatingWindow()
     {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-        _pluginInterface = Bag.PluginInterface;
-        _ui = Bag.PluginInterface.UiBuilder;
-        _ui.BuildFonts += BuildFont;
+        Plugin.PluginInterface.UiBuilder.BuildFonts += BuildFont;
     }
 
     public bool StopwatchVisible
@@ -62,17 +52,17 @@ public sealed class FloatingWindow : IDisposable
 
     public void Dispose()
     {
-        _ui.BuildFonts -= BuildFont;
+        Plugin.PluginInterface.UiBuilder.BuildFonts -= BuildFont;
         _grBuilder?.Destroy();
-        _ui.RebuildFonts();
+        Plugin.PluginInterface.UiBuilder.RebuildFonts();
     }
 
     public void Draw()
     {
-        if (!_configuration.FloatingWindow.Display) return;
+        if (!Plugin.Config.FloatingWindow.Display) return;
         if (_triggerFontRebuild)
         {
-            _ui.RebuildFonts();
+            Plugin.PluginInterface.UiBuilder.RebuildFonts();
             return;
         }
 
@@ -88,72 +78,73 @@ public sealed class FloatingWindow : IDisposable
         if (_firstLoad) _firstLoad = false;
     }
 
-    private bool StopwatchActive()
+    private static bool StopwatchActive()
     {
-        var displayStopwatch = _configuration.FloatingWindow.EnableStopwatch;
+        var displayStopwatch = Plugin.Config.FloatingWindow.EnableStopwatch;
         if (!displayStopwatch) return false;
 
-        if (_configuration.FloatingWindow.AutoHide &&
-            (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.FloatingWindow.AutoHideTimeout)
+        if (Plugin.Config.FloatingWindow.AutoHide &&
+            (DateTime.Now - Plugin.State.CombatEnd).TotalSeconds > Plugin.Config.FloatingWindow.AutoHideTimeout)
             return false;
 
-        return !_configuration.FloatingWindow.StopwatchOnlyInDuty || _state.InInstance;
+        return !Plugin.Config.FloatingWindow.StopwatchOnlyInDuty || Plugin.State.InInstance;
     }
 
-    private bool CountdownActive()
+    private static bool CountdownActive()
     {
-        return _configuration.FloatingWindow.EnableCountdown && _state.CountingDown && _state.CountDownValue > 0;
+        return Plugin.Config.FloatingWindow.EnableCountdown && Plugin.State.CountingDown &&
+               Plugin.State.CountDownValue > 0;
     }
 
     private void DrawWindow(bool stopwatchActive, bool countdownActive)
     {
         // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindow.FloatingWindowBackgroundColor.Z);
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, _configuration.FloatingWindow.BackgroundColor);
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
         var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
-        if (_configuration.FloatingWindow.Lock) flags |= ImGuiWindowFlags.NoMouseInputs;
+        if (Plugin.Config.FloatingWindow.Lock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
         if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindow.TextColor);
-            ImGui.SetWindowFontScale(_configuration.FloatingWindow.Scale);
+            ImGui.PushStyleColor(ImGuiCol.Text, Plugin.Config.FloatingWindow.TextColor);
+            ImGui.SetWindowFontScale(Plugin.Config.FloatingWindow.Scale);
 
-            var stopwatchDecimals = _configuration.FloatingWindow.DecimalStopwatchPrecision > 0;
+            var stopwatchDecimals = Plugin.Config.FloatingWindow.DecimalStopwatchPrecision > 0;
 
             var text = ""; // text to be displayed
             // the largest possible string, taking advantage that the default font has fixed number width
             var maxText = "";
-            if (_configuration.FloatingWindow.EnableStopwatch)
-                maxText = (_configuration.FloatingWindow.StopwatchAsSeconds ? "0000" : "00:00")
+            if (Plugin.Config.FloatingWindow.EnableStopwatch)
+                maxText = (Plugin.Config.FloatingWindow.StopwatchAsSeconds ? "0000" : "00:00")
                           + (stopwatchDecimals
-                              ? "." + new string('0', _configuration.FloatingWindow.DecimalStopwatchPrecision)
+                              ? "." + new string('0', Plugin.Config.FloatingWindow.DecimalStopwatchPrecision)
                               : "");
-            else if (_configuration.FloatingWindow.EnableCountdown)
-                maxText = (_configuration.FloatingWindow.CountdownNegativeSign ? "-" : "") + "00" +
-                          (_configuration.FloatingWindow.DecimalCountdownPrecision > 0 ? "." : "") +
-                          new string('0', _configuration.FloatingWindow.DecimalCountdownPrecision);
+            else if (Plugin.Config.FloatingWindow.EnableCountdown)
+                maxText = (Plugin.Config.FloatingWindow.CountdownNegativeSign ? "-" : "") + "00" +
+                          (Plugin.Config.FloatingWindow.DecimalCountdownPrecision > 0 ? "." : "") +
+                          new string('0', Plugin.Config.FloatingWindow.DecimalCountdownPrecision);
 
             var displayed = false;
             if (countdownActive)
             {
-                var negative = _configuration.FloatingWindow.CountdownNegativeSign ? "-" : "";
-                var format = "{0:0." + new string('0', _configuration.FloatingWindow.DecimalCountdownPrecision) +
+                var negative = Plugin.Config.FloatingWindow.CountdownNegativeSign ? "-" : "";
+                var format = "{0:0." + new string('0', Plugin.Config.FloatingWindow.DecimalCountdownPrecision) +
                              "}";
-                var number = _state.CountDownValue + (_configuration.FloatingWindow.AccurateMode ? 0 : 1);
+                var number = Plugin.State.CountDownValue + (Plugin.Config.FloatingWindow.AccurateMode ? 0 : 1);
                 text = negative + string.Format(CultureInfo.InvariantCulture, format, number);
                 displayed = true;
             }
             else if (stopwatchActive)
             {
-                if (_configuration.FloatingWindow.StopwatchAsSeconds)
+                if (Plugin.Config.FloatingWindow.StopwatchAsSeconds)
                     text = string.Format(CultureInfo.InvariantCulture,
-                        "{0:0." + new string('0', _configuration.FloatingWindow.DecimalStopwatchPrecision) + "}",
-                        _state.CombatDuration.TotalSeconds);
+                        "{0:0." + new string('0', Plugin.Config.FloatingWindow.DecimalStopwatchPrecision) + "}",
+                        Plugin.State.CombatDuration.TotalSeconds);
                 else
                     text = stopwatchDecimals
-                        ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
-                            _configuration.FloatingWindow.DecimalStopwatchPrecision))
-                        : _state.CombatDuration.ToString(@"mm\:ss");
+                        ? Plugin.State.CombatDuration.ToString(@"mm\:ss\." + new string('f',
+                            Plugin.Config.FloatingWindow.DecimalStopwatchPrecision))
+                        : Plugin.State.CombatDuration.ToString(@"mm\:ss");
 
                 displayed = true;
             }
@@ -167,17 +158,17 @@ public sealed class FloatingWindow : IDisposable
 
                 if (textWidth < _maxTextWidth)
                 {
-                    if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Left)
+                    if (Plugin.Config.FloatingWindow.Align == ConfigurationFile.TextAlign.Left)
                     {
                         _paddingRight = _maxTextWidth - textWidth;
                         _paddingLeft = 0f;
                     }
-                    else if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Center)
+                    else if (Plugin.Config.FloatingWindow.Align == ConfigurationFile.TextAlign.Center)
                     {
                         _paddingLeft = (_maxTextWidth - textWidth) / 2;
                         _paddingRight = (_maxTextWidth - textWidth) / 2;
                     }
-                    else if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Right)
+                    else if (Plugin.Config.FloatingWindow.Align == ConfigurationFile.TextAlign.Right)
                     {
                         _paddingRight = 0f;
                         _paddingLeft = _maxTextWidth - textWidth;
@@ -200,9 +191,10 @@ public sealed class FloatingWindow : IDisposable
 
                 #endregion
 
-                if (_state.PrePulling) ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindow.PrePullColor);
+                if (Plugin.State.PrePulling)
+                    ImGui.PushStyleColor(ImGuiCol.Text, Plugin.Config.FloatingWindow.PrePullColor);
                 ImGui.Text(text);
-                if (_state.PrePulling) ImGui.PopStyleColor();
+                if (Plugin.State.PrePulling) ImGui.PopStyleColor();
             }
 
             ImGui.PopStyleColor();
@@ -229,7 +221,7 @@ public sealed class FloatingWindow : IDisposable
             string filePath = null;
             foreach (var font in fonts)
             {
-                filePath = Path.Combine(_pluginInterface.DalamudAssetDirectory.FullName, "UIRes", font);
+                filePath = Path.Combine(Plugin.PluginInterface.DalamudAssetDirectory.FullName, "UIRes", font);
                 if (File.Exists(filePath)) break;
                 filePath = null;
             }
@@ -243,14 +235,14 @@ public sealed class FloatingWindow : IDisposable
             grBuilder.AddText("-0123456789:.z");
             grBuilder.BuildRanges(out var ranges);
             _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath,
-                Math.Max(8, _configuration.FloatingWindow.FontSize),
+                Math.Max(8, Plugin.Config.FloatingWindow.FontSize),
                 null, ranges.Data);
 
             _grBuilder = grBuilder;
         }
         catch (Exception e)
         {
-            Bag.Logger.Error(e.Message);
+            Plugin.Logger.Error(e.Message);
         }
 
         _useFont = true;

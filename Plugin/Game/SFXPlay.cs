@@ -31,7 +31,7 @@ internal unsafe class GameSound
 
     public GameSound()
     {
-        Bag.GameInterop.InitializeFromAttributes(this);
+        Plugin.GameInterop.InitializeFromAttributes(this);
     }
 }
 

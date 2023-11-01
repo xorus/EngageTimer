@@ -1,5 +1,6 @@
 ﻿# v2.3.0.0 - unreleased
 
+- Big code rewrite and a bit of optimization
 - Reorganized configuration file to preserve my sanity
 
 # v2.2.6.0

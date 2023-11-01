@@ -17,17 +17,12 @@ using System;
 using System.IO;
 using System.Threading;
 using EmbedIO;
-using EngageTimer.Configuration;
-using EngageTimer.Status;
-using XwContainer;
 
 namespace EngageTimer.Web;
 
 internal class WebServer : IDisposable
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly State _state;
-    private readonly string _staticDirectory;
+    private readonly string _staticDirectory = Path.Combine(Plugin.PluginPath, "Data", "html");
 
     private bool _enableWebServer;
 
@@ -35,13 +30,6 @@ internal class WebServer : IDisposable
     private CancellationTokenSource _serverCancellationToken;
 
     private Websocket _websocket;
-
-    public WebServer(Container container)
-    {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-        _staticDirectory = Path.Combine(container.Resolve<Plugin>().PluginPath, "Data", "html");
-    }
 
     public void Dispose()
     {
@@ -51,25 +39,26 @@ internal class WebServer : IDisposable
         _serverCancellationToken?.Dispose();
     }
 
-    public void Enable()
+    private void Enable()
     {
-        Bag.Logger.Info($"WebServer enabled - serving files from {_staticDirectory}");
-        _websocket = new Websocket("/ws", _state, _configuration);
+        Plugin.Logger.Info($"WebServer enabled - serving files from {_staticDirectory}");
+        var configuration = Plugin.Config;
+        _websocket = new Websocket("/ws", Plugin.State, configuration);
         _server = new EmbedIO.WebServer(o => o
-                    .WithUrlPrefix($"http://+:{_configuration.WebServer.WebServer}/")
+                    .WithUrlPrefix($"http://+:{configuration.WebServer.WebServer}/")
                     .WithMode(HttpListenerMode.EmbedIO)
                 )
                 .WithModule(_websocket)
                 .WithStaticFolder("/", _staticDirectory, false)
             ;
-        _server.StateChanged += (s, e) => { Bag.Logger.Info($"WebServer is {e.NewState}"); };
+        _server.StateChanged += (s, e) => { Plugin.Logger.Info($"WebServer is {e.NewState}"); };
         _serverCancellationToken = new CancellationTokenSource();
         _server.RunAsync(_serverCancellationToken.Token);
     }
 
-    public void Disable()
+    private void Disable()
     {
-        Bag.Logger.Info("Disabling WebServer");
+        Plugin.Logger.Info("Disabling WebServer");
         if (_serverCancellationToken != null && !_serverCancellationToken.IsCancellationRequested)
             _serverCancellationToken?.Cancel();
 
@@ -80,9 +69,10 @@ internal class WebServer : IDisposable
     public void Update()
     {
         // Check if the webserver enable setting has been toggled
-        if (_enableWebServer != _configuration.WebServer.Enable)
+        var configuration = Plugin.Config;
+        if (_enableWebServer != configuration.WebServer.Enable)
         {
-            _enableWebServer = _configuration.WebServer.Enable;
+            _enableWebServer = configuration.WebServer.Enable;
             if (_enableWebServer)
                 Enable();
             else
