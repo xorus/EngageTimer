@@ -20,7 +20,6 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
 using EngageTimer.Status;
-using XwContainer;
 
 /*
  * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
@@ -45,11 +44,11 @@ public sealed class CountdownHook : IDisposable
     private float _lastCountDownValue;
 
 
-    public CountdownHook(Container container)
+    public CountdownHook()
     {
-        _state = container.Resolve<State>();
+        _state = Plugin.State;
         _countDown = 0;
-        Bag.GameInterop.InitializeFromAttributes(this);
+        Plugin.GameInterop.InitializeFromAttributes(this);
         _countdownTimerHook?.Enable();
     }
 
@@ -70,7 +69,7 @@ public sealed class CountdownHook : IDisposable
     {
         if (_state.Mocked) return;
         UpdateCountDown();
-        _state.InInstance = Bag.Condition[ConditionFlag.BoundByDuty];
+        _state.InInstance = Plugin.Condition[ConditionFlag.BoundByDuty];
     }
 
     private void UpdateCountDown()

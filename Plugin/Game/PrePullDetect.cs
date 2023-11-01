@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using EngageTimer.Configuration;
-using EngageTimer.Status;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using XwContainer;
 
 namespace EngageTimer.Game;
 
@@ -25,23 +22,16 @@ namespace EngageTimer.Game;
  */
 public class PrePullDetect
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly State _state;
-
-    public PrePullDetect(Container container)
-    {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-    }
-
     public unsafe void Update()
     {
-        if (_state.PrePulling) _state.PrePulling = false;
-        if (!_configuration.FloatingWindow.EnableCountdown || !_configuration.FloatingWindow.ShowPrePulling) return;
+        var state = Plugin.State;
+        if (state.PrePulling) state.PrePulling = false;
+        var configuration = Plugin.Config;
+        if (!configuration.FloatingWindow.EnableCountdown || !configuration.FloatingWindow.ShowPrePulling) return;
         var actionManager = (TrimmedDownActionManager*)ActionManager.Instance();
-        if (!_state.CountingDown || !actionManager->isCasting) return;
-        _state.PrePulling =
-            actionManager->castTime - actionManager->elapsedCastTime + _configuration.FloatingWindow.PrePullOffset <
-            _state.CountDownValue;
+        if (!state.CountingDown || !actionManager->isCasting) return;
+        state.PrePulling =
+            actionManager->castTime - actionManager->elapsedCastTime + configuration.FloatingWindow.PrePullOffset <
+            state.CountDownValue;
     }
 }

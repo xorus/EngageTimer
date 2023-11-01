@@ -15,39 +15,30 @@
 
 using System;
 using Dalamud.Interface.Windowing;
-using XwContainer;
 
 namespace EngageTimer.Ui;
 
 public sealed class PluginUi : IDisposable
 {
-    private readonly Container _container;
-    private readonly CountDown _countDown;
-    private readonly FloatingWindow _floatingWindow;
-    private readonly Settings _settings;
+    private readonly CountDown _countDown = new();
+    private readonly FloatingWindow _floatingWindow = new();
+    private readonly Settings _settings = new();
     private readonly WindowSystem _windowSystem;
 
-    public PluginUi(Container container)
+    public PluginUi()
     {
-        _container = container;
-        var numbers = new NumberTextures(container);
-        container.Register(numbers);
-
+        Plugin.NumberTextures = new NumberTextures();
         _windowSystem = new WindowSystem("Engage Timer");
-        _countDown = container.Register<CountDown>();
-        _floatingWindow = container.RegisterDisposable<FloatingWindow>();
-        _settings = container.Register<Settings>();
-
         _windowSystem.AddWindow(_settings);
-
-        Bag.PluginInterface.UiBuilder.Draw += Draw;
-        Bag.PluginInterface.UiBuilder.OpenConfigUi += OpenSettings;
+        Plugin.PluginInterface.UiBuilder.Draw += Draw;
+        Plugin.PluginInterface.UiBuilder.OpenConfigUi += OpenSettings;
     }
 
     public void Dispose()
     {
-        Bag.PluginInterface.UiBuilder.Draw -= Draw;
-        Bag.PluginInterface.UiBuilder.OpenConfigUi -= OpenSettings;
+        _floatingWindow.Dispose();
+        Plugin.PluginInterface.UiBuilder.Draw -= Draw;
+        Plugin.PluginInterface.UiBuilder.OpenConfigUi -= OpenSettings;
     }
 
     private void Draw()

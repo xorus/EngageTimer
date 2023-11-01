@@ -19,13 +19,10 @@ using System.Globalization;
 using System.Numerics;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
-using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
-using EngageTimer.Status;
 using EngageTimer.Ui.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
-using XwContainer;
 
 namespace EngageTimer.Ui;
 
@@ -36,7 +33,6 @@ public sealed class CountDown
     private const float BaseNumberScale = 1f;
     private const int GameCountdownWidth = 60; // just trust in the magic numbers
     private const float AnimationSize = .7f;
-    private readonly ConfigurationFile _configuration;
 
     private readonly Easing _easing = new OutCubic(new TimeSpan(0, 0, 0, 0, 1000));
 
@@ -45,16 +41,13 @@ public sealed class CountDown
         1, -0.02, .71, 1
     );
 
-    private readonly IGameGui _gui;
-    private readonly NumberTextures _numberTextures;
-    private readonly State _state;
     private bool _accurateMode;
 
     /**
      * This is a workaround for ImGui taking some time to render a window for the first time.
      * It can cause a small amount on lag when starting a countdown, which we do not want, and this is why I will
      * draw the countdown windows for the first frame the plugin gets loaded so ImGui doesn't get a chance to lag
-     * 
+     *
      * In my testing, this is about 10 to 20ms.
      */
     private bool _firstLoad = true;
@@ -63,14 +56,10 @@ public sealed class CountDown
     private bool _originalAddonHidden;
     private bool _wasInMainViewport = true;
 
-    public CountDown(Container container)
+    public CountDown()
     {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-        _gui = Bag.GameGui;
-        _numberTextures = container.Resolve<NumberTextures>();
-        _configuration.OnSave += ConfigurationOnOnSave;
-        _state.StartCountingDown += Start;
+        Plugin.Config.OnSave += ConfigurationOnOnSave;
+        Plugin.State.StartCountingDown += Start;
         UpdateFromConfig();
     }
 
@@ -86,13 +75,13 @@ public sealed class CountDown
      */
     private void UpdateFromConfig()
     {
-        _accurateMode = _configuration.Countdown.HideOriginalAddon && _configuration.Countdown.AccurateMode;
+        _accurateMode = Plugin.Config.Countdown.HideOriginalAddon && Plugin.Config.Countdown.AccurateMode;
     }
 
     // finds the original CountDown addon and toggles its visibility flag
     private unsafe void ToggleOriginalAddon()
     {
-        var addon = _gui.GetAddonByName("ScreenInfo_CountDown");
+        var addon = Plugin.GameGui.GetAddonByName("ScreenInfo_CountDown");
         if (addon == IntPtr.Zero) return;
 
         try
@@ -117,52 +106,52 @@ public sealed class CountDown
     public void Draw()
     {
 #if DEBUG
+        var state = Plugin.State;
         if (ImGui.Begin("egdebug"))
         {
             ImGui.Text("_originalAddonHidden: " + _originalAddonHidden);
-            ImGui.Text("CountingDown: " + _state.CountingDown);
-            ImGui.Text("CountDownValue: " + _state.CountDownValue);
-            ImGui.Text("Mocked: " + _state.Mocked);
-            ImGui.Text("CombatDuration: " + _state.CombatDuration);
-            ImGui.Text("CombatEnd: " + _state.CombatEnd);
-            ImGui.Text("CombatStart: " + _state.CombatStart);
-            ImGui.Text("InCombat: " + _state.InCombat);
-            ImGui.Text("InInstance: " + _state.InInstance);
+            ImGui.Text("CountingDown: " + state.CountingDown);
+            ImGui.Text("CountDownValue: " + state.CountDownValue);
+            ImGui.Text("Mocked: " + state.Mocked);
+            ImGui.Text("CombatDuration: " + state.CombatDuration);
+            ImGui.Text("CombatEnd: " + state.CombatEnd);
+            ImGui.Text("CombatStart: " + state.CombatStart);
+            ImGui.Text("InCombat: " + state.InCombat);
+            ImGui.Text("InInstance: " + state.InInstance);
         }
 
         ImGui.End();
 #endif
 
         // display is disabled
-        if (!_configuration.Countdown.Display) return;
+        if (!Plugin.Config.Countdown.Display) return;
 
-
-        if (!_firstLoad && (!_state.CountingDown || !_configuration.Countdown.Display))
+        if (!_firstLoad && (!state.CountingDown || !Plugin.Config.Countdown.Display))
         {
             // re-enable the original addon at the last possible moment (when done counting down) to show "START"
-            if (_originalAddonHidden && _configuration.Countdown.HideOriginalAddon) ToggleOriginalAddon();
+            if (_originalAddonHidden && Plugin.Config.Countdown.HideOriginalAddon) ToggleOriginalAddon();
             return;
         }
 
-        if (_configuration.Countdown.HideOriginalAddon && _state.CountDownValue <= 5 && !_originalAddonHidden)
+        if (Plugin.Config.Countdown.HideOriginalAddon && state.CountDownValue <= 5 && !_originalAddonHidden)
             ToggleOriginalAddon();
 
-        var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.Countdown.HideOriginalAddon;
-        if (showMainCountdown && _configuration.Countdown.EnableDisplayThreshold &&
-            _state.CountDownValue > _configuration.Countdown.DisplayThreshold)
+        var showMainCountdown = _firstLoad || state.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
+        if (showMainCountdown && Plugin.Config.Countdown.EnableDisplayThreshold &&
+            state.CountDownValue > Plugin.Config.Countdown.DisplayThreshold)
             return;
 
         var numberScale = BaseNumberScale;
         var maxNumberScale = numberScale;
         if (showMainCountdown)
         {
-            numberScale *= _configuration.Countdown.Scale;
+            numberScale *= Plugin.Config.Countdown.Scale;
             maxNumberScale = numberScale;
             // numberScale += (_state.CountDownValue % 1) * 0.7f;
 
-            if (_configuration.Countdown.Animate)
+            if (Plugin.Config.Countdown.Animate)
             {
-                var second = (int)_state.CountDownValue;
+                var second = (int)state.CountDownValue;
                 if (_lastSecond != second)
                 {
                     _easing.Restart();
@@ -172,7 +161,7 @@ public sealed class CountDown
 
                 _easing.Update();
                 _easingOpacity.Update();
-                if (_configuration.Countdown.AnimateScale)
+                if (Plugin.Config.Countdown.AnimateScale)
                 {
                     maxNumberScale = numberScale + AnimationSize;
                     numberScale += AnimationSize * (1 - (float)_easing.Value);
@@ -180,22 +169,22 @@ public sealed class CountDown
             }
         }
 
-        var negativeMargin = _configuration.Countdown.CustomNegativeMargin ?? (
-            _configuration.Countdown.Monospaced
-                ? _numberTextures.NumberNegativeMarginMono
-                : _numberTextures.NumberNegativeMargin
+        var negativeMargin = Plugin.Config.Countdown.CustomNegativeMargin ?? (
+            Plugin.Config.Countdown.Monospaced
+                ? Plugin.NumberTextures.NumberNegativeMarginMono
+                : Plugin.NumberTextures.NumberNegativeMargin
         ) * numberScale;
 
         var io = ImGui.GetIO();
         var windowPosition = new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f) +
-                             _configuration.Countdown.WindowOffset * io.DisplaySize;
+                             Plugin.Config.Countdown.WindowOffset * io.DisplaySize;
         var windowSize = new Vector2(
-            maxNumberScale * (_numberTextures.MaxTextureWidth *
-                              (_configuration.Countdown.EnableDecimals
-                                  ? 3f + _configuration.Countdown.DecimalPrecision * .5f
+            maxNumberScale * (Plugin.NumberTextures.MaxTextureWidth *
+                              (Plugin.Config.Countdown.EnableDecimals
+                                  ? 3f + Plugin.Config.Countdown.DecimalPrecision * .5f
                                   : 2
                               )),
-            _numberTextures.MaxTextureHeight * maxNumberScale + 30);
+            Plugin.NumberTextures.MaxTextureHeight * maxNumberScale + 30);
 
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
         ImGui.SetNextWindowPos(windowPosition, ImGuiCond.Always, new Vector2(0.5f, 0.5f));
@@ -228,11 +217,11 @@ public sealed class CountDown
                 ShowBackground = false;
             }
 
-            DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, false);
-            if (_configuration.Countdown.Animate && _configuration.Countdown.AnimateOpacity)
+            DrawCountdown(showMainCountdown, numberScale, negativeMargin, false);
+            if (Plugin.Config.Countdown.Animate && Plugin.Config.Countdown.AnimateOpacity)
             {
                 ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
-                DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, true);
+                DrawCountdown(showMainCountdown, numberScale, negativeMargin, true);
                 ImGui.PopStyleVar();
             }
         }
@@ -247,11 +236,12 @@ public sealed class CountDown
         ImGui.End();
     }
 
-    private void DrawCountdown(ImGuiIOPtr io, bool showMainCountdown, float numberScale, float negativeMarginScaled,
+    private void DrawCountdown(bool showMainCountdown, float numberScale, float negativeMarginScaled,
         bool alternateMode)
     {
         var windowSize = ImGui.GetWindowSize();
-        var totalHeight = _numberTextures.MaxTextureHeight * numberScale;
+        var numberTextures = Plugin.NumberTextures;
+        var totalHeight = numberTextures.MaxTextureHeight * numberScale;
         ImGui.SetCursorPosY((windowSize.Y - totalHeight) / 2f);
 
         var mainTotalWidth = 0f;
@@ -260,20 +250,21 @@ public sealed class CountDown
         if (showMainCountdown)
         {
             var number = _accurateMode
-                ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
-                : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
+                ? Math.Floor(Plugin.State.CountDownValue).ToString(CultureInfo.InvariantCulture)
+                : Math.Ceiling(Plugin.State.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
-            if (_configuration.Countdown.LeadingZero && number.Length == 1) number = "0" + number;
+            if (Plugin.Config.Countdown.LeadingZero && number.Length == 1) number = "0" + number;
 
             mainNumbers = NumberList(number);
             // First loop to compute total width
-            if (_configuration.Countdown.Monospaced)
-                mainTotalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
+            if (Plugin.Config.Countdown.Monospaced)
+                mainTotalWidth = (numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
                                  mainNumbers.Count;
             else
+                // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
                 foreach (var i in mainNumbers)
                 {
-                    var texture = _numberTextures.GetAltTexture(i);
+                    var texture = numberTextures.GetAltTexture(i);
                     mainTotalWidth += texture.Width * numberScale - negativeMarginScaled;
                 }
 
@@ -284,40 +275,40 @@ public sealed class CountDown
         List<int> decimalNumbers = null;
 
         var smolNumberScale = numberScale * .5f;
-        var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
+        var smolMaxWidthScaled = numberTextures.MaxTextureWidth * smolNumberScale;
         var smolNumberCursorY = 0f;
-        if (_configuration.Countdown.EnableDecimals)
+        if (Plugin.Config.Countdown.EnableDecimals)
         {
             var decimalPart =
-                (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
-                .ToString("F" + _configuration.Countdown.DecimalPrecision, CultureInfo.InvariantCulture)[2..];
+                (Plugin.State.CountDownValue - Math.Truncate(Plugin.State.CountDownValue))
+                .ToString("F" + Plugin.Config.Countdown.DecimalPrecision, CultureInfo.InvariantCulture)[2..];
 
             // align the small numbers on the number baseline
-            var offsetY = _numberTextures.MaxTextureHeight * numberScale
-                          - _numberTextures.MaxTextureHeight * smolNumberScale
-                          - _numberTextures.NumberBottomMargin * smolNumberScale;
+            var offsetY = numberTextures.MaxTextureHeight * numberScale
+                          - numberTextures.MaxTextureHeight * smolNumberScale
+                          - numberTextures.NumberBottomMargin * smolNumberScale;
 
             smolNumberCursorY = ImGui.GetCursorPosY() + offsetY;
             decimalNumbers = NumberList(decimalPart);
-            decimalTotalWidth = _numberTextures.MaxTextureWidth * (decimalNumbers.Count * smolNumberScale) -
+            decimalTotalWidth = numberTextures.MaxTextureWidth * (decimalNumbers.Count * smolNumberScale) -
                                 (decimalNumbers.Count - 1) * negativeMarginScaled * smolNumberScale;
         }
 
         // draw main
         if (mainNumbers != null)
         {
-            if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Left)
+            if (Plugin.Config.Countdown.Align == ConfigurationFile.TextAlign.Left)
                 ImGui.SetCursorPosX(0f);
-            else if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Center)
+            else if (Plugin.Config.Countdown.Align == ConfigurationFile.TextAlign.Center)
                 ImGui.SetCursorPosX(windowSize.X / 2f - mainTotalWidth / 2f);
-            else if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Right)
+            else if (Plugin.Config.Countdown.Align == ConfigurationFile.TextAlign.Right)
                 ImGui.SetCursorPosX(windowSize.X - (mainTotalWidth + decimalTotalWidth));
 
             // Draw the images \o/
             foreach (var i in mainNumbers)
                 DrawNumber(alternateMode, i,
                     numberScale, negativeMarginScaled,
-                    _numberTextures.MaxTextureWidth * numberScale, _configuration.Countdown.Monospaced);
+                    numberTextures.MaxTextureWidth * numberScale, Plugin.Config.Countdown.Monospaced);
         }
 
         if (mainNumbers == null && decimalNumbers != null) ImGui.SetCursorPosX(windowSize.X / 2f + GameCountdownWidth);
@@ -337,13 +328,12 @@ public sealed class CountDown
         float maxWidthScaled,
         bool fixedWidth)
     {
-        var texture = alternateMode ? _numberTextures.GetAltTexture(i) : _numberTextures.GetTexture(i);
+        var texture = alternateMode ? Plugin.NumberTextures.GetAltTexture(i) : Plugin.NumberTextures.GetTexture(i);
         var width = texture.Width * numberScale;
         var cursorX = ImGui.GetCursorPosX();
         if (fixedWidth) ImGui.SetCursorPosX(cursorX + (maxWidthScaled - width) / 2);
 
-        ImGui.Image(texture.ImGuiHandle,
-            new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+        ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * numberScale, texture.Height * numberScale));
         ImGui.SameLine();
 
         if (fixedWidth)

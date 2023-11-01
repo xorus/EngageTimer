@@ -19,40 +19,29 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
-using XwContainer;
 
 namespace EngageTimer.Status;
 
 public class CombatStopwatch
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly IPartyList _partyList;
-    private readonly State _state;
     private DateTime _combatTimeEnd;
     private DateTime _combatTimeStart;
     private bool _shouldRestartCombatTimer = true;
 
-    public CombatStopwatch(Container container)
-    {
-        _state = container.Resolve<State>();
-        _partyList = Bag.PartyList;
-        _configuration = container.Resolve<ConfigurationFile>();
-    }
-
     public void UpdateEncounterTimer()
     {
-        if (_state.Mocked) return;
-        if (_configuration.FloatingWindow.StopwatchOnlyInDuty && !_state.InInstance && !_state.InCombat) return;
+        if (Plugin.State.Mocked) return;
+        if (Plugin.Config.FloatingWindow.StopwatchOnlyInDuty && !Plugin.State.InInstance && !Plugin.State.InCombat) return;
 
         // if not in party but in combat (or self is in combat)
         // from my testing, condition flag is always identical to reading the client state status flag (but way faster)
         // (also client the party list does not exist when in solo)
         // var player = _clientState.LocalPlayer as Character;
         // var inCombat = player != null && (player.StatusFlags & StatusFlags.InCombat) != 0; 
-        var inCombat = Bag.Condition[ConditionFlag.InCombat];
+        var inCombat = Plugin.Condition[ConditionFlag.InCombat];
         if (!inCombat)
             // if anyone in the party is in combat
-            foreach (var actor in _partyList)
+            foreach (var actor in Plugin.PartyList)
             {
                 if (actor.GameObject is not Character character ||
                     (character.StatusFlags & StatusFlags.InCombat) == 0) continue;
@@ -62,7 +51,7 @@ public class CombatStopwatch
 
         if (inCombat)
         {
-            _state.InCombat = true;
+            Plugin.State.InCombat = true;
             if (_shouldRestartCombatTimer)
             {
                 _shouldRestartCombatTimer = false;
@@ -73,12 +62,12 @@ public class CombatStopwatch
         }
         else
         {
-            _state.InCombat = false;
+            Plugin.State.InCombat = false;
             _shouldRestartCombatTimer = true;
         }
 
-        _state.CombatStart = _combatTimeStart;
-        _state.CombatDuration = _combatTimeEnd - _combatTimeStart;
-        _state.CombatEnd = _combatTimeEnd;
+        Plugin.State.CombatStart = _combatTimeStart;
+        Plugin.State.CombatDuration = _combatTimeEnd - _combatTimeStart;
+        Plugin.State.CombatEnd = _combatTimeEnd;
     }
 }

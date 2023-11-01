@@ -20,28 +20,24 @@ using Newtonsoft.Json;
 
 namespace EngageTimer.Configuration;
 
-/**
- *
- */
 public static class ConfigurationLoader
 {
     public static ConfigurationFile Load()
     {
-        var logger = Bag.Logger;
-        logger.Information("Hello");
+        var logger = Plugin.Logger;
 
-        var configFile = Bag.PluginInterface.GetPluginConfig();
-        Bag.Logger.Information($"Version = {configFile?.Version}");
+        var configFile = Plugin.PluginInterface.GetPluginConfig();
 
         if (configFile == null) return new ConfigurationFile();
         if (configFile.Version >= 3) return (ConfigurationFile)configFile;
 
+        Plugin.Logger.Information($"Migrating config file from v{configFile?.Version}");
         // config files before 3 needs some BIG MIGRATION WORK
         try
         {
             return new ConfigurationFile().Import(
                 JsonConvert.DeserializeObject<OldConfig>(
-                    File.ReadAllText(Bag.PluginInterface.ConfigFile.FullName)
+                    File.ReadAllText(Plugin.PluginInterface.ConfigFile.FullName)
                 ).Migrate()
             );
         }

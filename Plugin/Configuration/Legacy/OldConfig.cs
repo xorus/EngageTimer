@@ -125,7 +125,7 @@ public class OldConfig
     {
         if (Version == 0)
         {
-            Bag.Logger.Information($"Migrating plugin configuration from version {Version}");
+            Plugin.Logger.Information($"Migrating plugin configuration from version {Version}");
             DisplayFloatingWindow = DisplayStopwatch;
             FloatingWindowBackgroundColor = new Vector4(0, 0, 0, 255 * StopwatchOpacity);
             FloatingWindowTextColor = StopwatchColor;
@@ -137,7 +137,7 @@ public class OldConfig
         }
 
         if (Version != 1) return this;
-        Bag.Logger.Information($"Migrating plugin configuration from version {Version}");
+        Plugin.Logger.Information($"Migrating plugin configuration from version {Version}");
         if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0)
             MigrateCountdownOffsetToPercent = true;
         Version = 2;

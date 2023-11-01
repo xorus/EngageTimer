@@ -31,7 +31,7 @@ public class ConfigurationFile : IPluginConfiguration
     }
 
     // Add any other properties or methods here.
-    [NonSerialized] private DalamudPluginInterface _pluginInterface = Bag.PluginInterface;
+    [NonSerialized] private DalamudPluginInterface _pluginInterface = Plugin.PluginInterface;
     public CountdownConfiguration Countdown = new();
 
     public DtrConfiguration Dtr = new();

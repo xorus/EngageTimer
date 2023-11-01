@@ -18,36 +18,29 @@ using Dalamud.Plugin.Services;
 using EngageTimer.Game;
 using EngageTimer.Ui;
 using EngageTimer.Web;
-using XwContainer;
 
 namespace EngageTimer.Status;
 
 public sealed class FrameworkThings : IDisposable
 {
-    private readonly CombatStopwatch _combatStopwatch;
-    private readonly Container _container;
-    private readonly CountdownHook _countdownHook;
-    private readonly DtrBarUi _dtrBarUi;
-    private readonly PrePullDetect _prePull;
-    private readonly WebServer _server;
-    private readonly TickingSound _sound;
+    private readonly CombatStopwatch _combatStopwatch = new();
+    private readonly CountdownHook _countdownHook = new();
+    private readonly DtrBarUi _dtrBarUi = new();
+    private readonly PrePullDetect _prePull = new();
+    private readonly WebServer _server = new();
+    private readonly TickingSound _sound = new();
 
-    public FrameworkThings(Container container)
+    public FrameworkThings()
     {
-        _container = container;
-        _combatStopwatch = _container.Register<CombatStopwatch>();
-        _countdownHook = _container.RegisterDisposable<CountdownHook>();
-        _server = _container.RegisterDisposable<WebServer>();
-        _dtrBarUi = _container.RegisterDisposable<DtrBarUi>();
-        _sound = _container.Register<TickingSound>();
-        _prePull = _container.Register<PrePullDetect>();
-
-        Bag.Framework.Update += OnUpdate;
+        Plugin.Framework.Update += OnUpdate;
     }
 
     public void Dispose()
     {
-        Bag.Framework.Update -= OnUpdate;
+        _countdownHook.Dispose();
+        _server.Dispose();
+        _dtrBarUi.Dispose();
+        Plugin.Framework.Update -= OnUpdate;
     }
 
     private void OnUpdate(IFramework framework)

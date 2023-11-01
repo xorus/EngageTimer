@@ -16,28 +16,17 @@
 using System;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Plugin.Services;
-using EngageTimer.Configuration;
-using EngageTimer.Status;
-using XwContainer;
 
 namespace EngageTimer.Ui;
 
 public sealed class DtrBarUi : IDisposable
 {
-    private readonly ConfigurationFile _configuration;
-    private readonly IDtrBar _dtrBar;
-    private readonly State _state;
     private DtrBarEntry _entry;
 
-    public DtrBarUi(Container container)
+    public DtrBarUi()
     {
-        _configuration = container.Resolve<ConfigurationFile>();
-        _state = container.Resolve<State>();
-        _dtrBar = Bag.DtrBar;
-        GetOrReset(_configuration.Dtr.CombatTimeEnabled);
-        _configuration.Dtr.BarCombatTimerEnableChange +=
-            (_, _) => GetOrReset(_configuration.Dtr.CombatTimeEnabled);
+        GetOrReset(Plugin.Config.Dtr.CombatTimeEnabled);
+        Plugin.Config.Dtr.BarCombatTimerEnableChange += (_, _) => GetOrReset(Plugin.Config.Dtr.CombatTimeEnabled);
     }
 
     public void Dispose()
@@ -47,10 +36,11 @@ public sealed class DtrBarUi : IDisposable
 
     private DtrBarEntry GetEntry()
     {
-        var dtrBarTitle = "EngageTimer stopwatch";
+        const string dtrBarTitle = "EngageTimer stopwatch";
+        var dtrBar = Plugin.DtrBar;
         try
         {
-            _entry = _dtrBar.Get(dtrBarTitle);
+            _entry = dtrBar.Get(dtrBarTitle);
         }
         catch (ArgumentException e)
         {
@@ -60,10 +50,10 @@ public sealed class DtrBarUi : IDisposable
             for (var i = 0; i < 5; i++)
             {
                 var attempt = $"{dtrBarTitle} ({random.Next().ToString()})";
-                Bag.Logger.Error(e, $"Failed to acquire DtrBarEntry {dtrBarTitle}, trying {attempt}");
+                Plugin.Logger.Error(e, $"Failed to acquire DtrBarEntry {dtrBarTitle}, trying {attempt}");
                 try
                 {
-                    _entry = _dtrBar.Get(attempt);
+                    _entry = dtrBar.Get(attempt);
                 }
                 catch (ArgumentException)
                 {
@@ -83,12 +73,12 @@ public sealed class DtrBarUi : IDisposable
         else _entry?.Remove();
     }
 
-    private bool CombatTimerActive()
+    private static bool CombatTimerActive()
     {
-        if (!_configuration.Dtr.CombatTimeEnabled) return false;
-        if (_configuration.Dtr.CombatTimeEnableHideAfter && (DateTime.Now - _state.CombatEnd).TotalSeconds >
-            _configuration.Dtr.CombatTimeHideAfter) return false;
-        return !_configuration.Dtr.CombatTimeAlwaysDisableOutsideDuty || _state.InInstance;
+        if (!Plugin.Config.Dtr.CombatTimeEnabled) return false;
+        if (Plugin.Config.Dtr.CombatTimeEnableHideAfter && (DateTime.Now - Plugin.State.CombatEnd).TotalSeconds >
+            Plugin.Config.Dtr.CombatTimeHideAfter) return false;
+        return !Plugin.Config.Dtr.CombatTimeAlwaysDisableOutsideDuty || Plugin.State.InInstance;
     }
 
     public void Update()
@@ -99,15 +89,14 @@ public sealed class DtrBarUi : IDisposable
             if (_entry is { Shown: true }) _entry.Shown = false;
             return;
         }
-
         if (!_entry.Shown) _entry.Shown = true;
 
-        var seString = (SeString)(_configuration.Dtr.CombatTimePrefix +
-                                  (_configuration.Dtr.CombatTimeDecimalPrecision > 0
-                                      ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
-                                          _configuration.Dtr.CombatTimeDecimalPrecision))
-                                      : _state.CombatDuration.ToString(@"mm\:ss"))
-                                  + _configuration.Dtr.CombatTimeSuffix);
+        var seString = (SeString)(Plugin.Config.Dtr.CombatTimePrefix +
+                                  (Plugin.Config.Dtr.CombatTimeDecimalPrecision > 0
+                                      ? Plugin.State.CombatDuration.ToString(@"mm\:ss\." + new string('f',
+                                          Plugin.Config.Dtr.CombatTimeDecimalPrecision))
+                                      : Plugin.State.CombatDuration.ToString(@"mm\:ss"))
+                                  + Plugin.Config.Dtr.CombatTimeSuffix);
         if (_entry.Text == null || !_entry.Text.Equals(seString)) _entry.Text = seString;
     }
 }
