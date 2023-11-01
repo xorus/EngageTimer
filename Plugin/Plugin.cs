@@ -35,8 +35,6 @@ public sealed class Plugin : IDalamudPlugin
         pluginInterface.Create<Bag>();
         Bag.Init();
         
-        Bag.Logger.Information("reload");
-
         PluginPath = pluginInterface.AssemblyLocation.DirectoryName;
         Container = new Container();
         Container.Register(this);
