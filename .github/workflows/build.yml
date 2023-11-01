@@ -15,10 +15,10 @@ jobs:
           submodules: true
       - name: Setup dev names
         run: |
-          ((Get-Content -path .\EngageTimer.csproj -Raw) -replace '<AssemblyName>EngageTimer','<AssemblyName>EngageTimerDev') | Set-Content -Path .\EngageTimer.csproj
-          ((Get-Content -path .\EngageTimer.csproj -Raw) -replace '<Name>EngageTimer - Dev Version','<Name>EngageTimerDev') | Set-Content -Path .\EngageTimer.csproj
-          ((Get-Content -path .\EngageTimer.yaml -Raw) -replace 'name: EngageTimer','name: EngageTimer - Dev Version') | Set-Content -Path .\EngageTimer.yaml
-          Move-Item .\EngageTimer.yaml .\EngageTimerDev.yaml
+          ((Get-Content -path .\Plugin\EngageTimer.csproj -Raw) -replace '<AssemblyName>EngageTimer','<AssemblyName>EngageTimerDev') | Set-Content -Path .\Plugin\EngageTimer.csproj
+          ((Get-Content -path .\Plugin\EngageTimer.csproj -Raw) -replace '<Name>EngageTimer - Dev Version','<Name>EngageTimerDev') | Set-Content -Path .\Plugin\EngageTimer.csproj
+          ((Get-Content -path .\Plugin\EngageTimer.yaml -Raw) -replace 'name: EngageTimer','name: EngageTimer - Dev Version') | Set-Content -Path .\Plugin\EngageTimer.yaml
+          Move-Item .\Plugin\EngageTimer.yaml .\Plugin\EngageTimerDev.yaml
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Setup .NET
@@ -39,8 +39,8 @@ jobs:
         with:
           name: build.zip
           path: |
-            bin/Release/EngageTimerDev/latest.zip
-            bin/Release/EngageTimerDev/EngageTimerDev.json
+            Plugin/bin/Release/EngageTimerDev/latest.zip
+            Plugin/bin/Release/EngageTimerDev/EngageTimerDev.json
       - name: Update testing repository
         run: |
           Invoke-WebRequest -Uri https://plogon.xorus.dev/update
