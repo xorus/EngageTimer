@@ -1,12 +1,26 @@
-﻿using System;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dalamud.Interface;
 using Dalamud.Interface.Internal;
-using Dalamud.Logging;
+using EngageTimer.Configuration;
 using EngageTimer.Ui.Color;
-using ImGuiScene;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StbiSharp;
@@ -16,7 +30,7 @@ namespace EngageTimer.Ui;
 
 public sealed class NumberTextures
 {
-    private readonly Configuration _configuration;
+    private readonly ConfigurationFile _configuration;
     private readonly string _dataPath;
     private readonly IDalamudTextureWrap _error;
     private readonly Dictionary<int, StbiImage> _numberImages = new();
@@ -26,8 +40,8 @@ public sealed class NumberTextures
 
     public NumberTextures(Container container)
     {
-        _configuration = container.Resolve<Configuration>();
-        _uiBuilder = container.Resolve<UiBuilder>();
+        _configuration = container.Resolve<ConfigurationFile>();
+        _uiBuilder = Bag.PluginInterface.UiBuilder;
         _dataPath = container.Resolve<Plugin>().PluginPath;
         _error = _uiBuilder.LoadImage(Path.Combine(_dataPath, "Data", "error.png"));
 
@@ -54,16 +68,16 @@ public sealed class NumberTextures
         string texturePath;
 
         // if mode is custom and a directory is specified
-        if (_configuration.CountdownTexturePreset == "" && _configuration.CountdownTextureDirectory != null)
+        if (_configuration.Countdown.TexturePreset == "" && _configuration.Countdown.TextureDirectory != null)
         {
-            texturePath = _configuration.CountdownTextureDirectory;
+            texturePath = _configuration.Countdown.TextureDirectory;
         }
         else
         {
             // otherwise we load the selected preset (or default is not found)
-            var preset = Configuration.BundledTextures[0];
-            if (Configuration.BundledTextures.Contains(_configuration.CountdownTexturePreset ?? ""))
-                preset = _configuration.CountdownTexturePreset;
+            var preset = CountdownConfiguration.BundledTextures[0];
+            if (CountdownConfiguration.BundledTextures.Contains(_configuration.Countdown.TexturePreset ?? ""))
+                preset = _configuration.Countdown.TexturePreset;
             texturePath = Path.Combine(_dataPath, "Data", "numbers", preset ?? "");
         }
 
@@ -95,7 +109,7 @@ public sealed class NumberTextures
             var json = File.ReadAllText(settingsFile);
             var parsed = JsonConvert.DeserializeObject<JToken>(json);
             if (parsed == null)
-                PluginLog.Warning("Invalid json in " + settingsFile);
+                Bag.Logger.Warning("Invalid json in " + settingsFile);
             else
                 try
                 {
@@ -113,18 +127,18 @@ public sealed class NumberTextures
                 }
                 catch (Exception exception)
                 {
-                    PluginLog.Warning("Invalid json or missing property in " + settingsFile + "\n" +
-                                      exception);
+                    Bag.Logger.Warning("Invalid json or missing property in " + settingsFile + "\n" +
+                                       exception);
                 }
         }
         catch (IOException)
         {
-            PluginLog.Information("No settings.json found in number texture directory");
+            Bag.Logger.Information("No settings.json found in number texture directory");
             // the file/directory does not exist or is invalid, we don't have to worry about it here
         }
         catch (Exception e)
         {
-            PluginLog.Warning(e.ToString());
+            Bag.Logger.Warning(e.ToString());
             // some other error we don't really care about
         }
     }
@@ -148,18 +162,18 @@ public sealed class NumberTextures
                         {
                             var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
                             var hsl = HslConv.RgbToHsl(originalRgb);
-                            if (_configuration.CountdownNumberRecolorMode)
-                                hsl.H = Math.Clamp(_configuration.CountdownNumberHue, 0, 360);
+                            if (_configuration.Countdown.NumberRecolorMode)
+                                hsl.H = Math.Clamp(_configuration.Countdown.Hue, 0, 360);
                             else
-                                hsl.H += _configuration.CountdownNumberHue;
-                            hsl.S = Math.Clamp(hsl.S + _configuration.CountdownNumberSaturation, 0f, 1f);
-                            hsl.L = Math.Clamp(hsl.L + _configuration.CountdownNumberLuminance, 0f, 1f);
+                                hsl.H += _configuration.Countdown.Hue;
+                            hsl.S = Math.Clamp(hsl.S + _configuration.Countdown.Saturation, 0f, 1f);
+                            hsl.L = Math.Clamp(hsl.L + _configuration.Countdown.Luminance, 0f, 1f);
                             var modifiedRgb = HslConv.HslToRgb(hsl);
                             bytes[p] = modifiedRgb.R;
                             bytes[p + 1] = modifiedRgb.G;
                             bytes[p + 2] = modifiedRgb.B;
 
-                            if (!_configuration.CountdownAnimate) continue;
+                            if (!_configuration.Countdown.Animate) continue;
                             var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
                             hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
                             var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
@@ -179,7 +193,7 @@ public sealed class NumberTextures
                     _numberTextures.Add(i, texture);
                     success = true;
 
-                    if (!_configuration.CountdownAnimate) continue;
+                    if (!_configuration.Countdown.Animate) continue;
                     _numberTexturesAlt.Remove(i);
                     _numberTexturesAlt.Add(i, textureAlt);
                 }

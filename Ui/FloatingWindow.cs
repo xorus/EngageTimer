@@ -1,10 +1,25 @@
-﻿using System;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using System.Globalization;
 using System.IO;
 using System.Numerics;
 using Dalamud.Interface;
-using Dalamud.Logging;
 using Dalamud.Plugin;
+using EngageTimer.Configuration;
 using EngageTimer.Status;
 using ImGuiNET;
 using XwContainer;
@@ -14,28 +29,28 @@ namespace EngageTimer.Ui;
 public sealed class FloatingWindow : IDisposable
 {
     private const float WindowPadding = 5f;
-    private readonly Configuration _configuration;
+    private readonly ConfigurationFile _configuration;
     private readonly DalamudPluginInterface _pluginInterface;
     private readonly State _state;
     private readonly UiBuilder _ui;
 
     private bool _firstLoad = true;
     private ImFontPtr _font;
-    private bool _triggerFontRebuild = true;
-    private bool _useFont = false;
+    private ImFontGlyphRangesBuilderPtr? _grBuilder;
 
     private float _maxTextWidth;
     private float _paddingLeft;
     private float _paddingRight;
     private bool _stopwatchVisible;
-    private ImFontGlyphRangesBuilderPtr? _grBuilder = null;
+    private bool _triggerFontRebuild = true;
+    private bool _useFont;
 
     public FloatingWindow(Container container)
     {
-        _configuration = container.Resolve<Configuration>();
+        _configuration = container.Resolve<ConfigurationFile>();
         _state = container.Resolve<State>();
-        _pluginInterface = container.Resolve<DalamudPluginInterface>();
-        _ui = container.Resolve<UiBuilder>();
+        _pluginInterface = Bag.PluginInterface;
+        _ui = Bag.PluginInterface.UiBuilder;
         _ui.BuildFonts += BuildFont;
     }
 
@@ -54,7 +69,7 @@ public sealed class FloatingWindow : IDisposable
 
     public void Draw()
     {
-        if (!_configuration.DisplayFloatingWindow) return;
+        if (!_configuration.FloatingWindow.Display) return;
         if (_triggerFontRebuild)
         {
             _ui.RebuildFonts();
@@ -75,69 +90,69 @@ public sealed class FloatingWindow : IDisposable
 
     private bool StopwatchActive()
     {
-        var displayStopwatch = _configuration.FloatingWindowStopwatch;
+        var displayStopwatch = _configuration.FloatingWindow.EnableStopwatch;
         if (!displayStopwatch) return false;
 
-        if (_configuration.AutoHideStopwatch &&
-            (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.AutoHideTimeout)
+        if (_configuration.FloatingWindow.AutoHide &&
+            (DateTime.Now - _state.CombatEnd).TotalSeconds > _configuration.FloatingWindow.AutoHideTimeout)
             return false;
 
-        return !_configuration.FloatingWindowDisplayStopwatchOnlyInDuty || _state.InInstance;
+        return !_configuration.FloatingWindow.StopwatchOnlyInDuty || _state.InInstance;
     }
 
     private bool CountdownActive()
     {
-        return _configuration.FloatingWindowCountdown && _state.CountingDown && _state.CountDownValue > 0;
+        return _configuration.FloatingWindow.EnableCountdown && _state.CountingDown && _state.CountDownValue > 0;
     }
 
     private void DrawWindow(bool stopwatchActive, bool countdownActive)
     {
-        // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindowBackgroundColor.Z);
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, _configuration.FloatingWindowBackgroundColor);
+        // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindow.FloatingWindowBackgroundColor.Z);
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, _configuration.FloatingWindow.BackgroundColor);
 
         var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
-        if (_configuration.FloatingWindowLock) flags |= ImGuiWindowFlags.NoMouseInputs;
+        if (_configuration.FloatingWindow.Lock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
         if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindowTextColor);
-            ImGui.SetWindowFontScale(_configuration.FloatingWindowScale);
+            ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindow.TextColor);
+            ImGui.SetWindowFontScale(_configuration.FloatingWindow.Scale);
 
-            var stopwatchDecimals = _configuration.FloatingWindowDecimalStopwatchPrecision > 0;
+            var stopwatchDecimals = _configuration.FloatingWindow.DecimalStopwatchPrecision > 0;
 
             var text = ""; // text to be displayed
             // the largest possible string, taking advantage that the default font has fixed number width
             var maxText = "";
-            if (_configuration.FloatingWindowStopwatch)
-                maxText = (_configuration.FloatingWindowStopwatchAsSeconds ? "0000" : "00:00")
+            if (_configuration.FloatingWindow.EnableStopwatch)
+                maxText = (_configuration.FloatingWindow.StopwatchAsSeconds ? "0000" : "00:00")
                           + (stopwatchDecimals
-                              ? "." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision)
+                              ? "." + new string('0', _configuration.FloatingWindow.DecimalStopwatchPrecision)
                               : "");
-            else if (_configuration.FloatingWindowCountdown)
-                maxText = (_configuration.FloatingWindowCountdownNegativeSign ? "-" : "") + "00" +
-                          (_configuration.FloatingWindowDecimalCountdownPrecision > 0 ? "." : "") +
-                          new string('0', _configuration.FloatingWindowDecimalCountdownPrecision);
+            else if (_configuration.FloatingWindow.EnableCountdown)
+                maxText = (_configuration.FloatingWindow.CountdownNegativeSign ? "-" : "") + "00" +
+                          (_configuration.FloatingWindow.DecimalCountdownPrecision > 0 ? "." : "") +
+                          new string('0', _configuration.FloatingWindow.DecimalCountdownPrecision);
 
             var displayed = false;
             if (countdownActive)
             {
-                var negative = _configuration.FloatingWindowCountdownNegativeSign ? "-" : "";
-                var format = "{0:0." + new string('0', _configuration.FloatingWindowDecimalCountdownPrecision) +
+                var negative = _configuration.FloatingWindow.CountdownNegativeSign ? "-" : "";
+                var format = "{0:0." + new string('0', _configuration.FloatingWindow.DecimalCountdownPrecision) +
                              "}";
-                var number = _state.CountDownValue + (_configuration.FloatingWindowAccurateCountdown ? 0 : 1);
+                var number = _state.CountDownValue + (_configuration.FloatingWindow.AccurateMode ? 0 : 1);
                 text = negative + string.Format(CultureInfo.InvariantCulture, format, number);
                 displayed = true;
             }
             else if (stopwatchActive)
             {
-                if (_configuration.FloatingWindowStopwatchAsSeconds)
+                if (_configuration.FloatingWindow.StopwatchAsSeconds)
                     text = string.Format(CultureInfo.InvariantCulture,
-                        "{0:0." + new string('0', _configuration.FloatingWindowDecimalStopwatchPrecision) + "}",
+                        "{0:0." + new string('0', _configuration.FloatingWindow.DecimalStopwatchPrecision) + "}",
                         _state.CombatDuration.TotalSeconds);
                 else
                     text = stopwatchDecimals
                         ? _state.CombatDuration.ToString(@"mm\:ss\." + new string('f',
-                            _configuration.FloatingWindowDecimalStopwatchPrecision))
+                            _configuration.FloatingWindow.DecimalStopwatchPrecision))
                         : _state.CombatDuration.ToString(@"mm\:ss");
 
                 displayed = true;
@@ -152,17 +167,17 @@ public sealed class FloatingWindow : IDisposable
 
                 if (textWidth < _maxTextWidth)
                 {
-                    if (_configuration.StopwatchTextAlign == Configuration.TextAlign.Left)
+                    if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Left)
                     {
                         _paddingRight = _maxTextWidth - textWidth;
                         _paddingLeft = 0f;
                     }
-                    else if (_configuration.StopwatchTextAlign == Configuration.TextAlign.Center)
+                    else if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Center)
                     {
                         _paddingLeft = (_maxTextWidth - textWidth) / 2;
                         _paddingRight = (_maxTextWidth - textWidth) / 2;
                     }
-                    else if (_configuration.StopwatchTextAlign == Configuration.TextAlign.Right)
+                    else if (_configuration.FloatingWindow.Align == ConfigurationFile.TextAlign.Right)
                     {
                         _paddingRight = 0f;
                         _paddingLeft = _maxTextWidth - textWidth;
@@ -185,7 +200,7 @@ public sealed class FloatingWindow : IDisposable
 
                 #endregion
 
-                if (_state.PrePulling) ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindowPrePullColor);
+                if (_state.PrePulling) ImGui.PushStyleColor(ImGuiCol.Text, _configuration.FloatingWindow.PrePullColor);
                 ImGui.Text(text);
                 if (_state.PrePulling) ImGui.PopStyleColor();
             }
@@ -228,14 +243,14 @@ public sealed class FloatingWindow : IDisposable
             grBuilder.AddText("-0123456789:.z");
             grBuilder.BuildRanges(out var ranges);
             _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath,
-                Math.Max(8, _configuration.FontSize),
+                Math.Max(8, _configuration.FloatingWindow.FontSize),
                 null, ranges.Data);
 
             _grBuilder = grBuilder;
         }
         catch (Exception e)
         {
-            PluginLog.LogError(e.Message);
+            Bag.Logger.Error(e.Message);
         }
 
         _useFont = true;

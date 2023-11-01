@@ -13,31 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using Dalamud.Interface.Animation;
+namespace EngageTimer.Configuration;
 
-namespace EngageTimer.Ui.CustomEasing;
-
-public class OpacityEasing : Easing
+public class WebServerConfiguration
 {
-    private readonly double _p0;
-    private readonly double _p1;
-    private readonly double _p2;
-    private readonly double _p3;
-
-    public OpacityEasing(TimeSpan duration, double p0, double p1, double p2, double p3) : base(duration)
-    {
-        _p0 = p0;
-        _p1 = p1;
-        _p2 = p2;
-        _p3 = p3;
-    }
-
-    // https://www.desmos.com/calculator/6btgm8tjk0
-    public override void Update()
-    {
-        Value = Math.Clamp(
-            0.08 - 0.9 * Math.Sin(3 - 7.5 * Progress)
-            , 0d, 1d);
-    }
+    public bool Enable { get; set; } = false;
+    public int WebServer { get; set; } = 8952;
+    public bool EnableStopwatchTimeout { get; set; } = false;
+    public float StopwatchTimeout { get; set; } = 0f;
 }

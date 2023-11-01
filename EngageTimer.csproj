@@ -8,7 +8,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-        <AssemblyVersion>2.2.6.0</AssemblyVersion>
+        <AssemblyVersion>2.3.0.0</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -17,11 +17,11 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <AssemblyName>EngageTimer</AssemblyName>
     </PropertyGroup>
- 
+
     <ItemGroup>
-        <Compile Remove="bin\**" />
-        <EmbeddedResource Remove="bin\**" />
-        <None Remove="bin\**" />
+        <Compile Remove="bin\**"/>
+        <EmbeddedResource Remove="bin\**"/>
+        <None Remove="bin\**"/>
         <None Update="Data\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -49,13 +49,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.12" />
-        <PackageReference Include="EmbedIO" Version="3.5.2" />
-        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+        <PackageReference Include="DalamudPackager" Version="2.1.12"/>
+        <PackageReference Include="EmbedIO" Version="3.5.2"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0"/>
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />
-        <PackageReference Include="Xorus.XwContainer" Version="1.0.0" />
+        <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+        <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
+        <PackageReference Include="Xorus.XwContainer" Version="1.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -105,7 +105,7 @@
     </ItemGroup>
 
     <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" />
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)"/>
     </Target>
 
     <ProjectExtensions>

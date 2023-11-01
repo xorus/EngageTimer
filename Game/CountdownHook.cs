@@ -1,9 +1,23 @@
-﻿#nullable enable
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#nullable enable
 using System;
 using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
-using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using EngageTimer.Status;
 using XwContainer;
@@ -15,8 +29,6 @@ namespace EngageTimer.Game;
 
 public sealed class CountdownHook : IDisposable
 {
-    private readonly ICondition _condition;
-
     [Signature("48 89 5C 24 ?? 57 48 83 EC 40 8B 41", DetourName = nameof(CountdownTimerFunc))]
     private readonly Hook<CountdownTimerDelegate>? _countdownTimerHook = null;
 
@@ -36,9 +48,8 @@ public sealed class CountdownHook : IDisposable
     public CountdownHook(Container container)
     {
         _state = container.Resolve<State>();
-        _condition = container.Resolve<ICondition>();
         _countDown = 0;
-        container.Resolve<IGameInteropProvider>().InitializeFromAttributes(this);
+        Bag.GameInterop.InitializeFromAttributes(this);
         _countdownTimerHook?.Enable();
     }
 
@@ -59,7 +70,7 @@ public sealed class CountdownHook : IDisposable
     {
         if (_state.Mocked) return;
         UpdateCountDown();
-        _state.InInstance = _condition[ConditionFlag.BoundByDuty];
+        _state.InInstance = Bag.Condition[ConditionFlag.BoundByDuty];
     }
 
     private void UpdateCountDown()

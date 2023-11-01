@@ -1,14 +1,26 @@
-﻿using System;
-using System.Numerics;
-using Dalamud.Configuration;
-using Dalamud.Interface.Colors;
-using Dalamud.Logging;
-using Dalamud.Plugin;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace EngageTimer;
+using System;
+using System.Numerics;
+using Dalamud.Interface.Colors;
+
+namespace EngageTimer.Configuration.Legacy;
 
 [Serializable]
-public class Configuration : IPluginConfiguration
+public class OldConfig
 {
     public enum TextAlign
     {
@@ -22,12 +34,6 @@ public class Configuration : IPluginConfiguration
 
     public static readonly string[] BundledTextures =
         { "default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint" };
-
-    // Dtr bar
-    [NonSerialized] private bool _dtrCombatTimeEnabled;
-
-    // Add any other properties or methods here.
-    [NonSerialized] private DalamudPluginInterface _pluginInterface;
 
     // Counting mode
     public bool CountdownAccurateCountdown { get; set; } = false;
@@ -105,16 +111,7 @@ public class Configuration : IPluginConfiguration
     public int StopwatchDecimalPrecision { get; set; } = 1;
 
     public bool MigrateCountdownOffsetToPercent { get; set; }
-
-    public bool DtrCombatTimeEnabled
-    {
-        get => _dtrCombatTimeEnabled;
-        set
-        {
-            _dtrCombatTimeEnabled = value;
-            DtrBarCombatTimerEnableChange?.Invoke(this, EventArgs.Empty);
-        }
-    }
+    public bool DtrCombatTimeEnabled { get; set; }
 
     public string DtrCombatTimePrefix { get; set; } = DefaultCombatTimePrefix;
     public string DtrCombatTimeSuffix { get; set; } = DefaultCombatTimeSuffix;
@@ -122,35 +119,13 @@ public class Configuration : IPluginConfiguration
     public bool DtrCombatTimeAlwaysDisableOutsideDuty { get; set; }
     public bool DtrCombatTimeEnableHideAfter { get; set; } = false;
     public float DtrCombatTimeHideAfter { get; set; } = 20f;
-    public int Version { get; set; } = 2;
+    public int Version { get; set; } = 3;
 
-    public void Initialize(DalamudPluginInterface pluginInterface)
-    {
-        _pluginInterface = pluginInterface;
-    }
-
-    public void Save()
-    {
-        _pluginInterface.SavePluginConfig(this);
-        OnSave?.Invoke(this, EventArgs.Empty);
-    }
-
-    public object GetWebConfig()
-    {
-        return new
-        {
-            EnableWebStopwatchTimeout, WebStopwatchTimeout
-        };
-    }
-
-    public event EventHandler OnSave;
-    public event EventHandler DtrBarCombatTimerEnableChange;
-
-    public void Migrate()
+    public OldConfig Migrate()
     {
         if (Version == 0)
         {
-            PluginLog.Information($"Migrating plugin configuration from version {Version}");
+            Bag.Logger.Information($"Migrating plugin configuration from version {Version}");
             DisplayFloatingWindow = DisplayStopwatch;
             FloatingWindowBackgroundColor = new Vector4(0, 0, 0, 255 * StopwatchOpacity);
             FloatingWindowTextColor = StopwatchColor;
@@ -159,16 +134,14 @@ public class Configuration : IPluginConfiguration
             FloatingWindowDecimalCountdownPrecision = StopwatchTenths ? StopwatchDecimalPrecision : 0;
             FloatingWindowAccurateCountdown = true;
             Version = 1;
-            Save();
         }
 
-        if (Version == 1)
-        {
-            PluginLog.Information($"Migrating plugin configuration from version {Version}");
-            if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0)
-                MigrateCountdownOffsetToPercent = true;
-            Version = 2;
-            Save();
-        }
+        if (Version != 1) return this;
+        Bag.Logger.Information($"Migrating plugin configuration from version {Version}");
+        if (CountdownWindowOffset.X != 0 || CountdownWindowOffset.Y != 0)
+            MigrateCountdownOffsetToPercent = true;
+        Version = 2;
+
+        return this;
     }
 }

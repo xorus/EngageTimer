@@ -1,7 +1,20 @@
-﻿using System;
-using Dalamud.Plugin.Services;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using Dalamud.Utility.Signatures;
-using XwContainer;
 
 namespace EngageTimer.Game;
 
@@ -16,9 +29,9 @@ internal unsafe class GameSound
     [Signature("E8 ?? ?? ?? ?? 4D 39 BE ?? ?? ?? ??")]
     public readonly delegate* unmanaged<uint, IntPtr, IntPtr, byte, void> PlaySoundEffect = null;
 
-    public GameSound(IGameInteropProvider gameInterop)
+    public GameSound()
     {
-        gameInterop.InitializeFromAttributes(this);
+        Bag.GameInterop.InitializeFromAttributes(this);
     }
 }
 
@@ -26,12 +39,7 @@ public class SfxPlay
 {
     public const uint SmallTick = 29;
     public const uint CdTick = 48;
-    private readonly GameSound _gameSound;
-
-    public SfxPlay(Container container)
-    {
-        _gameSound = new GameSound(container.Resolve<IGameInteropProvider>());
-    }
+    private readonly GameSound _gameSound = new();
 
     public void SoundEffect(uint id)
     {
@@ -42,6 +50,6 @@ public class SfxPlay
             _gameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
         }
         // s.Stop();
-        // PluginLog.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
+        // PluginIoC.Logger.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
     }
 }

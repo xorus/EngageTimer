@@ -1,11 +1,26 @@
-﻿using System;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
-using Dalamud.Game.Gui;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
 using Dalamud.Plugin.Services;
+using EngageTimer.Configuration;
 using EngageTimer.Status;
 using EngageTimer.Ui.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -21,7 +36,7 @@ public sealed class CountDown
     private const float BaseNumberScale = 1f;
     private const int GameCountdownWidth = 60; // just trust in the magic numbers
     private const float AnimationSize = .7f;
-    private readonly Configuration _configuration;
+    private readonly ConfigurationFile _configuration;
 
     private readonly Easing _easing = new OutCubic(new TimeSpan(0, 0, 0, 0, 1000));
 
@@ -39,7 +54,7 @@ public sealed class CountDown
      * This is a workaround for ImGui taking some time to render a window for the first time.
      * It can cause a small amount on lag when starting a countdown, which we do not want, and this is why I will
      * draw the countdown windows for the first frame the plugin gets loaded so ImGui doesn't get a chance to lag
-     *
+     * 
      * In my testing, this is about 10 to 20ms.
      */
     private bool _firstLoad = true;
@@ -50,9 +65,9 @@ public sealed class CountDown
 
     public CountDown(Container container)
     {
-        _configuration = container.Resolve<Configuration>();
+        _configuration = container.Resolve<ConfigurationFile>();
         _state = container.Resolve<State>();
-        _gui = container.Resolve<IGameGui>();
+        _gui = Bag.GameGui;
         _numberTextures = container.Resolve<NumberTextures>();
         _configuration.OnSave += ConfigurationOnOnSave;
         _state.StartCountingDown += Start;
@@ -71,13 +86,13 @@ public sealed class CountDown
      */
     private void UpdateFromConfig()
     {
-        _accurateMode = _configuration.HideOriginalCountdown && _configuration.CountdownAccurateCountdown;
+        _accurateMode = _configuration.Countdown.HideOriginalAddon && _configuration.Countdown.AccurateMode;
     }
 
     // finds the original CountDown addon and toggles its visibility flag
     private unsafe void ToggleOriginalAddon()
     {
-        var addon = _gui.GetAddonByName("ScreenInfo_CountDown", 1);
+        var addon = _gui.GetAddonByName("ScreenInfo_CountDown");
         if (addon == IntPtr.Zero) return;
 
         try
@@ -118,41 +133,34 @@ public sealed class CountDown
         ImGui.End();
 #endif
 
-        if (_configuration.MigrateCountdownOffsetToPercent)
-        {
-            _configuration.CountdownWindowOffset /= ImGui.GetIO().DisplaySize;
-            _configuration.MigrateCountdownOffsetToPercent = false;
-            _configuration.Save();
-        }
-
         // display is disabled
-        if (!_configuration.DisplayCountdown) return;
+        if (!_configuration.Countdown.Display) return;
 
 
-        if (!_firstLoad && (!_state.CountingDown || !_configuration.DisplayCountdown))
+        if (!_firstLoad && (!_state.CountingDown || !_configuration.Countdown.Display))
         {
             // re-enable the original addon at the last possible moment (when done counting down) to show "START"
-            if (_originalAddonHidden && _configuration.HideOriginalCountdown) ToggleOriginalAddon();
+            if (_originalAddonHidden && _configuration.Countdown.HideOriginalAddon) ToggleOriginalAddon();
             return;
         }
 
-        if (_configuration.HideOriginalCountdown && _state.CountDownValue <= 5 && !_originalAddonHidden)
+        if (_configuration.Countdown.HideOriginalAddon && _state.CountDownValue <= 5 && !_originalAddonHidden)
             ToggleOriginalAddon();
 
-        var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.HideOriginalCountdown;
-        if (showMainCountdown && _configuration.EnableCountdownDisplayThreshold &&
-            _state.CountDownValue > _configuration.CountdownDisplayThreshold)
+        var showMainCountdown = _firstLoad || _state.CountDownValue > 5 || _configuration.Countdown.HideOriginalAddon;
+        if (showMainCountdown && _configuration.Countdown.EnableDisplayThreshold &&
+            _state.CountDownValue > _configuration.Countdown.DisplayThreshold)
             return;
 
         var numberScale = BaseNumberScale;
         var maxNumberScale = numberScale;
         if (showMainCountdown)
         {
-            numberScale *= _configuration.CountdownScale;
+            numberScale *= _configuration.Countdown.Scale;
             maxNumberScale = numberScale;
             // numberScale += (_state.CountDownValue % 1) * 0.7f;
 
-            if (_configuration.CountdownAnimate)
+            if (_configuration.Countdown.Animate)
             {
                 var second = (int)_state.CountDownValue;
                 if (_lastSecond != second)
@@ -164,7 +172,7 @@ public sealed class CountDown
 
                 _easing.Update();
                 _easingOpacity.Update();
-                if (_configuration.CountdownAnimateScale)
+                if (_configuration.Countdown.AnimateScale)
                 {
                     maxNumberScale = numberScale + AnimationSize;
                     numberScale += AnimationSize * (1 - (float)_easing.Value);
@@ -172,19 +180,19 @@ public sealed class CountDown
             }
         }
 
-        var negativeMargin = _configuration.CountdownCustomNegativeMargin ?? (
-            _configuration.CountdownMonospaced
+        var negativeMargin = _configuration.Countdown.CustomNegativeMargin ?? (
+            _configuration.Countdown.Monospaced
                 ? _numberTextures.NumberNegativeMarginMono
                 : _numberTextures.NumberNegativeMargin
         ) * numberScale;
 
         var io = ImGui.GetIO();
         var windowPosition = new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f) +
-                             _configuration.CountdownWindowOffset * io.DisplaySize;
+                             _configuration.Countdown.WindowOffset * io.DisplaySize;
         var windowSize = new Vector2(
             maxNumberScale * (_numberTextures.MaxTextureWidth *
-                              (_configuration.EnableCountdownDecimal
-                                  ? 3f + _configuration.CountdownDecimalPrecision * .5f
+                              (_configuration.Countdown.EnableDecimals
+                                  ? 3f + _configuration.Countdown.DecimalPrecision * .5f
                                   : 2
                               )),
             _numberTextures.MaxTextureHeight * maxNumberScale + 30);
@@ -221,7 +229,7 @@ public sealed class CountDown
             }
 
             DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, false);
-            if (_configuration.CountdownAnimate && _configuration.CountdownAnimateOpacity)
+            if (_configuration.Countdown.Animate && _configuration.Countdown.AnimateOpacity)
             {
                 ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
                 DrawCountdown(io, showMainCountdown, numberScale, negativeMargin, true);
@@ -255,11 +263,11 @@ public sealed class CountDown
                 ? Math.Floor(_state.CountDownValue).ToString(CultureInfo.InvariantCulture)
                 : Math.Ceiling(_state.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
-            if (_configuration.CountdownLeadingZero && number.Length == 1) number = "0" + number;
+            if (_configuration.Countdown.LeadingZero && number.Length == 1) number = "0" + number;
 
             mainNumbers = NumberList(number);
             // First loop to compute total width
-            if (_configuration.CountdownMonospaced)
+            if (_configuration.Countdown.Monospaced)
                 mainTotalWidth = (_numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
                                  mainNumbers.Count;
             else
@@ -278,11 +286,11 @@ public sealed class CountDown
         var smolNumberScale = numberScale * .5f;
         var smolMaxWidthScaled = _numberTextures.MaxTextureWidth * smolNumberScale;
         var smolNumberCursorY = 0f;
-        if (_configuration.EnableCountdownDecimal)
+        if (_configuration.Countdown.EnableDecimals)
         {
             var decimalPart =
                 (_state.CountDownValue - Math.Truncate(_state.CountDownValue))
-                .ToString("F" + _configuration.CountdownDecimalPrecision, CultureInfo.InvariantCulture)[2..];
+                .ToString("F" + _configuration.Countdown.DecimalPrecision, CultureInfo.InvariantCulture)[2..];
 
             // align the small numbers on the number baseline
             var offsetY = _numberTextures.MaxTextureHeight * numberScale
@@ -298,18 +306,18 @@ public sealed class CountDown
         // draw main
         if (mainNumbers != null)
         {
-            if (_configuration.CountdownAlign == Configuration.TextAlign.Left)
+            if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Left)
                 ImGui.SetCursorPosX(0f);
-            else if (_configuration.CountdownAlign == Configuration.TextAlign.Center)
+            else if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Center)
                 ImGui.SetCursorPosX(windowSize.X / 2f - mainTotalWidth / 2f);
-            else if (_configuration.CountdownAlign == Configuration.TextAlign.Right)
+            else if (_configuration.Countdown.Align == ConfigurationFile.TextAlign.Right)
                 ImGui.SetCursorPosX(windowSize.X - (mainTotalWidth + decimalTotalWidth));
 
             // Draw the images \o/
             foreach (var i in mainNumbers)
                 DrawNumber(alternateMode, i,
                     numberScale, negativeMarginScaled,
-                    _numberTextures.MaxTextureWidth * numberScale, _configuration.CountdownMonospaced);
+                    _numberTextures.MaxTextureWidth * numberScale, _configuration.Countdown.Monospaced);
         }
 
         if (mainNumbers == null && decimalNumbers != null) ImGui.SetCursorPosX(windowSize.X / 2f + GameCountdownWidth);

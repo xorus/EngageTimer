@@ -1,6 +1,21 @@
-﻿using System;
+﻿// This file is part of EngageTimer
+// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+using System;
 using Dalamud.Game.Command;
-using Dalamud.Plugin.Services;
+using EngageTimer.Configuration;
 using EngageTimer.Ui;
 using XwContainer;
 
@@ -29,7 +44,7 @@ public sealed class MainCommand : IDisposable
 
     private void Register()
     {
-        _container.Resolve<ICommandManager>().AddHandler(Command, new CommandInfo(OnCommand)
+        Bag.Commands.AddHandler(Command, new CommandInfo(OnCommand)
         {
             HelpMessage = "\n" +
                           Tab + Command + " c|countdown [on|off] → " +
@@ -45,7 +60,7 @@ public sealed class MainCommand : IDisposable
 
     private void Unregister()
     {
-        _container.Resolve<ICommandManager>().RemoveHandler(Command);
+        Bag.Commands.RemoveHandler(Command);
     }
 
     private static bool ToStatus(string input, bool current)
@@ -66,8 +81,8 @@ public sealed class MainCommand : IDisposable
 
     private void OnCommand(string command, string args)
     {
-        var config = _container.Resolve<Configuration>();
-        var chat = _container.Resolve<IChatGui>();
+        var config = _container.Resolve<ConfigurationFile>();
+        var chat = Bag.ChatGui;
 
         var argsArray = args.Split(' ');
         var subcommand = "";
@@ -86,20 +101,20 @@ public sealed class MainCommand : IDisposable
                     break;
                 case "c":
                 case "countdown":
-                    config.DisplayCountdown = ToStatus(argument, config.DisplayCountdown);
+                    config.Countdown.Display = ToStatus(argument, config.Countdown.Display);
                     config.Save();
-                    chat.Print(_tr.Trans("MainCommand_Help_Countdown_Success", StatusStr(config.DisplayCountdown)));
+                    chat.Print(_tr.Trans("MainCommand_Help_Countdown_Success", StatusStr(config.Countdown.Display)));
                     break;
                 case "sw":
                 case "fw":
-                    config.DisplayFloatingWindow = ToStatus(argument, config.DisplayFloatingWindow);
+                    config.FloatingWindow.Display = ToStatus(argument, config.FloatingWindow.Display);
                     config.Save();
-                    chat.Print(_tr.Trans("MainCommand_Help_FW_Success", StatusStr(config.DisplayFloatingWindow)));
+                    chat.Print(_tr.Trans("MainCommand_Help_FW_Success", StatusStr(config.FloatingWindow.Display)));
                     break;
                 case "dtr":
-                    config.DtrCombatTimeEnabled = ToStatus(argument, config.DtrCombatTimeEnabled);
+                    config.Dtr.CombatTimeEnabled = ToStatus(argument, config.Dtr.CombatTimeEnabled);
                     config.Save();
-                    chat.Print(_tr.Trans("MainCommand_Help_Dtr_Success", StatusStr(config.DtrCombatTimeEnabled)));
+                    chat.Print(_tr.Trans("MainCommand_Help_Dtr_Success", StatusStr(config.Dtr.CombatTimeEnabled)));
                     break;
                 default:
                     chat.PrintError(_tr.Trans("MainCommand_Error_InvalidSubcommand", subcommand));
