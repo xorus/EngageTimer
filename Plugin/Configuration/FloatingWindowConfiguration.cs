@@ -13,36 +13,81 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#nullable enable
 using System;
 using System.Numerics;
 using Dalamud.Interface.Colors;
+using EngageTimer.Attributes;
+using EngageTimer.Ui;
 
 namespace EngageTimer.Configuration;
 
 [Serializable]
 public class FloatingWindowConfiguration
 {
+    [AutoField("Settings_FWTab_AccurateCountdown")]
     public bool AccurateMode { get; set; } = true;
-    public bool Display { get; set; } = true;
+
+    [AutoField("Settings_FWTab_Display")] public bool Display { get; set; } = true;
+
+    [AutoField("Settings_FWTab_CountdownPrecision_With_Left")]
     public bool EnableCountdown { get; set; } = false;
+
+    [AutoField("Settings_FWTab_StopwatchPrecision_With_Left")]
     public bool EnableStopwatch { get; set; } = true;
-    public bool Lock { get; set; }
+
+    [AutoField("Settings_FWTab_Lock")] public bool Lock { get; set; }
+
+    [AutoField("Settings_FWTab_CountdownPrecision_Right", 0, 3), ItemWidth(70f),
+     Help("Settings_FWTab_CountdownPrecision_Help")]
     public int DecimalCountdownPrecision { get; set; }
+
+    [AutoField("Settings_FWTab_StopwatchPrecision_Right", 0, 3), ItemWidth(70f),
+     Help("Settings_FWTab_StopwatchPrecision_Help")]
     public int DecimalStopwatchPrecision { get; set; }
+
+    [AutoField("Settings_FWTab_DisplayStopwatchOnlyInDuty")]
     public bool StopwatchOnlyInDuty { get; set; } = false;
+
+    [AutoField("Settings_FWTab_StopwatchAsSeconds")]
     public bool StopwatchAsSeconds { get; set; } = false;
+
+    [AutoField("Settings_FWTab_CountdownNegativeSign")]
     public bool CountdownNegativeSign { get; set; } = true;
+
+    [AutoField("Settings_CountdownTab_FloatingWindowScale", Components.FieldType.DragFloat, .01f, .05f, 15f),
+     ItemWidth(100f)]
     public float Scale { get; set; } = 1f;
+
+    [AutoField("Settings_FWTab_ShowPrePulling")]
     public bool ShowPrePulling { get; set; } = false;
+
+    [AutoField("Settings_FWTab_PrePullOffset", Components.FieldType.InputFloat, 0.1f, 1f, "%.3fs")]
     public float PrePullOffset { get; set; } = .0f;
+
+    [AutoField("Settings_FWTab_TextColor")]
     public Vector4 PrePullColor { get; set; } = ImGuiColors.DalamudRed;
 
     // Stopwatch cosmetics
+    [AutoField("Settings_FWTab_TextColor")]
     public Vector4 TextColor { get; set; } = new(255, 255, 255, 1);
+
+    [AutoField("Settings_FWTab_BackgroundColor")]
     public Vector4 BackgroundColor { get; set; } = new(0, 0, 0, 0);
 
     public ConfigurationFile.TextAlign Align { get; set; } = ConfigurationFile.TextAlign.Left;
+
     public int FontSize { get; set; } = 16;
+
+    [AutoField("Settings_FWTab_AutoHide_Left")]
     public bool AutoHide { get; set; } = true;
+
+    [AutoField(
+        "Settings_FWTab_AutoHide_Right",
+        Components.FieldType.InputFloat,
+        .1f,
+        1f,
+        "%.1f%"
+    )]
     public float AutoHideTimeout { get; set; } = 20f;
 }

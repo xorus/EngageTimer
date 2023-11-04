@@ -50,7 +50,7 @@ public sealed class Plugin : IDalamudPlugin
 
     public Plugin(DalamudPluginInterface pluginInterface)
     {
-        PluginPath = PluginInterface.AssemblyLocation.DirectoryName;
+        PluginPath = PluginInterface.AssemblyLocation.DirectoryName ?? throw new InvalidOperationException("Cannot find plugin directory");
         Config = ConfigurationLoader.Load();
         State = new State();
         Translator = new Translator();

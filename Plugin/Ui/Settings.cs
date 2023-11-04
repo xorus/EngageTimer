@@ -24,6 +24,7 @@ using Dalamud.Interface.Windowing;
 using EngageTimer.Configuration;
 using EngageTimer.Ui.Color;
 using ImGuiNET;
+using JetBrains.Annotations;
 
 namespace EngageTimer.Ui;
 
@@ -36,7 +37,7 @@ public class Settings : Window
     private double _mockStart;
     private double _mockTarget;
 
-    private string _tempTexturePath;
+    private string? _tempTexturePath;
 
     public Settings() : base("Settings", ImGuiWindowFlags.AlwaysAutoResize)
     {
@@ -78,9 +79,27 @@ public class Settings : Window
         Plugin.State.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
     }
 
+    private bool _requestTextureCreation = false;
+    private double _lastTextureCreation = 0;
+
+
+    private void DebounceTextureCreation()
+    {
+        if (!_requestTextureCreation) return;
+
+        var time = ImGui.GetTime();
+        if (time - _lastTextureCreation < .05d + Plugin.NumberTextures.LastTextureCreationDuration)
+            return; // 50ms + previous time taken
+        _lastTextureCreation = time;
+        Plugin.NumberTextures.CreateTextures();
+        _requestTextureCreation = false;
+    }
+
     public override void Draw()
     {
+        DebounceTextureCreation();
         UpdateMock();
+
         if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
         {
             ImGui.PushItemWidth(100f);
@@ -158,224 +177,80 @@ public class Settings : Window
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
-        var configuration = Plugin.Config;
-        var enabled = configuration.Dtr.CombatTimeEnabled;
+        var enabled = Plugin.Config.Dtr.CombatTimeEnabled;
         if (ImGui.Checkbox(Translator.TrId("Settings_DtrCombatTimer_Enable"), ref enabled))
         {
-            configuration.Dtr.CombatTimeEnabled = enabled;
-            configuration.Save();
+            Plugin.Config.Dtr.CombatTimeEnabled = enabled;
+            Plugin.Config.DebouncedSave();
         }
 
-        var prefix = configuration.Dtr.CombatTimePrefix;
-        if (ImGui.InputText(Translator.TrId("Settings_DtrCombatTimer_Prefix"), ref prefix, 50))
-        {
-            configuration.Dtr.CombatTimePrefix = prefix;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimePrefix");
         ImGui.SameLine();
-        var suffix = configuration.Dtr.CombatTimeSuffix;
-        if (ImGui.InputText(Translator.TrId("Settings_DtrCombatTimer_Suffix"), ref suffix, 50))
-        {
-            configuration.Dtr.CombatTimeSuffix = suffix;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimeSuffix");
         ImGui.SameLine();
+
         if (ImGui.Button(Translator.TrId("Settings_DtrCombatTimer_Defaults")))
         {
-            configuration.Dtr.CombatTimePrefix = DtrConfiguration.DefaultCombatTimePrefix;
-            configuration.Dtr.CombatTimeSuffix = DtrConfiguration.DefaultCombatTimeSuffix;
-            configuration.Save();
+            Plugin.Config.Dtr.CombatTimePrefix = DtrConfiguration.DefaultCombatTimePrefix;
+            Plugin.Config.Dtr.CombatTimeSuffix = DtrConfiguration.DefaultCombatTimeSuffix;
+            Plugin.Config.DebouncedSave();
         }
 
-
-        var outside = configuration.Dtr.CombatTimeAlwaysDisableOutsideDuty;
-        if (ImGui.Checkbox(Translator.TrId("Settings_DtrCombatTimer_AlwaysDisableOutsideDuty"), ref outside))
-        {
-            configuration.Dtr.CombatTimeAlwaysDisableOutsideDuty = outside;
-            configuration.Save();
-        }
-
-        var decimals = configuration.Dtr.CombatTimeDecimalPrecision;
-        if (ImGui.InputInt(Translator.TrId("Settings_DtrCombatTimer_DecimalPrecision"), ref decimals, 1, 0))
-        {
-            configuration.Dtr.CombatTimeDecimalPrecision = Math.Max(0, Math.Min(3, decimals));
-            configuration.Save();
-        }
-
-        var enableHideAfter = configuration.Dtr.CombatTimeEnableHideAfter;
-        if (ImGui.Checkbox(Translator.TrId("Settings_DtrCombatTimer_HideAfter"), ref enableHideAfter))
-        {
-            configuration.Dtr.CombatTimeEnableHideAfter = enableHideAfter;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimeAlwaysDisableOutsideDuty");
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimeDecimalPrecision");
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimeEnableHideAfter");
         ImGui.SameLine();
-        var hideAfter = configuration.Dtr.CombatTimeHideAfter;
-        if (ImGui.InputFloat(Translator.TrId("Settings_DtrCombatTimer_HideAfterRight"), ref hideAfter, 0.1f, 1f, "%.1f%"))
-        {
-            configuration.Dtr.CombatTimeHideAfter = Math.Max(0, hideAfter);
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.Dtr, "CombatTimeHideAfter");
     }
 
     private void CountdownTabContent()
     {
         var configuration = Plugin.Config;
-        var countdownAccurateCountdown = configuration.Countdown.AccurateMode;
-
         ImGui.PushTextWrapPos();
         ImGui.Text(Translator.Tr("Settings_CountdownTab_Info1"));
         if (ImGui.Button(
                 (_mocking
                     ? Translator.Tr("Settings_CountdownTab_Test_Stop")
                     : Translator.Tr("Settings_CountdownTab_Test_Start"))
-                + "###Settings_CountdownTab_Test"))
-            ToggleMock();
-
+                + "###Settings_CountdownTab_Test")) ToggleMock();
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
-        var displayCountdown = configuration.Countdown.Display;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_Enable"),
-                ref displayCountdown))
-        {
-            configuration.Countdown.Display = displayCountdown;
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.Countdown, "Display");
+        Components.AutoField(Plugin.Config.Countdown, "HideOriginalAddon");
+        Components.AutoField(Plugin.Config.Countdown, "EnableDecimals");
+        Components.AutoField(Plugin.Config.Countdown, "DecimalPrecision", sameLine: true);
+        Components.AutoField(Plugin.Config.Countdown, "EnableTickingSound");
 
-        var hideOriginalCountdown = configuration.Countdown.HideOriginalAddon;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_HideOriginalCountDown"),
-                ref hideOriginalCountdown))
-        {
-            configuration.Countdown.HideOriginalAddon = hideOriginalCountdown;
-            configuration.Save();
-        }
-
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_CountdownTab_HideOriginalCountDown_Help"));
-
-        var enableCountdownDecimal = configuration.Countdown.EnableDecimals;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_CountdownDecimals_Left"),
-                ref enableCountdownDecimal))
-        {
-            configuration.Countdown.EnableDecimals = enableCountdownDecimal;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        ImGui.PushItemWidth(70f);
-        var countdownDecimalPrecision = configuration.Countdown.DecimalPrecision;
-        if (ImGui.InputInt(Translator.TrId("Settings_CountdownTab_CountdownDecimals_Right"),
-                ref countdownDecimalPrecision, 1, 0))
-        {
-            countdownDecimalPrecision = Math.Max(1, Math.Min(3, countdownDecimalPrecision));
-            configuration.Countdown.DecimalPrecision = countdownDecimalPrecision;
-            configuration.Save();
-        }
-
-        ImGui.PopItemWidth();
-
-        var enableTickingSound = configuration.Countdown.EnableTickingSound;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_Audio_Enable"), ref enableTickingSound))
-        {
-            configuration.Countdown.EnableTickingSound = enableTickingSound;
-            configuration.Save();
-        }
-
-        if (enableTickingSound)
+        if (Plugin.Config.Countdown.EnableTickingSound)
         {
             ImGui.Indent();
-            var alternativeSound = configuration.Countdown.UseAlternativeSound;
-            if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_Audio_UseAlternativeSound"),
-                    ref alternativeSound))
-            {
-                configuration.Countdown.UseAlternativeSound = alternativeSound;
-                configuration.Save();
-            }
-
-            var tickFrom = configuration.Countdown.StartTickingFrom;
-            // ImGui.Text(Trans("Settings_CountdownTab_TickFrom"));
-            if (ImGui.InputInt(Translator.TrId("Settings_CountdownTab_TickFrom"), ref tickFrom, 1, 0))
-            {
-                configuration.Countdown.StartTickingFrom = Math.Min(30, Math.Max(5, tickFrom));
-                configuration.Save();
-            }
-
-            ImGuiComponents.HelpMarker(Translator.Tr("Settings_CountdownTab_TickFrom_Help"));
-
+            Components.AutoField(Plugin.Config.Countdown, "UseAlternativeSound");
+            Components.AutoField(Plugin.Config.Countdown, "StartTickingFrom");
             ImGui.Unindent();
         }
 
-        var animate = configuration.Countdown.Animate;
-        var numberTextures = Plugin.NumberTextures;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_Animate"), ref animate))
+        Components.AutoField(Plugin.Config.Countdown, "Animate", () => _requestTextureCreation = true);
+        if (configuration.Countdown.Animate)
         {
-            configuration.Countdown.Animate = animate;
-            configuration.Save();
-            numberTextures.CreateTextures();
+            Components.AutoField(Plugin.Config.Countdown, "AnimateScale", () => _requestTextureCreation = true, true);
+            Components.AutoField(Plugin.Config.Countdown, "AnimateOpacity", () => _requestTextureCreation = true, true);
         }
 
-        if (animate)
-        {
-            ImGui.SameLine();
-            var animateScale = configuration.Countdown.AnimateScale;
-            if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_AnimateScale"), ref animateScale))
-            {
-                configuration.Countdown.AnimateScale = animateScale;
-                configuration.Save();
-                numberTextures.CreateTextures();
-            }
-
-            ImGui.SameLine();
-            var animateOpacity = configuration.Countdown.AnimateOpacity;
-            if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_AnimateOpacity"), ref animateOpacity))
-            {
-                configuration.Countdown.AnimateOpacity = animateOpacity;
-                configuration.Save();
-                numberTextures.CreateTextures();
-            }
-        }
-
-        var enableCountdownDisplayThreshold = configuration.Countdown.EnableDisplayThreshold;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_CountdownDisplayThreshold"),
-                ref enableCountdownDisplayThreshold))
-        {
-            configuration.Countdown.EnableDisplayThreshold = enableCountdownDisplayThreshold;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-
-        var countdownDisplayThreshold = configuration.Countdown.DisplayThreshold;
-        if (ImGui.InputInt("###Settings_CountdownTab_CountdownDisplayThreshold_Value",
-                ref countdownDisplayThreshold, 1))
-        {
-            countdownDisplayThreshold = Math.Clamp(countdownDisplayThreshold, 0, 30);
-            configuration.Countdown.DisplayThreshold = countdownDisplayThreshold;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_CountdownTab_CountdownDisplayThreshold_Help"));
+        Components.AutoField(Plugin.Config.Countdown, "EnableDisplayThreshold");
+        Components.AutoField(Plugin.Config.Countdown, "DisplayThreshold", sameLine: true);
 
         ImGui.Separator();
-        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_PositioningTitle"))) CountdownPositionAndSize();
+        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_PositioningTitle")))
+            CountdownPositionAndSize();
         if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_Texture"), ImGuiTreeNodeFlags.DefaultOpen))
             CountdownNumberStyle();
         ImGui.Separator();
 
-        var countdownAccurateCountdownDisabled = !configuration.Countdown.HideOriginalAddon;
-        if (countdownAccurateCountdownDisabled) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.5f);
-
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_AccurateMode"),
-                ref countdownAccurateCountdown))
-        {
-            configuration.Countdown.AccurateMode = countdownAccurateCountdown;
-            configuration.Save();
-        }
-
-        if (countdownAccurateCountdownDisabled) ImGui.PopStyleVar();
+        var hideOriginal = !configuration.Countdown.HideOriginalAddon;
+        if (hideOriginal) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.5f);
+        Components.AutoField(Plugin.Config.Countdown, "AccurateMode");
+        if (hideOriginal) ImGui.PopStyleVar();
 
         ImGui.Indent();
         ImGui.PushTextWrapPos(500f);
@@ -390,8 +265,7 @@ public class Settings : Window
     {
         CountDown.ShowBackground = true;
         ImGui.Indent();
-        var configuration = Plugin.Config;
-        if (!configuration.Countdown.HideOriginalAddon)
+        if (!Plugin.Config.Countdown.HideOriginalAddon)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
             ImGui.TextWrapped(Translator.Tr("Settings_CountdownTab_PositionWarning"));
@@ -400,22 +274,22 @@ public class Settings : Window
 
         ImGui.TextWrapped(Translator.Tr("Settings_CountdownTab_MultiMonitorWarning"));
 
-        var countdownOffsetX = configuration.Countdown.WindowOffset.X * 100;
+        var countdownOffsetX = Plugin.Config.Countdown.WindowOffset.X * 100;
         if (ImGui.DragFloat(Translator.TrId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX, .1f))
         {
-            configuration.Countdown.WindowOffset =
-                new Vector2(countdownOffsetX / 100, configuration.Countdown.WindowOffset.Y);
-            configuration.Save();
+            Plugin.Config.Countdown.WindowOffset =
+                new Vector2(countdownOffsetX / 100, Plugin.Config.Countdown.WindowOffset.Y);
+            Plugin.Config.DebouncedSave();
         }
 
         ImGui.SameLine();
 
-        var countdownOffsetY = configuration.Countdown.WindowOffset.Y * 100;
+        var countdownOffsetY = Plugin.Config.Countdown.WindowOffset.Y * 100;
         if (ImGui.DragFloat(Translator.TrId("Settings_CountdownTab_OffsetY"), ref countdownOffsetY, .1f))
         {
-            configuration.Countdown.WindowOffset =
-                new Vector2(configuration.Countdown.WindowOffset.X, countdownOffsetY / 100);
-            configuration.Save();
+            Plugin.Config.Countdown.WindowOffset =
+                new Vector2(Plugin.Config.Countdown.WindowOffset.X, countdownOffsetY / 100);
+            Plugin.Config.DebouncedSave();
         }
 
         ImGui.SameLine();
@@ -424,28 +298,28 @@ public class Settings : Window
 
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_cd_offset"))
         {
-            configuration.Countdown.WindowOffset = Vector2.Zero;
-            configuration.Save();
+            Plugin.Config.Countdown.WindowOffset = Vector2.Zero;
+            Plugin.Config.DebouncedSave();
         }
 
-        var countdownScale = configuration.Countdown.Scale;
+        var countdownScale = Plugin.Config.Countdown.Scale;
         ImGui.PushItemWidth(100f);
         if (ImGui.InputFloat(Translator.TrId("Settings_CountdownTab_CountdownScale"), ref countdownScale, .01f))
         {
-            configuration.Countdown.Scale = Math.Clamp(countdownScale, 0.05f, 15f);
-            configuration.Save();
+            Plugin.Config.Countdown.Scale = Math.Clamp(countdownScale, 0.05f, 15f);
+            Plugin.Config.DebouncedSave();
         }
 
         ImGui.PopItemWidth();
 
-        var align = (int)configuration.Countdown.Align;
+        var align = (int)Plugin.Config.Countdown.Align;
         if (ImGui.Combo(Translator.TrId("Settings_CountdownTab_CountdownAlign"), ref align,
                 Translator.Tr("Settings_FWTab_TextAlign_Left") + "###Left\0" +
                 Translator.Tr("Settings_FWTab_TextAlign_Center") + "###Center\0" +
                 Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
         {
-            configuration.Countdown.Align = (ConfigurationFile.TextAlign)align;
-            configuration.Save();
+            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign)align;
+            Plugin.Config.DebouncedSave();
         }
 
 
@@ -454,181 +328,51 @@ public class Settings : Window
 
     private void FloatingWindowTabContent()
     {
-        var configuration = Plugin.Config;
-        var floatingWindowAccurateCountdown = configuration.FloatingWindow.AccurateMode;
-
         ImGui.PushTextWrapPos();
         ImGui.Text(Translator.Tr("Settings_FWTab_Help"));
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
-        var displayFloatingWindow = configuration.FloatingWindow.Display;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_Display"), ref displayFloatingWindow))
-        {
-            configuration.FloatingWindow.Display = displayFloatingWindow;
-            configuration.Save();
-        }
-
-        var floatingWindowLock = configuration.FloatingWindow.Lock;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_Lock"), ref floatingWindowLock))
-        {
-            configuration.FloatingWindow.Lock = floatingWindowLock;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.FloatingWindow, "Display");
+        Components.AutoField(Plugin.Config.FloatingWindow, "Lock");
         ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_Lock_Help"));
 
-        var autoHideStopwatch = configuration.FloatingWindow.AutoHide;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_AutoHide_Left"), ref autoHideStopwatch))
-        {
-            configuration.FloatingWindow.AutoHide = autoHideStopwatch;
-            configuration.Save();
-        }
-
-        var autoHideTimeout = configuration.FloatingWindow.AutoHideTimeout;
-        ImGui.SameLine();
-        if (ImGui.InputFloat(Translator.TrId("Settings_FWTab_AutoHide_Right"), ref autoHideTimeout, .1f, 1f,
-                "%.1f%"))
-        {
-            configuration.FloatingWindow.AutoHideTimeout = Math.Max(0, autoHideTimeout);
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.FloatingWindow, "AutoHide");
+        Components.AutoField(Plugin.Config.FloatingWindow, "AutoHideTimeout", sameLine: true);
 
         ImGui.Separator();
 
-        var floatingWindowCountdown = configuration.FloatingWindow.EnableCountdown;
-        if (ImGui.Checkbox(
-                Translator.TrId("Settings_FWTab_CountdownPrecision" +
-                                (floatingWindowCountdown ? "_With" : "") + "_Left"),
-                ref floatingWindowCountdown))
-        {
-            configuration.FloatingWindow.EnableCountdown = floatingWindowCountdown;
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.FloatingWindow, "EnableCountdown");
+        Components.AutoField(Plugin.Config.FloatingWindow, "DecimalCountdownPrecision", sameLine: true);
 
-        if (floatingWindowCountdown)
-        {
-            ImGui.SameLine();
-            ImGui.PushItemWidth(70f);
-            var fwDecimalCountdownPrecision = configuration.FloatingWindow.DecimalCountdownPrecision;
-            // the little space is necessary because imgui id's the fields by label
-            if (ImGui.InputInt(
-                    Translator.TrId("Settings_FWTab_CountdownPrecision_Right"),
-                    ref fwDecimalCountdownPrecision, 1, 0))
-            {
-                fwDecimalCountdownPrecision = Math.Max(0, Math.Min(3, fwDecimalCountdownPrecision));
-                configuration.FloatingWindow.DecimalCountdownPrecision = fwDecimalCountdownPrecision;
-                configuration.Save();
-            }
-
-            ImGui.PopItemWidth();
-        }
-
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_CountdownPrecision_Help"));
-
-        var floatingWindowStopwatch = configuration.FloatingWindow.EnableStopwatch;
-        if (ImGui.Checkbox(
-                Translator.TrId("Settings_FWTab_StopwatchPrecision" +
-                                (floatingWindowStopwatch ? "_With" : "") + "_Left"),
-                ref floatingWindowStopwatch))
-        {
-            configuration.FloatingWindow.EnableStopwatch = floatingWindowStopwatch;
-            configuration.Save();
-        }
-
-        if (floatingWindowStopwatch)
-        {
-            ImGui.SameLine();
-            ImGui.PushItemWidth(70f);
-            var fwDecimalStopwatchPrecision = configuration.FloatingWindow.DecimalStopwatchPrecision;
-            if (ImGui.InputInt(Translator.TrId("Settings_FWTab_StopwatchPrecision_Right"),
-                    ref fwDecimalStopwatchPrecision, 1, 0))
-            {
-                fwDecimalStopwatchPrecision = Math.Max(0, Math.Min(3, fwDecimalStopwatchPrecision));
-                configuration.FloatingWindow.DecimalStopwatchPrecision = fwDecimalStopwatchPrecision;
-                configuration.Save();
-            }
-
-            ImGui.PopItemWidth();
-        }
-
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_StopwatchPrecision_Help"));
+        Components.AutoField(Plugin.Config.FloatingWindow, "EnableStopwatch");
+        Components.AutoField(Plugin.Config.FloatingWindow, "DecimalStopwatchPrecision", sameLine: true);
 
         ImGui.Separator();
         if (ImGui.CollapsingHeader(Translator.TrId("Settings_FWTab_Styling"))) FwStyling();
         ImGui.Separator();
 
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_AccurateCountdown"),
-                ref floatingWindowAccurateCountdown))
-        {
-            configuration.FloatingWindow.AccurateMode = floatingWindowAccurateCountdown;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.FloatingWindow, "AccurateMode");
         ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_AccurateCountdown_Help"));
 
-        var fWDisplayStopwatchOnlyInDuty = configuration.FloatingWindow.StopwatchOnlyInDuty;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_DisplayStopwatchOnlyInDuty"),
-                ref fWDisplayStopwatchOnlyInDuty))
-        {
-            configuration.FloatingWindow.StopwatchOnlyInDuty = fWDisplayStopwatchOnlyInDuty;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.FloatingWindow, "StopwatchOnlyInDuty");
         ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_DisplayStopwatchOnlyInDuty_Help"));
 
-        var negativeSign = configuration.FloatingWindow.CountdownNegativeSign;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_CountdownNegativeSign"), ref negativeSign))
-        {
-            configuration.FloatingWindow.CountdownNegativeSign = negativeSign;
-            configuration.Save();
-        }
-
-        var displaySeconds = configuration.FloatingWindow.StopwatchAsSeconds;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_StopwatchAsSeconds"), ref displaySeconds))
-        {
-            configuration.FloatingWindow.StopwatchAsSeconds = displaySeconds;
-            configuration.Save();
-        }
-
-        var prePullWarning = configuration.FloatingWindow.ShowPrePulling;
-        if (ImGui.Checkbox(Translator.TrId("Settings_FWTab_ShowPrePulling"), ref prePullWarning))
-        {
-            configuration.FloatingWindow.ShowPrePulling = prePullWarning;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.FloatingWindow, "CountdownNegativeSign");
+        Components.AutoField(Plugin.Config.FloatingWindow, "StopwatchAsSeconds");
+        Components.AutoField(Plugin.Config.FloatingWindow, "ShowPrePulling");
         ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_ShowPrePulling_Help"));
 
-        if (prePullWarning)
-        {
-            ImGui.Indent();
-            var offset = configuration.FloatingWindow.PrePullOffset;
-            ImGui.PushItemWidth(110f);
-            if (ImGui.InputFloat(Translator.Tr("Settings_FWTab_PrePullOffset"), ref offset, 0.1f, 1f, "%.3fs"))
-            {
-                configuration.FloatingWindow.PrePullOffset = offset;
-                configuration.Save();
-            }
+        if (!Plugin.Config.FloatingWindow.ShowPrePulling) return;
+        ImGui.Indent();
+        ImGui.PushItemWidth(110f);
+        Components.AutoField(Plugin.Config.FloatingWindow, "PrePullOffset");
+        ImGui.PopItemWidth();
+        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_PrePullOffset_Help"));
 
-            ImGui.PopItemWidth();
-            ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_PrePullOffset_Help"));
+        Components.AutoField(Plugin.Config.FloatingWindow, "PrePullColor");
 
-            ImGui.SameLine();
-            var prePullColor = ImGuiComponents.ColorPickerWithPalette(10,
-                Translator.TrId("Settings_FWTab_TextColor"),
-                configuration.FloatingWindow.PrePullColor);
-            if (prePullColor != configuration.FloatingWindow.PrePullColor)
-            {
-                configuration.FloatingWindow.PrePullColor = prePullColor;
-                configuration.Save();
-            }
-
-            ImGui.SameLine();
-            ImGui.Text(Translator.Tr("Settings_FWTab_TextColor"));
-
-            ImGui.Unindent();
-        }
+        ImGui.Unindent();
     }
 
     private void FwStyling()
@@ -636,15 +380,9 @@ public class Settings : Window
         ImGui.Indent();
 
         ImGui.BeginGroup();
-        var configuration = Plugin.Config;
-        var fwScale = configuration.FloatingWindow.Scale;
-        ImGui.PushItemWidth(100f);
-        if (ImGui.DragFloat(Translator.TrId("Settings_CountdownTab_FloatingWindowScale"), ref fwScale, .01f))
-        {
-            configuration.FloatingWindow.Scale = Math.Clamp(fwScale, 0.05f, 15f);
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.FloatingWindow, "Scale");
 
+        var configuration = Plugin.Config;
         var textAlign = (int)configuration.FloatingWindow.Align;
         if (ImGui.Combo(Translator.TrId("Settings_FWTab_TextAlign"), ref textAlign,
                 Translator.Tr("Settings_FWTab_TextAlign_Left") + "###Left\0" +
@@ -652,14 +390,14 @@ public class Settings : Window
                 Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
         {
             configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign)textAlign;
-            configuration.Save();
+            configuration.DebouncedSave();
         }
 
         var fontSize = configuration.FloatingWindow.FontSize;
         if (ImGui.InputInt(Translator.TrId("Settings_FWTab_FontSize"), ref fontSize, 4))
         {
             configuration.FloatingWindow.FontSize = Math.Max(0, fontSize);
-            configuration.Save();
+            configuration.DebouncedSave();
 
             if (configuration.FloatingWindow.FontSize >= 8) _ui.RebuildFonts();
         }
@@ -667,29 +405,8 @@ public class Settings : Window
         ImGui.EndGroup();
         ImGui.SameLine();
         ImGui.BeginGroup();
-        var floatingWindowTextColor = ImGuiComponents.ColorPickerWithPalette(1,
-            Translator.TrId("Settings_FWTab_TextColor"),
-            configuration.FloatingWindow.TextColor);
-        if (floatingWindowTextColor != configuration.FloatingWindow.TextColor)
-        {
-            configuration.FloatingWindow.TextColor = floatingWindowTextColor;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        ImGui.Text(Translator.Tr("Settings_FWTab_TextColor"));
-
-        var floatingWindowBackgroundColor = ImGuiComponents.ColorPickerWithPalette(2,
-            Translator.TrId("Settings_FWTab_BackgroundColor"),
-            configuration.FloatingWindow.BackgroundColor);
-        if (floatingWindowBackgroundColor != configuration.FloatingWindow.BackgroundColor)
-        {
-            configuration.FloatingWindow.BackgroundColor = floatingWindowBackgroundColor;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        ImGui.Text(Translator.Tr("Settings_FWTab_BackgroundColor"));
+        Components.AutoField(Plugin.Config.FloatingWindow, "TextColor");
+        Components.AutoField(Plugin.Config.FloatingWindow, "BackgroundColor");
         ImGui.EndGroup();
 
         ImGui.Unindent();
@@ -697,56 +414,27 @@ public class Settings : Window
 
     private void WebServerTabContent()
     {
-        var configuration = Plugin.Config;
-        var enableWebServer = configuration.WebServer.Enable;
-
         ImGui.PushTextWrapPos();
-        ImGui.Text(Translator.Tr("Settings_Web_Help"));
-        ImGui.Text(Translator.Tr("Settings_Web_HelpAdd"));
-
-        ImGui.Text($"http://localhost:{configuration.WebServer.WebServer}/");
+        Components.Text("Settings_Web_Help");
+        Components.Text("Settings_Web_HelpAdd");
+        ImGui.Text($"http://localhost:{Plugin.Config.WebServer.Port}/");
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Copy))
-            ImGui.SetClipboardText($"http://localhost:{configuration.WebServer.WebServer}/");
+            ImGui.SetClipboardText($"http://localhost:{Plugin.Config.WebServer.Port}/");
 
         ImGui.Text(Translator.Tr("Settings_Web_HelpSize"));
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
-        if (ImGui.Checkbox(Translator.TrId("Settings_Web_EnablePort"), ref enableWebServer))
-        {
-            configuration.WebServer.Enable = enableWebServer;
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        var webServerPort = configuration.WebServer.WebServer;
-        if (ImGui.InputInt("###EngageTimer_WebPort", ref webServerPort))
-        {
-            configuration.WebServer.WebServer = webServerPort;
-            configuration.Save();
-        }
-
-        var enableWebStopwatchTimeout = configuration.WebServer.EnableStopwatchTimeout;
-        if (ImGui.Checkbox(Translator.TrId("Settings_Web_Hide_Left"), ref enableWebStopwatchTimeout))
-        {
-            configuration.WebServer.EnableStopwatchTimeout = enableWebStopwatchTimeout;
-            configuration.Save();
-        }
-
-        var webStopwatchTimeout = configuration.WebServer.StopwatchTimeout;
-        ImGui.SameLine();
-        if (ImGui.DragFloat(Translator.TrId("Settings_Web_Hide_Right"), ref webStopwatchTimeout))
-        {
-            configuration.WebServer.StopwatchTimeout = webStopwatchTimeout;
-            configuration.Save();
-        }
+        Components.AutoField(Plugin.Config.WebServer, "Enable");
+        Components.AutoField(Plugin.Config.WebServer, "Port", sameLine: true);
+        Components.AutoField(Plugin.Config.WebServer, "EnableStopwatchTimeout");
+        Components.AutoField(Plugin.Config.WebServer, "StopwatchTimeout", sameLine: true);
     }
 
     private void CountdownNumberStyle()
     {
-        var numberTextures = Plugin.NumberTextures;
-        var texture = numberTextures.GetTexture(_exampleNumber);
+        var texture = Plugin.NumberTextures.GetTexture(_exampleNumber);
         const float scale = .5f;
         ImGui.BeginGroup();
         if (ImGui.ImageButton(
@@ -773,35 +461,28 @@ public class Settings : Window
         ImGui.BeginGroup();
         ImGui.PushItemWidth(200f);
         choiceString += Translator.TrId("Settings_CountdownTab_Texture_custom");
-        if (ImGui.Combo("###DropDown_" + Translator.Tr("Settings_CountdownTab_Texture"), ref currentTexture, choiceString))
+        if (ImGui.Combo("###DropDown_" + Translator.Tr("Settings_CountdownTab_Texture"), ref currentTexture,
+                choiceString))
         {
             configuration.Countdown.TexturePreset = currentTexture < choices.Count() ? choices[currentTexture] : "";
-            configuration.Save();
-            numberTextures.Load();
+            configuration.DebouncedSave();
+            Plugin.NumberTextures.Load();
         }
 
         ImGui.PopItemWidth();
 
-        ImGui.SameLine();
-        var monospaced = configuration.Countdown.Monospaced;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_Monospaced"), ref monospaced))
-        {
-            configuration.Countdown.Monospaced = monospaced;
-            configuration.Save();
-        }
-
+        Components.AutoField(Plugin.Config.Countdown, "Monospaced", sameLine: true);
         if (configuration.Countdown.TexturePreset == "")
         {
             _tempTexturePath ??= configuration.Countdown.TextureDirectory ?? "";
-
             ImGui.PushItemWidth(400f);
             ImGui.InputText(Translator.TrId("Settings_CountdownTab_Texture_Custom_Path"), ref _tempTexturePath, 1024);
             ImGui.PopItemWidth();
             if (ImGui.Button(Translator.TrId("Settings_CountdownTab_Texture_Custom_Load")))
             {
                 configuration.Countdown.TextureDirectory = _tempTexturePath;
-                configuration.Save();
-                numberTextures.Load();
+                configuration.DebouncedSave();
+                Plugin.NumberTextures.Load();
             }
         }
 
@@ -809,22 +490,12 @@ public class Settings : Window
 
         if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_NumberStyle_Advanced")))
         {
-            var leading0 = configuration.Countdown.LeadingZero;
-            if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_NumberStyle_LeadingZero"), ref leading0))
-            {
-                configuration.Countdown.LeadingZero = leading0;
-                configuration.Save();
-            }
+            Components.AutoField(Plugin.Config.Countdown, "LeadingZero");
+            Components.Checkbox(Plugin.Config.Countdown.CustomNegativeMargin != null,
+                Translator.TrId("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin"),
+                v => Plugin.Config.Countdown.CustomNegativeMargin = v ? 20f : null);
 
-            var enableCustomNegativeMargin = configuration.Countdown.CustomNegativeMargin != null;
-            if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin"),
-                    ref enableCustomNegativeMargin))
-            {
-                configuration.Countdown.CustomNegativeMargin = enableCustomNegativeMargin ? 20f : null;
-                configuration.Save();
-            }
-
-            if (enableCustomNegativeMargin)
+            if (Plugin.Config.Countdown.CustomNegativeMargin != null)
             {
                 ImGui.Indent();
                 ImGui.PushItemWidth(100f);
@@ -845,80 +516,50 @@ public class Settings : Window
 
     private void CountdownNumberColor()
     {
+        var c = Plugin.Config.Countdown;
+
         // --- Luminance ---
         ImGui.PushItemWidth(250f);
-        var configuration = Plugin.Config;
-        var numberTextures = Plugin.NumberTextures;
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_lum"))
         {
-            configuration.Countdown.Luminance = 0f;
-            numberTextures.CreateTextures();
-            configuration.Save();
+            Components.ResettableSlider("lum", "± " + Translator.TrId("Settings_CountdownTab_NumberLuminance"),
+                c.Luminance, 0f, -1f, 1f, value =>
+                {
+                    c.Luminance = value;
+                    _requestTextureCreation = true;
+                });
+
+            // --- Saturation ---
+            Components.ResettableSlider("sat", "± " + Translator.TrId("Settings_CountdownTab_NumberSaturation"),
+                c.Saturation, 0f, -1f, 1f, value =>
+                {
+                    c.Saturation = value;
+                    _requestTextureCreation = true;
+                });
+
+            // --- Hue ---
+            if (c.NumberRecolorMode)
+            {
+                ImGui.PushStyleColor(ImGuiCol.FrameBg, HslConv.HslToVector4Rgb(c.Hue, 0.3f, 0.3f));
+                ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, HslConv.HslToVector4Rgb(c.Hue, 0.5f, 0.3f));
+                ImGui.PushStyleColor(ImGuiCol.FrameBgActive, HslConv.HslToVector4Rgb(c.Hue, 0.7f, 0.3f));
+            }
+
+            Components.ResettableDraggable("hue",
+                (c.NumberRecolorMode ? "" : "± ") + Translator.TrId("Settings_CountdownTab_NumberHue"),
+                c.Hue, 0, 0, 360, value =>
+                {
+                    c.Hue = value;
+                    _requestTextureCreation = true;
+                });
+            if (c.NumberRecolorMode) ImGui.PopStyleColor(3);
         }
-
-        ImGui.SameLine();
-        var b = configuration.Countdown.Luminance;
-        if (ImGui.SliderFloat("± " + Translator.TrId("Settings_CountdownTab_NumberLuminance"), ref b, -1f, 1f))
-        {
-            configuration.Countdown.Luminance = Math.Clamp(b, -1f, 1f);
-            numberTextures.CreateTextures();
-            configuration.Save();
-        }
-
-        // --- Saturation ---
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_sat"))
-        {
-            configuration.Countdown.Saturation = 0f;
-            numberTextures.CreateTextures();
-            configuration.Save();
-        }
-
-        ImGui.SameLine();
-        var s = configuration.Countdown.Saturation;
-        if (ImGui.SliderFloat("± " + Translator.TrId("Settings_CountdownTab_NumberSaturation"), ref s, -1f, 1f))
-        {
-            configuration.Countdown.Saturation = Math.Clamp(s, -1f, 1f);
-            numberTextures.CreateTextures();
-            configuration.Save();
-        }
-
-        // --- Hue ---
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_hue"))
-        {
-            configuration.Countdown.Hue = 0;
-            numberTextures.CreateTextures();
-            configuration.Save();
-        }
-
-        var h = configuration.Countdown.Hue;
-        ImGui.SameLine();
-        if (configuration.Countdown.NumberRecolorMode)
-        {
-            ImGui.PushStyleColor(ImGuiCol.FrameBg, HslConv.HslToVector4Rgb(h, 0.3f, 0.3f));
-            ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, HslConv.HslToVector4Rgb(h, 0.5f, 0.3f));
-            ImGui.PushStyleColor(ImGuiCol.FrameBgActive, HslConv.HslToVector4Rgb(h, 0.7f, 0.3f));
-        }
-
-        if (ImGui.DragInt((configuration.Countdown.NumberRecolorMode ? "" : "± ") +
-                          Translator.TrId("Settings_CountdownTab_NumberHue"), ref h, 1))
-        {
-            if (h > 360) h = 0;
-            if (h < 0) h = 360;
-            configuration.Countdown.Hue = h;
-            numberTextures.CreateTextures();
-            configuration.Save();
-        }
-
-        if (configuration.Countdown.NumberRecolorMode) ImGui.PopStyleColor(3);
-
         ImGui.PopItemWidth();
 
-        var tint = configuration.Countdown.NumberRecolorMode;
-        if (ImGui.Checkbox(Translator.TrId("Settings_CountdownTab_NumberRecolor"), ref tint))
-        {
-            configuration.Countdown.NumberRecolorMode = !configuration.Countdown.NumberRecolorMode;
-            configuration.Save();
-            numberTextures.CreateTextures();
-        }
+        Components.Checkbox(c.NumberRecolorMode, Translator.TrId("Settings_CountdownTab_NumberRecolor"),
+            v =>
+            {
+                c.NumberRecolorMode = v;
+                _requestTextureCreation = true;
+            });
     }
 }

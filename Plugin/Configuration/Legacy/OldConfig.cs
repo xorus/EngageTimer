@@ -54,7 +54,7 @@ public class OldConfig
 
     // Countdown style
     public string CountdownTexturePreset { get; set; } = "default";
-    public string CountdownTextureDirectory { get; set; } = null;
+    public string? CountdownTextureDirectory { get; set; } = null;
     public float CountdownScale { get; set; } = 1f;
     public bool CountdownMonospaced { get; set; }
     public float? CountdownCustomNegativeMargin { get; set; } = null;

@@ -20,6 +20,7 @@ using System.Numerics;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
 using EngageTimer.Configuration;
+using EngageTimer.Status;
 using EngageTimer.Ui.CustomEasing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
@@ -65,7 +66,7 @@ public sealed class CountDown
 
     public static bool ShowBackground { get; set; }
 
-    private void ConfigurationOnOnSave(object sender, EventArgs e)
+    private void ConfigurationOnOnSave(object? sender, EventArgs e)
     {
         UpdateFromConfig();
     }
@@ -98,7 +99,7 @@ public sealed class CountDown
 
     // Fix for #19 (countdown overlapping when restarting)
     // ensures the countdown addon is marked as not hidden when starting or restarting a timer
-    private void Start(object sender, EventArgs e)
+    private void Start(object? sender, EventArgs e)
     {
         _originalAddonHidden = false;
     }
@@ -106,18 +107,18 @@ public sealed class CountDown
     public void Draw()
     {
 #if DEBUG
-        var state = Plugin.State;
         if (ImGui.Begin("egdebug"))
         {
             ImGui.Text("_originalAddonHidden: " + _originalAddonHidden);
-            ImGui.Text("CountingDown: " + state.CountingDown);
-            ImGui.Text("CountDownValue: " + state.CountDownValue);
-            ImGui.Text("Mocked: " + state.Mocked);
-            ImGui.Text("CombatDuration: " + state.CombatDuration);
-            ImGui.Text("CombatEnd: " + state.CombatEnd);
-            ImGui.Text("CombatStart: " + state.CombatStart);
-            ImGui.Text("InCombat: " + state.InCombat);
-            ImGui.Text("InInstance: " + state.InInstance);
+            ImGui.Text("CountingDown: " + Plugin.State.CountingDown);
+            ImGui.Text("CountDownValue: " + Plugin.State.CountDownValue);
+            ImGui.Text("Mocked: " + Plugin.State.Mocked);
+            ImGui.Text("CombatDuration: " + Plugin.State.CombatDuration);
+            ImGui.Text("CombatEnd: " + Plugin.State.CombatEnd);
+            ImGui.Text("CombatStart: " + Plugin.State.CombatStart);
+            ImGui.Text("InCombat: " + Plugin.State.InCombat);
+            ImGui.Text("InInstance: " + Plugin.State.InInstance);
+            ImGui.Text($"texture build time: {Plugin.NumberTextures.LastTextureCreationDuration}ms");
         }
 
         ImGui.End();
@@ -126,19 +127,19 @@ public sealed class CountDown
         // display is disabled
         if (!Plugin.Config.Countdown.Display) return;
 
-        if (!_firstLoad && (!state.CountingDown || !Plugin.Config.Countdown.Display))
+        if (!_firstLoad && (!Plugin.State.CountingDown || !Plugin.Config.Countdown.Display))
         {
             // re-enable the original addon at the last possible moment (when done counting down) to show "START"
             if (_originalAddonHidden && Plugin.Config.Countdown.HideOriginalAddon) ToggleOriginalAddon();
             return;
         }
 
-        if (Plugin.Config.Countdown.HideOriginalAddon && state.CountDownValue <= 5 && !_originalAddonHidden)
+        if (Plugin.Config.Countdown.HideOriginalAddon && Plugin.State.CountDownValue <= 5 && !_originalAddonHidden)
             ToggleOriginalAddon();
 
-        var showMainCountdown = _firstLoad || state.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
+        var showMainCountdown = _firstLoad || Plugin.State.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
         if (showMainCountdown && Plugin.Config.Countdown.EnableDisplayThreshold &&
-            state.CountDownValue > Plugin.Config.Countdown.DisplayThreshold)
+            Plugin.State.CountDownValue > Plugin.Config.Countdown.DisplayThreshold)
             return;
 
         var numberScale = BaseNumberScale;
@@ -151,7 +152,7 @@ public sealed class CountDown
 
             if (Plugin.Config.Countdown.Animate)
             {
-                var second = (int)state.CountDownValue;
+                var second = (int)Plugin.State.CountDownValue;
                 if (_lastSecond != second)
                 {
                     _easing.Restart();
@@ -245,7 +246,7 @@ public sealed class CountDown
         ImGui.SetCursorPosY((windowSize.Y - totalHeight) / 2f);
 
         var mainTotalWidth = 0f;
-        List<int> mainNumbers = null;
+        List<int>? mainNumbers = null;
 
         if (showMainCountdown)
         {
@@ -254,8 +255,9 @@ public sealed class CountDown
                 : Math.Ceiling(Plugin.State.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
             if (Plugin.Config.Countdown.LeadingZero && number.Length == 1) number = "0" + number;
-
+            
             mainNumbers = NumberList(number);
+            if (mainNumbers == null) return;
             // First loop to compute total width
             if (Plugin.Config.Countdown.Monospaced)
                 mainTotalWidth = (numberTextures.MaxTextureWidth * numberScale - negativeMarginScaled) *
@@ -272,7 +274,7 @@ public sealed class CountDown
         }
 
         var decimalTotalWidth = 0f;
-        List<int> decimalNumbers = null;
+        List<int>? decimalNumbers = null;
 
         var smolNumberScale = numberScale * .5f;
         var smolMaxWidthScaled = numberTextures.MaxTextureWidth * smolNumberScale;
@@ -290,6 +292,7 @@ public sealed class CountDown
 
             smolNumberCursorY = ImGui.GetCursorPosY() + offsetY;
             decimalNumbers = NumberList(decimalPart);
+            if (decimalNumbers == null) return;
             decimalTotalWidth = numberTextures.MaxTextureWidth * (decimalNumbers.Count * smolNumberScale) -
                                 (decimalNumbers.Count - 1) * negativeMarginScaled * smolNumberScale;
         }
@@ -342,7 +345,7 @@ public sealed class CountDown
             ImGui.SetCursorPosX(cursorX + width - negativeMarginScaled);
     }
 
-    private static List<int> NumberList(string number)
+    private static List<int>? NumberList(string number)
     {
         var integers = new List<int>();
         foreach (var c in number)

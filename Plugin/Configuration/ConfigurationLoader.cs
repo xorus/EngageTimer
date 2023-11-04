@@ -35,11 +35,10 @@ public static class ConfigurationLoader
         // config files before 3 needs some BIG MIGRATION WORK
         try
         {
-            return new ConfigurationFile().Import(
-                JsonConvert.DeserializeObject<OldConfig>(
-                    File.ReadAllText(Plugin.PluginInterface.ConfigFile.FullName)
-                ).Migrate()
+            var oldConfig = JsonConvert.DeserializeObject<OldConfig>(
+                File.ReadAllText(Plugin.PluginInterface.ConfigFile.FullName)
             );
+            return oldConfig == null ? new ConfigurationFile() : new ConfigurationFile().Import(oldConfig.Migrate());
         }
         catch (Exception exception)
         {

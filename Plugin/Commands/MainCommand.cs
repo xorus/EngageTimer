@@ -121,7 +121,7 @@ public sealed class MainCommand : IDisposable
         }
     }
 
-    private void OnLocaleChanged(object sender, EventArgs e)
+    private void OnLocaleChanged(object? sender, EventArgs e)
     {
         Unregister();
         Register();

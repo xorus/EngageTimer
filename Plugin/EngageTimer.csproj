@@ -16,6 +16,7 @@
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <AssemblyName>EngageTimer</AssemblyName>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

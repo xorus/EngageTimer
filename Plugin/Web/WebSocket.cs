@@ -44,12 +44,6 @@ public class Websocket : WebSocketModule
         _configuration = configuration;
         _updateInterval = _state.InCombat || _state.CountingDown ? UpdateTimeIdle : UpdateTimeInCombat;
 
-        void EventHandler(object o, EventArgs eventArgs)
-        {
-            _updateInterval = _state.InCombat || _state.CountingDown ? UpdateTimeIdle : UpdateTimeInCombat;
-            _forceUpdateNextTick = true;
-        }
-
         _state.InCombatChanged += EventHandler;
         _state.CountingDownChanged += EventHandler;
 
@@ -61,6 +55,13 @@ public class Websocket : WebSocketModule
 
             BroadcastAsync(_lastWebConfig);
         };
+        return;
+
+        void EventHandler(object? o, EventArgs eventArgs)
+        {
+            _updateInterval = _state.InCombat || _state.CountingDown ? UpdateTimeIdle : UpdateTimeInCombat;
+            _forceUpdateNextTick = true;
+        }
     }
 
     protected override Task OnClientConnectedAsync(IWebSocketContext context)
@@ -73,7 +74,7 @@ public class Websocket : WebSocketModule
         IWebSocketReceiveResult result)
     {
         // do nothing because we don't care~
-        return null;
+        return Task.CompletedTask;
     }
 
     public void UpdateInfo()

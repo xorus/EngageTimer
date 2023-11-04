@@ -1,6 +1,7 @@
 ﻿# v2.3.0.0 - unreleased
 
 - Big code rewrite and a bit of optimization
+- Fix save errors when spinning color sliders like a maniac in configuration
 - Reorganized configuration file to preserve my sanity
 
 # v2.2.6.0

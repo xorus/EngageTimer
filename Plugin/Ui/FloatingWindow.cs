@@ -218,7 +218,7 @@ public sealed class FloatingWindow : IDisposable
         {
             // attempt to load the correct font (I'm only using numbers anyway)
             string[] fonts = { "NotoSansCJKsc-Medium.otf", "NotoSansCJKjp-Medium.otf" };
-            string filePath = null;
+            string? filePath = null;
             foreach (var font in fonts)
             {
                 filePath = Path.Combine(Plugin.PluginInterface.DalamudAssetDirectory.FullName, "UIRes", font);

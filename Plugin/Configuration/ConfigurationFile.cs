@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using System.Timers;
 using Dalamud.Configuration;
 using Dalamud.Plugin;
 using EngageTimer.Configuration.Legacy;
@@ -40,10 +41,32 @@ public class ConfigurationFile : IPluginConfiguration
 
     public int Version { get; set; } = 3;
 
+    [NonSerialized] private Timer _saveTimer;
+
+    public ConfigurationFile()
+    {
+        _saveTimer = new Timer(250);
+        _saveTimer.AutoReset = false;
+        _saveTimer.Elapsed += SaveTimerElapsed;
+    }
+
     public void Save()
     {
+        Plugin.Logger.Debug("Saving configuration");
         _pluginInterface.SavePluginConfig(this);
         OnSave?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    private void SaveTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        Save();
+    }
+
+    public void DebouncedSave()
+    {
+        _saveTimer.Stop();
+        _saveTimer.Start();
     }
 
     public object GetWebConfig()
@@ -55,7 +78,7 @@ public class ConfigurationFile : IPluginConfiguration
         };
     }
 
-    public event EventHandler OnSave;
+    public event EventHandler? OnSave;
 
     public ConfigurationFile Import(OldConfig old)
     {
@@ -105,7 +128,7 @@ public class ConfigurationFile : IPluginConfiguration
         Countdown.Align = (TextAlign)old.CountdownAlign;
         FloatingWindow.FontSize = old.FontSize;
         WebServer.Enable = old.EnableWebServer;
-        WebServer.WebServer = old.WebServerPort;
+        WebServer.Port = old.WebServerPort;
         WebServer.EnableStopwatchTimeout = old.EnableWebStopwatchTimeout;
         WebServer.StopwatchTimeout = old.WebStopwatchTimeout;
         Dtr.CombatTimeEnabled = old.DtrCombatTimeEnabled;

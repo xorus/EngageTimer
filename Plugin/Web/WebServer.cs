@@ -26,10 +26,9 @@ internal class WebServer : IDisposable
 
     private bool _enableWebServer;
 
-    private EmbedIO.WebServer _server;
-    private CancellationTokenSource _serverCancellationToken;
-
-    private Websocket _websocket;
+    private EmbedIO.WebServer? _server;
+    private CancellationTokenSource? _serverCancellationToken;
+    private Websocket? _websocket;
 
     public void Dispose()
     {
@@ -45,7 +44,7 @@ internal class WebServer : IDisposable
         var configuration = Plugin.Config;
         _websocket = new Websocket("/ws", Plugin.State, configuration);
         _server = new EmbedIO.WebServer(o => o
-                    .WithUrlPrefix($"http://+:{configuration.WebServer.WebServer}/")
+                    .WithUrlPrefix($"http://+:{configuration.WebServer.Port}/")
                     .WithMode(HttpListenerMode.EmbedIO)
                 )
                 .WithModule(_websocket)
@@ -59,7 +58,7 @@ internal class WebServer : IDisposable
     private void Disable()
     {
         Plugin.Logger.Info("Disabling WebServer");
-        if (_serverCancellationToken != null && !_serverCancellationToken.IsCancellationRequested)
+        if (_serverCancellationToken is { IsCancellationRequested: false })
             _serverCancellationToken?.Cancel();
 
         _server?.Dispose();
