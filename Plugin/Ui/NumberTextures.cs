@@ -35,6 +35,8 @@ public sealed class NumberTextures
     private readonly Dictionary<int, IDalamudTextureWrap> _numberTexturesAlt = new();
     private readonly UiBuilder _uiBuilder = Plugin.PluginInterface.UiBuilder;
 
+    public double LastTextureCreationDuration = 0d;
+
     public NumberTextures()
     {
         _error = _uiBuilder.LoadImage(Path.Combine(Plugin.PluginPath, "Data", "error.png"));
@@ -138,6 +140,7 @@ public sealed class NumberTextures
 
     public void CreateTextures()
     {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
         MaxTextureHeight = 0;
         MaxTextureWidth = 0;
 
@@ -200,6 +203,9 @@ public sealed class NumberTextures
             MaxTextureWidth = _error.Width;
             MaxTextureHeight = _error.Height;
         }
+
+        watch.Stop();
+        LastTextureCreationDuration = watch.ElapsedMilliseconds / 1000d;
     }
 
     public IDalamudTextureWrap GetTexture(int i)

@@ -32,7 +32,7 @@ public sealed class Translator : IDisposable
         Plugin.PluginInterface.LanguageChanged -= ConfigureLanguage;
     }
 
-    public event EventHandler LocaleChanged;
+    public event EventHandler? LocaleChanged;
 
     public static string TrId(string id)
     {
@@ -61,7 +61,7 @@ public sealed class Translator : IDisposable
         return str;
     }
 
-    private void ConfigureLanguage(string langCode = null)
+    private void ConfigureLanguage(string? langCode = null)
     {
         var lang = (langCode ?? Plugin.PluginInterface.UiLanguage) switch
         {

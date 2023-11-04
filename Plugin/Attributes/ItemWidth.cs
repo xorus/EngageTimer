@@ -14,22 +14,18 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using EngageTimer.Attributes;
 
-namespace EngageTimer.Configuration;
+namespace EngageTimer.Attributes;
 
-[Serializable]
-public class WebServerConfiguration
+#nullable enable
+
+[AttributeUsage(AttributeTargets.Property)]
+public class ItemWidth : Attribute
 {
-    [AutoField(String = "Settings_Web_EnablePort")]
-    public bool Enable { get; set; } = false;
+    public float Width { get; set; }
 
-    [AutoField(Id = "EngageTimer_WebPort")]
-    public int Port { get; set; } = 8952;
-
-    [AutoField(String = "Settings_Web_Hide_Left")]
-    public bool EnableStopwatchTimeout { get; set; } = false;
-
-    [AutoField(String = "Settings_Web_Hide_Right")]
-    public float StopwatchTimeout { get; set; } = 0f;
+    public ItemWidth(float width)
+    {
+        Width = width;
+    }
 }

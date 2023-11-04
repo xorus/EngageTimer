@@ -21,7 +21,7 @@ namespace EngageTimer.Ui;
 
 public sealed class DtrBarUi : IDisposable
 {
-    private DtrBarEntry _entry;
+    private DtrBarEntry? _entry;
 
     public DtrBarUi()
     {
@@ -34,7 +34,7 @@ public sealed class DtrBarUi : IDisposable
         _entry?.Dispose();
     }
 
-    private DtrBarEntry GetEntry()
+    private DtrBarEntry? GetEntry()
     {
         const string dtrBarTitle = "EngageTimer stopwatch";
         var dtrBar = Plugin.DtrBar;

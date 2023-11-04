@@ -51,9 +51,9 @@ public class State
     public bool InInstance { get; set; }
     public float CountDownValue { get; set; } = 0f;
     public bool PrePulling { get; set; } = false;
-    public event EventHandler InCombatChanged;
-    public event EventHandler CountingDownChanged;
-    public event EventHandler StartCountingDown;
+    public event EventHandler? InCombatChanged;
+    public event EventHandler? CountingDownChanged;
+    public event EventHandler? StartCountingDown;
 
     public void FireStartCountingDown()
     {

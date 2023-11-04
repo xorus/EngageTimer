@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using EngageTimer.Attributes;
+using EngageTimer.Ui;
 
 namespace EngageTimer.Configuration;
 
@@ -36,12 +38,22 @@ public class DtrConfiguration
         }
     }
 
+    [AutoField("Settings_DtrCombatTimer_Prefix"), MinMax(0, 50)]
     public string CombatTimePrefix { get; set; } = DefaultCombatTimePrefix;
-    public string CombatTimeSuffix { get; set; } = DefaultCombatTimeSuffix;
-    public int CombatTimeDecimalPrecision { get; set; } = 0;
-    public bool CombatTimeAlwaysDisableOutsideDuty { get; set; }
-    public bool CombatTimeEnableHideAfter { get; set; } = false;
-    public float CombatTimeHideAfter { get; set; } = 20f;
 
-    public event EventHandler BarCombatTimerEnableChange;
+    [AutoField("Settings_DtrCombatTimer_Suffix"), MinMax(0, 50)]
+    public string CombatTimeSuffix { get; set; } = DefaultCombatTimeSuffix;
+
+    [AutoField("Settings_DtrCombatTimer_DecimalPrecision"), MinMax(0, 3)]
+    public int CombatTimeDecimalPrecision { get; set; } = 0;
+
+    [AutoField("Settings_DtrCombatTimer_AlwaysDisableOutsideDuty")]
+    public bool CombatTimeAlwaysDisableOutsideDuty { get; set; }
+
+    [AutoField("Settings_DtrCombatTimer_HideAfter")]
+    public bool CombatTimeEnableHideAfter { get; set; } = false;
+
+    [AutoField("Settings_DtrCombatTimer_HideAfterRight", Components.FieldType.InputFloat, 0.1f, 1f, "%.1f%")]
+    public float CombatTimeHideAfter { get; set; } = 20f;
+    public event EventHandler? BarCombatTimerEnableChange;
 }
