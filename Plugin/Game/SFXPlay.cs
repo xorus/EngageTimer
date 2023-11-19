@@ -37,19 +37,27 @@ internal unsafe class GameSound
 
 public class SfxPlay
 {
+    public const uint FirstSeSfx = 37 - 1;
     public const uint SmallTick = 29;
     public const uint CdTick = 48;
     private readonly GameSound _gameSound = new();
 
-    public void SoundEffect(uint id)
+    public SfxPlay()
+    {
+        /* Force a sound to play on load as a workaround for the CLR taking some time to init the pointy method call,
+         * we dont want a freeze midway through a countdown
+         * https://discord.com/channels/581875019861328007/653504487352303619/988123102116450335
+         * https://i.imgur.com/BrLUr2p.png
+         * */
+        SoundEffect(0); // should be cursor sound
+    }
+
+    public unsafe void SoundEffect(uint id)
     {
         // var s = new Stopwatch();
         // s.Start();
-        unsafe
-        {
-            _gameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
-        }
+        _gameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
         // s.Stop();
-        // PluginIoC.Logger.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
+        // Plugin.Logger.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
     }
 }

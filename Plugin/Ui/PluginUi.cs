@@ -30,6 +30,7 @@ public sealed class PluginUi : IDisposable
         Plugin.NumberTextures = new NumberTextures();
         _windowSystem = new WindowSystem("Engage Timer");
         _windowSystem.AddWindow(_settings);
+        // _windowSystem.AddWindow(new SfxDebug());
         Plugin.PluginInterface.UiBuilder.Draw += Draw;
         Plugin.PluginInterface.UiBuilder.OpenConfigUi += OpenSettings;
     }

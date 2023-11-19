@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using System.Numerics;
 
 namespace EngageTimer.Status;
 
@@ -25,6 +26,9 @@ public class State
     public DateTime CombatEnd { get; set; }
     public DateTime CombatStart { get; set; }
     public bool Mocked { get; set; }
+
+    public Vector4? OverrideFwColor { get; set; }
+    public bool BlinkStopwatch { get; set; } = false;
 
     public bool InCombat
     {

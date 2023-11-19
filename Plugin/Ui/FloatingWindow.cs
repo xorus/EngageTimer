@@ -106,7 +106,12 @@ public sealed class FloatingWindow : IDisposable
 
         if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, Plugin.Config.FloatingWindow.TextColor);
+            var color = Plugin.State.OverrideFwColor ?? Plugin.Config.FloatingWindow.TextColor;
+            // use time to change color every half second 
+            if (Plugin.State.BlinkStopwatch && ImGui.GetTime() % 1 < 0.5)
+                color = Plugin.Config.FloatingWindow.TextColor;
+
+            ImGui.PushStyleColor(ImGuiCol.Text, color);
             ImGui.SetWindowFontScale(Plugin.Config.FloatingWindow.Scale);
 
             var stopwatchDecimals = Plugin.Config.FloatingWindow.DecimalStopwatchPrecision > 0;
