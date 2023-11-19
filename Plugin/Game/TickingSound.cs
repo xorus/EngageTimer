@@ -19,12 +19,7 @@ namespace EngageTimer.Game;
 
 public class TickingSound
 {
-    private readonly SfxPlay _sfx = new();
-
     private int? _lastNumberPlayed;
-
-    // This is a workaround for CLR taking some time to init the pointy method call. 
-    private bool _soundLoaded;
 
     public void Update()
     {
@@ -32,15 +27,8 @@ public class TickingSound
         var configuration = Plugin.Config;
         var state = Plugin.State;
         if (!configuration.Countdown.EnableTickingSound || state.Mocked) return;
-        if (!_soundLoaded)
-        {
-            _sfx.SoundEffect(0); // should be cursor sound
-            _soundLoaded = true;
-            return;
-        }
-
-        if (state.CountingDown &&
-            state.CountDownValue > 5 && state.CountDownValue <= configuration.Countdown.StartTickingFrom)
+        if (state is { CountingDown: true, CountDownValue: > 5 } &&
+            state.CountDownValue <= configuration.Countdown.StartTickingFrom)
             TickSound((int)Math.Ceiling(state.CountDownValue));
     }
 
@@ -50,6 +38,6 @@ public class TickingSound
         if (!configuration.Countdown.EnableTickingSound || _lastNumberPlayed == n)
             return;
         _lastNumberPlayed = n;
-        _sfx.SoundEffect(configuration.Countdown.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
+        Plugin.SfxPlay.SoundEffect(configuration.Countdown.UseAlternativeSound ? SfxPlay.SmallTick : SfxPlay.CdTick);
     }
 }

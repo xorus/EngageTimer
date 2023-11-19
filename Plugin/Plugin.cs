@@ -19,6 +19,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using EngageTimer.Commands;
 using EngageTimer.Configuration;
+using EngageTimer.Game;
 using EngageTimer.Status;
 using EngageTimer.Ui;
 using JetBrains.Annotations;
@@ -39,6 +40,7 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IGameInteropProvider GameInterop { get; private set; } = null!;
     [PluginService] public static IPluginLog Logger { get; private set; } = null!;
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;
+    [PluginService] public static IToastGui ToastGui { get; private set; } = null!;
     public static ConfigurationFile Config { get; private set; } = null!;
     public static State State { get; private set; } = null!;
     public static Translator Translator { get; private set; } = null!;
@@ -48,6 +50,8 @@ public sealed class Plugin : IDalamudPlugin
     private static FrameworkThings FrameworkThings { get; set; } = null!;
     private static MainCommand MainCommand { get; set; } = null!;
     private static SettingsCommand SettingsCommand { get; set; } = null!;
+    private static CombatAlarm CombatAlarm { get; set; } = null!;
+    public static SfxPlay SfxPlay { get; set; } = null!;
 
     public Plugin(DalamudPluginInterface pluginInterface)
     {
@@ -60,15 +64,18 @@ public sealed class Plugin : IDalamudPlugin
         MainCommand = new MainCommand();
         SettingsCommand = new SettingsCommand();
         PluginUi = new PluginUi();
+        CombatAlarm = new CombatAlarm();
+        SfxPlay = new SfxPlay();
     }
 
     void IDisposable.Dispose()
     {
         PluginInterface.SavePluginConfig(Config);
-        Translator.Dispose();
+        CombatAlarm.Dispose();
         PluginUi.Dispose();
         FrameworkThings.Dispose();
         MainCommand.Dispose();
         SettingsCommand.Dispose();
+        Translator.Dispose();
     }
 }

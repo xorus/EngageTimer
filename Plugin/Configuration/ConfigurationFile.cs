@@ -38,6 +38,7 @@ public class ConfigurationFile : IPluginConfiguration
     public DtrConfiguration Dtr = new();
     public FloatingWindowConfiguration FloatingWindow = new();
     public WebServerConfiguration WebServer = new();
+    public CombatAlarmsConfiguration CombatAlarms = new();
 
     public int Version { get; set; } = 3;
 
