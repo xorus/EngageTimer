@@ -19,7 +19,7 @@ using EngageTimer.Ui;
 
 namespace EngageTimer.Commands;
 
-public class SettingsCommand : IDisposable
+public sealed class SettingsCommand : IDisposable
 {
     public SettingsCommand()
     {
@@ -32,7 +32,6 @@ public class SettingsCommand : IDisposable
     public void Dispose()
     {
         Plugin.Commands.RemoveHandler("/egsettings");
-        GC.SuppressFinalize(this);
     }
 
     private static void OpenSettingsCommand(string command, string args)

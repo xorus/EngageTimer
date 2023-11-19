@@ -53,10 +53,4 @@ public class State
     public bool PrePulling { get; set; } = false;
     public event EventHandler? InCombatChanged;
     public event EventHandler? CountingDownChanged;
-    public event EventHandler? StartCountingDown;
-
-    public void FireStartCountingDown()
-    {
-        StartCountingDown?.Invoke(this, EventArgs.Empty);
-    }
 }

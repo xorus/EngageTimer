@@ -20,17 +20,14 @@ using System.Numerics;
 using Dalamud.Interface.Animation;
 using Dalamud.Interface.Animation.EasingFunctions;
 using EngageTimer.Configuration;
-using EngageTimer.Status;
+using EngageTimer.Game;
 using EngageTimer.Ui.CustomEasing;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;
 
-public sealed class CountDown
+public sealed class CountDown : IDisposable
 {
-    private const byte VisibleFlag = 0x20;
-
     private const float BaseNumberScale = 1f;
     private const int GameCountdownWidth = 60; // just trust in the magic numbers
     private const float AnimationSize = .7f;
@@ -43,6 +40,7 @@ public sealed class CountDown
     );
 
     private bool _accurateMode;
+    private const string WindowTitle = "EngageTimer Countdown";
 
     /**
      * This is a workaround for ImGui taking some time to render a window for the first time.
@@ -51,20 +49,22 @@ public sealed class CountDown
      *
      * In my testing, this is about 10 to 20ms.
      */
-    private bool _firstLoad = true;
+    private bool _firstDraw = true;
 
     private int _lastSecond;
-    private bool _originalAddonHidden;
     private bool _wasInMainViewport = true;
+
+    private readonly AddonHider _addonHider;
 
     public CountDown()
     {
         Plugin.Config.OnSave += ConfigurationOnOnSave;
-        Plugin.State.StartCountingDown += Start;
         UpdateFromConfig();
+        _addonHider = new AddonHider();
     }
 
-    public static bool ShowBackground { get; set; }
+
+    public static bool ShowOutline { get; set; }
 
     private void ConfigurationOnOnSave(object? sender, EventArgs e)
     {
@@ -79,65 +79,49 @@ public sealed class CountDown
         _accurateMode = Plugin.Config.Countdown.HideOriginalAddon && Plugin.Config.Countdown.AccurateMode;
     }
 
-    // finds the original CountDown addon and toggles its visibility flag
-    private unsafe void ToggleOriginalAddon()
+    private void FirstDraw()
     {
-        var addon = Plugin.GameGui.GetAddonByName("ScreenInfo_CountDown");
-        if (addon == IntPtr.Zero) return;
+        if (!_firstDraw) return;
 
-        try
+        var visible = true;
+        var flags = ImGuiWindowFlags.NoTitleBar
+                    | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
+                    | ImGuiWindowFlags.NoDecoration
+                    | ImGuiWindowFlags.NoFocusOnAppearing
+                    | ImGuiWindowFlags.NoNavFocus
+                    | ImGuiWindowFlags.NoInputs
+                    | ImGuiWindowFlags.NoMouseInputs;
+        if (ImGui.Begin(WindowTitle, ref visible, flags))
         {
-            var atkUnitBase = (AtkUnitBase*)addon;
-            atkUnitBase->Flags ^= VisibleFlag;
-            _originalAddonHidden = (atkUnitBase->Flags & VisibleFlag) == 0;
+            ImGui.Text("");
         }
-        catch (Exception)
-        {
-            // invalid pointer, don't care and carry on
-        }
-    }
 
-    // Fix for #19 (countdown overlapping when restarting)
-    // ensures the countdown addon is marked as not hidden when starting or restarting a timer
-    private void Start(object? sender, EventArgs e)
-    {
-        _originalAddonHidden = false;
+        _firstDraw = false;
     }
 
     public void Draw()
     {
-#if DEBUG
-        if (ImGui.Begin("egdebug"))
-        {
-            ImGui.Text("_originalAddonHidden: " + _originalAddonHidden);
-            ImGui.Text("CountingDown: " + Plugin.State.CountingDown);
-            ImGui.Text("CountDownValue: " + Plugin.State.CountDownValue);
-            ImGui.Text("Mocked: " + Plugin.State.Mocked);
-            ImGui.Text("CombatDuration: " + Plugin.State.CombatDuration);
-            ImGui.Text("CombatEnd: " + Plugin.State.CombatEnd);
-            ImGui.Text("CombatStart: " + Plugin.State.CombatStart);
-            ImGui.Text("InCombat: " + Plugin.State.InCombat);
-            ImGui.Text("InInstance: " + Plugin.State.InInstance);
-            ImGui.Text($"texture build time: {Plugin.NumberTextures.LastTextureCreationDuration}ms");
-        }
+// #if DEBUG
+//         if (ImGui.Begin("egdebug"))
+//         {
+//             ImGui.Text("CountingDown: " + Plugin.State.CountingDown);
+//             ImGui.Text("CountDownValue: " + Plugin.State.CountDownValue);
+//             ImGui.Text("Mocked: " + Plugin.State.Mocked);
+//             ImGui.Text("CombatDuration: " + Plugin.State.CombatDuration);
+//             ImGui.Text("CombatEnd: " + Plugin.State.CombatEnd);
+//             ImGui.Text("CombatStart: " + Plugin.State.CombatStart);
+//             ImGui.Text("InCombat: " + Plugin.State.InCombat);
+//             ImGui.Text("InInstance: " + Plugin.State.InInstance);
+//             ImGui.Text($"texture build time: {Plugin.NumberTextures.LastTextureCreationDuration}ms");
+//         }
+//
+//         ImGui.End();
+// #endif
 
-        ImGui.End();
-#endif
+        FirstDraw();
+        if (!Plugin.Config.Countdown.Display || !Plugin.State.CountingDown) return;
 
-        // display is disabled
-        if (!Plugin.Config.Countdown.Display) return;
-
-        if (!_firstLoad && (!Plugin.State.CountingDown || !Plugin.Config.Countdown.Display))
-        {
-            // re-enable the original addon at the last possible moment (when done counting down) to show "START"
-            if (_originalAddonHidden && Plugin.Config.Countdown.HideOriginalAddon) ToggleOriginalAddon();
-            return;
-        }
-
-        if (Plugin.Config.Countdown.HideOriginalAddon && Plugin.State.CountDownValue <= 5 && !_originalAddonHidden)
-            ToggleOriginalAddon();
-
-        var showMainCountdown = _firstLoad || Plugin.State.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
+        var showMainCountdown = Plugin.State.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
         if (showMainCountdown && Plugin.Config.Countdown.EnableDisplayThreshold &&
             Plugin.State.CountDownValue > Plugin.Config.Countdown.DisplayThreshold)
             return;
@@ -148,7 +132,6 @@ public sealed class CountDown
         {
             numberScale *= Plugin.Config.Countdown.Scale;
             maxNumberScale = numberScale;
-            // numberScale += (_state.CountDownValue % 1) * 0.7f;
 
             if (Plugin.Config.Countdown.Animate)
             {
@@ -202,12 +185,10 @@ public sealed class CountDown
         if (_wasInMainViewport) flags |= ImGuiWindowFlags.NoBackground;
 
         var visible = true;
-        // prevent a big 0 appearing on screen when "initializing" the countdown window by alpha-ing it
-        if (_firstLoad) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0f);
-        if (ImGui.Begin("EngageTimer Countdown", ref visible, flags))
+        if (ImGui.Begin(WindowTitle, ref visible, flags))
         {
             _wasInMainViewport = ImGui.GetWindowViewport().ID == ImGui.GetMainViewport().ID;
-            if (ShowBackground)
+            if (ShowOutline)
             {
                 var d = ImGui.GetBackgroundDrawList();
                 d.AddRect(
@@ -215,7 +196,12 @@ public sealed class CountDown
                     ImGui.GetWindowPos() + ImGui.GetWindowSize(),
                     ImGui.GetColorU32(ImGuiCol.Text), 0f, ImDrawFlags.None,
                     7f + (float)Math.Sin(ImGui.GetTime() * 2) * 5f);
-                ShowBackground = false;
+                d.AddRect(
+                    ImGui.GetWindowPos(),
+                    ImGui.GetWindowPos() + ImGui.GetWindowSize(),
+                    ImGui.GetColorU32(ImGuiCol.WindowBg), 0f, ImDrawFlags.None,
+                    1f);
+                ShowOutline = false;
             }
 
             DrawCountdown(showMainCountdown, numberScale, negativeMargin, false);
@@ -225,12 +211,6 @@ public sealed class CountDown
                 DrawCountdown(showMainCountdown, numberScale, negativeMargin, true);
                 ImGui.PopStyleVar();
             }
-        }
-
-        if (_firstLoad)
-        {
-            ImGui.PopStyleVar();
-            _firstLoad = false;
         }
 
         ImGui.PopStyleVar();
@@ -255,7 +235,7 @@ public sealed class CountDown
                 : Math.Ceiling(Plugin.State.CountDownValue).ToString(CultureInfo.InvariantCulture);
 
             if (Plugin.Config.Countdown.LeadingZero && number.Length == 1) number = "0" + number;
-            
+
             mainNumbers = NumberList(number);
             if (mainNumbers == null) return;
             // First loop to compute total width
@@ -355,5 +335,10 @@ public sealed class CountDown
         }
 
         return integers;
+    }
+
+    public void Dispose()
+    {
+        _addonHider.Dispose();
     }
 }

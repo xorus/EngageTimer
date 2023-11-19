@@ -74,8 +74,13 @@ public sealed class CountdownHook : IDisposable
 
     private void UpdateCountDown()
     {
-        _state.CountingDown = false;
-        if (_countDown == 0) return;
+        var newCountingDown = false;
+        if (_countDown == 0)
+        {
+            _state.CountingDown = newCountingDown;
+            return;
+        }
+
         var countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
 
         // is last value close enough (workaround for floating point approx)
@@ -94,11 +99,11 @@ public sealed class CountdownHook : IDisposable
         if (countDownPointerValue > 0 && _countDownRunning)
         {
             var newValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
-            if (newValue > _state.CountDownValue) _state.FireStartCountingDown();
             _state.CountDownValue = newValue;
-            _state.CountingDown = true;
+            newCountingDown = true;
         }
 
+        _state.CountingDown = newCountingDown;
         _lastCountDownValue = countDownPointerValue;
     }
 

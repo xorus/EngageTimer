@@ -263,7 +263,7 @@ public class Settings : Window
 
     private void CountdownPositionAndSize()
     {
-        CountDown.ShowBackground = true;
+        CountDown.ShowOutline = true;
         ImGui.Indent();
         if (!Plugin.Config.Countdown.HideOriginalAddon)
         {
