@@ -38,6 +38,7 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IChatGui ChatGui { get; private set; } = null!;
     [PluginService] public static IGameInteropProvider GameInterop { get; private set; } = null!;
     [PluginService] public static IPluginLog Logger { get; private set; } = null!;
+    [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;
     public static ConfigurationFile Config { get; private set; } = null!;
     public static State State { get; private set; } = null!;
     public static Translator Translator { get; private set; } = null!;
@@ -50,7 +51,8 @@ public sealed class Plugin : IDalamudPlugin
 
     public Plugin(DalamudPluginInterface pluginInterface)
     {
-        PluginPath = PluginInterface.AssemblyLocation.DirectoryName ?? throw new InvalidOperationException("Cannot find plugin directory");
+        PluginPath = PluginInterface.AssemblyLocation.DirectoryName ??
+                     throw new InvalidOperationException("Cannot find plugin directory");
         Config = ConfigurationLoader.Load();
         State = new State();
         Translator = new Translator();
