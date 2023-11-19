@@ -90,7 +90,8 @@ public sealed class CountDown : IDisposable
                     | ImGuiWindowFlags.NoFocusOnAppearing
                     | ImGuiWindowFlags.NoNavFocus
                     | ImGuiWindowFlags.NoInputs
-                    | ImGuiWindowFlags.NoMouseInputs;
+                    | ImGuiWindowFlags.NoMouseInputs
+                    | ImGuiWindowFlags.NoBackground;
         if (ImGui.Begin(WindowTitle, ref visible, flags))
         {
             ImGui.Text("");
