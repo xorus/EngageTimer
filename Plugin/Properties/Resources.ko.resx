@@ -492,4 +492,76 @@ help text for the /eg settings command</comment>
   <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
       <value>This setting will make it so the sound plays from numbers 5 to the selected value. Note: this plugin cannot remove the tick sound for numbers 1-5.</value>
     </data>
+  <data name="Settings_AlarmsTab_Title" xml:space="preserve">
+      <value>Alarms</value>
+    </data>
+  <data name="AlarmEdit_Active" xml:space="preserve">
+      <value>Active</value>
+    </data>
+  <data name="AlarmEdit_StartTime" xml:space="preserve">
+      <value>Start time</value>
+    </data>
+  <data name="AlarmEdit_Color" xml:space="preserve">
+      <value>Color</value>
+    </data>
+  <data name="AlarmEdit_Blink" xml:space="preserve">
+      <value>Blink</value>
+    </data>
+  <data name="AlarmEdit_Duration" xml:space="preserve">
+      <value>Duration</value>
+    </data>
+  <data name="AlarmEdit_Sound" xml:space="preserve">
+      <value>Sound</value>
+    </data>
+  <data name="AlarmEdit_Sound_None" xml:space="preserve">
+      <value>None</value>
+    </data>
+  <data name="AlarmEdit_Text" xml:space="preserve">
+      <value>Text</value>
+    </data>
+  <data name="AlarmEdit_Type_DalamudNotification" xml:space="preserve">
+      <value>Dalamud Notification</value>
+    </data>
+  <data name="AlarmEdit_Type_GameToast" xml:space="preserve">
+      <value>Game toast</value>
+    </data>
+  <data name="AlarmEdit_Type_ChatLog" xml:space="preserve">
+      <value>Chat log</value>
+    </data>
+  <data name="AlarmEdit_Active_Tooltip" xml:space="preserve">
+      <value>Enables / disables this alarm</value>
+    </data>
+  <data name="AlarmEdit_StartTime_Tooltip" xml:space="preserve">
+      <value>The alarm will start at this specified combat time</value>
+    </data>
+  <data name="AlarmEdit_Color_Tooltip" xml:space="preserve">
+      <value>Applies the color to the floating window stopwatch during the alarm</value>
+    </data>
+  <data name="AlarmEdit_Blink_Tooltip" xml:space="preserve">
+      <value>Makes the floating window stopwatch blink during the alarm</value>
+    </data>
+  <data name="AlarmEdit_Duration_Tooltip" xml:space="preserve">
+      <value>Stops the color/blink after this amount of time</value>
+    </data>
+  <data name="AlarmEdit_Sound_Tooltip" xml:space="preserve">
+      <value>Plays a game sound effect at the alarm time</value>
+    </data>
+  <data name="AlarmEdit_Text_Tooltip" xml:space="preserve">
+      <value>Allows you to display a text notification at the alarm time</value>
+    </data>
+  <data name="AlarmEdit_Text_Type" xml:space="preserve">
+      <value>Type</value>
+    </data>
+  <data name="AlarmEdit_Text_Text" xml:space="preserve">
+      <value>Text</value>
+    </data>
+  <data name="AlarmEdit_Text_Clear" xml:space="preserve">
+      <value>Clear</value>
+    </data>
+  <data name="Settings_AlarmsTab_Line1" xml:space="preserve">
+      <value>This page allows you to set alarms based on elapsed combat time.</value>
+    </data>
+  <data name="Settings_AlarmsTab_Line2" xml:space="preserve">
+      <value>A common use is to notify you of the potion window.</value>
+    </data>
 </root>
