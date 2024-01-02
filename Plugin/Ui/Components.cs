@@ -31,7 +31,7 @@ public static class Components
         var state = original;
         if (!ImGui.Checkbox(title, ref state)) return;
         save(state);
-        Plugin.Config.DebouncedSave();
+        Plugin.Config.Save();
     }
 
     public static void InputFloat(
@@ -52,17 +52,17 @@ public static class Components
             if (value < min) value = (float)min;
             if (value > max) value = (float)max;
             apply(value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         ImGui.PopItemWidth();
     }
 
-    public static void IconButton(FontAwesomeIcon icon, string id, ApplyCallback save)
+    public static void IconButton(FontAwesomeIcon icon, string id, ApplyCallback apply)
     {
         if (!ImGuiComponents.IconButton($"{icon.ToIconString()}###{id}")) return;
-        save();
-        Plugin.Config.DebouncedSave();
+        apply();
+        Plugin.Config.Save();
     }
 
     public static void Text(string label, bool sameLine = false)
@@ -77,7 +77,7 @@ public static class Components
         IconButton(FontAwesomeIcon.Undo, $"reset_{id}", () =>
         {
             apply(defaultValue);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         });
         ImGui.SameLine();
         var value = original;
@@ -87,7 +87,7 @@ public static class Components
         if (value > max) value = min;
         if (value < min) value = max;
         apply(value);
-        Plugin.Config.DebouncedSave();
+        Plugin.Config.Save();
     }
 
     public static void ResettableSlider(string id, string label, float original, float defaultValue,
@@ -96,14 +96,14 @@ public static class Components
         IconButton(FontAwesomeIcon.Undo, $"reset_{id}", () =>
         {
             apply(defaultValue);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         });
         ImGui.SameLine();
         var value = original;
         if (!ImGui.SliderFloat(label, ref value, -1f, 1f)) return;
         value = Math.Clamp(value, min, max);
         apply(value);
-        Plugin.Config.DebouncedSave();
+        Plugin.Config.Save();
     }
 
     public delegate void ApplyCallback();
@@ -159,7 +159,7 @@ public static class Components
             var value = (bool)(prop.GetValue(instance) ?? false);
             if (!ImGui.Checkbox(label, ref value)) return;
             prop.SetValue(instance, value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
         else if (foundType == FieldType.InputInt)
         {
@@ -168,7 +168,7 @@ public static class Components
             if (min != null) value = Math.Max((int)min, value);
             if (max != null) value = Math.Min((int)max, value);
             prop.SetValue(instance, value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
             customApply?.Invoke();
         }
         else if (foundType == FieldType.InputFloat)
@@ -188,7 +188,7 @@ public static class Components
             if (max != null) value = Math.Min((float)max, value);
 
             prop.SetValue(instance, value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
             customApply?.Invoke();
         }
         else if (foundType == FieldType.DragFloat)
@@ -207,17 +207,24 @@ public static class Components
             if (max != null) value = Math.Min((float)max, value);
 
             prop.SetValue(instance, value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
             customApply?.Invoke();
         }
         else if (foundType == FieldType.ColorPicker)
         {
-            var value = (Vector4)(prop.GetValue(instance) ?? new Vector4());
-            var newValue = ImGuiComponents.ColorPickerWithPalette(10, label, value);
-            if (value == newValue)
+            var colorPickerAttr = (ColorPicker?)prop.GetCustomAttribute(typeof(ColorPicker));
+            if (colorPickerAttr == null)
             {
-                prop.SetValue(instance, value);
-                Plugin.Config.DebouncedSave();
+                ImGui.Text("!!cannot find ColorPicker attribute!!");
+                return;
+            }
+
+            var value = (Vector4)(prop.GetValue(instance) ?? new Vector4());
+            var newValue = ImGuiComponents.ColorPickerWithPalette(3112 + colorPickerAttr.Id, label, value);
+            if (value != newValue)
+            {
+                prop.SetValue(instance, newValue);
+                Plugin.Config.Save();
                 customApply?.Invoke();
             }
 
@@ -229,7 +236,7 @@ public static class Components
             var value = (string)(prop.GetValue(instance) ?? "");
             if (!ImGui.InputText(label, ref value, (uint)(max ?? 100))) return;
             prop.SetValue(instance, value);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
             customApply?.Invoke();
         }
         else
@@ -260,5 +267,59 @@ public static class Components
         DragFloat,
         ColorPicker,
         InputText
+    }
+
+    public static bool InputTime(string id, ref int seconds)
+    {
+        ImGui.PushID(id);
+
+        var changed = false;
+        var min = (int)Math.Floor(seconds / 60d);
+        var sec = (int)Math.Floor(seconds % 60d);
+        ImGui.PushItemWidth(30f);
+        if (ImGui.DragInt("###min", ref min, 1, 0, 180, "%02d"))
+        {
+            seconds = min * 60 + sec;
+            changed = true;
+        }
+
+        ImGui.PopItemWidth();
+        ImGui.SameLine();
+        ImGui.Text(":");
+        ImGui.SameLine();
+        ImGui.PushItemWidth(30f);
+        if (ImGui.DragInt("###sec", ref sec, 1, -1, 61, "%02d"))
+        {
+            if (min == 0 && sec < 0) sec = 0;
+            if (sec < 0)
+            {
+                min = Math.Max(0, min - 1);
+                sec = 59;
+            }
+
+            if (sec > 60)
+            {
+                min++;
+                sec = 0;
+            }
+
+            seconds = min * 60 + sec;
+            changed = true;
+        }
+
+        ImGui.PopItemWidth();
+        ImGui.PopID();
+
+        return changed;
+    }
+
+    public static void TooltipOnItemHovered(string text)
+    {
+        if (!ImGui.IsItemHovered()) return;
+        ImGui.BeginTooltip();
+        ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35f);
+        ImGui.TextUnformatted(Translator.Tr(text));
+        ImGui.PopTextWrapPos();
+        ImGui.EndTooltip();
     }
 }

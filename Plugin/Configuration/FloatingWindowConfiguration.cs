@@ -65,14 +65,14 @@ public class FloatingWindowConfiguration
     [AutoField("Settings_FWTab_PrePullOffset", Components.FieldType.InputFloat, 0.1f, 1f, "%.3fs")]
     public float PrePullOffset { get; set; } = .0f;
 
-    [AutoField("Settings_FWTab_TextColor")]
+    [AutoField("Settings_FWTab_TextColor"), ColorPicker(1)]
     public Vector4 PrePullColor { get; set; } = ImGuiColors.DalamudRed;
 
     // Stopwatch cosmetics
-    [AutoField("Settings_FWTab_TextColor")]
+    [AutoField("Settings_FWTab_TextColor"), ColorPicker(2)]
     public Vector4 TextColor { get; set; } = new(255, 255, 255, 1);
 
-    [AutoField("Settings_FWTab_BackgroundColor")]
+    [AutoField("Settings_FWTab_BackgroundColor"), ColorPicker(3)]
     public Vector4 BackgroundColor { get; set; } = new(0, 0, 0, 0);
 
     public ConfigurationFile.TextAlign Align { get; set; } = ConfigurationFile.TextAlign.Left;

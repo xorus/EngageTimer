@@ -51,7 +51,7 @@ public class ConfigurationFile : IPluginConfiguration
         _saveTimer.Elapsed += SaveTimerElapsed;
     }
 
-    public void Save()
+    public void SaveNow()
     {
         Plugin.Logger.Debug("Saving configuration");
         _pluginInterface.SavePluginConfig(this);
@@ -61,10 +61,10 @@ public class ConfigurationFile : IPluginConfiguration
 
     private void SaveTimerElapsed(object? sender, ElapsedEventArgs e)
     {
-        Save();
+        SaveNow();
     }
 
-    public void DebouncedSave()
+    public void Save()
     {
         _saveTimer.Stop();
         _saveTimer.Start();
@@ -140,7 +140,7 @@ public class ConfigurationFile : IPluginConfiguration
         Dtr.CombatTimeEnableHideAfter = old.DtrCombatTimeEnableHideAfter;
         Dtr.CombatTimeHideAfter = old.DtrCombatTimeHideAfter;
         Version = 3;
-        Save();
+        SaveNow();
 
         return this;
     }

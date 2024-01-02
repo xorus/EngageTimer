@@ -15,8 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text;
 using Dalamud.Interface.Internal.Notifications;
 using Dalamud.Plugin.Services;
@@ -42,7 +40,6 @@ public sealed class CombatAlarm : IDisposable
 
     private readonly Dictionary<int, AlarmAction> _alarms = new();
 
-    // private readonly List<int> _rangAlarms = new();
     private int? _lastCheck = null;
 
     public CombatAlarm()
@@ -56,6 +53,7 @@ public sealed class CombatAlarm : IDisposable
 
     private void ConfigurationChanged(object? sender, EventArgs e)
     {
+        ClearAlarms();
         _alarms.Clear();
         for (var index = 0; index < Plugin.Config.CombatAlarms.Alarms.Count; index++)
         {
@@ -75,7 +73,7 @@ public sealed class CombatAlarm : IDisposable
         }
     }
 
-    private void InCombatChanged(object? sender, EventArgs e)
+    private static void InCombatChanged(object? sender, EventArgs e)
     {
         if (!Plugin.State.InCombat)
         {
@@ -99,59 +97,59 @@ public sealed class CombatAlarm : IDisposable
         if (alarm.Type == AlarmActionType.Start)
         {
             RunAlarm(alarm.Config);
-            // _rangAlarms.Add(time);
+            return;
         }
 
-        if (alarm.Type == AlarmActionType.Stop)
-        {
-            ClearAlarms();
-        }
+        if (alarm.Type == AlarmActionType.Stop) ClearAlarms();
     }
 
-    private void RunAlarm(CombatAlarmsConfiguration.Alarm alarm)
+    public static void AlarmSfx(CombatAlarmsConfiguration.Alarm alarm)
     {
         if (alarm.Sfx != null)
         {
-            // Plugin.SfxPlay.SoundEffect();
             Plugin.SfxPlay.SoundEffect((uint)(SfxPlay.FirstSeSfx + alarm.Sfx));
-        }
-
-        var trimText = alarm.Text?.Trim();
-        if (trimText is { Length: > 0 })
-        {
-            switch (alarm.TextType)
-            {
-                case CombatAlarmsConfiguration.TextType.DalamudNotification:
-                    Plugin.PluginInterface.UiBuilder.AddNotification(
-                        trimText,
-                        "EngageTimer",
-                        NotificationType.Info,
-                        8000
-                    );
-                    break;
-                case CombatAlarmsConfiguration.TextType.GameToast:
-                    Plugin.ToastGui.ShowNormal(trimText);
-                    break;
-                case CombatAlarmsConfiguration.TextType.ChatLogMessage:
-                    // Plugin.ChatGui.Print(trimText, "EngageTimer");
-                    Plugin.ChatGui.Print(new XivChatEntry()
-                    {
-                        Type = XivChatType.Echo,
-                        Name = "EngageTimer",
-                        Message = trimText
-                    });
-                    break;
-            }
-        }
-
-        if (alarm.Color != null)
-        {
-            Plugin.State.OverrideFwColor = alarm.Color;
-            Plugin.State.BlinkStopwatch = alarm.Blink;
         }
     }
 
-    private void ClearAlarms()
+    public static void AlarmText(CombatAlarmsConfiguration.Alarm alarm)
+    {
+        var trimText = alarm.Text?.Trim();
+        if (trimText is not { Length: > 0 }) return;
+        switch (alarm.TextType)
+        {
+            case CombatAlarmsConfiguration.TextType.DalamudNotification:
+                Plugin.PluginInterface.UiBuilder.AddNotification(
+                    trimText,
+                    "EngageTimer",
+                    NotificationType.Info,
+                    8000
+                );
+                break;
+            case CombatAlarmsConfiguration.TextType.GameToast:
+                Plugin.ToastGui.ShowNormal(trimText);
+                break;
+            case CombatAlarmsConfiguration.TextType.ChatLogMessage:
+                // Plugin.ChatGui.Print(trimText, "EngageTimer");
+                Plugin.ChatGui.Print(new XivChatEntry()
+                {
+                    Type = XivChatType.Echo,
+                    Name = "EngageTimer",
+                    Message = trimText
+                });
+                break;
+        }
+    }
+
+    private static void RunAlarm(CombatAlarmsConfiguration.Alarm alarm)
+    {
+        AlarmSfx(alarm);
+        AlarmText(alarm);
+        if (alarm.Color == null) return;
+        Plugin.State.OverrideFwColor = alarm.Color;
+        Plugin.State.BlinkStopwatch = alarm.Blink;
+    }
+
+    private static void ClearAlarms()
     {
         Plugin.State.OverrideFwColor = null;
         Plugin.State.BlinkStopwatch = false;

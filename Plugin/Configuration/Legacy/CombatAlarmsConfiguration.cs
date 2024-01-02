@@ -22,21 +22,21 @@ public class CombatAlarmsConfiguration
 {
     public enum TextType
     {
-        DalamudNotification = 0,
-        GameToast = 1,
-        ChatLogMessage = 2
+        ChatLogMessage = 0,
+        DalamudNotification = 1,
+        GameToast = 2
     }
 
     public class Alarm
     {
         public bool Enabled = true;
-        public int StartTime;
-        public int Duration;
+        public int StartTime = 270;
+        public int Duration = 10;
         public string? Text;
-        public Vector4? Color;
-        public int? Sfx;
+        public Vector4? Color = new Vector4(.8f, .24f, .24f, 1);
+        public int? Sfx = 9;
         public TextType TextType = TextType.DalamudNotification;
-        public bool Blink;
+        public bool Blink = false;
     }
 
     public readonly List<Alarm> Alarms = new()

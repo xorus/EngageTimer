@@ -93,20 +93,20 @@ public sealed class MainCommand : IDisposable
                 case "c":
                 case "countdown":
                     Plugin.Config.Countdown.Display = ToStatus(argument, Plugin.Config.Countdown.Display);
-                    Plugin.Config.Save();
+                    Plugin.Config.SaveNow();
                     Plugin.ChatGui.Print(Translator.Tr("MainCommand_Help_Countdown_Success",
                         StatusStr(Plugin.Config.Countdown.Display)));
                     break;
                 case "sw":
                 case "fw":
                     Plugin.Config.FloatingWindow.Display = ToStatus(argument, Plugin.Config.FloatingWindow.Display);
-                    Plugin.Config.Save();
+                    Plugin.Config.SaveNow();
                     Plugin.ChatGui.Print(Translator.Tr("MainCommand_Help_FW_Success",
                         StatusStr(Plugin.Config.FloatingWindow.Display)));
                     break;
                 case "dtr":
                     Plugin.Config.Dtr.CombatTimeEnabled = ToStatus(argument, Plugin.Config.Dtr.CombatTimeEnabled);
-                    Plugin.Config.Save();
+                    Plugin.Config.SaveNow();
                     Plugin.ChatGui.Print(Translator.Tr("MainCommand_Help_Dtr_Success",
                         StatusStr(Plugin.Config.Dtr.CombatTimeEnabled)));
                     break;

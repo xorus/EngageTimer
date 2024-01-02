@@ -13,52 +13,234 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+using System.Numerics;
 using Dalamud.Interface;
+using Dalamud.Interface.Components;
+using Dalamud.Interface.Utility;
 using EngageTimer.Configuration.Legacy;
+using EngageTimer.Game;
+using EngageTimer.Status;
 using ImGuiNET;
 
 namespace EngageTimer.Ui.SettingsTab;
 
 public static class AlarmsTab
 {
+    private static void Header(bool tooltip = false)
+    {
+        ImGui.TableNextColumn();
+        var str = ImGui.TableGetColumnName(ImGui.TableGetColumnIndex());
+        ImGui.TableHeader(Translator.Tr(ImGui.TableGetColumnName(ImGui.TableGetColumnIndex())));
+        if (tooltip) Components.TooltipOnItemHovered(Translator.Tr(str + "_Tooltip"));
+    }
+
+    private static readonly List<int> EditingTexts = new();
+
     public static void Draw()
     {
-        ImGui.Text("Some explanation text here");
+        ImGui.Text(Translator.Tr("Settings_AlarmsTab_Line1"));
+        ImGui.Text(Translator.Tr("Settings_AlarmsTab_Line2"));
         ImGui.Separator();
 
-        ImGui.Text("Alarm list");
-        if (Plugin.Config.CombatAlarms.Alarms.Count == 0)
+        if (ImGui.BeginTable("alarms", 8, ImGuiTableFlags.Borders))
         {
-            ImGui.Text("No alarms set");
-            return;
+            ImGui.TableSetupColumn(" ");
+            ImGui.TableSetupColumn("AlarmEdit_Active");
+            ImGui.TableSetupColumn("AlarmEdit_StartTime");
+            ImGui.TableSetupColumn("AlarmEdit_Color");
+            ImGui.TableSetupColumn("AlarmEdit_Blink");
+            ImGui.TableSetupColumn("AlarmEdit_Duration");
+            ImGui.TableSetupColumn("AlarmEdit_Sound");
+            ImGui.TableSetupColumn("AlarmEdit_Text");
+
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+            // trash can
+            ImGui.TableNextColumn();
+            ImGui.Text("");
+            Header(true); // active
+            Header(true); // start time
+            Header(true); // color
+            Header(true); // blink
+            Header(true); // duration
+            Header(true); // sound 
+            Header(true); // text notification
+
+            for (var index = 0; index < Plugin.Config.CombatAlarms.Alarms.Count; index++)
+            {
+                AlarmElement(index, Plugin.Config.CombatAlarms.Alarms[index]);
+            }
+
+            ImGui.EndTable();
         }
 
-        for (var index = 0; index < Plugin.Config.CombatAlarms.Alarms.Count; index++)
+        if (ImGuiComponents.IconButton($"{FontAwesomeIcon.Plus.ToIconString()}###add"))
         {
-            AlarmElement(index, Plugin.Config.CombatAlarms.Alarms[index]);
-        }
-
-        if (ImGui.Button("add"))
-        {
+            Plugin.Config.CombatAlarms.Alarms.Add(new CombatAlarmsConfiguration.Alarm());
+            Plugin.Config.Save();
         }
     }
 
     private static void AlarmElement(int index, CombatAlarmsConfiguration.Alarm alarm)
     {
-        ImGui.PushID("alarm_" + index);
-        ImGui.BeginGroup();
-        Components.IconButton(FontAwesomeIcon.Trash, "delete_" + index,
-            () => Plugin.Config.CombatAlarms.Alarms.RemoveAt(index));
-        ImGui.SameLine();
-        ImGui.Text("Alarm " + index);
-        ImGui.EndGroup();
-
-        ImGui.Indent();
         {
-            var startTimeFormatted = "00:00";
-            ImGui.InputText("start time", ref startTimeFormatted, 10);
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.PushID("alarm_" + index);
+            Components.IconButton(FontAwesomeIcon.Trash, "delete" + index,
+                () =>
+                {
+                    EditingTexts.Remove(index);
+                    Plugin.Config.CombatAlarms.Alarms.RemoveAt(index);
+                });
         }
-        ImGui.Unindent();
+        {
+            ImGui.TableNextColumn();
+            ImGui.Checkbox("###enabled" + index, ref alarm.Enabled);
+        }
+        {
+            ImGui.TableNextColumn();
+            var startTime = alarm.StartTime;
+
+            if (Components.InputTime("start_time", ref startTime))
+            {
+                alarm.StartTime = startTime;
+                Plugin.Config.Save();
+            }
+        }
+        {
+            ImGui.TableNextColumn();
+            var color = alarm.Color ?? Plugin.Config.FloatingWindow.TextColor;
+            var newValue =
+                ImGuiComponents.ColorPickerWithPalette(3111, Translator.Tr("AlarmEdit_Color_Tooltip"), color);
+            if (color != newValue)
+            {
+                alarm.Color = newValue;
+                Plugin.Config.Save();
+            }
+
+            ImGui.SameLine();
+            if (ImGuiComponents.IconButton($"{FontAwesomeIcon.Undo.ToIconString()}###clearColor"))
+            {
+                alarm.Color = null;
+                Plugin.Config.Save();
+            }
+        }
+        {
+            ImGui.TableNextColumn();
+            if (ImGui.Checkbox("###blink", ref alarm.Blink))
+            {
+                Plugin.Config.Save();
+            }
+        }
+        {
+            ImGui.TableNextColumn();
+            ImGui.PushItemWidth(50f);
+            var duration = alarm.Duration;
+            if (ImGui.DragInt("###duration" + index, ref duration, 1, 0, 1000, "%ds"))
+            {
+                duration = Math.Max(duration, 0);
+                alarm.Duration = duration;
+                Plugin.Config.Save();
+            }
+
+            ImGui.PopItemWidth();
+        }
+        {
+            ImGui.TableNextColumn();
+            ImGui.PushItemWidth(80f);
+            var choice = alarm.Sfx ?? 0;
+            if (ImGui.Combo("###sfx", ref choice, Translator.Tr("AlarmEdit_Sound_None") +
+                                                  "\0<se.1>\0<se.2>\0<se.3>\0<se.4>\0<se.5>"
+                                                  + "\0<se.6>\0<se.7>\0<se.8>\0<se.9>\0<se.10>\0<se.11>\0<se.12>\0<se.13>"
+                                                  + "\0<se.14>\0<se.15>\0<se.16>\0"))
+            {
+                alarm.Sfx = choice == 0 ? null : choice;
+                CombatAlarm.AlarmSfx(alarm);
+            }
+
+            ImGui.PopItemWidth();
+        }
+        {
+            ImGui.TableNextColumn();
+            if (EditingTexts.Contains(index))
+            {
+                var type = (int)alarm.TextType;
+                ImGui.PushItemWidth(150f);
+                if (ImGui.Combo("Type", ref type, Translator.Tr("AlarmEdit_Type_ChatLog") + "\0"
+                        + Translator.Tr("AlarmEdit_Type_DalamudNotification") + "\0"
+                        + Translator.Tr("AlarmEdit_Type_GameToast") + "\0"))
+                {
+                    alarm.TextType = (CombatAlarmsConfiguration.TextType)type;
+                    Plugin.Config.Save();
+                }
+
+                var text = alarm.Text ?? "";
+                if (ImGui.InputText(Translator.Tr("AlarmEdit_Text_Text"), ref text, 100))
+                {
+                    text = text.Trim();
+                    alarm.Text = text.Length == 0 ? null : text;
+                    Plugin.Config.Save();
+                }
+
+                ImGui.PopItemWidth();
+
+                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Type")))
+                {
+                    CombatAlarm.AlarmText(alarm);
+                }
+
+                ImGui.SameLine();
+                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Clear")))
+                {
+                    alarm.Text = null;
+                    Plugin.Config.Save();
+                    EditingTexts.Remove(index);
+                }
+
+                ImGui.SameLine();
+                if (ImGuiComponents.IconButton($"{FontAwesomeIcon.Check.ToIconString()}###doneEditing"))
+                {
+                    EditingTexts.Remove(index);
+                    Plugin.Config.Save();
+                }
+            }
+            else
+            {
+                if (alarm.Text == null)
+                {
+                    ImGui.Text("No text");
+                }
+                else
+                {
+                    ImGui.Text("Type: ");
+                    ImGui.SameLine();
+                    switch (alarm.TextType)
+                    {
+                        case CombatAlarmsConfiguration.TextType.DalamudNotification:
+                            ImGui.Text("Dalamud notification");
+                            break;
+                        case CombatAlarmsConfiguration.TextType.GameToast:
+                            ImGui.Text("Toast");
+                            break;
+                        case CombatAlarmsConfiguration.TextType.ChatLogMessage:
+                            ImGui.Text("Log message");
+                            break;
+                    }
+
+                    ImGui.Text(alarm.Text);
+                }
+
+                ImGui.SameLine();
+                if (ImGuiComponents.IconButton($"{FontAwesomeIcon.Comment.ToIconString()}###editNotification"))
+                {
+                    // coggers!
+                    EditingTexts.Add(index);
+                }
+            }
+        }
+
         ImGui.PopID();
     }
 }
