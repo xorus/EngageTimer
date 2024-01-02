@@ -60,6 +60,195 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string AlarmEdit_Active {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables / disables this alarm.
+        /// </summary>
+        internal static string AlarmEdit_Active_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Active_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blink.
+        /// </summary>
+        internal static string AlarmEdit_Blink {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Blink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Makes the floating window stopwatch blink during the alarm.
+        /// </summary>
+        internal static string AlarmEdit_Blink_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Blink_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        internal static string AlarmEdit_Color {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applies the color to the floating window stopwatch during the alarm.
+        /// </summary>
+        internal static string AlarmEdit_Color_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Color_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        internal static string AlarmEdit_Duration {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stops the color/blink after this amount of time.
+        /// </summary>
+        internal static string AlarmEdit_Duration_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Duration_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sound.
+        /// </summary>
+        internal static string AlarmEdit_Sound {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Sound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string AlarmEdit_Sound_None {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Sound_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plays a game sound effect at the alarm time.
+        /// </summary>
+        internal static string AlarmEdit_Sound_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Sound_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time.
+        /// </summary>
+        internal static string AlarmEdit_StartTime {
+            get {
+                return ResourceManager.GetString("AlarmEdit_StartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The alarm will start at this specified combat time.
+        /// </summary>
+        internal static string AlarmEdit_StartTime_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_StartTime_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        internal static string AlarmEdit_Text {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string AlarmEdit_Text_Clear {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        internal static string AlarmEdit_Text_Text {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows you to display a text notification at the alarm time.
+        /// </summary>
+        internal static string AlarmEdit_Text_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string AlarmEdit_Text_Type {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat log.
+        /// </summary>
+        internal static string AlarmEdit_Type_ChatLog {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Type_ChatLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dalamud Notification.
+        /// </summary>
+        internal static string AlarmEdit_Type_DalamudNotification {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Type_DalamudNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game toast.
+        /// </summary>
+        internal static string AlarmEdit_Type_GameToast {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Type_GameToast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unrecognized argument for {0}: {1}.
         /// </summary>
         internal static string MainCommand_Error_InvalidArgument {
@@ -155,6 +344,33 @@ namespace EngageTimer.Properties {
         internal static string MainCommand_Status_On {
             get {
                 return ResourceManager.GetString("MainCommand_Status_On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This page allows you to set alarms based on elapsed combat time..
+        /// </summary>
+        internal static string Settings_AlarmsTab_Line1 {
+            get {
+                return ResourceManager.GetString("Settings_AlarmsTab_Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A common use is to notify you of the potion window..
+        /// </summary>
+        internal static string Settings_AlarmsTab_Line2 {
+            get {
+                return ResourceManager.GetString("Settings_AlarmsTab_Line2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alarms.
+        /// </summary>
+        internal static string Settings_AlarmsTab_Title {
+            get {
+                return ResourceManager.GetString("Settings_AlarmsTab_Title", resourceCulture);
             }
         }
         

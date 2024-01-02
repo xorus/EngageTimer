@@ -77,11 +77,11 @@ public class Settings : Window
                 ImGui.EndTabItem();
             }
 
-            // if (ImGui.BeginTabItem(Translator.TrId("Settings_Alarms")))
-            // {
-            //     AlarmsTab.Draw();
-            //     ImGui.EndTabItem();
-            // }
+            if (ImGui.BeginTabItem(Translator.TrId("Settings_AlarmsTab_Title")))
+            {
+                AlarmsTab.Draw();
+                ImGui.EndTabItem();
+            }
 
             if (ImGui.BeginTabItem("About"))
             {

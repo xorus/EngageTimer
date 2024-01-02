@@ -151,7 +151,7 @@ public static class CountdownTab
         {
             Plugin.Config.Countdown.WindowOffset =
                 new Vector2(countdownOffsetX / 100, Plugin.Config.Countdown.WindowOffset.Y);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         ImGui.SameLine();
@@ -161,7 +161,7 @@ public static class CountdownTab
         {
             Plugin.Config.Countdown.WindowOffset =
                 new Vector2(Plugin.Config.Countdown.WindowOffset.X, countdownOffsetY / 100);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         ImGui.SameLine();
@@ -171,7 +171,7 @@ public static class CountdownTab
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_cd_offset"))
         {
             Plugin.Config.Countdown.WindowOffset = Vector2.Zero;
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         var countdownScale = Plugin.Config.Countdown.Scale;
@@ -179,7 +179,7 @@ public static class CountdownTab
         if (ImGui.InputFloat(Translator.TrId("Settings_CountdownTab_CountdownScale"), ref countdownScale, .01f))
         {
             Plugin.Config.Countdown.Scale = Math.Clamp(countdownScale, 0.05f, 15f);
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         ImGui.PopItemWidth();
@@ -191,7 +191,7 @@ public static class CountdownTab
                 Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
         {
             Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign)align;
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
 
@@ -231,7 +231,7 @@ public static class CountdownTab
                 choiceString))
         {
             configuration.Countdown.TexturePreset = currentTexture < choices.Count() ? choices[currentTexture] : "";
-            configuration.DebouncedSave();
+            configuration.Save();
             Plugin.NumberTextures.Load();
         }
 
@@ -247,7 +247,7 @@ public static class CountdownTab
             if (ImGui.Button(Translator.TrId("Settings_CountdownTab_Texture_Custom_Load")))
             {
                 configuration.Countdown.TextureDirectory = _tempTexturePath;
-                configuration.DebouncedSave();
+                configuration.Save();
                 Plugin.NumberTextures.Load();
             }
         }
@@ -270,7 +270,7 @@ public static class CountdownTab
                         1f))
                 {
                     configuration.Countdown.CustomNegativeMargin = nm;
-                    configuration.Save();
+                    configuration.SaveNow();
                 }
 
                 ImGui.PopItemWidth();

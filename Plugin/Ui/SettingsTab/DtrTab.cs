@@ -31,7 +31,7 @@ public static class DtrTab
         if (ImGui.Checkbox(Translator.TrId("Settings_DtrCombatTimer_Enable"), ref enabled))
         {
             Plugin.Config.Dtr.CombatTimeEnabled = enabled;
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         Components.AutoField(Plugin.Config.Dtr, "CombatTimePrefix");
@@ -43,7 +43,7 @@ public static class DtrTab
         {
             Plugin.Config.Dtr.CombatTimePrefix = DtrConfiguration.DefaultCombatTimePrefix;
             Plugin.Config.Dtr.CombatTimeSuffix = DtrConfiguration.DefaultCombatTimeSuffix;
-            Plugin.Config.DebouncedSave();
+            Plugin.Config.Save();
         }
 
         Components.AutoField(Plugin.Config.Dtr, "CombatTimeAlwaysDisableOutsideDuty");

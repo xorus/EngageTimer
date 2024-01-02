@@ -86,14 +86,14 @@ public static class FloatingWindowTab
                 Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
         {
             configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign)textAlign;
-            configuration.DebouncedSave();
+            configuration.Save();
         }
 
         var fontSize = configuration.FloatingWindow.FontSize;
         if (ImGui.InputInt(Translator.TrId("Settings_FWTab_FontSize"), ref fontSize, 4))
         {
             configuration.FloatingWindow.FontSize = Math.Max(0, fontSize);
-            configuration.DebouncedSave();
+            configuration.Save();
 
             if (configuration.FloatingWindow.FontSize >= 8) Plugin.PluginInterface.UiBuilder.RebuildFonts();
         }
