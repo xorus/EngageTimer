@@ -375,13 +375,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Quand le mode multi-moniteur est activé, positionner le compte à rebours en dehors de la fenêtre du jeu (même juste d'un pixel) causera l'apparition d'un fond noir. Il est impossible pour l'instant de créer une fenêtre transparente en dehors du jeu. Servez vous de la bordure qui s'affiche maintenant comme guide de positionnement.</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>Alignement</value>
+    <value>Alignment</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>Centrer le compte à rebours</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>Activer l'intégration dans la barre d'infos serveur</value>
+    <value>Enable Server Info Bar integration</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
     <value>Préfixe</value>
@@ -469,16 +469,16 @@ help text for the /eg settings command</comment>
 {1} is the unrecognized argument typed</comment>
   </data>
   <data name="Settings_FWTab_ShowPrePulling" xml:space="preserve">
-      <value>Enable pre-pull warning</value>
+      <value>Activer l'avertissement de pré-pull</value>
     </data>
   <data name="Settings_FWTab_ShowPrePulling_Help" xml:space="preserve">
-      <value>Changes the countdown color when casting a spell that would result in a pre-pull.</value>
+      <value>Modifie la couleur du compte à rebours si vous lancez une action qui causerait un pré-pull.</value>
     </data>
   <data name="Settings_FWTab_PrePullOffset" xml:space="preserve">
-      <value>Offset in seconds</value>
+      <value>Décalage en secondes</value>
     </data>
   <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
-      <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
+      <value>Laissez à 0 sauf si vous avez une latence constante et voulez la considérer dans le calcul.</value>
     </data>
   <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
       <value>Seuil d’affichage</value>
@@ -493,126 +493,126 @@ help text for the /eg settings command</comment>
       <value>Ce paramètre jouera le son des chiffres de 5 jusqu'à la valeur sélectionnée. Note : ce plugin ne peut pas supprimer le son pour les chiffres de 1 à 5.</value>
     </data>
   <data name="Settings_AlarmsTab_Title" xml:space="preserve">
-      <value>Alarms</value>
+      <value>Alarmes</value>
     </data>
   <data name="AlarmEdit_Active" xml:space="preserve">
       <value>Active</value>
     </data>
   <data name="AlarmEdit_StartTime" xml:space="preserve">
-      <value>Start time</value>
+      <value>Temps</value>
     </data>
   <data name="AlarmEdit_Color" xml:space="preserve">
-      <value>Color</value>
+      <value>Couleur</value>
     </data>
   <data name="AlarmEdit_Blink" xml:space="preserve">
-      <value>Blink</value>
+      <value>Clignotant</value>
     </data>
   <data name="AlarmEdit_Duration" xml:space="preserve">
-      <value>Duration</value>
+      <value>Durée</value>
     </data>
   <data name="AlarmEdit_Sound" xml:space="preserve">
-      <value>Sound</value>
+      <value>Effet</value>
     </data>
   <data name="AlarmEdit_Sound_None" xml:space="preserve">
-      <value>None</value>
+      <value>Aucun</value>
     </data>
   <data name="AlarmEdit_Text" xml:space="preserve">
-      <value>Text</value>
+      <value>Texte</value>
     </data>
   <data name="AlarmEdit_Type_DalamudNotification" xml:space="preserve">
-      <value>Dalamud Notification</value>
+      <value>Notification Dalamud</value>
     </data>
   <data name="AlarmEdit_Type_GameToast" xml:space="preserve">
-      <value>Game toast</value>
+      <value>Texte du jeu au centre de l'écran</value>
     </data>
   <data name="AlarmEdit_Type_ChatLog" xml:space="preserve">
-      <value>Chat log</value>
+      <value>Message dans le chat log</value>
     </data>
   <data name="AlarmEdit_Active_Tooltip" xml:space="preserve">
-      <value>Enables / disables this alarm</value>
+      <value>Active / désactive cette alarme</value>
     </data>
   <data name="AlarmEdit_StartTime_Tooltip" xml:space="preserve">
-      <value>The alarm will start at this specified combat time</value>
+      <value>Cette alarme commencera dès que ce temps de combat se sera écoulé</value>
     </data>
   <data name="AlarmEdit_Color_Tooltip" xml:space="preserve">
-      <value>Applies the color to the floating window stopwatch during the alarm</value>
+      <value>Applique la couleur au chronomètre de la petite fenêtre pendant la durée de l'alarme</value>
     </data>
   <data name="AlarmEdit_Blink_Tooltip" xml:space="preserve">
-      <value>Makes the floating window stopwatch blink during the alarm</value>
+      <value>Fait clignoter le texte de la petite fenêtre pendant la durée de l'alarme</value>
     </data>
   <data name="AlarmEdit_Duration_Tooltip" xml:space="preserve">
-      <value>Stops the color/blink after this amount of time</value>
+      <value>Arrête la couleur/clignotement après ce temps</value>
     </data>
   <data name="AlarmEdit_Sound_Tooltip" xml:space="preserve">
-      <value>Plays a game sound effect at the alarm time</value>
+      <value>Joue cet effet sonore du jeu quand l'alarme retentit</value>
     </data>
   <data name="AlarmEdit_Text_Tooltip" xml:space="preserve">
-      <value>Allows you to display a text notification at the alarm time</value>
+      <value>Permet d'afficher une notification texte</value>
     </data>
   <data name="AlarmEdit_Text_Type" xml:space="preserve">
       <value>Type</value>
     </data>
   <data name="AlarmEdit_Text_Text" xml:space="preserve">
-      <value>Text</value>
+      <value>Texte</value>
     </data>
   <data name="AlarmEdit_Text_Clear" xml:space="preserve">
-      <value>Clear</value>
+      <value>Effacer</value>
     </data>
   <data name="Settings_AlarmsTab_Line1" xml:space="preserve">
-      <value>This page allows you to set alarms based on elapsed combat time.</value>
+      <value>Cette page vous permet de définir des alarmes en fonction du temps de combat écoulé.</value>
     </data>
   <data name="Settings_AlarmsTab_Line2" xml:space="preserve">
-      <value>A common use is to notify you of the potion window.</value>
+      <value>Cela peut par exemple vous permettre de ne pas oublier d'utiliser votre potion.</value>
     </data>
   <data name="AlarmEdit_Add" xml:space="preserve">
-      <value>Create new</value>
+      <value>Ajouter</value>
     </data>
   <data name="AlarmEdit_Clear" xml:space="preserve">
-      <value>Clear all</value>
+      <value>Tout supprimer</value>
     </data>
   <data name="AlarmEdit_Clear_Confirm" xml:space="preserve">
-      <value>Do you really want to remove all the alarms?</value>
+      <value>Voulez-vous vraiment supprimer toutes les alarmes ?</value>
     </data>
   <data name="AlarmEdit_Export" xml:space="preserve">
-      <value>Export</value>
+      <value>Exporter</value>
     </data>
   <data name="AlarmEdit_Import" xml:space="preserve">
-      <value>Import</value>
+      <value>Importer</value>
     </data>
   <data name="AlarmEdit_Text_Test" xml:space="preserve">
       <value>Test</value>
     </data>
   <data name="AlarmEdit_Export_Tooltip" xml:space="preserve">
-      <value>Exports the active alarms to a file</value>
+      <value>Exporte les alarmes actives vers un fichier</value>
     </data>
   <data name="AlarmEdit_Import_File" xml:space="preserve">
-      <value>Select file to import</value>
+      <value>Sélectionnez le fichier à importer</value>
     </data>
   <data name="AlarmEdit_Export_File" xml:space="preserve">
-      <value>Select file to export</value>
+      <value>Sélectionnez le fichier à exporter</value>
     </data>
   <data name="Modal_Ok" xml:space="preserve">
       <value>OK</value>
     </data>
   <data name="Modal_Cancel" xml:space="preserve">
-      <value>Cancel</value>
+      <value>Annuler</value>
     </data>
   <data name="Modal_Confirm" xml:space="preserve">
-      <value>Confirm</value>
+      <value>Confirmer</value>
     </data>
   <data name="CombatAlarm_AccessDenied" xml:space="preserve">
-      <value>Could not save the file in this directory (access denied). Please try again with another directory.</value>
+      <value>Impossible d'enregistrer le fichier dans ce répertoire (accès refusé). Veuillez réessayer avec un autre répertoire.</value>
     </data>
   <data name="CombatAlarm_SaveGeneric" xml:space="preserve">
-      <value>An error occured while trying to save the alarms to {0}: {1}.</value>
+      <value>Une erreur est survenue lors de l'enregistrement des alarmes dans {0}: "{1}".</value>
     </data>
   <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
-      <value>An error occured while trying to read the alarms to {0}: {1}.</value>
+      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
     </data>
   <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
-      <value>The alarms file format is incompatible or incorrect</value>
+      <value>Le format du fichier des alarmes est incompatible ou incorrect</value>
     </data>
   <data name="CombatAlarm_ImportedEmpty" xml:space="preserve">
-      <value>An empty or invalid alarm list was imported</value>
+      <value>Une liste d’alarmes vide ou invalide a été importée</value>
     </data>
 </root>
