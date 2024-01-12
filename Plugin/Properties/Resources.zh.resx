@@ -375,13 +375,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>当使用多显示器窗口选项时，将倒计时置于游戏外(哪怕一点) 将会创建一个背景。 由于无法在游戏外渲染透明窗口，暂时无法修复。请使用边框作为参考。</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>对齐方式</value>
+    <value>Alignment</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>居中倒计时窗口</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>启用服务器信息栏计时</value>
+    <value>Enable Server Info Bar integration</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
     <value>前缀</value>
@@ -607,7 +607,7 @@ help text for the /eg settings command</comment>
       <value>An error occured while trying to save the alarms to {0}: {1}.</value>
     </data>
   <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
-      <value>An error occured while trying to read the alarms to {0}: {1}.</value>
+      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
     </data>
   <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
       <value>The alarms file format is incompatible or incorrect</value>
