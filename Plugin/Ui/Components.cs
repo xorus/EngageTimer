@@ -322,4 +322,20 @@ public static class Components
         ImGui.PopTextWrapPos();
         ImGui.EndTooltip();
     }
+
+    public delegate void DrawAction();
+
+    public static void LeftRight(string id, DrawAction left, DrawAction right)
+    {
+        if (!ImGui.BeginTable(id, 3, ImGuiTableFlags.SizingFixedFit)) return;
+        ImGui.TableSetupColumn("left");
+        ImGui.TableSetupColumn("spacer", ImGuiTableColumnFlags.WidthStretch, 100);
+        ImGui.TableSetupColumn("right");
+        ImGui.TableNextColumn();
+        left();
+        ImGui.TableNextColumn();
+        ImGui.TableNextColumn();
+        right();
+        ImGui.EndTable();
+    }
 }

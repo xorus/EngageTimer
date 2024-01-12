@@ -50,7 +50,7 @@ public sealed class Plugin : IDalamudPlugin
     private static FrameworkThings FrameworkThings { get; set; } = null!;
     private static MainCommand MainCommand { get; set; } = null!;
     private static SettingsCommand SettingsCommand { get; set; } = null!;
-    private static CombatAlarm CombatAlarm { get; set; } = null!;
+    public static CombatAlarm CombatAlarm { get; set; } = null!;
     public static SfxPlay SfxPlay { get; set; } = null!;
 
     public Plugin(DalamudPluginInterface pluginInterface)

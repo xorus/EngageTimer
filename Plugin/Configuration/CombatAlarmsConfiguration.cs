@@ -16,7 +16,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace EngageTimer.Configuration.Legacy;
+namespace EngageTimer.Configuration;
 
 public class CombatAlarmsConfiguration
 {

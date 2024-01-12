@@ -15,11 +15,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Dalamud.Game.Text;
 using Dalamud.Interface.Internal.Notifications;
 using Dalamud.Plugin.Services;
-using EngageTimer.Configuration.Legacy;
+using EngageTimer.Configuration;
 using EngageTimer.Game;
+using EngageTimer.Ui;
+using Newtonsoft.Json;
 
 namespace EngageTimer.Status;
 
@@ -50,6 +53,57 @@ public sealed class CombatAlarm : IDisposable
         Plugin.State.InCombatChanged += InCombatChanged;
     }
 
+    public static string? Import(string fileName)
+    {
+        try
+        {
+            var text = File.ReadAllText(fileName);
+            var data = JsonConvert.DeserializeObject<CombatAlarmsConfiguration>(text,
+                new JsonSerializerSettings
+                {
+                    // using "TypeNameHandling.Objects" causes a "resolving to a collectible assembly is not supported"
+                    TypeNameHandling = TypeNameHandling.None
+                });
+            if (data == null || data.Alarms.Count == 0) return Translator.Tr("CombatAlarm_ImportedEmpty");
+            Plugin.Config.CombatAlarms.Alarms.AddRange(data.Alarms);
+        }
+        catch (JsonSerializationException e)
+        {
+            Plugin.Logger.Error(e, $"Could not parse file {fileName}");
+            return Translator.Tr("CombatAlarm_IncorrectFormat");
+        }
+        catch (Exception e)
+        {
+            Plugin.Logger.Error(e, $"Could not read file {fileName}");
+            return Translator.Tr("CombatAlarm_ReadGeneric", fileName, e.Message);
+        }
+
+        return null;
+    }
+
+    public static string? Export(string fileName)
+    {
+        try
+        {
+            File.WriteAllText(fileName,
+                JsonConvert.SerializeObject(Plugin.Config.CombatAlarms, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.None
+                    }));
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Translator.Tr("CombatAlarm_AccessDenied");
+        }
+        catch (Exception e)
+        {
+            Plugin.Logger.Error(e, $"Could not save file {fileName}");
+            return Translator.Tr("CombatAlarm_SaveGeneric", fileName, e.Message);
+        }
+
+        return null;
+    }
 
     private void ConfigurationChanged(object? sender, EventArgs e)
     {
@@ -88,7 +142,7 @@ public sealed class CombatAlarm : IDisposable
         if (!Plugin.State.InCombat) return;
 
         // only run once a second
-        var time = (int)Math.Floor(Plugin.State.CombatDuration.TotalSeconds);
+        var time = (int) Math.Floor(Plugin.State.CombatDuration.TotalSeconds);
         if (_lastCheck == time) return;
         _lastCheck = time;
 
@@ -107,14 +161,14 @@ public sealed class CombatAlarm : IDisposable
     {
         if (alarm.Sfx != null)
         {
-            Plugin.SfxPlay.SoundEffect((uint)(SfxPlay.FirstSeSfx + alarm.Sfx));
+            Plugin.SfxPlay.SoundEffect((uint) (SfxPlay.FirstSeSfx + alarm.Sfx));
         }
     }
 
     public static void AlarmText(CombatAlarmsConfiguration.Alarm alarm)
     {
         var trimText = alarm.Text?.Trim();
-        if (trimText is not { Length: > 0 }) return;
+        if (trimText is not {Length: > 0}) return;
         switch (alarm.TextType)
         {
             case CombatAlarmsConfiguration.TextType.DalamudNotification:

@@ -78,6 +78,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new.
+        /// </summary>
+        internal static string AlarmEdit_Add {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blink.
         /// </summary>
         internal static string AlarmEdit_Blink {
@@ -92,6 +101,24 @@ namespace EngageTimer.Properties {
         internal static string AlarmEdit_Blink_Tooltip {
             get {
                 return ResourceManager.GetString("AlarmEdit_Blink_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear all.
+        /// </summary>
+        internal static string AlarmEdit_Clear {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove all the alarms?.
+        /// </summary>
+        internal static string AlarmEdit_Clear_Confirm {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Clear_Confirm", resourceCulture);
             }
         }
         
@@ -128,6 +155,51 @@ namespace EngageTimer.Properties {
         internal static string AlarmEdit_Duration_Tooltip {
             get {
                 return ResourceManager.GetString("AlarmEdit_Duration_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        internal static string AlarmEdit_Export {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select file to export.
+        /// </summary>
+        internal static string AlarmEdit_Export_File {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Export_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exports the active alarms to a file.
+        /// </summary>
+        internal static string AlarmEdit_Export_Tooltip {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Export_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        internal static string AlarmEdit_Import {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select file to import.
+        /// </summary>
+        internal static string AlarmEdit_Import_File {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Import_File", resourceCulture);
             }
         }
         
@@ -195,6 +267,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        internal static string AlarmEdit_Text_Test {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text.
         /// </summary>
         internal static string AlarmEdit_Text_Text {
@@ -245,6 +326,51 @@ namespace EngageTimer.Properties {
         internal static string AlarmEdit_Type_GameToast {
             get {
                 return ResourceManager.GetString("AlarmEdit_Type_GameToast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save the file in this directory (access denied). Please try again with another directory..
+        /// </summary>
+        internal static string CombatAlarm_AccessDenied {
+            get {
+                return ResourceManager.GetString("CombatAlarm_AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An empty or invalid alarm list was imported.
+        /// </summary>
+        internal static string CombatAlarm_ImportedEmpty {
+            get {
+                return ResourceManager.GetString("CombatAlarm_ImportedEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The alarms file format is incompatible or incorrect.
+        /// </summary>
+        internal static string CombatAlarm_IncorrectFormat {
+            get {
+                return ResourceManager.GetString("CombatAlarm_IncorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to read the alarms to {0}: {1}..
+        /// </summary>
+        internal static string CombatAlarm_ReadGeneric {
+            get {
+                return ResourceManager.GetString("CombatAlarm_ReadGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to save the alarms to {0}: {1}..
+        /// </summary>
+        internal static string CombatAlarm_SaveGeneric {
+            get {
+                return ResourceManager.GetString("CombatAlarm_SaveGeneric", resourceCulture);
             }
         }
         
@@ -344,6 +470,33 @@ namespace EngageTimer.Properties {
         internal static string MainCommand_Status_On {
             get {
                 return ResourceManager.GetString("MainCommand_Status_On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Modal_Cancel {
+            get {
+                return ResourceManager.GetString("Modal_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string Modal_Confirm {
+            get {
+                return ResourceManager.GetString("Modal_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string Modal_Ok {
+            get {
+                return ResourceManager.GetString("Modal_Ok", resourceCulture);
             }
         }
         

@@ -15,12 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using Dalamud.Interface.Utility;
-using EngageTimer.Configuration.Legacy;
-using EngageTimer.Game;
+using Dalamud.Interface.ImGuiFileDialog;
+using EngageTimer.Configuration;
 using EngageTimer.Status;
 using ImGuiNET;
 
@@ -28,6 +26,9 @@ namespace EngageTimer.Ui.SettingsTab;
 
 public static class AlarmsTab
 {
+    private static readonly FileDialogManager Fdm = new();
+    private static readonly Modal Modal = new();
+
     private static void Header(bool tooltip = false)
     {
         ImGui.TableNextColumn();
@@ -35,6 +36,11 @@ public static class AlarmsTab
         ImGui.TableHeader(Translator.Tr(ImGui.TableGetColumnName(ImGui.TableGetColumnIndex())));
         if (tooltip) Components.TooltipOnItemHovered(Translator.Tr(str + "_Tooltip"));
     }
+
+    /**
+     * Can't open a popup from within a table apparently
+     */
+    private static bool _openConfirmClear = false;
 
     private static readonly List<int> EditingTexts = new();
 
@@ -53,12 +59,14 @@ public static class AlarmsTab
             ImGui.TableSetupColumn("AlarmEdit_Blink");
             ImGui.TableSetupColumn("AlarmEdit_Duration");
             ImGui.TableSetupColumn("AlarmEdit_Sound");
-            ImGui.TableSetupColumn("AlarmEdit_Text");
+            ImGui.TableSetupColumn("AlarmEdit_Text", ImGuiTableColumnFlags.WidthStretch);
 
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
             // trash can
-            ImGui.TableNextColumn();
-            ImGui.Text("");
+            {
+                ImGui.TableNextColumn();
+                ImGui.Text("");
+            }
             Header(true); // active
             Header(true); // start time
             Header(true); // color
@@ -69,23 +77,95 @@ public static class AlarmsTab
 
             for (var index = 0; index < Plugin.Config.CombatAlarms.Alarms.Count; index++)
             {
+                ImGui.PushID("alarm" + index);
                 AlarmElement(index, Plugin.Config.CombatAlarms.Alarms[index]);
+                ImGui.PopID();
             }
 
             ImGui.EndTable();
         }
 
-        if (ImGuiComponents.IconButton($"{FontAwesomeIcon.Plus.ToIconString()}###add"))
+        Components.LeftRight("buttons", () =>
         {
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileImport, Translator.Tr("AlarmEdit_Import")))
+            {
+                Fdm.OpenFileDialog(
+                    Translator.Tr("AlarmEdit_Import_File"),
+                    ".json",
+                    (ok, path) =>
+                    {
+                        if (!ok) return;
+                        foreach (var p in path)
+                        {
+                            var error = CombatAlarm.Import(p);
+                            if (error != null) Modal.Show(error);
+                        }
+                    },
+                    0,
+                    null,
+                    true
+                );
+            }
+
+
+            ImGui.SameLine();
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileExport, Translator.Tr("AlarmEdit_Export")))
+            {
+                Fdm.SaveFileDialog(
+                    Translator.Tr("AlarmEdit_Export_File"),
+                    ".json",
+                    "EngageTimerAlarms.json",
+                    "json",
+                    (ok, path) =>
+                    {
+                        if (ok)
+                        {
+                            var error = CombatAlarm.Export(path);
+                            Plugin.Logger.Info("got error" + error);
+                            if (error != null) Modal.Show(error);
+                        }
+
+                        Plugin.Logger.Info($"got {ok} file {path}");
+                    },
+                    null,
+                    true
+                );
+            }
+
+            Components.TooltipOnItemHovered("AlarmEdit_Export_Tooltip");
+
+            ImGui.SameLine();
+            // clear all button
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, Translator.Tr("AlarmEdit_Clear")))
+            {
+                if (Plugin.Config.CombatAlarms.Alarms.Count == 0) return;
+                _openConfirmClear = true;
+            }
+        }, () =>
+        {
+            if (!ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, Translator.Tr("AlarmEdit_Add"))) return;
             Plugin.Config.CombatAlarms.Alarms.Add(new CombatAlarmsConfiguration.Alarm());
             Plugin.Config.Save();
+        });
+
+        if (_openConfirmClear)
+        {
+            _openConfirmClear = false;
+            Modal.Confirm(Translator.Tr("AlarmEdit_Clear_Confirm"), () =>
+            {
+                Plugin.Config.CombatAlarms.Alarms.Clear();
+                Plugin.Config.Save();
+            });
         }
+
+        Fdm.Draw();
+        Modal.Draw();
     }
 
     private static void AlarmElement(int index, CombatAlarmsConfiguration.Alarm alarm)
     {
+        ImGui.TableNextRow();
         {
-            ImGui.TableNextRow();
             ImGui.TableNextColumn();
             ImGui.PushID("alarm_" + index);
             Components.IconButton(FontAwesomeIcon.Trash, "delete" + index,
@@ -166,13 +246,13 @@ public static class AlarmsTab
             ImGui.TableNextColumn();
             if (EditingTexts.Contains(index))
             {
-                var type = (int)alarm.TextType;
+                var type = (int) alarm.TextType;
                 ImGui.PushItemWidth(150f);
                 if (ImGui.Combo("Type", ref type, Translator.Tr("AlarmEdit_Type_ChatLog") + "\0"
                         + Translator.Tr("AlarmEdit_Type_DalamudNotification") + "\0"
                         + Translator.Tr("AlarmEdit_Type_GameToast") + "\0"))
                 {
-                    alarm.TextType = (CombatAlarmsConfiguration.TextType)type;
+                    alarm.TextType = (CombatAlarmsConfiguration.TextType) type;
                     Plugin.Config.Save();
                 }
 
@@ -186,7 +266,7 @@ public static class AlarmsTab
 
                 ImGui.PopItemWidth();
 
-                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Type")))
+                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Test")))
                 {
                     CombatAlarm.AlarmText(alarm);
                 }
@@ -240,7 +320,6 @@ public static class AlarmsTab
                 }
             }
         }
-
         ImGui.PopID();
     }
 }
