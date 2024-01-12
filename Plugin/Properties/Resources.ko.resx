@@ -564,4 +564,55 @@ help text for the /eg settings command</comment>
   <data name="Settings_AlarmsTab_Line2" xml:space="preserve">
       <value>A common use is to notify you of the potion window.</value>
     </data>
+  <data name="AlarmEdit_Add" xml:space="preserve">
+      <value>Create new</value>
+    </data>
+  <data name="AlarmEdit_Clear" xml:space="preserve">
+      <value>Clear all</value>
+    </data>
+  <data name="AlarmEdit_Clear_Confirm" xml:space="preserve">
+      <value>Do you really want to remove all the alarms?</value>
+    </data>
+  <data name="AlarmEdit_Export" xml:space="preserve">
+      <value>Export</value>
+    </data>
+  <data name="AlarmEdit_Import" xml:space="preserve">
+      <value>Import</value>
+    </data>
+  <data name="AlarmEdit_Text_Test" xml:space="preserve">
+      <value>Test</value>
+    </data>
+  <data name="AlarmEdit_Export_Tooltip" xml:space="preserve">
+      <value>Exports the active alarms to a file</value>
+    </data>
+  <data name="AlarmEdit_Import_File" xml:space="preserve">
+      <value>Select file to import</value>
+    </data>
+  <data name="AlarmEdit_Export_File" xml:space="preserve">
+      <value>Select file to export</value>
+    </data>
+  <data name="Modal_Ok" xml:space="preserve">
+      <value>OK</value>
+    </data>
+  <data name="Modal_Cancel" xml:space="preserve">
+      <value>Cancel</value>
+    </data>
+  <data name="Modal_Confirm" xml:space="preserve">
+      <value>Confirm</value>
+    </data>
+  <data name="CombatAlarm_AccessDenied" xml:space="preserve">
+      <value>Could not save the file in this directory (access denied). Please try again with another directory.</value>
+    </data>
+  <data name="CombatAlarm_SaveGeneric" xml:space="preserve">
+      <value>An error occured while trying to save the alarms to {0}: {1}.</value>
+    </data>
+  <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
+      <value>An error occured while trying to read the alarms to {0}: {1}.</value>
+    </data>
+  <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
+      <value>The alarms file format is incompatible or incorrect</value>
+    </data>
+  <data name="CombatAlarm_ImportedEmpty" xml:space="preserve">
+      <value>An empty or invalid alarm list was imported</value>
+    </data>
 </root>
