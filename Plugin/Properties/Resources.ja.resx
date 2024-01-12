@@ -375,13 +375,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>マルチウィンドウ表示の場合、少しでもゲームウィンドウの外側にカウントダウンを配置すると背景が作成されます。透過レンダリングはゲームウィンドウ外では使用できず、これは現在は修正できません。ボーダーをガイドとして使用してください。</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>配置</value>
+    <value>Alignment</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>Center countdown window</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>サーバ情報バーの設定を有効にする</value>
+    <value>Enable Server Info Bar integration</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
     <value>接頭辞</value>
@@ -607,7 +607,7 @@ help text for the /eg settings command</comment>
       <value>An error occured while trying to save the alarms to {0}: {1}.</value>
     </data>
   <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
-      <value>An error occured while trying to read the alarms to {0}: {1}.</value>
+      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
     </data>
   <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
       <value>The alarms file format is incompatible or incorrect</value>
