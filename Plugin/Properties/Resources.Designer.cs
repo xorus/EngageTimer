@@ -357,7 +357,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured while trying to read the alarms to {0}: {1}..
+        ///   Looks up a localized string similar to An error occured while trying to read the alarms in {0}: {1}..
         /// </summary>
         internal static string CombatAlarm_ReadGeneric {
             get {

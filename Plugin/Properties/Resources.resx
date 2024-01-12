@@ -609,7 +609,7 @@ help text for the /eg settings command</comment>
       <value>An error occured while trying to save the alarms to {0}: {1}.</value>
     </data>
     <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
-      <value>An error occured while trying to read the alarms to {0}: {1}.</value>
+      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
     </data>
     <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
       <value>The alarms file format is incompatible or incorrect</value>
