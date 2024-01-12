@@ -377,13 +377,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>When using the multi monitor windows option, positioning the countdown outside of the game (even a little bit) will create a background. As rendering transparent windows is impossible outside of the game, this cannot be fixed for now. Please use the border as a guide.</value>
   </data>
     <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>Alignement</value>
+    <value>Alignment</value>
   </data>
     <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>Center countdown window</value>
   </data>
     <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>Enable Server Info Bar integation</value>
+    <value>Enable Server Info Bar integration</value>
   </data>
     <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
     <value>Prefix</value>

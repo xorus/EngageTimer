@@ -631,7 +631,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alignement.
+        ///   Looks up a localized string similar to Alignment.
         /// </summary>
         internal static string Settings_CountdownTab_CountdownAlign {
             get {
@@ -1018,7 +1018,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable Server Info Bar integation.
+        ///   Looks up a localized string similar to Enable Server Info Bar integration.
         /// </summary>
         internal static string Settings_DtrCombatTimer_Enable {
             get {

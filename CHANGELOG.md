@@ -1,13 +1,14 @@
-﻿# v2.3.0.0 - unreleased
+﻿# v2.3.1.0 - unreleased
 
+- You can set alarms to play a game sound effect, change stopwatch color or display text at specified combat durations
 - Big code rewrite and a bit of optimization
 - Fix save errors when spinning color sliders like a maniac in configuration
 - Reorganized configuration file to preserve my sanity
 - "Hide original addon" now uses AddonLifecycle events instead of searching for the original countdown every frame
 - Reduce CountdownHook CPU usage by fixing a stupid event spam mistake
 - Optimize countdown display code
-- Fix the "first-draw" workaround that draws the countdown window once on plugin activation so it does not the micro
-  freeze caused by ImGUI initializing the window does not occur when starting a countdown 
+- Fix the "first-draw" workaround that draws the countdown window once on plugin activation to prevent a freeze caused
+  by ImGUI initializing the window does not occur when starting a countdown
 
 # v2.2.6.0
 
