@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dalamud.Game.Text;
 using Dalamud.Interface.Internal.Notifications;
 using Dalamud.Plugin.Services;
@@ -58,14 +59,14 @@ public sealed class CombatAlarm : IDisposable
         try
         {
             var text = File.ReadAllText(fileName);
-            var data = JsonConvert.DeserializeObject<CombatAlarmsConfiguration>(text,
+            var data = JsonConvert.DeserializeObject<List<CombatAlarmsConfiguration.Alarm>>(text,
                 new JsonSerializerSettings
                 {
                     // using "TypeNameHandling.Objects" causes a "resolving to a collectible assembly is not supported"
                     TypeNameHandling = TypeNameHandling.None
                 });
-            if (data == null || data.Alarms.Count == 0) return Translator.Tr("CombatAlarm_ImportedEmpty");
-            Plugin.Config.CombatAlarms.Alarms.AddRange(data.Alarms);
+            if (data == null || data.Count == 0) return Translator.Tr("CombatAlarm_ImportedEmpty");
+            Plugin.Config.CombatAlarms.Alarms.AddRange(data);
         }
         catch (JsonSerializationException e)
         {
@@ -86,7 +87,8 @@ public sealed class CombatAlarm : IDisposable
         try
         {
             File.WriteAllText(fileName,
-                JsonConvert.SerializeObject(Plugin.Config.CombatAlarms, Formatting.Indented,
+                JsonConvert.SerializeObject(Plugin.Config.CombatAlarms.Alarms.Where(alarm => alarm.Enabled).ToList(),
+                    Formatting.Indented,
                     new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.None
