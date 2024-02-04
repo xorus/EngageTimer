@@ -1,5 +1,5 @@
 ﻿// This file is part of EngageTimer
-// Copyright (C) 2023 Xorus <xorus@posteo.net>
+// Copyright (C) 2024 Xorus <xorus@posteo.net>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -13,22 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using Dalamud.Interface.Animation;
+namespace EngageTimer.Localization;
 
-namespace EngageTimer.Ui.CustomEasing;
-
-public class OpacityEasing : Easing
+/**
+ * For the lazy dogs out there (me)
+ */
+public static class Extensions
 {
-    public OpacityEasing() : base(new TimeSpan(0, 0, 0, 0, 1000))
+    public static string Tr(this string id)
     {
+        return Translator.Tr(id);
     }
 
-    // https://www.desmos.com/calculator/6btgm8tjk0
-    public override void Update()
+    public static string TrId(this string id)
     {
-        Value = Math.Clamp(
-            0.08 - 0.9 * Math.Sin(3 - 7.5 * Progress)
-            , 0d, 1d);
+        return Translator.TrId(id);
+    }
+
+    public static string TrYesNo(this bool yesNo, string yes, string no)
+    {
+        return yesNo ? Tr(yes) : Tr(no);
     }
 }

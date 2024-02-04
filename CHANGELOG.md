@@ -1,4 +1,8 @@
-﻿# v2.3.1.0 - unreleased
+﻿# v2.3.2.0
+
+- Adds 
+
+# v2.3.1.0
 
 - You can set alarms to play a game sound effect, change stopwatch color or display text at specified combat durations
 - Big code rewrite and a bit of optimization

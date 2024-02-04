@@ -15,6 +15,7 @@
 
 using System;
 using Dalamud.Game.Command;
+using EngageTimer.Localization;
 using EngageTimer.Ui;
 
 namespace EngageTimer.Commands;

@@ -15,6 +15,7 @@
 
 using System;
 using System.Numerics;
+using EngageTimer.Localization;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;

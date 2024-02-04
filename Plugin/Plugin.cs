@@ -20,6 +20,7 @@ using Dalamud.Plugin.Services;
 using EngageTimer.Commands;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
+using EngageTimer.Localization;
 using EngageTimer.Status;
 using EngageTimer.Ui;
 using JetBrains.Annotations;
@@ -43,7 +44,6 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IToastGui ToastGui { get; private set; } = null!;
     public static ConfigurationFile Config { get; private set; } = null!;
     public static State State { get; private set; } = null!;
-    public static Translator Translator { get; private set; } = null!;
     public static PluginUi PluginUi { get; private set; } = null!;
     public static NumberTextures NumberTextures { get; set; } = null!;
     public static string PluginPath { get; private set; } = null!;
@@ -57,9 +57,9 @@ public sealed class Plugin : IDalamudPlugin
     {
         PluginPath = PluginInterface.AssemblyLocation.DirectoryName ??
                      throw new InvalidOperationException("Cannot find plugin directory");
+        Translator.Register();
         Config = ConfigurationLoader.Load();
         State = new State();
-        Translator = new Translator();
         FrameworkThings = new FrameworkThings();
         MainCommand = new MainCommand();
         SettingsCommand = new SettingsCommand();
@@ -70,12 +70,12 @@ public sealed class Plugin : IDalamudPlugin
 
     void IDisposable.Dispose()
     {
+        Translator.Unregister();
         PluginInterface.SavePluginConfig(Config);
         CombatAlarm.Dispose();
         PluginUi.Dispose();
         FrameworkThings.Dispose();
         MainCommand.Dispose();
         SettingsCommand.Dispose();
-        Translator.Dispose();
     }
 }

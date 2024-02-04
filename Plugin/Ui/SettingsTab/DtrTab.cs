@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using EngageTimer.Configuration;
+using EngageTimer.Localization;
 using ImGuiNET;
 
 namespace EngageTimer.Ui.SettingsTab;

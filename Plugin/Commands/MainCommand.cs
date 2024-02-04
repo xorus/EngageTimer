@@ -15,7 +15,7 @@
 
 using System;
 using Dalamud.Game.Command;
-using EngageTimer.Ui;
+using EngageTimer.Localization;
 
 namespace EngageTimer.Commands;
 
@@ -27,12 +27,12 @@ public sealed class MainCommand : IDisposable
     public MainCommand()
     {
         Register();
-        Plugin.Translator.LocaleChanged += OnLocaleChanged;
+        Translator.LocaleChanged += OnLocaleChanged;
     }
 
     public void Dispose()
     {
-        Plugin.Translator.LocaleChanged -= OnLocaleChanged;
+        Translator.LocaleChanged -= OnLocaleChanged;
         Unregister();
     }
 

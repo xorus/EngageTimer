@@ -22,6 +22,7 @@ using Dalamud.Interface.Internal.Notifications;
 using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
+using EngageTimer.Localization;
 using EngageTimer.Ui;
 using Newtonsoft.Json;
 

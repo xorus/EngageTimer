@@ -24,14 +24,14 @@ namespace EngageTimer.Configuration;
 public class CountdownConfiguration
 {
     public static readonly string[] BundledTextures =
-        { "default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint" };
+        {"default", "yellow", "wow", "awk", "tall", "misaligned", "pixel", "moire", "mspaint"};
 
     // Countdown
     [AutoField("Settings_CountdownTab_Enable")]
     public bool Display { get; set; } = true;
 
-    [AutoField("Settings_CountdownTab_HideOriginalCountDown"), Help("Settings_CountdownTab_HideOriginalCountDown_Help")]
     public bool HideOriginalAddon { get; set; } = false;
+    public bool IgnoreOriginalAddon { get; set; } = false;
 
     [AutoField("Settings_CountdownTab_Audio_Enable")]
     public bool EnableTickingSound { get; set; } = false;

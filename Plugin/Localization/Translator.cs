@@ -17,22 +17,22 @@ using System;
 using System.Globalization;
 using EngageTimer.Properties;
 
-namespace EngageTimer.Ui;
+namespace EngageTimer.Localization;
 
-public sealed class Translator : IDisposable
+public static class Translator
 {
-    public Translator()
+    public static event EventHandler? LocaleChanged;
+
+    public static void Register()
     {
         Plugin.PluginInterface.LanguageChanged += ConfigureLanguage;
         ConfigureLanguage();
     }
 
-    public void Dispose()
+    public static void Unregister()
     {
         Plugin.PluginInterface.LanguageChanged -= ConfigureLanguage;
     }
-
-    public event EventHandler? LocaleChanged;
 
     public static string TrId(string id)
     {
@@ -61,7 +61,7 @@ public sealed class Translator : IDisposable
         return str;
     }
 
-    private void ConfigureLanguage(string? langCode = null)
+    private static void ConfigureLanguage(string? langCode = null)
     {
         var lang = (langCode ?? Plugin.PluginInterface.UiLanguage) switch
         {
@@ -72,6 +72,6 @@ public sealed class Translator : IDisposable
             _ => "en"
         };
         Resources.Culture = new CultureInfo(lang ?? "en");
-        LocaleChanged?.Invoke(this, EventArgs.Empty);
+        LocaleChanged?.Invoke(null, EventArgs.Empty);
     }
 }

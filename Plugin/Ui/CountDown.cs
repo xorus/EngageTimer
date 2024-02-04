@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 using Dalamud.Interface.Animation;
-using Dalamud.Interface.Animation.EasingFunctions;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
 using EngageTimer.Ui.CustomEasing;
@@ -30,14 +29,9 @@ public sealed class CountDown : IDisposable
 {
     private const float BaseNumberScale = 1f;
     private const int GameCountdownWidth = 60; // just trust in the magic numbers
-    private const float AnimationSize = .7f;
 
-    private readonly Easing _easing = new OutCubic(new TimeSpan(0, 0, 0, 0, 1000));
-
-    private readonly Easing _easingOpacity = new OpacityEasing(
-        new TimeSpan(0, 0, 0, 0, 1000),
-        1, -0.02, .71, 1
-    );
+    private readonly Easing _easing = new NumberEasing();
+    private readonly Easing _easingOpacity = new OpacityEasing();
 
     private bool _accurateMode;
     private const string WindowTitle = "EngageTimer Countdown";
@@ -76,13 +70,12 @@ public sealed class CountDown : IDisposable
      */
     private void UpdateFromConfig()
     {
-        _accurateMode = Plugin.Config.Countdown.HideOriginalAddon && Plugin.Config.Countdown.AccurateMode;
+        _accurateMode = Plugin.Config.Countdown.AccurateMode &&
+                        (Plugin.Config.Countdown.HideOriginalAddon || Plugin.Config.Countdown.IgnoreOriginalAddon);
     }
 
     private void FirstDraw()
     {
-        if (!_firstDraw) return;
-
         var visible = true;
         var flags = ImGuiWindowFlags.NoTitleBar
                     | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar
@@ -119,10 +112,11 @@ public sealed class CountDown : IDisposable
 //         ImGui.End();
 // #endif
 
-        FirstDraw();
+        if (_firstDraw) FirstDraw();
         if (!Plugin.Config.Countdown.Display || !Plugin.State.CountingDown) return;
 
-        var showMainCountdown = Plugin.State.CountDownValue > 5 || Plugin.Config.Countdown.HideOriginalAddon;
+        var showMainCountdown = Plugin.Config.Countdown.HideOriginalAddon ||
+                                Plugin.Config.Countdown.IgnoreOriginalAddon || Plugin.State.CountDownValue > 5;
         if (showMainCountdown && Plugin.Config.Countdown.EnableDisplayThreshold &&
             Plugin.State.CountDownValue > Plugin.Config.Countdown.DisplayThreshold)
             return;
@@ -136,7 +130,7 @@ public sealed class CountDown : IDisposable
 
             if (Plugin.Config.Countdown.Animate)
             {
-                var second = (int)Plugin.State.CountDownValue;
+                var second = (int) Plugin.State.CountDownValue;
                 if (_lastSecond != second)
                 {
                     _easing.Restart();
@@ -148,8 +142,8 @@ public sealed class CountDown : IDisposable
                 _easingOpacity.Update();
                 if (Plugin.Config.Countdown.AnimateScale)
                 {
-                    maxNumberScale = numberScale + AnimationSize;
-                    numberScale += AnimationSize * (1 - (float)_easing.Value);
+                    maxNumberScale = numberScale + NumberEasing.StartSize;
+                    numberScale += NumberEasing.StartSize * (1 - (float) _easing.Value);
                 }
             }
         }
@@ -196,7 +190,7 @@ public sealed class CountDown : IDisposable
                     ImGui.GetWindowPos(),
                     ImGui.GetWindowPos() + ImGui.GetWindowSize(),
                     ImGui.GetColorU32(ImGuiCol.Text), 0f, ImDrawFlags.None,
-                    7f + (float)Math.Sin(ImGui.GetTime() * 2) * 5f);
+                    7f + (float) Math.Sin(ImGui.GetTime() * 2) * 5f);
                 d.AddRect(
                     ImGui.GetWindowPos(),
                     ImGui.GetWindowPos() + ImGui.GetWindowSize(),
@@ -208,7 +202,7 @@ public sealed class CountDown : IDisposable
             DrawCountdown(showMainCountdown, numberScale, negativeMargin, false);
             if (Plugin.Config.Countdown.Animate && Plugin.Config.Countdown.AnimateOpacity)
             {
-                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
+                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float) _easingOpacity.Value);
                 DrawCountdown(showMainCountdown, numberScale, negativeMargin, true);
                 ImGui.PopStyleVar();
             }

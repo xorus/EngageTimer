@@ -18,17 +18,20 @@ using Dalamud.Interface.Animation;
 
 namespace EngageTimer.Ui.CustomEasing;
 
-public class OpacityEasing : Easing
+public class NumberEasing : Easing
 {
-    public OpacityEasing() : base(new TimeSpan(0, 0, 0, 0, 1000))
+    public const float StartSize = .76f;
+
+    public NumberEasing() : base(new TimeSpan(0, 0, 0, 0, 400))
     {
     }
 
-    // https://www.desmos.com/calculator/6btgm8tjk0
+    /**
+     * I did not do a frame analysis yet, but it seems linear, I hate it but must match it.
+     */
     public override void Update()
     {
-        Value = Math.Clamp(
-            0.08 - 0.9 * Math.Sin(3 - 7.5 * Progress)
-            , 0d, 1d);
+        if (this.Progress > 1) return;
+        this.Value = this.Progress;
     }
 }

@@ -19,6 +19,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.ImGuiFileDialog;
 using EngageTimer.Configuration;
+using EngageTimer.Localization;
 using EngageTimer.Status;
 using ImGuiNET;
 

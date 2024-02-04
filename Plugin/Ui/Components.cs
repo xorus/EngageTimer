@@ -20,6 +20,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using EngageTimer.Attributes;
+using EngageTimer.Localization;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;

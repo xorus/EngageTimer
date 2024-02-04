@@ -22,6 +22,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using EngageTimer.Configuration;
+using EngageTimer.Localization;
 using EngageTimer.Ui.Color;
 using EngageTimer.Ui.SettingsTab;
 using ImGuiNET;
@@ -33,11 +34,16 @@ public class Settings : Window
 {
     public Settings() : base("Settings", ImGuiWindowFlags.AlwaysAutoResize)
     {
-        Plugin.Translator.LocaleChanged += (_, _) => UpdateWindowName();
+        Translator.LocaleChanged += (_, _) => UpdateWindowName();
         UpdateWindowName();
 #if DEBUG
         IsOpen = true;
 #endif
+    }
+
+    public override void OnClose()
+    {
+        CountdownTab.OnClose();
     }
 
     private void UpdateWindowName()
@@ -49,7 +55,7 @@ public class Settings : Window
     {
         CountdownTab.DebounceTextureCreation();
         CountdownTab.UpdateMock();
-        
+
         if (ImGui.BeginTabBar("EngageTimerSettingsTabBar", ImGuiTabBarFlags.None))
         {
             ImGui.PushItemWidth(100f);

@@ -19,7 +19,9 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Plugin.Internal.Profiles;
 using EngageTimer.Configuration;
+using EngageTimer.Localization;
 using EngageTimer.Ui.Color;
 using ImGuiNET;
 
@@ -55,7 +57,13 @@ public static class CountdownTab
         if (_mockTarget == 0 || _mockTarget < ImGui.GetTime()) _mockTarget = ImGui.GetTime() + 30d;
 
         Plugin.State.CountingDown = true;
-        Plugin.State.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
+        Plugin.State.CountDownValue = (float) (_mockTarget - ImGui.GetTime());
+    }
+
+    public static void OnClose()
+    {
+        _mocking = false;
+        Plugin.State.Mocked = false;
     }
 
     private static void ToggleMock()
@@ -79,20 +87,25 @@ public static class CountdownTab
     {
         var configuration = Plugin.Config;
         ImGui.PushTextWrapPos();
-        ImGui.Text(Translator.Tr("Settings_CountdownTab_Info1"));
-        if (ImGui.Button(
-                (_mocking
-                    ? Translator.Tr("Settings_CountdownTab_Test_Stop")
-                    : Translator.Tr("Settings_CountdownTab_Test_Start"))
-                + "###Settings_CountdownTab_Test")) ToggleMock();
+        ImGui.Text("Settings_CountdownTab_Info1".Tr());
+        if (ImGui.Button(_mocking.TrYesNo("Settings_CountdownTab_Test_Stop", "Settings_CountdownTab_Test_Start")
+                         + "###Settings_CountdownTab_Test")) ToggleMock();
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
         Components.AutoField(Plugin.Config.Countdown, "Display");
-        Components.AutoField(Plugin.Config.Countdown, "HideOriginalAddon");
+        ImGui.Indent();
+        CountdownHideOptions();
+        ImGui.Unindent();
         Components.AutoField(Plugin.Config.Countdown, "EnableDecimals");
         Components.AutoField(Plugin.Config.Countdown, "DecimalPrecision", sameLine: true);
         Components.AutoField(Plugin.Config.Countdown, "EnableTickingSound");
+
+        if (Plugin.Config.Countdown.HideOriginalAddon && Plugin.Config.Countdown.IgnoreOriginalAddon)
+        {
+            Plugin.Config.Countdown.IgnoreOriginalAddon = false;
+            Plugin.Config.Save();
+        }
 
         if (Plugin.Config.Countdown.EnableTickingSound)
         {
@@ -113,24 +126,63 @@ public static class CountdownTab
         Components.AutoField(Plugin.Config.Countdown, "DisplayThreshold", sameLine: true);
 
         ImGui.Separator();
-        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_PositioningTitle")))
+        if (ImGui.CollapsingHeader("Settings_CountdownTab_PositioningTitle".TrId()))
             CountdownPositionAndSize();
-        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_Texture"), ImGuiTreeNodeFlags.DefaultOpen))
+        if (ImGui.CollapsingHeader("Settings_CountdownTab_Texture".TrId(), ImGuiTreeNodeFlags.DefaultOpen))
             CountdownNumberStyle();
         ImGui.Separator();
 
-        var hideOriginal = !configuration.Countdown.HideOriginalAddon;
-        if (hideOriginal) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.5f);
+        var hideAccurate = !(configuration.Countdown.HideOriginalAddon || configuration.Countdown.IgnoreOriginalAddon);
+        if (hideAccurate) ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.3f);
         Components.AutoField(Plugin.Config.Countdown, "AccurateMode");
-        if (hideOriginal) ImGui.PopStyleVar();
+        if (hideAccurate) ImGui.PopStyleVar();
 
         ImGui.Indent();
         ImGui.PushTextWrapPos(500f);
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudGrey);
-        ImGui.TextWrapped(Translator.Tr("Settings_CountdownTab_AccurateMode_Help"));
+        ImGui.TextWrapped("Settings_CountdownTab_AccurateMode_Help".Tr());
         ImGui.PopTextWrapPos();
         ImGui.PopStyleColor();
         ImGui.Unindent();
+    }
+
+    public static void CountdownHideOptions()
+    {
+        var cdStatus = 0;
+        if (Plugin.Config.Countdown.HideOriginalAddon) cdStatus = 1;
+        else if (Plugin.Config.Countdown.IgnoreOriginalAddon) cdStatus = 2;
+
+        // ReSharper disable once ReplaceWithSingleAssignment.False - unreadable
+        var changed = false;
+        // ReSharper disable once ConvertIfToOrExpression - would hide the next button on the click frame
+        if (ImGui.RadioButton("Settings_CountdownTab_DefaultOriginalCountDown".Tr(), ref cdStatus, 0))
+            changed = true;
+        Components.TooltipOnItemHovered("Settings_CountdownTab_DefaultOriginalCountDown_Help".Tr());
+        if (ImGui.RadioButton("Settings_CountdownTab_HideOriginalCountDown".Tr(), ref cdStatus, 1))
+            changed = true;
+        Components.TooltipOnItemHovered("Settings_CountdownTab_HideOriginalCountDown_Help".Tr());
+        if (ImGui.RadioButton("Settings_CountdownTab_IgnoreOriginalCountDown".Tr(), ref cdStatus, 2))
+            changed = true;
+        Components.TooltipOnItemHovered("Settings_CountdownTab_IgnoreOriginalCountDown_Help".Tr());
+        if (!changed) return;
+
+        switch (cdStatus)
+        {
+            case 0:
+                Plugin.Config.Countdown.HideOriginalAddon = false;
+                Plugin.Config.Countdown.IgnoreOriginalAddon = false;
+                break;
+            case 1:
+                Plugin.Config.Countdown.HideOriginalAddon = true;
+                Plugin.Config.Countdown.IgnoreOriginalAddon = false;
+                break;
+            case 2:
+                Plugin.Config.Countdown.HideOriginalAddon = false;
+                Plugin.Config.Countdown.IgnoreOriginalAddon = true;
+                break;
+        }
+
+        Plugin.Config.Save();
     }
 
     private static void CountdownPositionAndSize()
@@ -140,32 +192,32 @@ public static class CountdownTab
         if (!Plugin.Config.Countdown.HideOriginalAddon)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
-            ImGui.TextWrapped(Translator.Tr("Settings_CountdownTab_PositionWarning"));
+            ImGui.TextWrapped("Settings_CountdownTab_PositionWarning".Tr());
             ImGui.PopStyleColor();
         }
 
-        ImGui.TextWrapped(Translator.Tr("Settings_CountdownTab_MultiMonitorWarning"));
+        ImGui.TextWrapped("Settings_CountdownTab_MultiMonitorWarning".Tr());
 
         var countdownOffsetX = Plugin.Config.Countdown.WindowOffset.X * 100;
-        if (ImGui.DragFloat(Translator.TrId("Settings_CountdownTab_OffsetX"), ref countdownOffsetX, .1f))
+        if (ImGui.DragFloat("Settings_CountdownTab_OffsetX".TrId(), ref countdownOffsetX, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                new Vector2(countdownOffsetX / 100, Plugin.Config.Countdown.WindowOffset.Y);
+                Plugin.Config.Countdown.WindowOffset with {X = countdownOffsetX / 100};
             Plugin.Config.Save();
         }
 
         ImGui.SameLine();
 
         var countdownOffsetY = Plugin.Config.Countdown.WindowOffset.Y * 100;
-        if (ImGui.DragFloat(Translator.TrId("Settings_CountdownTab_OffsetY"), ref countdownOffsetY, .1f))
+        if (ImGui.DragFloat("Settings_CountdownTab_OffsetY".TrId(), ref countdownOffsetY, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                new Vector2(Plugin.Config.Countdown.WindowOffset.X, countdownOffsetY / 100);
+                Plugin.Config.Countdown.WindowOffset with {Y = countdownOffsetY / 100};
             Plugin.Config.Save();
         }
 
         ImGui.SameLine();
-        ImGui.Text(Translator.Tr("Settings_CountdownTab_OffsetText"));
+        ImGui.Text("Settings_CountdownTab_OffsetText".Tr());
         ImGui.SameLine();
 
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo.ToIconString() + "###reset_cd_offset"))
@@ -176,7 +228,7 @@ public static class CountdownTab
 
         var countdownScale = Plugin.Config.Countdown.Scale;
         ImGui.PushItemWidth(100f);
-        if (ImGui.InputFloat(Translator.TrId("Settings_CountdownTab_CountdownScale"), ref countdownScale, .01f))
+        if (ImGui.InputFloat("Settings_CountdownTab_CountdownScale".TrId(), ref countdownScale, .01f))
         {
             Plugin.Config.Countdown.Scale = Math.Clamp(countdownScale, 0.05f, 15f);
             Plugin.Config.Save();
@@ -184,13 +236,13 @@ public static class CountdownTab
 
         ImGui.PopItemWidth();
 
-        var align = (int)Plugin.Config.Countdown.Align;
-        if (ImGui.Combo(Translator.TrId("Settings_CountdownTab_CountdownAlign"), ref align,
-                Translator.Tr("Settings_FWTab_TextAlign_Left") + "###Left\0" +
-                Translator.Tr("Settings_FWTab_TextAlign_Center") + "###Center\0" +
-                Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
+        var align = (int) Plugin.Config.Countdown.Align;
+        if (ImGui.Combo("Settings_CountdownTab_CountdownAlign".TrId(), ref align,
+                "Settings_FWTab_TextAlign_Left".Tr() + "###Left\0" +
+                "Settings_FWTab_TextAlign_Center".Tr() + "###Center\0" +
+                "Settings_FWTab_TextAlign_Right".Tr() + "###Right"))
         {
-            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign)align;
+            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign) align;
             Plugin.Config.Save();
         }
 
@@ -226,8 +278,8 @@ public static class CountdownTab
 
         ImGui.BeginGroup();
         ImGui.PushItemWidth(200f);
-        choiceString += Translator.TrId("Settings_CountdownTab_Texture_custom");
-        if (ImGui.Combo("###DropDown_" + Translator.Tr("Settings_CountdownTab_Texture"), ref currentTexture,
+        choiceString += "Settings_CountdownTab_Texture_custom".TrId();
+        if (ImGui.Combo("###DropDown_" + "Settings_CountdownTab_Texture".Tr(), ref currentTexture,
                 choiceString))
         {
             configuration.Countdown.TexturePreset = currentTexture < choices.Count() ? choices[currentTexture] : "";
@@ -242,9 +294,9 @@ public static class CountdownTab
         {
             _tempTexturePath ??= configuration.Countdown.TextureDirectory ?? "";
             ImGui.PushItemWidth(400f);
-            ImGui.InputText(Translator.TrId("Settings_CountdownTab_Texture_Custom_Path"), ref _tempTexturePath, 1024);
+            ImGui.InputText("Settings_CountdownTab_Texture_Custom_Path".TrId(), ref _tempTexturePath, 1024);
             ImGui.PopItemWidth();
-            if (ImGui.Button(Translator.TrId("Settings_CountdownTab_Texture_Custom_Load")))
+            if (ImGui.Button("Settings_CountdownTab_Texture_Custom_Load".TrId()))
             {
                 configuration.Countdown.TextureDirectory = _tempTexturePath;
                 configuration.Save();
@@ -252,13 +304,13 @@ public static class CountdownTab
             }
         }
 
-        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_NumberStyleTitle"))) CountdownNumberColor();
+        if (ImGui.CollapsingHeader("Settings_CountdownTab_NumberStyleTitle".TrId())) CountdownNumberColor();
 
-        if (ImGui.CollapsingHeader(Translator.TrId("Settings_CountdownTab_NumberStyle_Advanced")))
+        if (ImGui.CollapsingHeader("Settings_CountdownTab_NumberStyle_Advanced".TrId()))
         {
             Components.AutoField(Plugin.Config.Countdown, "LeadingZero");
             Components.Checkbox(Plugin.Config.Countdown.CustomNegativeMargin != null,
-                Translator.TrId("Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin"),
+                "Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin".TrId(),
                 v => Plugin.Config.Countdown.CustomNegativeMargin = v ? 20f : null);
 
             if (Plugin.Config.Countdown.CustomNegativeMargin != null)
@@ -266,7 +318,7 @@ public static class CountdownTab
                 ImGui.Indent();
                 ImGui.PushItemWidth(100f);
                 var nm = configuration.Countdown.CustomNegativeMargin ?? 20f;
-                if (ImGui.InputFloat(Translator.TrId("Settings_CountdownTab_NumberStyle_CustomNegativeMargin"), ref nm,
+                if (ImGui.InputFloat("Settings_CountdownTab_NumberStyle_CustomNegativeMargin".TrId(), ref nm,
                         1f))
                 {
                     configuration.Countdown.CustomNegativeMargin = nm;
@@ -288,7 +340,7 @@ public static class CountdownTab
         // --- Luminance ---
         ImGui.PushItemWidth(250f);
         {
-            Components.ResettableSlider("lum", "± " + Translator.TrId("Settings_CountdownTab_NumberLuminance"),
+            Components.ResettableSlider("lum", "± " + "Settings_CountdownTab_NumberLuminance".TrId(),
                 c.Luminance, 0f, -1f, 1f, value =>
                 {
                     c.Luminance = value;
@@ -296,7 +348,7 @@ public static class CountdownTab
                 });
 
             // --- Saturation ---
-            Components.ResettableSlider("sat", "± " + Translator.TrId("Settings_CountdownTab_NumberSaturation"),
+            Components.ResettableSlider("sat", "± " + "Settings_CountdownTab_NumberSaturation".TrId(),
                 c.Saturation, 0f, -1f, 1f, value =>
                 {
                     c.Saturation = value;
@@ -312,7 +364,7 @@ public static class CountdownTab
             }
 
             Components.ResettableDraggable("hue",
-                (c.NumberRecolorMode ? "" : "± ") + Translator.TrId("Settings_CountdownTab_NumberHue"),
+                (c.NumberRecolorMode ? "" : "± ") + "Settings_CountdownTab_NumberHue".TrId(),
                 c.Hue, 0, 0, 360, value =>
                 {
                     c.Hue = value;
@@ -322,7 +374,7 @@ public static class CountdownTab
         }
         ImGui.PopItemWidth();
 
-        Components.Checkbox(c.NumberRecolorMode, Translator.TrId("Settings_CountdownTab_NumberRecolor"),
+        Components.Checkbox(c.NumberRecolorMode, "Settings_CountdownTab_NumberRecolor".TrId(),
             v =>
             {
                 c.NumberRecolorMode = v;

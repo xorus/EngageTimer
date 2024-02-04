@@ -694,6 +694,24 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t overlap with game countdown (default).
+        /// </summary>
+        internal static string Settings_CountdownTab_DefaultOriginalCountDown {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_DefaultOriginalCountDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hides the custom countdown under 5 to prevent overlapping with the vanilla one..
+        /// </summary>
+        internal static string Settings_CountdownTab_DefaultOriginalCountDown_Help {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_DefaultOriginalCountDown_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable big countdown.
         /// </summary>
         internal static string Settings_CountdownTab_Enable {
@@ -726,6 +744,24 @@ namespace EngageTimer.Properties {
         internal static string Settings_CountdownTab_HideOriginalCountDown_Help {
             get {
                 return ResourceManager.GetString("Settings_CountdownTab_HideOriginalCountDown_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draw even if original countdown is visible.
+        /// </summary>
+        internal static string Settings_CountdownTab_IgnoreOriginalCountDown {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_IgnoreOriginalCountDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows you to have the vanilla countdown showing on your game but still use the custom one in a corner or overlaping if you like chaos. Useful if you setup your OBS to not capture addons and want to look unmodified..
+        /// </summary>
+        internal static string Settings_CountdownTab_IgnoreOriginalCountDown_Help {
+            get {
+                return ResourceManager.GetString("Settings_CountdownTab_IgnoreOriginalCountDown_Help", resourceCulture);
             }
         }
         
