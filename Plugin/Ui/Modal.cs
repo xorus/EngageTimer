@@ -15,7 +15,7 @@
 
 using System;
 using System.Numerics;
-using EngageTimer.Localization;
+using EngageTimer.Properties;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;
@@ -41,16 +41,16 @@ public class Modal
 
         if (_validate != null)
         {
-            if (ImGui.Button(Translator.Tr("Modal_Cancel"), new Vector2(120, 0)))
+            if (ImGui.Button(Strings.Modal_Cancel, new Vector2(120, 0)))
                 ImGui.CloseCurrentPopup();
             ImGui.SameLine();
-            if (ImGui.Button(Translator.Tr("Modal_Confirm"), new Vector2(120, 0)))
+            if (ImGui.Button(Strings.Modal_Confirm, new Vector2(120, 0)))
             {
                 ImGui.CloseCurrentPopup();
                 _validate();
             }
         }
-        else if (ImGui.Button(Translator.Tr("Modal_Ok"), new Vector2(120, 0)))
+        else if (ImGui.Button(Strings.Modal_Ok, new Vector2(120, 0)))
             ImGui.CloseCurrentPopup();
 
         ImGui.EndPopup();

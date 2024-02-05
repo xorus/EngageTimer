@@ -16,6 +16,7 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using ImGuiNET;
 
 namespace EngageTimer.Ui.SettingsTab;
@@ -32,7 +33,7 @@ public static class WebServerTab
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Copy))
             ImGui.SetClipboardText($"http://localhost:{Plugin.Config.WebServer.Port}/");
 
-        ImGui.Text(Translator.Tr("Settings_Web_HelpSize"));
+        ImGui.Text(Strings.Settings_Web_HelpSize);
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 

@@ -16,6 +16,7 @@
 using System;
 using Dalamud.Game.Command;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 
 namespace EngageTimer.Commands;
 
@@ -42,13 +43,13 @@ public sealed class MainCommand : IDisposable
         {
             HelpMessage = "\n" +
                           Tab + Command + " c|countdown [on|off] → " +
-                          $"{Translator.Tr("MainCommand_Help_Countdown")}\n" +
+                          $"{Strings.MainCommand_Help_Countdown}\n" +
                           Tab + Command + " fw [on|off] → " +
-                          $"{Translator.Tr("MainCommand_Help_FW")}\n" +
+                          $"{Strings.MainCommand_Help_FW}\n" +
                           Tab + Command + " dtr [on|off] → " +
-                          $"{Translator.Tr("MainCommand_Help_Dtr")}\n" +
+                          $"{Strings.MainCommand_Help_Dtr}\n" +
                           Tab + Command + " s|settings → " +
-                          $"{Translator.Tr("MainCommand_Help_Settings")}\n"
+                          $"{Strings.MainCommand_Help_Settings}\n"
         });
     }
 
@@ -68,9 +69,9 @@ public sealed class MainCommand : IDisposable
         };
     }
 
-    private string StatusStr(bool value)
+    private static string StatusStr(bool value)
     {
-        return Translator.Tr(value ? "MainCommand_Status_On" : "MainCommand_Status_Off");
+        return value ? Strings.MainCommand_Status_On : Strings.MainCommand_Status_Off;
     }
 
     private void OnCommand(string command, string args)

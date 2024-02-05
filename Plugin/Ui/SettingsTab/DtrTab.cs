@@ -15,6 +15,7 @@
 
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using ImGuiNET;
 
 namespace EngageTimer.Ui.SettingsTab;
@@ -24,7 +25,7 @@ public static class DtrTab
     public static void Draw()
     {
         ImGui.PushTextWrapPos();
-        ImGui.Text(Translator.Tr("Settings_DtrTab_Info"));
+        ImGui.Text(Strings.Settings_DtrTab_Info);
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 

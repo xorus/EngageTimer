@@ -21,6 +21,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using EngageTimer.Attributes;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;
@@ -69,7 +70,7 @@ public static class Components
     public static void Text(string label, bool sameLine = false)
     {
         if (sameLine) ImGui.SameLine();
-        ImGui.Text(Translator.Tr("Settings_FWTab_TextColor"));
+        ImGui.Text(label);
     }
 
     public static void ResettableDraggable(string id, string label, int original, int defaultValue,

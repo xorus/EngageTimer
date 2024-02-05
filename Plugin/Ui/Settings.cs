@@ -13,20 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
-using EngageTimer.Configuration;
 using EngageTimer.Localization;
-using EngageTimer.Ui.Color;
+using EngageTimer.Properties;
 using EngageTimer.Ui.SettingsTab;
 using ImGuiNET;
-using JetBrains.Annotations;
 
 namespace EngageTimer.Ui;
 
@@ -48,7 +39,7 @@ public class Settings : Window
 
     private void UpdateWindowName()
     {
-        WindowName = Translator.TrId("Settings_Title");
+        WindowName = Strings.Settings_Title;
     }
 
     public override void Draw()
@@ -89,7 +80,7 @@ public class Settings : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("About"))
+            if (ImGui.BeginTabItem(Translator.TrId("Settings_AboutTab_Title")))
             {
                 AboutTab.Draw();
                 ImGui.EndTabItem();

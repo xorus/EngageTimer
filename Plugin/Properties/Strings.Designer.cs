@@ -21,14 +21,14 @@ namespace EngageTimer.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Strings() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace EngageTimer.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EngageTimer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EngageTimer.Properties.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -267,6 +267,15 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No text.
+        /// </summary>
+        internal static string AlarmEdit_Text_NoText {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_NoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test.
         /// </summary>
         internal static string AlarmEdit_Text_Test {
@@ -299,6 +308,15 @@ namespace EngageTimer.Properties {
         internal static string AlarmEdit_Text_Type {
             get {
                 return ResourceManager.GetString("AlarmEdit_Text_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type:.
+        /// </summary>
+        internal static string AlarmEdit_Text_Type_Colon {
+            get {
+                return ResourceManager.GetString("AlarmEdit_Text_Type_Colon", resourceCulture);
             }
         }
         
@@ -497,6 +515,15 @@ namespace EngageTimer.Properties {
         internal static string Modal_Ok {
             get {
                 return ResourceManager.GetString("Modal_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string Settings_AboutTab_Title {
+            get {
+                return ResourceManager.GetString("Settings_AboutTab_Title", resourceCulture);
             }
         }
         

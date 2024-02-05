@@ -20,6 +20,7 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface.ImGuiFileDialog;
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using EngageTimer.Status;
 using ImGuiNET;
 
@@ -47,8 +48,8 @@ public static class AlarmsTab
 
     public static void Draw()
     {
-        ImGui.Text(Translator.Tr("Settings_AlarmsTab_Line1"));
-        ImGui.Text(Translator.Tr("Settings_AlarmsTab_Line2"));
+        ImGui.Text(Strings.Settings_AlarmsTab_Line1);
+        ImGui.Text(Strings.Settings_AlarmsTab_Line2);
         ImGui.Separator();
 
         if (ImGui.BeginTable("alarms", 8, ImGuiTableFlags.Borders))
@@ -88,10 +89,10 @@ public static class AlarmsTab
 
         Components.LeftRight("buttons", () =>
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileImport, Translator.Tr("AlarmEdit_Import")))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileImport, Strings.AlarmEdit_Import))
             {
                 Fdm.OpenFileDialog(
-                    Translator.Tr("AlarmEdit_Import_File"),
+                    Strings.AlarmEdit_Import_File,
                     ".json",
                     (ok, path) =>
                     {
@@ -110,10 +111,10 @@ public static class AlarmsTab
 
 
             ImGui.SameLine();
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileExport, Translator.Tr("AlarmEdit_Export")))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.FileExport, Strings.AlarmEdit_Export))
             {
                 Fdm.SaveFileDialog(
-                    Translator.Tr("AlarmEdit_Export_File"),
+                    Strings.AlarmEdit_Export_File,
                     ".json",
                     "EngageTimerAlarms.json",
                     "json",
@@ -133,18 +134,18 @@ public static class AlarmsTab
                 );
             }
 
-            Components.TooltipOnItemHovered("AlarmEdit_Export_Tooltip");
+            Components.TooltipOnItemHovered(Strings.AlarmEdit_Export_Tooltip);
 
             ImGui.SameLine();
             // clear all button
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, Translator.Tr("AlarmEdit_Clear")))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, Strings.AlarmEdit_Clear))
             {
                 if (Plugin.Config.CombatAlarms.Alarms.Count == 0) return;
                 _openConfirmClear = true;
             }
         }, () =>
         {
-            if (!ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, Translator.Tr("AlarmEdit_Add"))) return;
+            if (!ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, Strings.AlarmEdit_Add)) return;
             Plugin.Config.CombatAlarms.Alarms.Add(new CombatAlarmsConfiguration.Alarm());
             Plugin.Config.Save();
         });
@@ -152,7 +153,7 @@ public static class AlarmsTab
         if (_openConfirmClear)
         {
             _openConfirmClear = false;
-            Modal.Confirm(Translator.Tr("AlarmEdit_Clear_Confirm"), () =>
+            Modal.Confirm(Strings.AlarmEdit_Clear_Confirm, () =>
             {
                 Plugin.Config.CombatAlarms.Alarms.Clear();
                 Plugin.Config.Save();
@@ -194,7 +195,7 @@ public static class AlarmsTab
             ImGui.TableNextColumn();
             var color = alarm.Color ?? Plugin.Config.FloatingWindow.TextColor;
             var newValue =
-                ImGuiComponents.ColorPickerWithPalette(3111, Translator.Tr("AlarmEdit_Color_Tooltip"), color);
+                ImGuiComponents.ColorPickerWithPalette(3111, Strings.AlarmEdit_Color_Tooltip, color);
             if (color != newValue)
             {
                 alarm.Color = newValue;
@@ -232,7 +233,7 @@ public static class AlarmsTab
             ImGui.TableNextColumn();
             ImGui.PushItemWidth(80f);
             var choice = alarm.Sfx ?? 0;
-            if (ImGui.Combo("###sfx", ref choice, Translator.Tr("AlarmEdit_Sound_None") +
+            if (ImGui.Combo("###sfx", ref choice, Strings.AlarmEdit_Sound_None +
                                                   "\0<se.1>\0<se.2>\0<se.3>\0<se.4>\0<se.5>"
                                                   + "\0<se.6>\0<se.7>\0<se.8>\0<se.9>\0<se.10>\0<se.11>\0<se.12>\0<se.13>"
                                                   + "\0<se.14>\0<se.15>\0<se.16>\0"))
@@ -249,16 +250,16 @@ public static class AlarmsTab
             {
                 var type = (int) alarm.TextType;
                 ImGui.PushItemWidth(150f);
-                if (ImGui.Combo("Type", ref type, Translator.Tr("AlarmEdit_Type_ChatLog") + "\0"
-                        + Translator.Tr("AlarmEdit_Type_DalamudNotification") + "\0"
-                        + Translator.Tr("AlarmEdit_Type_GameToast") + "\0"))
+                if (ImGui.Combo("Type", ref type, Strings.AlarmEdit_Type_ChatLog + "\0"
+                        + Strings.AlarmEdit_Type_DalamudNotification + "\0"
+                        + Strings.AlarmEdit_Type_GameToast + "\0"))
                 {
                     alarm.TextType = (CombatAlarmsConfiguration.TextType) type;
                     Plugin.Config.Save();
                 }
 
                 var text = alarm.Text ?? "";
-                if (ImGui.InputText(Translator.Tr("AlarmEdit_Text_Text"), ref text, 100))
+                if (ImGui.InputText(Strings.AlarmEdit_Text_Text, ref text, 100))
                 {
                     text = text.Trim();
                     alarm.Text = text.Length == 0 ? null : text;
@@ -267,13 +268,13 @@ public static class AlarmsTab
 
                 ImGui.PopItemWidth();
 
-                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Test")))
+                if (ImGui.Button(Strings.AlarmEdit_Text_Test))
                 {
                     CombatAlarm.AlarmText(alarm);
                 }
 
                 ImGui.SameLine();
-                if (ImGui.Button(Translator.Tr("AlarmEdit_Text_Clear")))
+                if (ImGui.Button(Strings.AlarmEdit_Text_Clear))
                 {
                     alarm.Text = null;
                     Plugin.Config.Save();
@@ -291,22 +292,22 @@ public static class AlarmsTab
             {
                 if (alarm.Text == null)
                 {
-                    ImGui.Text("No text");
+                    ImGui.Text(Strings.AlarmEdit_Text_NoText);
                 }
                 else
                 {
-                    ImGui.Text("Type: ");
+                    ImGui.Text(Strings.AlarmEdit_Text_Type_Colon);
                     ImGui.SameLine();
                     switch (alarm.TextType)
                     {
                         case CombatAlarmsConfiguration.TextType.DalamudNotification:
-                            ImGui.Text("Dalamud notification");
+                            ImGui.Text(Strings.AlarmEdit_Type_DalamudNotification);
                             break;
                         case CombatAlarmsConfiguration.TextType.GameToast:
-                            ImGui.Text("Toast");
+                            ImGui.Text(Strings.AlarmEdit_Type_GameToast);
                             break;
                         case CombatAlarmsConfiguration.TextType.ChatLogMessage:
-                            ImGui.Text("Log message");
+                            ImGui.Text(Strings.AlarmEdit_Type_ChatLog);
                             break;
                     }
 

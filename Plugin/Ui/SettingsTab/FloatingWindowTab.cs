@@ -17,6 +17,7 @@ using System;
 using Dalamud.Interface.Components;
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using ImGuiNET;
 
 namespace EngageTimer.Ui.SettingsTab;
@@ -26,13 +27,13 @@ public static class FloatingWindowTab
     public static void Draw()
     {
         ImGui.PushTextWrapPos();
-        ImGui.Text(Translator.Tr("Settings_FWTab_Help"));
+        ImGui.Text(Strings.Settings_FWTab_Help);
         ImGui.PopTextWrapPos();
         ImGui.Separator();
 
         Components.AutoField(Plugin.Config.FloatingWindow, "Display");
         Components.AutoField(Plugin.Config.FloatingWindow, "Lock");
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_Lock_Help"));
+        ImGuiComponents.HelpMarker(Strings.Settings_FWTab_Lock_Help);
 
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHide");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHideTimeout", sameLine: true);
@@ -50,22 +51,22 @@ public static class FloatingWindowTab
         ImGui.Separator();
 
         Components.AutoField(Plugin.Config.FloatingWindow, "AccurateMode");
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_AccurateCountdown_Help"));
+        ImGuiComponents.HelpMarker(Strings.Settings_FWTab_AccurateCountdown_Help);
 
         Components.AutoField(Plugin.Config.FloatingWindow, "StopwatchOnlyInDuty");
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_DisplayStopwatchOnlyInDuty_Help"));
+        ImGuiComponents.HelpMarker(Strings.Settings_FWTab_DisplayStopwatchOnlyInDuty_Help);
 
         Components.AutoField(Plugin.Config.FloatingWindow, "CountdownNegativeSign");
         Components.AutoField(Plugin.Config.FloatingWindow, "StopwatchAsSeconds");
         Components.AutoField(Plugin.Config.FloatingWindow, "ShowPrePulling");
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_ShowPrePulling_Help"));
+        ImGuiComponents.HelpMarker(Strings.Settings_FWTab_ShowPrePulling_Help);
 
         if (!Plugin.Config.FloatingWindow.ShowPrePulling) return;
         ImGui.Indent();
         ImGui.PushItemWidth(110f);
         Components.AutoField(Plugin.Config.FloatingWindow, "PrePullOffset");
         ImGui.PopItemWidth();
-        ImGuiComponents.HelpMarker(Translator.Tr("Settings_FWTab_PrePullOffset_Help"));
+        ImGuiComponents.HelpMarker(Strings.Settings_FWTab_PrePullOffset_Help);
 
         Components.AutoField(Plugin.Config.FloatingWindow, "PrePullColor");
 
@@ -80,13 +81,13 @@ public static class FloatingWindowTab
         Components.AutoField(Plugin.Config.FloatingWindow, "Scale");
 
         var configuration = Plugin.Config;
-        var textAlign = (int)configuration.FloatingWindow.Align;
+        var textAlign = (int) configuration.FloatingWindow.Align;
         if (ImGui.Combo(Translator.TrId("Settings_FWTab_TextAlign"), ref textAlign,
-                Translator.Tr("Settings_FWTab_TextAlign_Left") + "###Left\0" +
-                Translator.Tr("Settings_FWTab_TextAlign_Center") + "###Center\0" +
-                Translator.Tr("Settings_FWTab_TextAlign_Right") + "###Right"))
+                Strings.Settings_FWTab_TextAlign_Left + "###Left\0" +
+                Strings.Settings_FWTab_TextAlign_Center + "###Center\0" +
+                Strings.Settings_FWTab_TextAlign_Right + "###Right"))
         {
-            configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign)textAlign;
+            configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign) textAlign;
             configuration.Save();
         }
 

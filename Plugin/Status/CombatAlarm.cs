@@ -23,8 +23,11 @@ using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
 using EngageTimer.Localization;
+using EngageTimer.Properties;
 using EngageTimer.Ui;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using Strings = EngageTimer.Properties.Strings;
 
 namespace EngageTimer.Status;
 
@@ -66,7 +69,7 @@ public sealed class CombatAlarm : IDisposable
                     // using "TypeNameHandling.Objects" causes a "resolving to a collectible assembly is not supported"
                     TypeNameHandling = TypeNameHandling.None
                 });
-            if (data == null || data.Count == 0) return Translator.Tr("CombatAlarm_ImportedEmpty");
+            if (data == null || data.Count == 0) return Strings.CombatAlarm_ImportedEmpty;
             Plugin.Config.CombatAlarms.Alarms.AddRange(data);
         }
         catch (JsonSerializationException e)
@@ -77,7 +80,7 @@ public sealed class CombatAlarm : IDisposable
         catch (Exception e)
         {
             Plugin.Logger.Error(e, $"Could not read file {fileName}");
-            return Translator.Tr("CombatAlarm_ReadGeneric", fileName, e.Message);
+            return Translator.Re(Strings.CombatAlarm_ReadGeneric, fileName, e.Message);
         }
 
         return null;
@@ -97,7 +100,7 @@ public sealed class CombatAlarm : IDisposable
         }
         catch (UnauthorizedAccessException)
         {
-            return Translator.Tr("CombatAlarm_AccessDenied");
+            return Strings.CombatAlarm_AccessDenied;
         }
         catch (Exception e)
         {

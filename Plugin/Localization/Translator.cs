@@ -36,22 +36,21 @@ public static class Translator
 
     public static string TrId(string id)
     {
-        return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? id}###EngageTimer_{id}";
+        return $"{Strings.ResourceManager.GetString(id, Strings.Culture) ?? id}###EngageTimer_{id}";
     }
 
     public static string TrId(string id, string fallback)
     {
-        return $"{Resources.ResourceManager.GetString(id, Resources.Culture) ?? fallback}###EngageTimer_{id}";
+        return $"{Strings.ResourceManager.GetString(id, Strings.Culture) ?? fallback}###EngageTimer_{id}";
     }
 
     public static string Tr(string id)
     {
-        return Resources.ResourceManager.GetString(id, Resources.Culture) ?? id;
+        return Strings.ResourceManager.GetString(id, Strings.Culture) ?? id;
     }
 
-    public static string Tr(string id, params string[] replacements)
+    public static string Re(string str, params string[] replacements)
     {
-        var str = Tr(id);
         for (var index = 0; index < replacements.Length; index++)
         {
             var value = replacements[index];
@@ -61,6 +60,11 @@ public static class Translator
         return str;
     }
 
+    public static string Tr(string id, params string[] replacements)
+    {
+        return Re(id, replacements);
+    }
+    
     private static void ConfigureLanguage(string? langCode = null)
     {
         var lang = (langCode ?? Plugin.PluginInterface.UiLanguage) switch
@@ -71,7 +75,7 @@ public static class Translator
             "zh" => "zh",
             _ => "en"
         };
-        Resources.Culture = new CultureInfo(lang ?? "en");
+        Strings.Culture = new CultureInfo(lang ?? "en");
         LocaleChanged?.Invoke(null, EventArgs.Empty);
     }
 }

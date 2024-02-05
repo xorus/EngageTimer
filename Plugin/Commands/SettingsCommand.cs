@@ -15,8 +15,7 @@
 
 using System;
 using Dalamud.Game.Command;
-using EngageTimer.Localization;
-using EngageTimer.Ui;
+using EngageTimer.Properties;
 
 namespace EngageTimer.Commands;
 
@@ -26,7 +25,7 @@ public sealed class SettingsCommand : IDisposable
     {
         Plugin.Commands.AddHandler("/egsettings", new CommandInfo(OpenSettingsCommand)
         {
-            HelpMessage = Translator.Tr("MainCommand_Help_Settings")
+            HelpMessage = Strings.MainCommand_Help_Settings
         });
     }
 

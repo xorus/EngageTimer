@@ -551,6 +551,12 @@ help text for the /eg settings command</comment>
     <data name="AlarmEdit_Text_Tooltip" xml:space="preserve">
       <value>Allows you to display a text notification at the alarm time</value>
     </data>
+    <data name="AlarmEdit_Text_Type_Colon" xml:space="preserve">
+      <value>Type:</value>
+    </data>
+    <data name="AlarmEdit_Text_NoText" xml:space="preserve">
+      <value>No text</value>
+    </data>
     <data name="AlarmEdit_Text_Type" xml:space="preserve">
       <value>Type</value>
     </data>
@@ -628,5 +634,8 @@ help text for the /eg settings command</comment>
     </data>
     <data name="Settings_CountdownTab_DefaultOriginalCountDown_Help" xml:space="preserve">
       <value>Hides the custom countdown under 5 to prevent overlapping with the vanilla one.</value>
+    </data>
+    <data name="Settings_AboutTab_Title" xml:space="preserve">
+      <value>About</value>
     </data>
 </root>
