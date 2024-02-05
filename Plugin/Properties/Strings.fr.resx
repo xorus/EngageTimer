@@ -550,10 +550,10 @@ help text for the /eg settings command</comment>
       <value>Permet d'afficher une notification texte</value>
     </data>
   <data name="AlarmEdit_Text_Type_Colon" xml:space="preserve">
-      <value>Type:</value>
+      <value>Type :</value>
     </data>
   <data name="AlarmEdit_Text_NoText" xml:space="preserve">
-      <value>No text</value>
+      <value>Aucun texte</value>
     </data>
   <data name="AlarmEdit_Text_Type" xml:space="preserve">
       <value>Type</value>
@@ -634,6 +634,6 @@ help text for the /eg settings command</comment>
       <value>Masque le compte à rebours du plugin en dessous de 5 pour éviter d'être affiché par-dessus.</value>
     </data>
   <data name="Settings_AboutTab_Title" xml:space="preserve">
-      <value>About</value>
+      <value>À propos</value>
     </data>
 </root>
