@@ -615,4 +615,16 @@ help text for the /eg settings command</comment>
   <data name="CombatAlarm_ImportedEmpty" xml:space="preserve">
       <value>An empty or invalid alarm list was imported</value>
     </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown" xml:space="preserve">
+      <value>Draw even if original countdown is visible</value>
+    </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown_Help" xml:space="preserve">
+      <value>Allows you to have the vanilla countdown showing on your game but still use the custom one in a corner or overlaping if you like chaos. Useful if you setup your OBS to not capture addons and want to look unmodified.</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown" xml:space="preserve">
+      <value>Don't overlap with game countdown (default)</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown_Help" xml:space="preserve">
+      <value>Hides the custom countdown under 5 to prevent overlapping with the vanilla one.</value>
+    </data>
 </root>

@@ -375,13 +375,13 @@ Displays "stop" when the test button is clicked and test mode is enabled.
     <value>Quand le mode multi-moniteur est activé, positionner le compte à rebours en dehors de la fenêtre du jeu (même juste d'un pixel) causera l'apparition d'un fond noir. Il est impossible pour l'instant de créer une fenêtre transparente en dehors du jeu. Servez vous de la bordure qui s'affiche maintenant comme guide de positionnement.</value>
   </data>
   <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
-    <value>Alignment</value>
+    <value>Alignement</value>
   </data>
   <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
     <value>Centrer le compte à rebours</value>
   </data>
   <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
-    <value>Enable Server Info Bar integration</value>
+    <value>Afficher dans la barre d'infos serveur</value>
   </data>
   <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
     <value>Préfixe</value>
@@ -607,12 +607,24 @@ help text for the /eg settings command</comment>
       <value>Une erreur est survenue lors de l'enregistrement des alarmes dans {0}: "{1}".</value>
     </data>
   <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
-      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
+      <value>Une erreur est survenue en essayant de lire les alarmes du fichier {0} : {1}.</value>
     </data>
   <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
       <value>Le format du fichier des alarmes est incompatible ou incorrect</value>
     </data>
   <data name="CombatAlarm_ImportedEmpty" xml:space="preserve">
       <value>Une liste d’alarmes vide ou invalide a été importée</value>
+    </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown" xml:space="preserve">
+      <value>Afficher même si le compte à rebours original est visible</value>
+    </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown_Help" xml:space="preserve">
+      <value>Vous permet de garder le compte à rebours original du jeu tout en affichant le compte à rebours de ce plugin dans un coin de l'écran par exemple. Peut être pratique si vous avez configuré OBS pour ne pas capturer les plugins et voulez garder une apparence vanilla.</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown" xml:space="preserve">
+      <value>Garder le compte à rebours original (par défaut)</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown_Help" xml:space="preserve">
+      <value>Masque le compte à rebours du plugin en dessous de 5 pour éviter d'être affiché par-dessus.</value>
     </data>
 </root>
