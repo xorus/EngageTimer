@@ -1,0 +1,639 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+        Microsoft ResX Schema 
+        
+        Version 2.0
+        
+        The primary goals of this format is to allow a simple XML format 
+        that is mostly human readable. The generation and parsing of the 
+        various data types are done through the TypeConverter classes 
+        associated with the data types.
+        
+        Example:
+        
+        ... ado.net/XML headers & schema ...
+        <resheader name="resmimetype">text/microsoft-resx</resheader>
+        <resheader name="version">2.0</resheader>
+        <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+        <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+        <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+        <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+        <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+            <value>[base64 mime encoded serialized .NET Framework object]</value>
+        </data>
+        <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+            <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+            <comment>This is a comment</comment>
+        </data>
+                    
+        There are any number of "resheader" rows that contain simple 
+        name/value pairs.
+        
+        Each data row contains a name, and value. The row also contains a 
+        type or mimetype. Type corresponds to a .NET class that support 
+        text/value conversion through the TypeConverter architecture. 
+        Classes that don't support this are serialized and stored with the 
+        mimetype set.
+        
+        The mimetype is used for serialized objects, and tells the 
+        ResXResourceReader how to depersist the object. This is currently not 
+        extensible. For a given mimetype the value must be set accordingly:
+        
+        Note - application/x-microsoft.net.object.binary.base64 is the format 
+        that the ResXResourceWriter will generate, however the reader can 
+        read any of the formats listed below.
+        
+        mimetype: application/x-microsoft.net.object.binary.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                : and then encoded with base64 encoding.
+        
+        mimetype: application/x-microsoft.net.object.soap.base64
+        value   : The object must be serialized with 
+                : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+                : and then encoded with base64 encoding.
+    
+        mimetype: application/x-microsoft.net.object.bytearray.base64
+        value   : The object must be serialized into a byte array 
+                : using a System.ComponentModel.TypeConverter
+                : and then encoded with base64 encoding.
+        -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns="" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>EngageTimer Einstellungen</value>
+  </data>
+  <data name="Settings_CountdownTab_Info1" xml:space="preserve">
+    <value>Der "große Countdown" erweitert den ingame Countdown.</value>
+  </data>
+  <data name="Settings_CountdownTab_Enable" xml:space="preserve">
+    <value>Großen Countdown aktivieren</value>
+  </data>
+  <data name="Settings_CountdownTab_Title" xml:space="preserve">
+    <value>Großer Countdown</value>
+  </data>
+  <data name="Settings_CountdownTab_HideOriginalCountDown_Help" xml:space="preserve">
+    <value>Ersetzt auch die Zahlen von 5 abwärts</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownDecimals_Left" xml:space="preserve">
+    <value>Zeige</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownDecimals_Right" xml:space="preserve">
+    <value>dezimalstellen im Countdown</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_Enable" xml:space="preserve">
+    <value>Tickender Ton für jede Zahl</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyVolume" xml:space="preserve">
+    <value>Lautstärke</value>
+        <comment>Displayed next to the "sound volume" slider that appear when the legacy system is enabled.</comment>
+  </data>
+  <data name="Settings_CountdownTab_HideOriginalCountDown" xml:space="preserve">
+    <value>Ursprünglichen Countdown ausblenden</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode" xml:space="preserve">
+    <value>Präzisen Countdown aktivieren (Countdown - 1)</value>
+  </data>
+  <data name="Settings_CountdownTab_AccurateMode_Help" xml:space="preserve">
+    <value>Verwendet den tatsächlichen und präzisen Countdown-Wert anstatt des aufgerundeten Wertes, den das Spiel ursprünglich anzeigt.
+Stark empfohlen, wenn Dezimalstellen aktiviert sind, da diese sonst keinen Sinn ergeben.
+Andernfalls sollte diese Einstellung deaktiviert werden, damit der angezeigte Countdown mit dem anderer Gruppenmitglieder übereinstimmt.
+
+Anmerkung: diese Einstellung funktioniert nur, wenn der ursprüngliche Countdown ausgeblendet wird (sonst wäre der Countdown 6 - 5 - 5 - 4 etc.).</value>
+  </data>
+  <data name="Settings_FWTab_Title" xml:space="preserve">
+    <value>Overlay-Anzeige</value>
+  </data>
+  <data name="Settings_FWTab_Help" xml:space="preserve">
+    <value>Das Overlay ist ein verschiebbares Fenster, das den Countdown und die Dauer des aktuellen Kampfes anzeigen kann.</value>
+  </data>
+  <data name="Settings_FWTab_Display" xml:space="preserve">
+    <value>Overlay aktivieren</value>
+  </data>
+  <data name="Settings_FWTab_Lock" xml:space="preserve">
+    <value>Overlay sperren</value>
+  </data>
+  <data name="Settings_FWTab_Lock_Help" xml:space="preserve">
+    <value>Verhindert Interaktion (Klicken &amp; Verschieben) mit dem Overlay.</value>
+  </data>
+  <data name="Settings_FWTab_AutoHide_Left" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="Settings_FWTab_AutoHide_Right" xml:space="preserve">
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Help" xml:space="preserve">
+    <value>Zeigt den aktuellen Countdown an (z.B. -13)</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Left" xml:space="preserve">
+    <value>Countdown anzeigen</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_With_Left" xml:space="preserve">
+    <value>Countdown mit</value>
+  </data>
+  <data name="Settings_FWTab_CountdownPrecision_Right" xml:space="preserve">
+    <value>Dezimalstellen anzeigen</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Left" xml:space="preserve">
+    <value>Kampfdauer anzeigen</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_With_Left" xml:space="preserve">
+    <value>Kampfdauer mit</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Right" xml:space="preserve">
+    <value>Dezimalstellen anzeigen</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchPrecision_Help" xml:space="preserve">
+    <value>Zeigt die Dauer des aktuellen Kampfes an</value>
+  </data>
+  <data name="Settings_FWTab_Styling" xml:space="preserve">
+    <value>Styling</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign" xml:space="preserve">
+    <value>Textausrichtung</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Left" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Center" xml:space="preserve">
+    <value>Zentriert</value>
+  </data>
+  <data name="Settings_FWTab_TextAlign_Right" xml:space="preserve">
+    <value>Rechts</value>
+  </data>
+  <data name="Settings_FWTab_FontSize" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="Settings_FWTab_TextColor" xml:space="preserve">
+    <value>Textfarbe</value>
+  </data>
+  <data name="Settings_FWTab_BackgroundColor" xml:space="preserve">
+    <value>Hintergrundfarbe und Deckkraft</value>
+  </data>
+  <data name="Settings_FWTab_AccurateCountdown" xml:space="preserve">
+    <value>Aktiviere präzisen Countdown im Overlay</value>
+  </data>
+  <data name="Settings_FWTab_AccurateCountdown_Help" xml:space="preserve">
+    <value>Siehe "Großer Countdown"-Tab für mehr Informationen</value>
+  </data>
+  <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty" xml:space="preserve">
+    <value>Kampfdauer ausblenden, wenn nicht in Inhalt</value>
+  </data>
+  <data name="Settings_FWTab_DisplayStopwatchOnlyInDuty_Help" xml:space="preserve">
+    <value>Blendet die Kampfdauer außerhalb von Instanzen aus</value>
+  </data>
+  <data name="Settings_Web_Title" xml:space="preserve">
+    <value>Webserver (OBS)</value>
+  </data>
+  <data name="Settings_Web_Help" xml:space="preserve">
+    <value>Dieses Feature ermöglicht es, Countdown oder Kampfdauer in OBS (oder anderer Software) Streams und Aufnahmen via Browser-Quelle anzuzeigen.</value>
+  </data>
+  <data name="Settings_Web_HelpAdd" xml:space="preserve">
+    <value>Um es zu deiner Szene hinzuzufügen, aktiviere den Webserver und erstelle dann eine Browser-Quelle mit folgender URL: </value>
+  </data>
+  <data name="Settings_Web_HelpSize" xml:space="preserve">
+    <value>Die empfohlene Größe ist 300x100.</value>
+  </data>
+  <data name="Settings_Web_EnablePort" xml:space="preserve">
+    <value>Port für Webserver:</value>
+  </data>
+  <data name="Settings_Web_Hide_Left" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="Settings_Web_Hide_Right" xml:space="preserve">
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
+  </data>
+  <data name="Settings_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <data name="Settings_CountdownTab_Texture" xml:space="preserve">
+    <value>Zahlenstyling</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_custom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_default" xml:space="preserve">
+    <value>FFXIV</value>
+        <comment>Settings_CountdownTab_Texture_default
+The FFXIV number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_wow" xml:space="preserve">
+    <value>WoW</value>
+        <comment>Settings_CountdownTab_Texture_wow
+The wow number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Path" xml:space="preserve">
+    <value>Ordner mit Texturen</value>
+        <comment>Settings_CountdownTab_Texture_Custom_Path</comment>
+  </data>
+  <data name="Settings_CountdownTab_Texture_Custom_Load" xml:space="preserve">
+    <value>Laden</value>
+  </data>
+  <data name="Settings_CountdownTab_Texture_yellow" xml:space="preserve">
+    <value>Lesbar</value>
+        <comment>Settings_CountdownTab_Texture_yellow
+The yellow number style preset name</comment>
+  </data>
+  <data name="Settings_CountdownTab_Test_Stop" xml:space="preserve">
+    <value>Testmodus deaktivieren</value>
+        <comment>Settings_CountdownTab_Test_Stop
+Displays "stop" when the test button is clicked and test mode is enabled.
+</comment>
+  </data>
+  <data name="Settings_CountdownTab_Test_Start" xml:space="preserve">
+    <value>Testmodus aktivieren</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberLuminance" xml:space="preserve">
+    <value>Helligkeit</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberHue" xml:space="preserve">
+    <value>Farbton</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberSaturation" xml:space="preserve">
+    <value>Sättigung</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberRecolor" xml:space="preserve">
+    <value>Umfärben statt Farbton zu ändern</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyleTitle" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownScale" xml:space="preserve">
+    <value>Skalierung</value>
+  </data>
+  <data name="Settings_CountdownTab_Animate" xml:space="preserve">
+    <value>Animationen aktivieren</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetX" xml:space="preserve">
+    <value>X%</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetY" xml:space="preserve">
+    <value>Y%</value>
+  </data>
+  <data name="Settings_CountdownTab_OffsetText" xml:space="preserve">
+    <value>Countdown-Offset</value>
+  </data>
+  <data name="Settings_CountdownTab_PositioningTitle" xml:space="preserve">
+    <value>Position und Größe</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateScale" xml:space="preserve">
+    <value>Skalierungseffekt</value>
+  </data>
+  <data name="Settings_CountdownTab_AnimateOpacity" xml:space="preserve">
+    <value>Lichteffekt</value>
+  </data>
+  <data name="Settings_CountdownTab_PositionWarning" xml:space="preserve">
+    <value>Achtung: wenn der ursprüngliche Countdown nicht ausgeblendet wird, kann eine Änderung dieser Einstellungen zu verwirrenden Darstellungen des Countdowns führen</value>
+  </data>
+  <data name="Settings_FWTab_StopwatchAsSeconds" xml:space="preserve">
+    <value>Kampfdauer in Sekunden anzeigen</value>
+  </data>
+  <data name="Settings_FWTab_CountdownNegativeSign" xml:space="preserve">
+    <value>"-" anzeigen</value>
+  </data>
+  <data name="Settings_CountdownTab_FloatingWindowScale" xml:space="preserve">
+    <value>Skalierung</value>
+  </data>
+  <data name="Settings_CountdownTab_Monospaced" xml:space="preserve">
+    <value>Feste Breite</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_Advanced" xml:space="preserve">
+    <value>Weitere Optionen</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_LeadingZero" xml:space="preserve">
+    <value>Führende 0 anzeigen</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_EnableCustomNegativeMargin" xml:space="preserve">
+    <value>Negativen Rand aktivieren</value>
+  </data>
+  <data name="Settings_CountdownTab_NumberStyle_CustomNegativeMargin" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
+  <data name="Settings_CountdownTab_MultiMonitorWarning" xml:space="preserve">
+    <value>Wenn Multi-Monitor-Fenster genutzt werden, führt die Positionierung des Countdowns außerhalb des Spiels (egal, um wie viel) dazu, dass ein Hintergrund angezeigt wird. Es ist nicht möglich, außerhalb des Spiels transparente Fenster anzuzeigen, dies kann bis auf weiteres auch nicht behoben werden. Bitte benutze den Rahmen als Orientierungshilfe.</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownAlign" xml:space="preserve">
+    <value>Alignment</value>
+  </data>
+  <data name="Settings_CountdownTab_CountdownWindowCentered" xml:space="preserve">
+    <value>Countdown zentrieren</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Enable" xml:space="preserve">
+    <value>Enable Server Info Bar integration</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Prefix" xml:space="preserve">
+    <value>Präfix</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Suffix" xml:space="preserve">
+    <value>Suffix</value>
+  </data>
+  <data name="Settings_DtrTab_Title" xml:space="preserve">
+    <value>Server-Infoleiste</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_AlwaysDisableOutsideDuty" xml:space="preserve">
+    <value>Ausblenden wenn nicht in Inhalt</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_DecimalPrecision" xml:space="preserve">
+    <value>Dezimalstellen</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_HideAfter" xml:space="preserve">
+    <value>Anzeige</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_HideAfterRight" xml:space="preserve">
+    <value>Sekunden nach Ende des Kampfes ausblenden</value>
+  </data>
+  <data name="Settings_DtrCombatTimer_Defaults" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="Settings_DtrTab_Info" xml:space="preserve">
+    <value>Dieses Feature zeigt die aktuelle Kampfdauer in der Server-Infoleiste an (gleich neben Server &amp; Uhrzeit). Die Anordnung von Elementen in der Server-Infoleiste kann in den Dalamud-Einstellungen angepasst werden.</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_UseAlternativeSound" xml:space="preserve">
+    <value>Benutze "Inhalt gefunden"-Ton</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyAudio" xml:space="preserve">
+    <value>Legacy-Audio verwenden (funktioniert nicht auf Linux)</value>
+  </data>
+  <data name="Settings_CountdownTab_Audio_LegacyAudio_Help" xml:space="preserve">
+    <value>Wird in Zukunft entfernt, bitte kontaktiere mich, wenn du diese Einstellung benutzt. Stürzt auf Nicht-Windows-Systemen ab.</value>
+  </data>
+  <data name="MainCommand_Help_Countdown" xml:space="preserve">
+    <value>enable or disable the big countdown (toggles by default)</value>
+        <comment>help text for the /eg c [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_FW" xml:space="preserve">
+    <value>enable or disable the floating window (toggles by default)</value>
+        <comment>help text for the /eg fw [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_Dtr" xml:space="preserve">
+    <value>enable or disable the server info bar (toggles by default)</value>
+        <comment>MainCommand_Help_Dtr
+help text for the /eg dtr [on|off] command</comment>
+  </data>
+  <data name="MainCommand_Help_Settings" xml:space="preserve">
+    <value>open the settings menu</value>
+        <comment>MainCommand_Help_Settings
+help text for the /eg settings command</comment>
+  </data>
+  <data name="MainCommand_Help_Countdown_Success" xml:space="preserve">
+    <value>Countdown is now {0}</value>
+        <comment>{0} is the translation MainCommand_Status_On or MainCommand_Status_Off
+</comment>
+  </data>
+  <data name="MainCommand_Status_On" xml:space="preserve">
+    <value>enabled</value>
+        <comment>For use in success sentences "Countdown is now enabled"</comment>
+  </data>
+  <data name="MainCommand_Status_Off" xml:space="preserve">
+    <value>disabled</value>
+        <comment>For use in success sentences "Countdown is now disabled"</comment>
+  </data>
+  <data name="MainCommand_Help_Dtr_Success" xml:space="preserve">
+    <value>Server info bar is now {0}</value>
+  </data>
+  <data name="MainCommand_Help_FW_Success" xml:space="preserve">
+    <value>Floating window is now {0}</value>
+  </data>
+  <data name="MainCommand_Error_InvalidSubcommand" xml:space="preserve">
+    <value>Unrecognized subcommand: {0}</value>
+        <comment>MainCommand_Error_InvalidSubcommand
+{0} is the un recognized command name
+</comment>
+  </data>
+  <data name="MainCommand_Error_InvalidArgument" xml:space="preserve">
+    <value>Unrecognized argument for {0}: {1}</value>
+        <comment>MainCommand_Error_InvalidArgument
+{0} is the command name (countdown, c, fw, settings, ...)
+{1} is the unrecognized argument typed</comment>
+  </data>
+  <data name="Settings_FWTab_ShowPrePulling" xml:space="preserve">
+      <value>Enable pre-pull warning</value>
+    </data>
+  <data name="Settings_FWTab_ShowPrePulling_Help" xml:space="preserve">
+      <value>Changes the countdown color when casting a spell that would result in a pre-pull.</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset" xml:space="preserve">
+      <value>Offset in seconds</value>
+    </data>
+  <data name="Settings_FWTab_PrePullOffset_Help" xml:space="preserve">
+      <value>Leave at 0 unless you have very consistent lag or some specific reason.</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold" xml:space="preserve">
+      <value>Anzeigeschwellenwert</value>
+    </data>
+  <data name="Settings_CountdownTab_CountdownDisplayThreshold_Help" xml:space="preserve">
+      <value>Diese Einstellung bestimmt, zu welchem Zeitpunkt während des Countdowns der Timer sichtbar wird.</value>
+    </data>
+  <data name="Settings_CountdownTab_TickFrom" xml:space="preserve">
+      <value>Starte das Ticken ab</value>
+    </data>
+  <data name="Settings_CountdownTab_TickFrom_Help" xml:space="preserve">
+      <value>Diese Einstellung spielt den Ton von der Zahl 5 bis zum ausgewählten Wert ab. Bitte beachten Sie, dass dieses Plugin den Tick-Ton für die Zahlen 1 bis 5 nicht entfernen kann.</value>
+    </data>
+  <data name="Settings_AlarmsTab_Title" xml:space="preserve">
+      <value>Alarms</value>
+    </data>
+  <data name="AlarmEdit_Active" xml:space="preserve">
+      <value>Active</value>
+    </data>
+  <data name="AlarmEdit_StartTime" xml:space="preserve">
+      <value>Start time</value>
+    </data>
+  <data name="AlarmEdit_Color" xml:space="preserve">
+      <value>Color</value>
+    </data>
+  <data name="AlarmEdit_Blink" xml:space="preserve">
+      <value>Blink</value>
+    </data>
+  <data name="AlarmEdit_Duration" xml:space="preserve">
+      <value>Duration</value>
+    </data>
+  <data name="AlarmEdit_Sound" xml:space="preserve">
+      <value>Sound</value>
+    </data>
+  <data name="AlarmEdit_Sound_None" xml:space="preserve">
+      <value>None</value>
+    </data>
+  <data name="AlarmEdit_Text" xml:space="preserve">
+      <value>Text</value>
+    </data>
+  <data name="AlarmEdit_Type_DalamudNotification" xml:space="preserve">
+      <value>Dalamud Notification</value>
+    </data>
+  <data name="AlarmEdit_Type_GameToast" xml:space="preserve">
+      <value>Game toast</value>
+    </data>
+  <data name="AlarmEdit_Type_ChatLog" xml:space="preserve">
+      <value>Chat log</value>
+    </data>
+  <data name="AlarmEdit_Active_Tooltip" xml:space="preserve">
+      <value>Enables / disables this alarm</value>
+    </data>
+  <data name="AlarmEdit_StartTime_Tooltip" xml:space="preserve">
+      <value>The alarm will start at this specified combat time</value>
+    </data>
+  <data name="AlarmEdit_Color_Tooltip" xml:space="preserve">
+      <value>Applies the color to the floating window stopwatch during the alarm</value>
+    </data>
+  <data name="AlarmEdit_Blink_Tooltip" xml:space="preserve">
+      <value>Makes the floating window stopwatch blink during the alarm</value>
+    </data>
+  <data name="AlarmEdit_Duration_Tooltip" xml:space="preserve">
+      <value>Stops the color/blink after this amount of time</value>
+    </data>
+  <data name="AlarmEdit_Sound_Tooltip" xml:space="preserve">
+      <value>Plays a game sound effect at the alarm time</value>
+    </data>
+  <data name="AlarmEdit_Text_Tooltip" xml:space="preserve">
+      <value>Allows you to display a text notification at the alarm time</value>
+    </data>
+  <data name="AlarmEdit_Text_Type_Colon" xml:space="preserve">
+      <value>Type:</value>
+    </data>
+  <data name="AlarmEdit_Text_NoText" xml:space="preserve">
+      <value>No text</value>
+    </data>
+  <data name="AlarmEdit_Text_Type" xml:space="preserve">
+      <value>Type</value>
+    </data>
+  <data name="AlarmEdit_Text_Text" xml:space="preserve">
+      <value>Text</value>
+    </data>
+  <data name="AlarmEdit_Text_Clear" xml:space="preserve">
+      <value>Clear</value>
+    </data>
+  <data name="Settings_AlarmsTab_Line1" xml:space="preserve">
+      <value>This page allows you to set alarms based on elapsed combat time.</value>
+    </data>
+  <data name="Settings_AlarmsTab_Line2" xml:space="preserve">
+      <value>A common use is to notify you of the potion window.</value>
+    </data>
+  <data name="AlarmEdit_Add" xml:space="preserve">
+      <value>Create new</value>
+    </data>
+  <data name="AlarmEdit_Clear" xml:space="preserve">
+      <value>Clear all</value>
+    </data>
+  <data name="AlarmEdit_Clear_Confirm" xml:space="preserve">
+      <value>Do you really want to remove all the alarms?</value>
+    </data>
+  <data name="AlarmEdit_Export" xml:space="preserve">
+      <value>Export</value>
+    </data>
+  <data name="AlarmEdit_Import" xml:space="preserve">
+      <value>Import</value>
+    </data>
+  <data name="AlarmEdit_Text_Test" xml:space="preserve">
+      <value>Test</value>
+    </data>
+  <data name="AlarmEdit_Export_Tooltip" xml:space="preserve">
+      <value>Exports the active alarms to a file</value>
+    </data>
+  <data name="AlarmEdit_Import_File" xml:space="preserve">
+      <value>Select file to import</value>
+    </data>
+  <data name="AlarmEdit_Export_File" xml:space="preserve">
+      <value>Select file to export</value>
+    </data>
+  <data name="Modal_Ok" xml:space="preserve">
+      <value>OK</value>
+    </data>
+  <data name="Modal_Cancel" xml:space="preserve">
+      <value>Cancel</value>
+    </data>
+  <data name="Modal_Confirm" xml:space="preserve">
+      <value>Confirm</value>
+    </data>
+  <data name="CombatAlarm_AccessDenied" xml:space="preserve">
+      <value>Could not save the file in this directory (access denied). Please try again with another directory.</value>
+    </data>
+  <data name="CombatAlarm_SaveGeneric" xml:space="preserve">
+      <value>An error occured while trying to save the alarms to {0}: {1}.</value>
+    </data>
+  <data name="CombatAlarm_ReadGeneric" xml:space="preserve">
+      <value>An error occured while trying to read the alarms in {0}: {1}.</value>
+    </data>
+  <data name="CombatAlarm_IncorrectFormat" xml:space="preserve">
+      <value>The alarms file format is incompatible or incorrect</value>
+    </data>
+  <data name="CombatAlarm_ImportedEmpty" xml:space="preserve">
+      <value>An empty or invalid alarm list was imported</value>
+    </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown" xml:space="preserve">
+      <value>Draw even if original countdown is visible</value>
+    </data>
+  <data name="Settings_CountdownTab_IgnoreOriginalCountDown_Help" xml:space="preserve">
+      <value>Allows you to have the vanilla countdown showing on your game but still use the custom one in a corner or overlaping if you like chaos. Useful if you setup your OBS to not capture addons and want to look unmodified.</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown" xml:space="preserve">
+      <value>Don't overlap with game countdown (default)</value>
+    </data>
+  <data name="Settings_CountdownTab_DefaultOriginalCountDown_Help" xml:space="preserve">
+      <value>Hides the custom countdown under 5 to prevent overlapping with the vanilla one.</value>
+    </data>
+  <data name="Settings_AboutTab_Title" xml:space="preserve">
+      <value>About</value>
+    </data>
+</root>
