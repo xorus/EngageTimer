@@ -1,6 +1,7 @@
 ﻿# v2.3.2.0
 
-- Adds 
+- Add an option to draw the custom 0-5 numbers without hiding the original countdown
+- Make animation match vanilla a bit better
 
 # v2.3.1.0
 
