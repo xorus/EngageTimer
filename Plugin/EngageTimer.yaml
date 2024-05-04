@@ -33,4 +33,5 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Add an option to draw the custom 0-5 numbers without hiding the original countdown
+  - Prevent stopwatch window from taking focus when appearing
+  - Dotnet8 build
