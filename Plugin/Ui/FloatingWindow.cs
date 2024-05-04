@@ -101,7 +101,8 @@ public sealed class FloatingWindow : IDisposable
         // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindow.FloatingWindowBackgroundColor.Z);
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
-        var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
+        var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |
+                    ImGuiWindowFlags.NoFocusOnAppearing;
         if (Plugin.Config.FloatingWindow.Lock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
         if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
