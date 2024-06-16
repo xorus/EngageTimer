@@ -105,6 +105,7 @@ public static class FloatingWindowTab
         ImGui.BeginGroup();
         Components.AutoField(Plugin.Config.FloatingWindow, "TextColor");
         Components.AutoField(Plugin.Config.FloatingWindow, "BackgroundColor");
+        Components.AutoField(Plugin.Config.FloatingWindow, "ForceHideWindowBorder");
         ImGui.EndGroup();
 
         ImGui.Unindent();

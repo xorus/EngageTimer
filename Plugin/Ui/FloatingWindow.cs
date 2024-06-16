@@ -99,6 +99,14 @@ public sealed class FloatingWindow : IDisposable
     private void DrawWindow(bool stopwatchActive, bool countdownActive)
     {
         // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindow.FloatingWindowBackgroundColor.Z);
+        var pushVar = false;
+        if (Plugin.Config.FloatingWindow.ForceHideWindowBorder)
+        {
+            // prevent glitches is user is spamming the checkbox button
+            pushVar = true;
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+        }
+
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
         var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |
@@ -208,6 +216,7 @@ public sealed class FloatingWindow : IDisposable
         }
 
         ImGui.PopStyleColor();
+        if (pushVar) ImGui.PopStyleVar();
     }
 
 

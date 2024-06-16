@@ -54,6 +54,9 @@ public class FloatingWindowConfiguration
 
     [AutoField("Settings_FWTab_CountdownNegativeSign")]
     public bool CountdownNegativeSign { get; set; } = true;
+    
+    [AutoField("Settings_FWTab_ForceHideWindowBorder")]
+    public bool ForceHideWindowBorder { get; set; } = true;
 
     [AutoField("Settings_CountdownTab_FloatingWindowScale", Components.FieldType.DragFloat, .01f, .05f, 15f),
      ItemWidth(100f)]

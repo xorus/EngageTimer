@@ -8,7 +8,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-        <AssemblyVersion>2.3.3.0</AssemblyVersion>
+        <AssemblyVersion>2.3.4.0</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
