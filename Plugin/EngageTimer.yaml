@@ -34,3 +34,4 @@ category_tags:
   - jobs
 changelog: |-
   - Hide floating window border by default (you can re-enable it in floating window -> styling)
+  - Fix not being able to disable alarms

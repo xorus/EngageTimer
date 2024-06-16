@@ -118,6 +118,7 @@ public sealed class CombatAlarm : IDisposable
         for (var index = 0; index < Plugin.Config.CombatAlarms.Alarms.Count; index++)
         {
             var alarm = Plugin.Config.CombatAlarms.Alarms[index];
+            if (!alarm.Enabled) continue;
             _alarms[alarm.StartTime] = new AlarmAction()
             {
                 Type = AlarmActionType.Start,
@@ -148,7 +149,7 @@ public sealed class CombatAlarm : IDisposable
         if (!Plugin.State.InCombat) return;
 
         // only run once a second
-        var time = (int) Math.Floor(Plugin.State.CombatDuration.TotalSeconds);
+        var time = (int)Math.Floor(Plugin.State.CombatDuration.TotalSeconds);
         if (_lastCheck == time) return;
         _lastCheck = time;
 
@@ -167,14 +168,14 @@ public sealed class CombatAlarm : IDisposable
     {
         if (alarm.Sfx != null)
         {
-            Plugin.SfxPlay.SoundEffect((uint) (SfxPlay.FirstSeSfx + alarm.Sfx));
+            Plugin.SfxPlay.SoundEffect((uint)(SfxPlay.FirstSeSfx + alarm.Sfx));
         }
     }
 
     public static void AlarmText(CombatAlarmsConfiguration.Alarm alarm)
     {
         var trimText = alarm.Text?.Trim();
-        if (trimText is not {Length: > 0}) return;
+        if (trimText is not { Length: > 0 }) return;
         switch (alarm.TextType)
         {
             case CombatAlarmsConfiguration.TextType.DalamudNotification:
