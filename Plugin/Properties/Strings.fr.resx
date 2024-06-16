@@ -636,4 +636,7 @@ help text for the /eg settings command</comment>
   <data name="Settings_AboutTab_Title" xml:space="preserve">
       <value>À propos</value>
     </data>
+  <data name="Settings_FWTab_ForceHideWindowBorder" xml:space="preserve">
+      <value>Hide window border</value>
+    </data>
 </root>
