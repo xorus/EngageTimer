@@ -37,7 +37,6 @@ public sealed class PluginUi : IDisposable
 
     public void Dispose()
     {
-        _floatingWindow.Dispose();
         _countDown.Dispose();
         Plugin.PluginInterface.UiBuilder.Draw -= Draw;
         Plugin.PluginInterface.UiBuilder.OpenConfigUi -= OpenSettings;

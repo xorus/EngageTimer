@@ -32,7 +32,7 @@ public class ConfigurationFile : IPluginConfiguration
     }
 
     // Add any other properties or methods here.
-    [NonSerialized] private DalamudPluginInterface _pluginInterface = Plugin.PluginInterface;
+    [NonSerialized] private IDalamudPluginInterface _pluginInterface = Plugin.PluginInterface;
     public CountdownConfiguration Countdown = new();
 
     public DtrConfiguration Dtr = new();
