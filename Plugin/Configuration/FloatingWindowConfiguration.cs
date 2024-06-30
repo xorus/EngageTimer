@@ -16,7 +16,9 @@
 #nullable enable
 using System;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.FontIdentifier;
 using EngageTimer.Attributes;
 using EngageTimer.Ui;
 
@@ -81,6 +83,9 @@ public class FloatingWindowConfiguration
     public ConfigurationFile.TextAlign Align { get; set; } = ConfigurationFile.TextAlign.Left;
 
     public int FontSize { get; set; } = 16;
+    
+    [JsonIgnore] public IFontSpec? FontSpec { get; set; } = null;
+    public IFontId? FontId { get; set; } = null;
 
     [AutoField("Settings_FWTab_AutoHide_Left")]
     public bool AutoHide { get; set; } = true;

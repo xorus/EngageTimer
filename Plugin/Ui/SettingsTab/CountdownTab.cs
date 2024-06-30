@@ -42,7 +42,7 @@ public static class CountdownTab
         if (time - _lastTextureCreation < .05d + Plugin.NumberTextures.LastTextureCreationDuration)
             return; // 50ms + previous time taken
         _lastTextureCreation = time;
-        Plugin.NumberTextures.CreateTextures();
+        // Plugin.NumberTextures.CreateTextures();
         _requestTextureCreation = false;
     }
 
@@ -57,7 +57,7 @@ public static class CountdownTab
         if (_mockTarget == 0 || _mockTarget < ImGui.GetTime()) _mockTarget = ImGui.GetTime() + 30d;
 
         Plugin.State.CountingDown = true;
-        Plugin.State.CountDownValue = (float) (_mockTarget - ImGui.GetTime());
+        Plugin.State.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
     }
 
     public static void OnClose()
@@ -202,7 +202,7 @@ public static class CountdownTab
         if (ImGui.DragFloat("Settings_CountdownTab_OffsetX".TrId(), ref countdownOffsetX, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                Plugin.Config.Countdown.WindowOffset with {X = countdownOffsetX / 100};
+                Plugin.Config.Countdown.WindowOffset with { X = countdownOffsetX / 100 };
             Plugin.Config.Save();
         }
 
@@ -212,7 +212,7 @@ public static class CountdownTab
         if (ImGui.DragFloat("Settings_CountdownTab_OffsetY".TrId(), ref countdownOffsetY, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                Plugin.Config.Countdown.WindowOffset with {Y = countdownOffsetY / 100};
+                Plugin.Config.Countdown.WindowOffset with { Y = countdownOffsetY / 100 };
             Plugin.Config.Save();
         }
 
@@ -236,13 +236,13 @@ public static class CountdownTab
 
         ImGui.PopItemWidth();
 
-        var align = (int) Plugin.Config.Countdown.Align;
+        var align = (int)Plugin.Config.Countdown.Align;
         if (ImGui.Combo("Settings_CountdownTab_CountdownAlign".TrId(), ref align,
                 "Settings_FWTab_TextAlign_Left".Tr() + "###Left\0" +
                 "Settings_FWTab_TextAlign_Center".Tr() + "###Center\0" +
                 "Settings_FWTab_TextAlign_Right".Tr() + "###Right"))
         {
-            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign) align;
+            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign)align;
             Plugin.Config.Save();
         }
 
@@ -252,6 +252,7 @@ public static class CountdownTab
 
     private static void CountdownNumberStyle()
     {
+        return;
         var texture = Plugin.NumberTextures.GetTexture(_exampleNumber);
         const float scale = .5f;
         ImGui.BeginGroup();

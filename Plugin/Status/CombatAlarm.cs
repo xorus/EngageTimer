@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dalamud.Game.Text;
-using Dalamud.Interface.Internal.Notifications;
+using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
@@ -179,11 +179,14 @@ public sealed class CombatAlarm : IDisposable
         switch (alarm.TextType)
         {
             case CombatAlarmsConfiguration.TextType.DalamudNotification:
-                Plugin.PluginInterface.UiBuilder.AddNotification(
-                    trimText,
-                    "EngageTimer",
-                    NotificationType.Info,
-                    8000
+                Plugin.NotificationManager.AddNotification(
+                    new Notification()
+                    {
+                        Content = trimText,
+                        Title ="EngageTimer",
+                        Type = NotificationType.Info,
+                        InitialDuration = TimeSpan.FromSeconds(8.0)
+                    }
                 );
                 break;
             case CombatAlarmsConfiguration.TextType.GameToast:

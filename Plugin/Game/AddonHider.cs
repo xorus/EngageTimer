@@ -46,7 +46,8 @@ public sealed class AddonHider : IDisposable
         try
         {
             var atkUnitBase = (AtkUnitBase*)_lastCountdownAddon;
-            atkUnitBase->Flags |= VisibleFlag;
+            atkUnitBase->IsVisible = true;
+            // atkUnitBase->Flags |= VisibleFlag;
             // Plugin.Logger.Debug("show addon");
         }
         catch (Exception)
@@ -74,7 +75,8 @@ public sealed class AddonHider : IDisposable
         try
         {
             var atkUnitBase = (AtkUnitBase*)addon;
-            atkUnitBase->Flags = (byte)(atkUnitBase->Flags & ~VisibleFlag);
+            atkUnitBase->IsVisible = false;
+            // atkUnitBase->Flags = (byte)(atkUnitBase->Flags & ~VisibleFlag);
             // Plugin.Logger.Debug("hide addon");
         }
         catch (Exception)
