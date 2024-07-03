@@ -23,31 +23,24 @@ using EngageTimer.Status;
 
 /*
  * Based on the work (for finding the pointer) of https://github.com/Haplo064/Europe
+ * 7.0 function changes taken from https://github.com/DelvUI/DelvUI/commit/492211c8f43b813d10b2220e6fe768ac508dcede and
+ * https://discord.com/channels/581875019861328007/653504487352303619/1257920418388639774. Thanks Tischel for that work!
  */
 namespace EngageTimer.Game;
 
 public sealed class CountdownHook : IDisposable
 {
-    [Signature("48 89 5C 24 ?? 57 48 83 EC 40 8B 41", DetourName = nameof(CountdownTimerFunc))]
+    [Signature("40 53 48 83 EC 40 80 79 38 00", DetourName = nameof(CountdownTimerFunc))]
     private readonly Hook<CountdownTimerDelegate>? _countdownTimerHook = null;
 
     private readonly State _state;
 
-    private ulong _countDown;
-    private bool _countDownRunning;
-
-    /// <summary>
-    ///     Ticks since the timer stalled
-    /// </summary>
-    private int _countDownStallTicks;
-
-    private float _lastCountDownValue;
-
+    private ulong _paramValue;
 
     public CountdownHook()
     {
         _state = Plugin.State;
-        _countDown = 0;
+        _paramValue = 0;
         Plugin.GameInterop.InitializeFromAttributes(this);
         _countdownTimerHook?.Enable();
     }
@@ -61,7 +54,7 @@ public sealed class CountdownHook : IDisposable
 
     private IntPtr CountdownTimerFunc(ulong value)
     {
-        _countDown = value;
+        _paramValue = value;
         return _countdownTimerHook!.Original(value);
     }
 
@@ -74,37 +67,11 @@ public sealed class CountdownHook : IDisposable
 
     private void UpdateCountDown()
     {
-        var newCountingDown = false;
-        if (_countDown == 0)
-        {
-            _state.CountingDown = newCountingDown;
-            return;
-        }
-
-        var countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
-
-        // is last value close enough (workaround for floating point approx)
-        if (Math.Abs(countDownPointerValue - _lastCountDownValue) < 0.001f)
-        {
-            _countDownStallTicks++;
-        }
-        else
-        {
-            _countDownStallTicks = 0;
-            _countDownRunning = true;
-        }
-
-        if (_countDownStallTicks > 50) _countDownRunning = false;
-
-        if (countDownPointerValue > 0 && _countDownRunning)
-        {
-            var newValue = Marshal.PtrToStructure<float>((IntPtr)_countDown + 0x2c);
-            _state.CountDownValue = newValue;
-            newCountingDown = true;
-        }
-
-        _state.CountingDown = newCountingDown;
-        _lastCountDownValue = countDownPointerValue;
+        if (_paramValue == 0) return;
+        var countDownActive = Marshal.PtrToStructure<byte>((IntPtr)_paramValue + 0x38) == 1;
+        var countDownPointerValue = Marshal.PtrToStructure<float>((IntPtr)_paramValue + 0x2c);
+        _state.CountingDown = countDownActive && countDownPointerValue > 0f;
+        _state.CountDownValue = countDownPointerValue;
     }
 
     [UnmanagedFunctionPointer(CallingConvention.ThisCall, CharSet = CharSet.Ansi)]
