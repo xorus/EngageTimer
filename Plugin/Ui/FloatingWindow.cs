@@ -94,7 +94,7 @@ public sealed class FloatingWindow
 
             ImGui.PushStyleColor(ImGuiCol.Text, color);
             ImGui.SetWindowFontScale(Plugin.Config.FloatingWindow.Scale);
-
+            
             var stopwatchDecimals = Plugin.Config.FloatingWindow.DecimalStopwatchPrecision > 0;
 
             var text = ""; // text to be displayed

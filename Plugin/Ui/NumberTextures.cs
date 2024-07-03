@@ -15,10 +15,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Dalamud.Interface;
-using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures;
 using Dalamud.Interface.Textures.TextureWraps;
 using EngageTimer.Configuration;
 using EngageTimer.Ui.Color;
@@ -40,9 +41,9 @@ public sealed class NumberTextures
 
     public NumberTextures()
     {
-        // _error = Plugin.TextureProvider..LoadImage(Path.Combine(Plugin.PluginPath, "Data", "error.png"));
-        
-        // Plugin.TextureProvider.CreateFromImageAsync(Path.Combine(Plugin.PluginPath, "Data", "error.png"))
+        // plugin crash if the default file is not found is expected
+        _error = Plugin.TextureProvider.CreateFromImageAsync(File.OpenRead(Path.Combine(Plugin.PluginPath, "Data",
+            "error.png"))).Result;
         Load();
     }
 
@@ -62,7 +63,6 @@ public sealed class NumberTextures
 
     private void LoadImages()
     {
-        return;
         _numberImages.Clear();
         string texturePath;
 
@@ -103,7 +103,6 @@ public sealed class NumberTextures
 
     private void ReadPackSettings(string settingsFile)
     {
-        return;
         try
         {
             var json = File.ReadAllText(settingsFile);
@@ -128,7 +127,7 @@ public sealed class NumberTextures
                 catch (Exception exception)
                 {
                     Plugin.Logger.Warning("Invalid json or missing property in " + settingsFile + "\n" +
-                                       exception);
+                                          exception);
                 }
         }
         catch (IOException)
@@ -145,82 +144,84 @@ public sealed class NumberTextures
 
     public void CreateTextures()
     {
-        return;
-        // var watch = System.Diagnostics.Stopwatch.StartNew();
-        // MaxTextureHeight = 0;
-        // MaxTextureWidth = 0;
-        //
-        // var success = false;
-        // for (var i = 0; i < 10; i++)
-        // {
-        //     if (_numberImages.ContainsKey(i))
-        //         try
-        //         {
-        //             var image = _numberImages[i];
-        //             var bytes = image.Data.ToArray();
-        //             var bytesAlt = new byte[bytes.Length];
-        //             var configuration = Plugin.Config;
-        //             if (image.NumChannels == 4)
-        //                 for (var p = 0; p < bytes.Length; p += 4)
-        //                 {
-        //                     var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
-        //                     var hsl = HslConv.RgbToHsl(originalRgb);
-        //                     if (configuration.Countdown.NumberRecolorMode)
-        //                         hsl.H = Math.Clamp(configuration.Countdown.Hue, 0, 360);
-        //                     else
-        //                         hsl.H += configuration.Countdown.Hue;
-        //                     hsl.S = Math.Clamp(hsl.S + configuration.Countdown.Saturation, 0f, 1f);
-        //                     hsl.L = Math.Clamp(hsl.L + configuration.Countdown.Luminance, 0f, 1f);
-        //                     var modifiedRgb = HslConv.HslToRgb(hsl);
-        //                     bytes[p] = modifiedRgb.R;
-        //                     bytes[p + 1] = modifiedRgb.G;
-        //                     bytes[p + 2] = modifiedRgb.B;
-        //
-        //                     if (!configuration.Countdown.Animate) continue;
-        //                     var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
-        //                     hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
-        //                     var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
-        //                     bytesAlt[p] = modifiedRgbAlt.R;
-        //                     bytesAlt[p + 1] = modifiedRgbAlt.G;
-        //                     bytesAlt[p + 2] = modifiedRgbAlt.B;
-        //                     bytesAlt[p + 3] = bytes[p + 3];
-        //                 }
-        //
-        //             var texture = _uiBuilder.LoadImageRaw(bytes, image.Width, image.Height, image.NumChannels);
-        //             var textureAlt =
-        //                 _uiBuilder.LoadImageRaw(bytesAlt, image.Width, image.Height, image.NumChannels);
-        //
-        //             MaxTextureHeight = Math.Max(MaxTextureHeight, texture.Height);
-        //             MaxTextureWidth = Math.Max(MaxTextureWidth, texture.Width);
-        //             _numberTextures.Remove(i);
-        //             _numberTextures.Add(i, texture);
-        //             success = true;
-        //
-        //             if (!configuration.Countdown.Animate) continue;
-        //             _numberTexturesAlt.Remove(i);
-        //             _numberTexturesAlt.Add(i, textureAlt);
-        //         }
-        //         catch (Exception)
-        //         {
-        //             // a loading error occured
-        //         }
-        //
-        //     if (success) continue;
-        //     MaxTextureWidth = _error.Width;
-        //     MaxTextureHeight = _error.Height;
-        // }
-        //
-        // watch.Stop();
-        // LastTextureCreationDuration = watch.ElapsedMilliseconds / 1000d;
+        var watch = Stopwatch.StartNew();
+        MaxTextureHeight = 0;
+        MaxTextureWidth = 0;
+
+        var success = false;
+        for (var i = 0; i < 10; i++)
+        {
+            if (_numberImages.TryGetValue(i, out var image))
+                try
+                {
+                    var bytes = image.Data.ToArray();
+                    var bytesAlt = new byte[bytes.Length];
+                    var configuration = Plugin.Config;
+                    if (image.NumChannels == 4)
+                        for (var p = 0; p < bytes.Length; p += 4)
+                        {
+                            var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
+                            var hsl = HslConv.RgbToHsl(originalRgb);
+                            if (configuration.Countdown.NumberRecolorMode)
+                                hsl.H = Math.Clamp(configuration.Countdown.Hue, 0, 360);
+                            else
+                                hsl.H += configuration.Countdown.Hue;
+                            hsl.S = Math.Clamp(hsl.S + configuration.Countdown.Saturation, 0f, 1f);
+                            hsl.L = Math.Clamp(hsl.L + configuration.Countdown.Luminance, 0f, 1f);
+                            var modifiedRgb = HslConv.HslToRgb(hsl);
+                            bytes[p] = modifiedRgb.R;
+                            bytes[p + 1] = modifiedRgb.G;
+                            bytes[p + 2] = modifiedRgb.B;
+
+                            if (!configuration.Countdown.Animate) continue;
+                            var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
+                            hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
+                            var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
+                            bytesAlt[p] = modifiedRgbAlt.R;
+                            bytesAlt[p + 1] = modifiedRgbAlt.G;
+                            bytesAlt[p + 2] = modifiedRgbAlt.B;
+                            bytesAlt[p + 3] = bytes[p + 3];
+                        }
+
+
+                    var texture = Plugin.TextureProvider.CreateFromRaw(
+                        RawImageSpecification.Rgba32(image.Width, image.Height),
+                        bytes);
+                    var textureAlt = Plugin.TextureProvider.CreateFromRaw(
+                        RawImageSpecification.Rgba32(image.Width, image.Height),
+                        bytesAlt);
+
+                    MaxTextureHeight = Math.Max(MaxTextureHeight, texture.Height);
+                    MaxTextureWidth = Math.Max(MaxTextureWidth, texture.Width);
+                    _numberTextures.Remove(i);
+                    _numberTextures.Add(i, texture);
+                    success = true;
+
+                    if (!configuration.Countdown.Animate) continue;
+                    _numberTexturesAlt.Remove(i);
+                    _numberTexturesAlt.Add(i, textureAlt);
+                }
+                catch (Exception)
+                {
+                    // a loading error occured
+                }
+
+            if (success) continue;
+            MaxTextureWidth = _error.Width;
+            MaxTextureHeight = _error.Height;
+        }
+
+        watch.Stop();
+        LastTextureCreationDuration = watch.ElapsedMilliseconds / 1000d;
     }
 
     public IDalamudTextureWrap GetTexture(int i)
     {
-        return _numberTextures.ContainsKey(i) ? _numberTextures[i] : _error;
+        return _numberTextures.GetValueOrDefault(i, _error);
     }
 
     public IDalamudTextureWrap GetAltTexture(int i)
     {
-        return _numberTexturesAlt.ContainsKey(i) ? _numberTexturesAlt[i] : _error;
+        return _numberTexturesAlt.GetValueOrDefault(i, _error);
     }
 }
