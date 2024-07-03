@@ -42,7 +42,7 @@ public static class CountdownTab
         if (time - _lastTextureCreation < .05d + Plugin.NumberTextures.LastTextureCreationDuration)
             return; // 50ms + previous time taken
         _lastTextureCreation = time;
-        // Plugin.NumberTextures.CreateTextures();
+        Plugin.NumberTextures.CreateTextures();
         _requestTextureCreation = false;
     }
 
@@ -146,7 +146,7 @@ public static class CountdownTab
         ImGui.Unindent();
     }
 
-    public static void CountdownHideOptions()
+    private static void CountdownHideOptions()
     {
         var cdStatus = 0;
         if (Plugin.Config.Countdown.HideOriginalAddon) cdStatus = 1;
@@ -252,7 +252,6 @@ public static class CountdownTab
 
     private static void CountdownNumberStyle()
     {
-        return;
         var texture = Plugin.NumberTextures.GetTexture(_exampleNumber);
         const float scale = .5f;
         ImGui.BeginGroup();
