@@ -33,6 +33,9 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Fix not being able to disable alarms
-  - Missing translation strings in web server config
-  - Hide floating window border by default (you can re-enable it in Floating Window -> styling)
+  - DT compatibility
+  - Update for API10:
+    - Use new texture loading for countdown
+    - Migrate to the new font system, the floating window contents might be blurry, this will be fixed soon when I
+      can implement font customization instead of always using the default dalamud one
+  
