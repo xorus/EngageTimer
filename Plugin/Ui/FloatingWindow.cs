@@ -78,7 +78,7 @@ public sealed class FloatingWindow
             pushVar = true;
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
         }
-
+        
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
         var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |

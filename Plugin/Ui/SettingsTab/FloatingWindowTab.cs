@@ -28,7 +28,7 @@ namespace EngageTimer.Ui.SettingsTab;
 
 public static class FloatingWindowTab
 {
-    private static SingleFontChooserDialog? _fc;
+    // private static SingleFontChooserDialog? _fc;
 
     public static void Draw()
     {
@@ -102,6 +102,7 @@ public static class FloatingWindowTab
         {
             configuration.FloatingWindow.FontSize = Math.Max(0, fontSize);
             configuration.Save();
+            Plugin.FloatingWindowFont.UpdateFont();
 
             // if (configuration.FloatingWindow.FontSize >= 8) Plugin.PluginInterface.UiBuilder.RebuildFonts();
         }
@@ -114,42 +115,43 @@ public static class FloatingWindowTab
         Components.AutoField(Plugin.Config.FloatingWindow, "ForceHideWindowBorder");
         ImGui.EndGroup();
 
-        ImGui.Text("Font:");
-        ImGui.SameLine();
-        using (Plugin.FloatingWindowFont.FontHandle?.Push())
-        {
-            if (configuration.FloatingWindow.FontSpec == null)
-                ImGui.Text("default");
-            else
-                ImGui.Text(configuration.FloatingWindow.FontSpec.ToString());
-        }
-
-        if (ImGui.Button("change font") && !_fcO)
-        {
-            _fc = SingleFontChooserDialog.CreateAuto((UiBuilder)Plugin.PluginInterface.UiBuilder);
-            _fcO = true;
-            _fc.PreviewText = "-01:23.45 6789";
-            _fc.ResultTask.ContinueWith(task =>
-            {
-                _fcO = false;
-                if (!task.IsCompleted) return;
-                configuration.FloatingWindow.FontId = _fc.SelectedFont.FontId;
-
-                configuration.Save();
-                Plugin.FloatingWindowFont.UpdateFont();
-            });
-        }
-
-        ImGui.SameLine();
-        if (ImGui.Button("reset font"))
-        {
-            configuration.FloatingWindow.FontSpec = null;
-            configuration.Save();
-            Plugin.FloatingWindowFont.UpdateFont();
-        }
+        // ImGui.Text("Font:");
+        // ImGui.SameLine();
+        // using (Plugin.FloatingWindowFont.FontHandle?.Push())
+        // {
+        //     if (configuration.FloatingWindow.FontSpec == null)
+        //         ImGui.Text("default");
+        //     else
+        //         ImGui.Text(configuration.FloatingWindow.FontSpec.ToString());
+        // }
+        //
+        // if (ImGui.Button("change font") && !_fcO)
+        // {
+        //     _fc = SingleFontChooserDialog.CreateAuto((UiBuilder)Plugin.PluginInterface.UiBuilder);
+        //     _fcO = true;
+        //     _fc.PreviewText = "-01:23.45 6789";
+        //     _fc.ResultTask.ContinueWith(task =>
+        //     {
+        //         _fcO = false;
+        //         if (!task.IsCompleted) return;
+        //         configuration.FloatingWindow.Font = _fc.SelectedFont;
+        //         
+        //         Plugin.Logger.Info("font chosen: " + _fc.SelectedFont);
+        //
+        //         configuration.Save();
+        //         Plugin.FloatingWindowFont.UpdateFont();
+        //     });
+        // }
+        // ImGui.SameLine();
+        // if (ImGui.Button("reset font"))
+        // {
+        //     configuration.FloatingWindow.FontSpec = null;
+        //     configuration.Save();
+        //     Plugin.FloatingWindowFont.UpdateFont();
+        // }
 
         ImGui.Unindent();
     }
 
-    private static bool _fcO = false;
+    // private static bool _fcO = false;
 }

@@ -32,12 +32,12 @@ public sealed class FloatingWindowFont : IDisposable
         this.FontHandle?.Dispose();
         this.FontHandle = Plugin.PluginInterface.UiBuilder.FontAtlas.NewDelegateFontHandle(e => e.OnPreBuild(tk =>
         {
-            // tk.AddDalamudDefaultFont(
-            //     Math.Max(8, Plugin.Config.FloatingWindow.FontSize),
-            //     FontAtlasBuildToolkitUtilities.ToGlyphRange([
-            //         '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '.'
-            //     ])
-            // );
+            tk.AddDalamudDefaultFont(
+                Math.Max(8, Plugin.Config.FloatingWindow.FontSize),
+                FontAtlasBuildToolkitUtilities.ToGlyphRange([
+                    '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '.'
+                ])
+            );
             // var spec = (SingleFontSpec)(Plugin.Config.FloatingWindow.FontSpec ??
             //                             Plugin.PluginInterface.UiBuilder.DefaultFontSpec);
             // var specWithRanges = new SingleFontSpec()
@@ -53,9 +53,14 @@ public sealed class FloatingWindowFont : IDisposable
             //     ])
             // };
 
-            var spec = Plugin.Config.FloatingWindow.FontSpec ?? Plugin.PluginInterface.UiBuilder.DefaultFontSpec;
-            spec.AddToBuildToolkit(tk);
+            // var spec = Plugin.PluginInterface.UiBuilder.DefaultFontSpec;
+            // spec.AddToBuildToolkit(tk, font);
+            /// fontAtlas.NewDelegateFontHandle(
+            ///     e =&gt; e.OnPreBuild(
+            ///         tk =&gt; tk.AddDalamudDefaultFont(UiBuilder.DefaultFontSizePx)));
         }));
+
+        // this.FontHandle = Plugin.PluginInterface.UiBuilder.DefaultFontHandle
     }
 
     public void Dispose()
