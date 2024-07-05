@@ -38,4 +38,4 @@ changelog: |-
     - Use new texture loading for countdown
     - Migrate to the new font system, the floating window contents might be blurry, this will be fixed soon when I
       can implement font customization instead of always using the default dalamud one
-  
+  - Fix countdown being rounded instead of floored in floating window when disabling decimals

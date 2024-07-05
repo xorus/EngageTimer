@@ -78,7 +78,7 @@ public sealed class FloatingWindow
             pushVar = true;
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
         }
-        
+
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
         var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |
@@ -94,7 +94,7 @@ public sealed class FloatingWindow
 
             ImGui.PushStyleColor(ImGuiCol.Text, color);
             ImGui.SetWindowFontScale(Plugin.Config.FloatingWindow.Scale);
-            
+
             var stopwatchDecimals = Plugin.Config.FloatingWindow.DecimalStopwatchPrecision > 0;
 
             var text = ""; // text to be displayed
@@ -117,6 +117,7 @@ public sealed class FloatingWindow
                 var format = "{0:0." + new string('0', Plugin.Config.FloatingWindow.DecimalCountdownPrecision) +
                              "}";
                 var number = Plugin.State.CountDownValue + (Plugin.Config.FloatingWindow.AccurateMode ? 0 : 1);
+                if (Plugin.Config.FloatingWindow.DecimalCountdownPrecision == 0) number = (float)Math.Floor(number);
                 text = negative + string.Format(CultureInfo.InvariantCulture, format, number);
                 displayed = true;
             }
