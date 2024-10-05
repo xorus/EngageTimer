@@ -48,7 +48,6 @@ public static class CountdownTab
 
 
     private static bool _mocking;
-    private static double _mockStart;
     private static double _mockTarget;
 
     public static void UpdateMock()
@@ -75,7 +74,6 @@ public static class CountdownTab
             Plugin.State.InCombat = false;
             Plugin.State.CountDownValue = 12.23f;
             Plugin.State.CountingDown = true;
-            _mockStart = ImGui.GetTime();
         }
         else
         {

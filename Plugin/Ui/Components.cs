@@ -162,6 +162,7 @@ public static class Components
             if (!ImGui.Checkbox(label, ref value)) return;
             prop.SetValue(instance, value);
             Plugin.Config.Save();
+            customApply?.Invoke();
         }
         else if (foundType == FieldType.InputInt)
         {

@@ -147,6 +147,8 @@ public sealed class NumberTextures
         var watch = Stopwatch.StartNew();
         MaxTextureHeight = 0;
         MaxTextureWidth = 0;
+        
+        var createAltTextures = Plugin.Config.Countdown.Animate;
 
         var success = false;
         for (var i = 0; i < 10; i++)
@@ -156,24 +158,23 @@ public sealed class NumberTextures
                 {
                     var bytes = image.Data.ToArray();
                     var bytesAlt = new byte[bytes.Length];
-                    var configuration = Plugin.Config;
                     if (image.NumChannels == 4)
                         for (var p = 0; p < bytes.Length; p += 4)
                         {
                             var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
                             var hsl = HslConv.RgbToHsl(originalRgb);
-                            if (configuration.Countdown.NumberRecolorMode)
-                                hsl.H = Math.Clamp(configuration.Countdown.Hue, 0, 360);
+                            if (Plugin.Config.Countdown.NumberRecolorMode)
+                                hsl.H = Math.Clamp(Plugin.Config.Countdown.Hue, 0, 360);
                             else
-                                hsl.H += configuration.Countdown.Hue;
-                            hsl.S = Math.Clamp(hsl.S + configuration.Countdown.Saturation, 0f, 1f);
-                            hsl.L = Math.Clamp(hsl.L + configuration.Countdown.Luminance, 0f, 1f);
+                                hsl.H += Plugin.Config.Countdown.Hue;
+                            hsl.S = Math.Clamp(hsl.S + Plugin.Config.Countdown.Saturation, 0f, 1f);
+                            hsl.L = Math.Clamp(hsl.L + Plugin.Config.Countdown.Luminance, 0f, 1f);
                             var modifiedRgb = HslConv.HslToRgb(hsl);
                             bytes[p] = modifiedRgb.R;
                             bytes[p + 1] = modifiedRgb.G;
                             bytes[p + 2] = modifiedRgb.B;
 
-                            if (!configuration.Countdown.Animate) continue;
+                            if (!createAltTextures) continue;
                             var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
                             hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
                             var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
@@ -197,7 +198,7 @@ public sealed class NumberTextures
                     _numberTextures.Add(i, texture);
                     success = true;
 
-                    if (!configuration.Countdown.Animate) continue;
+                    if (!createAltTextures) continue;
                     _numberTexturesAlt.Remove(i);
                     _numberTexturesAlt.Add(i, textureAlt);
                 }
