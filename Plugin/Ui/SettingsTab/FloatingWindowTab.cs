@@ -15,6 +15,7 @@
 
 using System;
 using Dalamud.Interface.Components;
+// using Dalamud.Interface.ImGuiFontChooserDialog;
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
 using EngageTimer.Properties;
@@ -24,6 +25,8 @@ namespace EngageTimer.Ui.SettingsTab;
 
 public static class FloatingWindowTab
 {
+    // private static SingleFontChooserDialog? _fc;
+
     public static void Draw()
     {
         ImGui.PushTextWrapPos();
@@ -35,6 +38,7 @@ public static class FloatingWindowTab
         Components.AutoField(Plugin.Config.FloatingWindow, "Lock");
         ImGuiComponents.HelpMarker(Strings.Settings_FWTab_Lock_Help);
 
+        Components.AutoField(Plugin.Config.FloatingWindow, "HideInCutscenes");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHide");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHideTimeout", sameLine: true);
 
@@ -45,7 +49,7 @@ public static class FloatingWindowTab
 
         Components.AutoField(Plugin.Config.FloatingWindow, "EnableStopwatch");
         Components.AutoField(Plugin.Config.FloatingWindow, "DecimalStopwatchPrecision", sameLine: true);
-
+        
         ImGui.Separator();
         if (ImGui.CollapsingHeader(Translator.TrId("Settings_FWTab_Styling"))) FwStyling();
         ImGui.Separator();
@@ -81,13 +85,13 @@ public static class FloatingWindowTab
         Components.AutoField(Plugin.Config.FloatingWindow, "Scale");
 
         var configuration = Plugin.Config;
-        var textAlign = (int) configuration.FloatingWindow.Align;
+        var textAlign = (int)configuration.FloatingWindow.Align;
         if (ImGui.Combo(Translator.TrId("Settings_FWTab_TextAlign"), ref textAlign,
                 Strings.Settings_FWTab_TextAlign_Left + "###Left\0" +
                 Strings.Settings_FWTab_TextAlign_Center + "###Center\0" +
                 Strings.Settings_FWTab_TextAlign_Right + "###Right"))
         {
-            configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign) textAlign;
+            configuration.FloatingWindow.Align = (ConfigurationFile.TextAlign)textAlign;
             configuration.Save();
         }
 
@@ -96,8 +100,9 @@ public static class FloatingWindowTab
         {
             configuration.FloatingWindow.FontSize = Math.Max(0, fontSize);
             configuration.Save();
+            Plugin.FloatingWindowFont.UpdateFont();
 
-            if (configuration.FloatingWindow.FontSize >= 8) Plugin.PluginInterface.UiBuilder.RebuildFonts();
+            // if (configuration.FloatingWindow.FontSize >= 8) Plugin.PluginInterface.UiBuilder.RebuildFonts();
         }
 
         ImGui.EndGroup();
@@ -105,8 +110,46 @@ public static class FloatingWindowTab
         ImGui.BeginGroup();
         Components.AutoField(Plugin.Config.FloatingWindow, "TextColor");
         Components.AutoField(Plugin.Config.FloatingWindow, "BackgroundColor");
+        Components.AutoField(Plugin.Config.FloatingWindow, "ForceHideWindowBorder");
         ImGui.EndGroup();
+
+        // ImGui.Text("Font:");
+        // ImGui.SameLine();
+        // using (Plugin.FloatingWindowFont.FontHandle?.Push())
+        // {
+        //     if (configuration.FloatingWindow.FontSpec == null)
+        //         ImGui.Text("default");
+        //     else
+        //         ImGui.Text(configuration.FloatingWindow.FontSpec.ToString());
+        // }
+        //
+        // if (ImGui.Button("change font") && !_fcO)
+        // {
+        //     _fc = SingleFontChooserDialog.CreateAuto((UiBuilder)Plugin.PluginInterface.UiBuilder);
+        //     _fcO = true;
+        //     _fc.PreviewText = "-01:23.45 6789";
+        //     _fc.ResultTask.ContinueWith(task =>
+        //     {
+        //         _fcO = false;
+        //         if (!task.IsCompleted) return;
+        //         configuration.FloatingWindow.Font = _fc.SelectedFont;
+        //         
+        //         Plugin.Logger.Info("font chosen: " + _fc.SelectedFont);
+        //
+        //         configuration.Save();
+        //         Plugin.FloatingWindowFont.UpdateFont();
+        //     });
+        // }
+        // ImGui.SameLine();
+        // if (ImGui.Button("reset font"))
+        // {
+        //     configuration.FloatingWindow.FontSpec = null;
+        //     configuration.Save();
+        //     Plugin.FloatingWindowFont.UpdateFont();
+        // }
 
         ImGui.Unindent();
     }
+
+    // private static bool _fcO = false;
 }

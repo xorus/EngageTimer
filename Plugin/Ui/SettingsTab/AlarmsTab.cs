@@ -179,7 +179,7 @@ public static class AlarmsTab
         }
         {
             ImGui.TableNextColumn();
-            ImGui.Checkbox("###enabled" + index, ref alarm.Enabled);
+            if (ImGui.Checkbox("###enabled" + index, ref alarm.Enabled)) Plugin.Config.Save();
         }
         {
             ImGui.TableNextColumn();
@@ -211,10 +211,7 @@ public static class AlarmsTab
         }
         {
             ImGui.TableNextColumn();
-            if (ImGui.Checkbox("###blink", ref alarm.Blink))
-            {
-                Plugin.Config.Save();
-            }
+            if (ImGui.Checkbox("###blink", ref alarm.Blink)) Plugin.Config.Save();
         }
         {
             ImGui.TableNextColumn();
@@ -248,13 +245,13 @@ public static class AlarmsTab
             ImGui.TableNextColumn();
             if (EditingTexts.Contains(index))
             {
-                var type = (int) alarm.TextType;
+                var type = (int)alarm.TextType;
                 ImGui.PushItemWidth(150f);
                 if (ImGui.Combo("Type", ref type, Strings.AlarmEdit_Type_ChatLog + "\0"
                         + Strings.AlarmEdit_Type_DalamudNotification + "\0"
                         + Strings.AlarmEdit_Type_GameToast + "\0"))
                 {
-                    alarm.TextType = (CombatAlarmsConfiguration.TextType) type;
+                    alarm.TextType = (CombatAlarmsConfiguration.TextType)type;
                     Plugin.Config.Save();
                 }
 

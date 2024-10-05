@@ -48,7 +48,6 @@ public static class CountdownTab
 
 
     private static bool _mocking;
-    private static double _mockStart;
     private static double _mockTarget;
 
     public static void UpdateMock()
@@ -57,7 +56,7 @@ public static class CountdownTab
         if (_mockTarget == 0 || _mockTarget < ImGui.GetTime()) _mockTarget = ImGui.GetTime() + 30d;
 
         Plugin.State.CountingDown = true;
-        Plugin.State.CountDownValue = (float) (_mockTarget - ImGui.GetTime());
+        Plugin.State.CountDownValue = (float)(_mockTarget - ImGui.GetTime());
     }
 
     public static void OnClose()
@@ -75,7 +74,6 @@ public static class CountdownTab
             Plugin.State.InCombat = false;
             Plugin.State.CountDownValue = 12.23f;
             Plugin.State.CountingDown = true;
-            _mockStart = ImGui.GetTime();
         }
         else
         {
@@ -146,7 +144,7 @@ public static class CountdownTab
         ImGui.Unindent();
     }
 
-    public static void CountdownHideOptions()
+    private static void CountdownHideOptions()
     {
         var cdStatus = 0;
         if (Plugin.Config.Countdown.HideOriginalAddon) cdStatus = 1;
@@ -202,7 +200,7 @@ public static class CountdownTab
         if (ImGui.DragFloat("Settings_CountdownTab_OffsetX".TrId(), ref countdownOffsetX, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                Plugin.Config.Countdown.WindowOffset with {X = countdownOffsetX / 100};
+                Plugin.Config.Countdown.WindowOffset with { X = countdownOffsetX / 100 };
             Plugin.Config.Save();
         }
 
@@ -212,7 +210,7 @@ public static class CountdownTab
         if (ImGui.DragFloat("Settings_CountdownTab_OffsetY".TrId(), ref countdownOffsetY, .1f))
         {
             Plugin.Config.Countdown.WindowOffset =
-                Plugin.Config.Countdown.WindowOffset with {Y = countdownOffsetY / 100};
+                Plugin.Config.Countdown.WindowOffset with { Y = countdownOffsetY / 100 };
             Plugin.Config.Save();
         }
 
@@ -236,13 +234,13 @@ public static class CountdownTab
 
         ImGui.PopItemWidth();
 
-        var align = (int) Plugin.Config.Countdown.Align;
+        var align = (int)Plugin.Config.Countdown.Align;
         if (ImGui.Combo("Settings_CountdownTab_CountdownAlign".TrId(), ref align,
                 "Settings_FWTab_TextAlign_Left".Tr() + "###Left\0" +
                 "Settings_FWTab_TextAlign_Center".Tr() + "###Center\0" +
                 "Settings_FWTab_TextAlign_Right".Tr() + "###Right"))
         {
-            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign) align;
+            Plugin.Config.Countdown.Align = (ConfigurationFile.TextAlign)align;
             Plugin.Config.Save();
         }
 

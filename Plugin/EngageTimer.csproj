@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <Platforms>AnyCPU</Platforms>
-        <LangVersion>10</LangVersion>
+        <LangVersion>12</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-        <AssemblyVersion>2.3.2.0</AssemblyVersion>
+        <AssemblyVersion>2.4.1.0</AssemblyVersion>
         <Deterministic>false</Deterministic>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -17,6 +17,8 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <AssemblyName>EngageTimer</AssemblyName>
         <Nullable>enable</Nullable>
+        <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -65,7 +67,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.12"/>
+        <PackageReference Include="DalamudPackager" Version="2.1.13" />
         <PackageReference Include="EmbedIO" Version="3.5.2"/>
         <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
@@ -90,6 +92,15 @@
 
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
+        <DalamudLibPath>$(DALAMUD_HOME)/</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.xlcore/dalamud/Hooks/dev/</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
+        <DalamudLibPath Condition="$(DALAMUD_HOME) != ''">$(DALAMUD_HOME)/</DalamudLibPath>
     </PropertyGroup>
 
     <ItemGroup>

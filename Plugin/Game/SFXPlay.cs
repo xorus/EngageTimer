@@ -21,12 +21,13 @@ namespace EngageTimer.Game;
 /**
  * thanks aers
  * sig taken from https://github.com/philpax/plogonscript/blob/main/PlogonScript/Script/Bindings/Sound.cs
+ * https://github.com/0ceal0t/JobBars/blob/2c9bef8dd4f0bf9ebc91c07e03da6c841ac2bd35/JobBars/Helper/UiHelper.GameFunctions.cs#L61
  * ---
  * https://discord.com/channels/581875019861328007/653504487352303619/988123102116450335
  */
 internal unsafe class GameSound
 {
-    [Signature("E8 ?? ?? ?? ?? 4D 39 BE ?? ?? ?? ??")]
+    [Signature("E8 ?? ?? ?? ?? 48 63 45 80")]
     public readonly delegate* unmanaged<uint, IntPtr, IntPtr, byte, void> PlaySoundEffect = null;
 
     public GameSound()
@@ -45,10 +46,10 @@ public class SfxPlay
     public SfxPlay()
     {
         /* Force a sound to play on load as a workaround for the CLR taking some time to init the pointy method call,
-         * we dont want a freeze midway through a countdown
+         * we don't want a freeze midway through a countdown (or midway in combat for alarms)
          * https://discord.com/channels/581875019861328007/653504487352303619/988123102116450335
          * https://i.imgur.com/BrLUr2p.png
-         * */
+         */
         SoundEffect(0); // should be cursor sound
     }
 

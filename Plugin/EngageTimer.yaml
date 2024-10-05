@@ -33,4 +33,5 @@ image_urls:
 category_tags:
   - jobs
 changelog: |-
-  - Add an option to draw the custom 0-5 numbers without hiding the original countdown
+  - Option to hide the stopwatch/floating window in cutscenes
+  - Enabling light effect animation would show an error texture and required a plugin restart to be loaded properly 

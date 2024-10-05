@@ -26,8 +26,8 @@ public static class WebServerTab
     public static void Draw()
     {
         ImGui.PushTextWrapPos();
-        Components.Text("Settings_Web_Help");
-        Components.Text("Settings_Web_HelpAdd");
+        Components.Text("Settings_Web_Help".Tr());
+        Components.Text("Settings_Web_HelpAdd".Tr());
         ImGui.Text($"http://localhost:{Plugin.Config.WebServer.Port}/");
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Copy))

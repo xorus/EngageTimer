@@ -19,6 +19,7 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
 using EngageTimer.Configuration;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
 
 namespace EngageTimer.Status;
 
@@ -43,7 +44,7 @@ public class CombatStopwatch
             // if anyone in the party is in combat
             foreach (var actor in Plugin.PartyList)
             {
-                if (actor.GameObject is not Character character ||
+                if (actor.GameObject is not ICharacter character ||
                     (character.StatusFlags & StatusFlags.InCombat) == 0) continue;
                 inCombat = true;
                 break;

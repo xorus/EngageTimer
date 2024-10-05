@@ -30,7 +30,7 @@ namespace EngageTimer;
 [PublicAPI]
 public sealed class Plugin : IDalamudPlugin
 {
-    [PluginService] public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+    [PluginService] public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
     [PluginService] public static IGameGui GameGui { get; private set; } = null!;
     [PluginService] public static ICommandManager Commands { get; private set; } = null!;
     [PluginService] public static ICondition Condition { get; private set; } = null!;
@@ -42,6 +42,8 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IPluginLog Logger { get; private set; } = null!;
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;
     [PluginService] public static IToastGui ToastGui { get; private set; } = null!;
+    [PluginService] public static INotificationManager NotificationManager { get; private set; } = null!;
+    [PluginService] public static ITextureProvider TextureProvider { get; private set; } = null!;
     public static ConfigurationFile Config { get; private set; } = null!;
     public static State State { get; private set; } = null!;
     public static PluginUi PluginUi { get; private set; } = null!;
@@ -52,8 +54,9 @@ public sealed class Plugin : IDalamudPlugin
     private static SettingsCommand SettingsCommand { get; set; } = null!;
     public static CombatAlarm CombatAlarm { get; set; } = null!;
     public static SfxPlay SfxPlay { get; set; } = null!;
+    public static FloatingWindowFont FloatingWindowFont { get; set; } = null!;
 
-    public Plugin(DalamudPluginInterface pluginInterface)
+    public Plugin(IDalamudPluginInterface pluginInterface)
     {
         PluginPath = PluginInterface.AssemblyLocation.DirectoryName ??
                      throw new InvalidOperationException("Cannot find plugin directory");
@@ -63,6 +66,7 @@ public sealed class Plugin : IDalamudPlugin
         FrameworkThings = new FrameworkThings();
         MainCommand = new MainCommand();
         SettingsCommand = new SettingsCommand();
+        FloatingWindowFont = new FloatingWindowFont();
         PluginUi = new PluginUi();
         CombatAlarm = new CombatAlarm();
         SfxPlay = new SfxPlay();
@@ -77,5 +81,6 @@ public sealed class Plugin : IDalamudPlugin
         FrameworkThings.Dispose();
         MainCommand.Dispose();
         SettingsCommand.Dispose();
+        FloatingWindowFont.Dispose();
     }
 }

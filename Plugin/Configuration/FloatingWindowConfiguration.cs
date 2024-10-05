@@ -16,7 +16,9 @@
 #nullable enable
 using System;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.FontIdentifier;
 using EngageTimer.Attributes;
 using EngageTimer.Ui;
 
@@ -48,12 +50,18 @@ public class FloatingWindowConfiguration
 
     [AutoField("Settings_FWTab_DisplayStopwatchOnlyInDuty")]
     public bool StopwatchOnlyInDuty { get; set; } = false;
+    
+    [AutoField("Settings_FWTab_HideInCutscenes")]
+    public bool HideInCutscenes { get; set; } = true;
 
     [AutoField("Settings_FWTab_StopwatchAsSeconds")]
     public bool StopwatchAsSeconds { get; set; } = false;
 
     [AutoField("Settings_FWTab_CountdownNegativeSign")]
     public bool CountdownNegativeSign { get; set; } = true;
+    
+    [AutoField("Settings_FWTab_ForceHideWindowBorder")]
+    public bool ForceHideWindowBorder { get; set; } = true;
 
     [AutoField("Settings_CountdownTab_FloatingWindowScale", Components.FieldType.DragFloat, .01f, .05f, 15f),
      ItemWidth(100f)]
@@ -78,6 +86,9 @@ public class FloatingWindowConfiguration
     public ConfigurationFile.TextAlign Align { get; set; } = ConfigurationFile.TextAlign.Left;
 
     public int FontSize { get; set; } = 16;
+    
+    // [JsonIgnore] public IFontSpec? FontSpec { get; set; } = null;
+    // public IFontSpec? Font { get; set; } = null;
 
     [AutoField("Settings_FWTab_AutoHide_Left")]
     public bool AutoHide { get; set; } = true;

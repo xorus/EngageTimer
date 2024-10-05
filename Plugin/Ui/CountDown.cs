@@ -43,7 +43,7 @@ public sealed class CountDown : IDisposable
      *
      * In my testing, this is about 10 to 20ms.
      */
-    private bool _firstDraw = true;
+    private int _firstDrawTicks = 5;
 
     private int _lastSecond;
     private bool _wasInMainViewport = true;
@@ -88,9 +88,14 @@ public sealed class CountDown : IDisposable
         if (ImGui.Begin(WindowTitle, ref visible, flags))
         {
             ImGui.Text("");
+            for (var i = 0; i <= 9; i++)
+            {
+                DrawNumber(false, i, 0.001f, 0f, 1f, false);
+                DrawNumber(true, i, 0.001f, 0f, 1f, false);
+            }
         }
 
-        _firstDraw = false;
+        _firstDrawTicks--;
     }
 
     public void Draw()
@@ -112,7 +117,12 @@ public sealed class CountDown : IDisposable
 //         ImGui.End();
 // #endif
 
-        if (_firstDraw) FirstDraw();
+        if (_firstDrawTicks > 0)
+        {
+            FirstDraw();
+            return;
+        }
+
         if (!Plugin.Config.Countdown.Display || !Plugin.State.CountingDown) return;
 
         var showMainCountdown = Plugin.Config.Countdown.HideOriginalAddon ||
@@ -130,7 +140,7 @@ public sealed class CountDown : IDisposable
 
             if (Plugin.Config.Countdown.Animate)
             {
-                var second = (int) Plugin.State.CountDownValue;
+                var second = (int)Plugin.State.CountDownValue;
                 if (_lastSecond != second)
                 {
                     _easing.Restart();
@@ -143,7 +153,7 @@ public sealed class CountDown : IDisposable
                 if (Plugin.Config.Countdown.AnimateScale)
                 {
                     maxNumberScale = numberScale + NumberEasing.StartSize;
-                    numberScale += NumberEasing.StartSize * (1 - (float) _easing.Value);
+                    numberScale += NumberEasing.StartSize * (1 - (float)_easing.Value);
                 }
             }
         }
@@ -190,7 +200,7 @@ public sealed class CountDown : IDisposable
                     ImGui.GetWindowPos(),
                     ImGui.GetWindowPos() + ImGui.GetWindowSize(),
                     ImGui.GetColorU32(ImGuiCol.Text), 0f, ImDrawFlags.None,
-                    7f + (float) Math.Sin(ImGui.GetTime() * 2) * 5f);
+                    7f + (float)Math.Sin(ImGui.GetTime() * 2) * 5f);
                 d.AddRect(
                     ImGui.GetWindowPos(),
                     ImGui.GetWindowPos() + ImGui.GetWindowSize(),
@@ -202,7 +212,7 @@ public sealed class CountDown : IDisposable
             DrawCountdown(showMainCountdown, numberScale, negativeMargin, false);
             if (Plugin.Config.Countdown.Animate && Plugin.Config.Countdown.AnimateOpacity)
             {
-                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float) _easingOpacity.Value);
+                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
                 DrawCountdown(showMainCountdown, numberScale, negativeMargin, true);
                 ImGui.PopStyleVar();
             }

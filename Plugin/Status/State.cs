@@ -22,6 +22,7 @@ public class State
 {
     private bool _countingDown;
     private bool _inCombat;
+    public bool InCutscene { get; set; }
     public TimeSpan CombatDuration { get; set; }
     public DateTime CombatEnd { get; set; }
     public DateTime CombatStart { get; set; }

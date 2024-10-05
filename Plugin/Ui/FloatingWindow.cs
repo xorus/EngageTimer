@@ -15,34 +15,20 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Numerics;
-using Dalamud.Interface;
 using EngageTimer.Configuration;
-using EngageTimer.Status;
 using ImGuiNET;
 
 namespace EngageTimer.Ui;
 
-public sealed class FloatingWindow : IDisposable
+public sealed class FloatingWindow
 {
     private const float WindowPadding = 5f;
-
-    private bool _firstLoad = true;
-    private ImFontPtr _font;
-    private ImFontGlyphRangesBuilderPtr? _grBuilder;
 
     private float _maxTextWidth;
     private float _paddingLeft;
     private float _paddingRight;
     private bool _stopwatchVisible;
-    private bool _triggerFontRebuild = true;
-    private bool _useFont;
-
-    public FloatingWindow()
-    {
-        Plugin.PluginInterface.UiBuilder.BuildFonts += BuildFont;
-    }
 
     public bool StopwatchVisible
     {
@@ -50,38 +36,26 @@ public sealed class FloatingWindow : IDisposable
         set => _stopwatchVisible = value;
     }
 
-    public void Dispose()
-    {
-        Plugin.PluginInterface.UiBuilder.BuildFonts -= BuildFont;
-        _grBuilder?.Destroy();
-        Plugin.PluginInterface.UiBuilder.RebuildFonts();
-    }
-
     public void Draw()
     {
         if (!Plugin.Config.FloatingWindow.Display) return;
-        if (_triggerFontRebuild)
-        {
-            Plugin.PluginInterface.UiBuilder.RebuildFonts();
-            return;
-        }
-
         var stopwatchActive = StopwatchActive();
         var countdownActive = CountdownActive();
 
-        if (!_firstLoad && !stopwatchActive && !countdownActive) return;
+        if (!stopwatchActive && !countdownActive) return;
 
-        if (_useFont && _font.IsLoaded()) ImGui.PushFont(_font);
-        DrawWindow(stopwatchActive, countdownActive);
-        if (_useFont && _font.IsLoaded()) ImGui.PopFont();
-
-        if (_firstLoad) _firstLoad = false;
+        using (Plugin.FloatingWindowFont.FontHandle?.Push())
+        {
+            DrawWindow(stopwatchActive, countdownActive);
+        }
     }
 
     private static bool StopwatchActive()
     {
         var displayStopwatch = Plugin.Config.FloatingWindow.EnableStopwatch;
         if (!displayStopwatch) return false;
+
+        if (Plugin.Config.FloatingWindow.HideInCutscenes && Plugin.State.InCutscene) return false;
 
         if (Plugin.Config.FloatingWindow.AutoHide &&
             (DateTime.Now - Plugin.State.CombatEnd).TotalSeconds > Plugin.Config.FloatingWindow.AutoHideTimeout)
@@ -99,9 +73,18 @@ public sealed class FloatingWindow : IDisposable
     private void DrawWindow(bool stopwatchActive, bool countdownActive)
     {
         // ImGui.SetNextWindowBgAlpha(_configuration.FloatingWindow.FloatingWindowBackgroundColor.Z);
+        var pushVar = false;
+        if (Plugin.Config.FloatingWindow.ForceHideWindowBorder)
+        {
+            // prevent glitches is user is spamming the checkbox button
+            pushVar = true;
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+        }
+
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Plugin.Config.FloatingWindow.BackgroundColor);
 
-        var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar;
+        var flags = ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollbar |
+                    ImGuiWindowFlags.NoFocusOnAppearing;
         if (Plugin.Config.FloatingWindow.Lock) flags |= ImGuiWindowFlags.NoMouseInputs;
 
         if (ImGui.Begin("EngageTimer stopwatch", ref _stopwatchVisible, flags))
@@ -136,6 +119,7 @@ public sealed class FloatingWindow : IDisposable
                 var format = "{0:0." + new string('0', Plugin.Config.FloatingWindow.DecimalCountdownPrecision) +
                              "}";
                 var number = Plugin.State.CountDownValue + (Plugin.Config.FloatingWindow.AccurateMode ? 0 : 1);
+                if (Plugin.Config.FloatingWindow.DecimalCountdownPrecision == 0) number = (float)Math.Floor(number);
                 text = negative + string.Format(CultureInfo.InvariantCulture, format, number);
                 displayed = true;
             }
@@ -185,7 +169,6 @@ public sealed class FloatingWindow : IDisposable
                     _paddingRight = 0f;
                 }
 
-
                 var size = ImGui.CalcTextSize(text);
                 ImGui.SetCursorPosY(0f);
                 ImGui.SetCursorPosX(_paddingLeft + WindowPadding);
@@ -207,49 +190,6 @@ public sealed class FloatingWindow : IDisposable
         }
 
         ImGui.PopStyleColor();
-    }
-
-
-    /**
-     * UI font code adapted from ping plugin by karashiiro
-     * https://github.com/karashiiro/PingPlugin/blob/feex/PingPlugin/PingUI.cs
-     */
-    private unsafe void BuildFont()
-    {
-        _triggerFontRebuild = false;
-
-        _grBuilder?.Destroy();
-        try
-        {
-            // attempt to load the correct font (I'm only using numbers anyway)
-            string[] fonts = { "NotoSansCJKsc-Medium.otf", "NotoSansCJKjp-Medium.otf" };
-            string? filePath = null;
-            foreach (var font in fonts)
-            {
-                filePath = Path.Combine(Plugin.PluginInterface.DalamudAssetDirectory.FullName, "UIRes", font);
-                if (File.Exists(filePath)) break;
-                filePath = null;
-            }
-
-            if (filePath == null) throw new FileNotFoundException("Font file not found!");
-
-            var grBuilder =
-                new ImFontGlyphRangesBuilderPtr(ImGuiNative.ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder());
-            // the "z" at the end of this range is still required because of a dalamud issue that somehow removes the
-            // ":" from my text range.
-            grBuilder.AddText("-0123456789:.z");
-            grBuilder.BuildRanges(out var ranges);
-            _font = ImGui.GetIO().Fonts.AddFontFromFileTTF(filePath,
-                Math.Max(8, Plugin.Config.FloatingWindow.FontSize),
-                null, ranges.Data);
-
-            _grBuilder = grBuilder;
-        }
-        catch (Exception e)
-        {
-            Plugin.Logger.Error(e.Message);
-        }
-
-        _useFont = true;
+        if (pushVar) ImGui.PopStyleVar();
     }
 }
