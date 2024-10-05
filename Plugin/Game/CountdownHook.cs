@@ -63,6 +63,7 @@ public sealed class CountdownHook : IDisposable
         if (_state.Mocked) return;
         UpdateCountDown();
         _state.InInstance = Plugin.Condition[ConditionFlag.BoundByDuty];
+        _state.InCutscene = Plugin.Condition[ConditionFlag.OccupiedInCutSceneEvent];
     }
 
     private void UpdateCountDown()

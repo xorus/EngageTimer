@@ -50,6 +50,9 @@ public class FloatingWindowConfiguration
 
     [AutoField("Settings_FWTab_DisplayStopwatchOnlyInDuty")]
     public bool StopwatchOnlyInDuty { get; set; } = false;
+    
+    [AutoField("Settings_FWTab_HideInCutscenes")]
+    public bool HideInCutscenes { get; set; } = true;
 
     [AutoField("Settings_FWTab_StopwatchAsSeconds")]
     public bool StopwatchAsSeconds { get; set; } = false;

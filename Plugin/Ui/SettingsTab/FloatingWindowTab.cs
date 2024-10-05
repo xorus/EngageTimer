@@ -41,6 +41,7 @@ public static class FloatingWindowTab
         Components.AutoField(Plugin.Config.FloatingWindow, "Lock");
         ImGuiComponents.HelpMarker(Strings.Settings_FWTab_Lock_Help);
 
+        Components.AutoField(Plugin.Config.FloatingWindow, "HideInCutscenes");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHide");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHideTimeout", sameLine: true);
 
@@ -51,7 +52,7 @@ public static class FloatingWindowTab
 
         Components.AutoField(Plugin.Config.FloatingWindow, "EnableStopwatch");
         Components.AutoField(Plugin.Config.FloatingWindow, "DecimalStopwatchPrecision", sameLine: true);
-
+        
         ImGui.Separator();
         if (ImGui.CollapsingHeader(Translator.TrId("Settings_FWTab_Styling"))) FwStyling();
         ImGui.Separator();
