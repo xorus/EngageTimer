@@ -637,9 +637,9 @@ help text for the /eg settings command</comment>
       <value>À propos</value>
     </data>
   <data name="Settings_FWTab_ForceHideWindowBorder" xml:space="preserve">
-      <value>Hide window border</value>
+      <value>Désactiver la bordure</value>
     </data>
   <data name="Settings_FWTab_HideInCutscenes" xml:space="preserve">
-      <value>Hide in cutscenes</value>
+      <value>Cacher pendant les cinématiques</value>
     </data>
 </root>
