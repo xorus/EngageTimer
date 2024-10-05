@@ -14,11 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Threading.Tasks;
-using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using Dalamud.Interface.FontIdentifier;
-using Dalamud.Interface.ImGuiFontChooserDialog;
+// using Dalamud.Interface.ImGuiFontChooserDialog;
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
 using EngageTimer.Properties;
