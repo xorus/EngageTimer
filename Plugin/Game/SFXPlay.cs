@@ -14,34 +14,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using Dalamud.Utility.Signatures;
+using System.Diagnostics;
+using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace EngageTimer.Game;
-
-/**
- * thanks aers
- * sig taken from https://github.com/philpax/plogonscript/blob/main/PlogonScript/Script/Bindings/Sound.cs
- * https://github.com/0ceal0t/JobBars/blob/2c9bef8dd4f0bf9ebc91c07e03da6c841ac2bd35/JobBars/Helper/UiHelper.GameFunctions.cs#L61
- * ---
- * https://discord.com/channels/581875019861328007/653504487352303619/988123102116450335
- */
-internal unsafe class GameSound
-{
-    [Signature("E8 ?? ?? ?? ?? 48 63 45 80")]
-    public readonly delegate* unmanaged<uint, IntPtr, IntPtr, byte, void> PlaySoundEffect = null;
-
-    public GameSound()
-    {
-        Plugin.GameInterop.InitializeFromAttributes(this);
-    }
-}
 
 public class SfxPlay
 {
     public const uint FirstSeSfx = 37 - 1;
     public const uint SmallTick = 29;
     public const uint CdTick = 48;
-    private readonly GameSound _gameSound = new();
 
     public SfxPlay()
     {
@@ -53,11 +35,11 @@ public class SfxPlay
         SoundEffect(0); // should be cursor sound
     }
 
-    public unsafe void SoundEffect(uint id)
+    public void SoundEffect(uint id)
     {
         // var s = new Stopwatch();
         // s.Start();
-        _gameSound.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
+        UIGlobals.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
         // s.Stop();
         // Plugin.Logger.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
     }
