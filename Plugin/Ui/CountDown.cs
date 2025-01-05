@@ -94,6 +94,7 @@ public sealed class CountDown : IDisposable
                 DrawNumber(true, i, 0.001f, 0f, 1f, false);
             }
         }
+        ImGui.End();
 
         _firstDrawTicks--;
     }
