@@ -31,15 +31,13 @@
         <None Update="images\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <EmbeddedResource Update="Resources\strings.resx">
+        <EmbeddedResource Update="Properties\Strings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>strings.Designer.cs</LastGenOutput>
+            <StronglyTypedFileName>Properties\Strings.Designer.cs</StronglyTypedFileName>
+            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+            <StronglyTypedNamespace>EngageTimer.Properties</StronglyTypedNamespace>
+            <StronglyTypedClassName>Strings</StronglyTypedClassName>
         </EmbeddedResource>
-        <Compile Update="Resources\strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>strings.resx</DependentUpon>
-        </Compile>
         <None Update="Data\numbers\default\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -49,6 +47,9 @@
         <None Update="Data\numbers\wow\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <EmbeddedResource Update="Properties\Strings.en.resx">
+          <DependentUpon>Strings.resx</DependentUpon>
+        </EmbeddedResource>
         <EmbeddedResource Update="Properties\Strings.de.resx">
           <DependentUpon>Strings.resx</DependentUpon>
         </EmbeddedResource>
@@ -73,14 +74,6 @@
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
         <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
         <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Properties\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
