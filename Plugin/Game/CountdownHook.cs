@@ -64,6 +64,7 @@ public sealed class CountdownHook : IDisposable
         UpdateCountDown();
         _state.InInstance = Plugin.Condition[ConditionFlag.BoundByDuty];
         _state.InCutscene = Plugin.Condition[ConditionFlag.OccupiedInCutSceneEvent];
+        _state.OccupiedInCombat = Plugin.Condition[ConditionFlag.Occupied38];
     }
 
     private void UpdateCountDown()
