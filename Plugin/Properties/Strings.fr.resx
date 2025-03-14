@@ -642,4 +642,10 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_HideInCutscenes" xml:space="preserve">
       <value>Cacher pendant les cinématiques</value>
     </data>
+  <data name="Settings_FWTab_HideWhileOccupiedInCombat" xml:space="preserve">
+      <value>Cacher pendant les cinématiques de combat</value>
+    </data>
+  <data name="Settings_FWTab_HideWhileOccupiedInCombat_Help" xml:space="preserve">
+      <value>Cache la petite fenêtre pendant les cinématiques / transitions en instance</value>
+    </data>
 </root>
