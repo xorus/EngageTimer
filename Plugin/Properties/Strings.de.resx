@@ -642,4 +642,7 @@ help text for the /eg settings command</comment>
   <data name="Settings_FWTab_HideInCutscenes" xml:space="preserve">
       <value>Hide in cutscenes</value>
     </data>
+  <data name="Settings_FWTab_HideWhileOccupiedInCombat" xml:space="preserve">
+      <value>Hide while occupied in combat.</value>
+    </data>
 </root>
