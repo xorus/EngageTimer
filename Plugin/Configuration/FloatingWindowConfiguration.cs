@@ -90,8 +90,8 @@ public class FloatingWindowConfiguration
 
     public int FontSize { get; set; } = 16;
     
-    // [JsonIgnore] public IFontSpec? FontSpec { get; set; } = null;
-    // public IFontSpec? Font { get; set; } = null;
+    [JsonIgnore] public IFontSpec? FontSpec { get; set; } = null;
+    public IFontSpec? Font { get; set; } = null;
 
     [AutoField("Settings_FWTab_AutoHide_Left")]
     public bool AutoHide { get; set; } = true;
