@@ -39,6 +39,13 @@ public static class FloatingWindowTab
         ImGuiComponents.HelpMarker(Strings.Settings_FWTab_Lock_Help);
 
         Components.AutoField(Plugin.Config.FloatingWindow, "HideInCutscenes");
+        if (Plugin.Config.FloatingWindow.HideInCutscenes)
+        {
+            ImGui.Indent();
+            Components.AutoField(Plugin.Config.FloatingWindow, "HideWhileOccupiedInCombat");
+            ImGui.Unindent();
+        }
+        
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHide");
         Components.AutoField(Plugin.Config.FloatingWindow, "AutoHideTimeout", sameLine: true);
 

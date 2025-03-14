@@ -56,6 +56,8 @@ public sealed class FloatingWindow
         if (!displayStopwatch) return false;
 
         if (Plugin.Config.FloatingWindow.HideInCutscenes && Plugin.State.InCutscene) return false;
+        
+        if (Plugin.Config.FloatingWindow.HideWhileOccupiedInCombat && Plugin.State.OccupiedInCombat) return false;
 
         if (Plugin.Config.FloatingWindow.AutoHide &&
             (DateTime.Now - Plugin.State.CombatEnd).TotalSeconds > Plugin.Config.FloatingWindow.AutoHideTimeout)

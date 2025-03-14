@@ -54,6 +54,9 @@ public class FloatingWindowConfiguration
     [AutoField("Settings_FWTab_HideInCutscenes")]
     public bool HideInCutscenes { get; set; } = true;
 
+    [AutoField("Settings_FWTab_HideWhileOccupiedInCombat")]
+    public bool HideWhileOccupiedInCombat { get; set; } = false;
+
     [AutoField("Settings_FWTab_StopwatchAsSeconds")]
     public bool StopwatchAsSeconds { get; set; } = false;
 
