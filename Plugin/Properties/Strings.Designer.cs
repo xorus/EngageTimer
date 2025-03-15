@@ -1295,7 +1295,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hide while occupied in combat.
+        ///   Looks up a localized string similar to Hide in combat cutscenes.
         /// </summary>
         internal static string Settings_FWTab_HideWhileOccupiedInCombat {
             get {
@@ -1304,7 +1304,7 @@ namespace EngageTimer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hides the floating window during transition cutscenes that occur in combat..
+        ///   Looks up a localized string similar to Hides the floating window during transition cutscenes that occur mid-combat (&quot;Occupied38&quot; flag).
         /// </summary>
         internal static string Settings_FWTab_HideWhileOccupiedInCombat_Help {
             get {
