@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <Platforms>AnyCPU</Platforms>
         <LangVersion>12</LangVersion>
@@ -68,11 +68,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="11.0.0" />
+        <PackageReference Include="DalamudPackager" Version="12.0.0" />
         <PackageReference Include="EmbedIO" Version="3.5.2"/>
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
-        <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+        <PackageReference Include="System.ValueTuple" Version="4.6.1" />
         <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
     </ItemGroup>
 
