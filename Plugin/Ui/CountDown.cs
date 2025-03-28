@@ -154,7 +154,7 @@ public sealed class CountDown : IDisposable
                 if (Plugin.Config.Countdown.AnimateScale)
                 {
                     maxNumberScale = numberScale + NumberEasing.StartSize;
-                    numberScale += NumberEasing.StartSize * (1 - (float)_easing.Value);
+                    numberScale += NumberEasing.StartSize * (1 - (float)_easing.ValueUnclamped);
                 }
             }
         }
@@ -213,7 +213,7 @@ public sealed class CountDown : IDisposable
             DrawCountdown(showMainCountdown, numberScale, negativeMargin, false);
             if (Plugin.Config.Countdown.Animate && Plugin.Config.Countdown.AnimateOpacity)
             {
-                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.Value);
+                ImGui.PushStyleVar(ImGuiStyleVar.Alpha, (float)_easingOpacity.ValueUnclamped);
                 DrawCountdown(showMainCountdown, numberScale, negativeMargin, true);
                 ImGui.PopStyleVar();
             }
