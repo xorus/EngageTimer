@@ -27,7 +27,7 @@ public class OpacityEasing : Easing
     // https://www.desmos.com/calculator/6btgm8tjk0
     public override void Update()
     {
-        Value = Math.Clamp(
+        ValueUnclamped = Math.Clamp(
             0.08 - 0.9 * Math.Sin(3 - 7.5 * Progress)
             , 0d, 1d);
     }

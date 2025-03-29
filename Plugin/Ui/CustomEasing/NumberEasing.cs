@@ -32,6 +32,6 @@ public class NumberEasing : Easing
     public override void Update()
     {
         if (this.Progress > 1) return;
-        this.Value = this.Progress;
+        this.ValueUnclamped = this.Progress;
     }
 }

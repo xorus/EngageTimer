@@ -121,6 +121,10 @@
             <HintPath>$(DalamudLibPath)StbiSharp.dll</HintPath>
             <Private>false</Private>
         </Reference>
+        <Reference Include="InteropGenerator.Runtime, Culture=neutral, PublicKeyToken=null">
+            <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
     </ItemGroup>
 
     <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
