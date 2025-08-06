@@ -22,7 +22,7 @@ using Dalamud.Interface.Components;
 using EngageTimer.Attributes;
 using EngageTimer.Localization;
 using EngageTimer.Properties;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui;
 
@@ -237,7 +237,7 @@ public static class Components
         else if (foundType == FieldType.InputText)
         {
             var value = (string)(prop.GetValue(instance) ?? "");
-            if (!ImGui.InputText(label, ref value, (uint)(max ?? 100))) return;
+            if (!ImGui.InputText(label, ref value, (int)(max ?? 100))) return;
             prop.SetValue(instance, value);
             Plugin.Config.Save();
             customApply?.Invoke();

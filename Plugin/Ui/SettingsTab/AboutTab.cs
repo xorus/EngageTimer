@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Diagnostics;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui.SettingsTab;
 

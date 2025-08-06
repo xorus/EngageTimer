@@ -17,7 +17,7 @@ using System;
 using System.Globalization;
 using System.Numerics;
 using EngageTimer.Configuration;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui;
 

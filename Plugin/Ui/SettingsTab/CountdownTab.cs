@@ -23,7 +23,7 @@ using Dalamud.Plugin.Internal.Profiles;
 using EngageTimer.Configuration;
 using EngageTimer.Localization;
 using EngageTimer.Ui.Color;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui.SettingsTab;
 
@@ -254,7 +254,7 @@ public static class CountdownTab
         const float scale = .5f;
         ImGui.BeginGroup();
         if (ImGui.ImageButton(
-                texture.ImGuiHandle,
+                texture.Handle,
                 new Vector2(texture.Width * scale, texture.Height * scale)
             ))
         {

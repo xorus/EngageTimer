@@ -22,7 +22,7 @@ using EngageTimer.Configuration;
 using EngageTimer.Localization;
 using EngageTimer.Properties;
 using EngageTimer.Status;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui.SettingsTab;
 

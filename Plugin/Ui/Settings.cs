@@ -17,7 +17,7 @@ using Dalamud.Interface.Windowing;
 using EngageTimer.Localization;
 using EngageTimer.Properties;
 using EngageTimer.Ui.SettingsTab;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui;
 

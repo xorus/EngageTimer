@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="Data\**" CopyToOutputDirectory="Always"/>
-        <Content Include="images\**" CopyToOutputDirectory="Always"/>
+        <Content Include="Data\**" CopyToOutputDirectory="Always" />
+        <Content Include="images\**" CopyToOutputDirectory="Always" />
         <Content Include="Properties\Strings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <StronglyTypedFileName>Properties\Strings.Designer.cs</StronglyTypedFileName>
@@ -19,17 +19,19 @@
             <StronglyTypedNamespace>EngageTimer.Properties</StronglyTypedNamespace>
             <StronglyTypedClassName>Strings</StronglyTypedClassName>
         </Content>
-        <Content Include="Data\numbers\default\*" CopyToOutputDirectory="Always"/>
-        <Content Include="Data\numbers\yellow\*" CopyToOutputDirectory="Always"/>
-        <Content Include="Data\numbers\wow\*" CopyToOutputDirectory="Always"/>
+        <Content Include="Data\numbers\default\*" CopyToOutputDirectory="Always" />
+        <Content Include="Data\numbers\yellow\*" CopyToOutputDirectory="Always" />
+        <Content Include="Data\numbers\wow\*" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="EmbedIO" Version="3.5.2"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
+        <PackageReference Include="EmbedIO" Version="3.5.2" />
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
+        <PackageReference Include="stbisharp" Version="1.2.1" />
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
         <PackageReference Include="System.ValueTuple" Version="4.6.1" />
-        <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
+        <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />
+        <PackageReference Update="DalamudPackager" Version="13.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -57,19 +59,18 @@
             <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="StbiSharp, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(DalamudLibPath)StbiSharp.dll</HintPath>
-            <Private>false</Private>
+        <Reference Include="Dalamud.Bindings.ImGui, Culture=neutral, PublicKeyToken=null">
+            <HintPath>$(DalamudLibPath)Dalamud.Bindings.ImGui</HintPath>
+            <Private>False</Private>
         </Reference>
     </ItemGroup>
 
     <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)"/>
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" />
     </Target>
 
     <ProjectExtensions>
         <DalamudPlugin>
-            <ApiLevel>7</ApiLevel>
             <Author>Xorus</Author>
             <Name>EngageTimer</Name>
             <Punchline>Complete combat countdown, pull timer and OBS overlay</Punchline>

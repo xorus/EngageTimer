@@ -21,7 +21,7 @@ using Dalamud.Interface.Animation;
 using EngageTimer.Configuration;
 using EngageTimer.Game;
 using EngageTimer.Ui.CustomEasing;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace EngageTimer.Ui;
 
@@ -322,7 +322,7 @@ public sealed class CountDown : IDisposable
         var cursorX = ImGui.GetCursorPosX();
         if (fixedWidth) ImGui.SetCursorPosX(cursorX + (maxWidthScaled - width) / 2);
 
-        ImGui.Image(texture.ImGuiHandle, new Vector2(texture.Width * numberScale, texture.Height * numberScale));
+        ImGui.Image(texture.Handle, new Vector2(texture.Width * numberScale, texture.Height * numberScale));
         ImGui.SameLine();
 
         if (fixedWidth)
