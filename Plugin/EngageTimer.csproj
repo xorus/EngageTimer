@@ -3,7 +3,7 @@
     <PropertyGroup>
         <LangVersion>12</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <AssemblyVersion>2.4.3.0</AssemblyVersion>
+        <AssemblyVersion>2.4.4.0</AssemblyVersion>
         <AssemblyName>EngageTimer</AssemblyName>
         <Nullable>enable</Nullable>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
