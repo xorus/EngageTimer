@@ -74,7 +74,7 @@ public sealed class AddonHider : IDisposable
         _addonHidden = true;
         try
         {
-            var atkUnitBase = (AtkUnitBase*)addon;
+            var atkUnitBase = (AtkUnitBase*)addon.Address;
             atkUnitBase->IsVisible = false;
             // atkUnitBase->Flags = (byte)(atkUnitBase->Flags & ~VisibleFlag);
             // Plugin.Logger.Debug("hide addon");
