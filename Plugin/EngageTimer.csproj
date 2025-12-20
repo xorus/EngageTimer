@@ -1,4 +1,4 @@
-<Project Sdk="Dalamud.NET.Sdk/13.0.0">
+<Project Sdk="Dalamud.NET.Sdk/14.0.1">
     <PropertyGroup>
         <LangVersion>12</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -25,12 +25,11 @@
 
     <ItemGroup>
         <PackageReference Include="EmbedIO" Version="3.5.2"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
         <PackageReference Include="stbisharp" Version="1.2.1"/>
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
         <PackageReference Include="System.ValueTuple" Version="4.6.1"/>
         <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
-        <PackageReference Update="DalamudPackager" Version="13.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
