@@ -62,7 +62,7 @@ public static class Translator
 
     public static string Tr(string id, params string[] replacements)
     {
-        return Re(id, replacements);
+        return Re(Tr(id), replacements);
     }
     
     private static void ConfigureLanguage(string? langCode = null)
