@@ -2,7 +2,7 @@
     <PropertyGroup>
         <LangVersion>12</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <AssemblyVersion>2.4.5.0</AssemblyVersion>
+        <AssemblyVersion>2.4.5.1</AssemblyVersion>
         <AssemblyName>EngageTimer</AssemblyName>
         <Nullable>enable</Nullable>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
@@ -28,8 +28,10 @@
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
         <PackageReference Include="stbisharp" Version="1.2.1"/>
         <!-- required for Unosquare.Swan.Lite (implicit dependency of EmbedIO) -->
-        <PackageReference Include="System.ValueTuple" Version="4.6.1"/>
+        <PackageReference Include="System.ValueTuple" Version="4.6.2" />
         <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0"/>
+        <PackageReference Update="DalamudPackager" Version="14.0.2" />
+        <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
