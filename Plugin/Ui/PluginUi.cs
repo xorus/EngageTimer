@@ -33,6 +33,7 @@ public sealed class PluginUi : IDisposable
         // _windowSystem.AddWindow(new SfxDebug());
         Plugin.PluginInterface.UiBuilder.Draw += Draw;
         Plugin.PluginInterface.UiBuilder.OpenConfigUi += OpenSettings;
+        Plugin.PluginInterface.UiBuilder.OpenMainUi += OpenSettings;
     }
 
     public void Dispose()
@@ -40,6 +41,7 @@ public sealed class PluginUi : IDisposable
         _countDown.Dispose();
         Plugin.PluginInterface.UiBuilder.Draw -= Draw;
         Plugin.PluginInterface.UiBuilder.OpenConfigUi -= OpenSettings;
+        Plugin.PluginInterface.UiBuilder.OpenMainUi -= OpenSettings;
     }
 
     private void Draw()
