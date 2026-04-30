@@ -35,11 +35,11 @@ public class SfxPlay
         SoundEffect(0); // should be cursor sound
     }
 
-    public void SoundEffect(uint id)
+    public unsafe void SoundEffect(uint id)
     {
         // var s = new Stopwatch();
         // s.Start();
-        UIGlobals.PlaySoundEffect(id, IntPtr.Zero, IntPtr.Zero, 0);
+        UIGlobals.PlaySoundEffect(id);
         // s.Stop();
         // Plugin.Logger.Debug("Sound play took " + s.ElapsedMilliseconds + "ms");
     }
