@@ -36,6 +36,9 @@ public sealed class NumberTextures
     private readonly Dictionary<int, IDalamudTextureWrap> _numberTextures = new();
     private readonly Dictionary<int, IDalamudTextureWrap> _numberTexturesAlt = new();
     private readonly IUiBuilder _uiBuilder = Plugin.PluginInterface.UiBuilder;
+    private StbiImage? _startImage = null;
+    private IDalamudTextureWrap? _startTexture = null;
+    private IDalamudTextureWrap? _startTextureAlt = null;
 
     public double LastTextureCreationDuration = 0d;
 
@@ -53,10 +56,14 @@ public sealed class NumberTextures
     public int NumberNegativeMarginMono { get; private set; }
     public int NumberBottomMargin { get; private set; }
 
+    public bool HasStart => _startImage != null && _startTexture != null;
+
     public void Load()
     {
         _numberTextures.Clear();
         _numberTexturesAlt.Clear();
+        _startImage?.Dispose();
+        _startImage = null;
         LoadImages();
         CreateTextures();
     }
@@ -88,17 +95,34 @@ public sealed class NumberTextures
 
         // Load images
         for (var i = 0; i < 10; i++)
-            try
-            {
-                using var stream = File.OpenRead(Path.Combine(texturePath, i + ".png"));
-                using var memoryStream = new MemoryStream();
-                stream.CopyTo(memoryStream);
-                _numberImages.Add(i, Stbi.LoadFromMemory(memoryStream, 4));
-            }
-            catch (Exception)
-            {
-                // the image does not exist or is invalid, we don't have to worry about it here
-            }
+        {
+            var image = LoadImage(texturePath, i + ".png");
+            if (image != null) _numberImages.Add(i, image);
+        }
+        
+        // Try loading the "start" texture (might not exist for the selected pack)
+        if (File.Exists(Path.Combine(texturePath, "start.png")))
+        {
+            var image = LoadImage(texturePath, "start.png");
+            if (image != null) _startImage = image;
+        }
+    }
+
+    private StbiImage? LoadImage(string texturePath, string textureName)
+    {
+        try
+        {
+            using var stream = File.OpenRead(Path.Combine(texturePath, textureName));
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return Stbi.LoadFromMemory(memoryStream, 4);
+        }
+        catch (Exception)
+        {
+            // the image does not exist or is invalid, we don't have to worry about it here
+        }
+
+        return null;
     }
 
     private void ReadPackSettings(string settingsFile)
@@ -154,66 +178,89 @@ public sealed class NumberTextures
         for (var i = 0; i < 10; i++)
         {
             if (_numberImages.TryGetValue(i, out var image))
-                try
+            {
+                var (texture, textureAlt) = ProcessImageBytes(image, createAltTextures);
+
+                if (texture != null)
                 {
-                    var bytes = image.Data.ToArray();
-                    var bytesAlt = new byte[bytes.Length];
-                    if (image.NumChannels == 4)
-                        for (var p = 0; p < bytes.Length; p += 4)
-                        {
-                            var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
-                            var hsl = HslConv.RgbToHsl(originalRgb);
-                            if (Plugin.Config.Countdown.NumberRecolorMode)
-                                hsl.H = Math.Clamp(Plugin.Config.Countdown.Hue, 0, 360);
-                            else
-                                hsl.H += Plugin.Config.Countdown.Hue;
-                            hsl.S = Math.Clamp(hsl.S + Plugin.Config.Countdown.Saturation, 0f, 1f);
-                            hsl.L = Math.Clamp(hsl.L + Plugin.Config.Countdown.Luminance, 0f, 1f);
-                            var modifiedRgb = HslConv.HslToRgb(hsl);
-                            bytes[p] = modifiedRgb.R;
-                            bytes[p + 1] = modifiedRgb.G;
-                            bytes[p + 2] = modifiedRgb.B;
-
-                            if (!createAltTextures) continue;
-                            var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
-                            hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
-                            var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
-                            bytesAlt[p] = modifiedRgbAlt.R;
-                            bytesAlt[p + 1] = modifiedRgbAlt.G;
-                            bytesAlt[p + 2] = modifiedRgbAlt.B;
-                            bytesAlt[p + 3] = bytes[p + 3];
-                        }
-
-
-                    var texture = Plugin.TextureProvider.CreateFromRaw(
-                        RawImageSpecification.Rgba32(image.Width, image.Height),
-                        bytes);
-                    var textureAlt = Plugin.TextureProvider.CreateFromRaw(
-                        RawImageSpecification.Rgba32(image.Width, image.Height),
-                        bytesAlt);
-
-                    MaxTextureHeight = Math.Max(MaxTextureHeight, texture.Height);
-                    MaxTextureWidth = Math.Max(MaxTextureWidth, texture.Width);
                     _numberTextures.Remove(i);
                     _numberTextures.Add(i, texture);
                     success = true;
-
-                    if (!createAltTextures) continue;
-                    _numberTexturesAlt.Remove(i);
-                    _numberTexturesAlt.Add(i, textureAlt);
                 }
-                catch (Exception)
+
+                if (textureAlt != null)
                 {
-                    // a loading error occured
+                    _numberTexturesAlt.Remove(i);
+                    _numberTexturesAlt.Add(i, textureAlt);                    
                 }
-
+            }
             if (success) continue;
             MaxTextureWidth = _error.Width;
             MaxTextureHeight = _error.Height;
         }
 
+        if (_startImage != null)
+        {
+            var (texture, textureAlt) = ProcessImageBytes(_startImage, createAltTextures);
+            _startTexture = texture;
+            _startTextureAlt = textureAlt;
+        }
+
         watch.Stop();
         LastTextureCreationDuration = watch.ElapsedMilliseconds / 1000d;
+    }
+
+    private (IDalamudTextureWrap? texture, IDalamudTextureWrap? textureAlt) ProcessImageBytes(StbiImage image, bool createAltTextures)
+    {
+        try
+        {
+            var bytes = image.Data.ToArray();
+            var bytesAlt = new byte[bytes.Length];
+            if (image.NumChannels == 4)
+                for (var p = 0; p < bytes.Length; p += 4)
+                {
+                    var originalRgb = new HslConv.Rgb(bytes[p], bytes[p + 1], bytes[p + 2]);
+                    var hsl = HslConv.RgbToHsl(originalRgb);
+                    if (Plugin.Config.Countdown.NumberRecolorMode)
+                        hsl.H = Math.Clamp(Plugin.Config.Countdown.Hue, 0, 360);
+                    else
+                        hsl.H += Plugin.Config.Countdown.Hue;
+                    hsl.S = Math.Clamp(hsl.S + Plugin.Config.Countdown.Saturation, 0f, 1f);
+                    hsl.L = Math.Clamp(hsl.L + Plugin.Config.Countdown.Luminance, 0f, 1f);
+                    var modifiedRgb = HslConv.HslToRgb(hsl);
+                    bytes[p] = modifiedRgb.R;
+                    bytes[p + 1] = modifiedRgb.G;
+                    bytes[p + 2] = modifiedRgb.B;
+
+                    if (!createAltTextures) continue;
+                    var hslAlt = new HslConv.Hsl(hsl.H, hsl.S, hsl.L);
+                    hslAlt.L = Math.Clamp(hslAlt.L + .3f, 0f, 1f);
+                    var modifiedRgbAlt = HslConv.HslToRgb(hslAlt);
+                    bytesAlt[p] = modifiedRgbAlt.R;
+                    bytesAlt[p + 1] = modifiedRgbAlt.G;
+                    bytesAlt[p + 2] = modifiedRgbAlt.B;
+                    bytesAlt[p + 3] = bytes[p + 3];
+                }
+
+
+            var texture = Plugin.TextureProvider.CreateFromRaw(
+                RawImageSpecification.Rgba32(image.Width, image.Height),
+                bytes);
+            var textureAlt = Plugin.TextureProvider.CreateFromRaw(
+                RawImageSpecification.Rgba32(image.Width, image.Height),
+                bytesAlt);
+
+            MaxTextureHeight = Math.Max(MaxTextureHeight, texture.Height);
+            MaxTextureWidth = Math.Max(MaxTextureWidth, texture.Width);
+
+            return createAltTextures ? (texture, textureAlt) : (texture, null);
+        }
+        catch (Exception)
+        {
+            // a loading error occured
+        }
+
+        return (null, null);
     }
 
     public IDalamudTextureWrap GetTexture(int i)
